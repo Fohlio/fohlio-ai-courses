@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fohlio Tech Course - Lesson 2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 16px 0 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13.5px;
+            line-height: 1.8;
+        }
+        pre .comment { color: #6B7280; }
+        pre .keyword { color: #93C5FD; }
+        pre .string { color: #86EFAC; }
+        pre .flag { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box.blue {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+        .info-box.green {
+            background: var(--green-light);
+            border-left: 4px solid var(--green);
+        }
+        .info-box.orange {
+            background: var(--orange-light);
+            border-left: 4px solid var(--orange);
+        }
+        .info-box.red {
+            background: var(--red-light);
+            border-left: 4px solid var(--red);
+        }
+        .info-box.purple {
+            background: var(--purple-light);
+            border-left: 4px solid var(--purple);
+        }
+        .info-box p:last-child { margin-bottom: 0; }
+        .info-box strong { color: var(--gray-900); }
+
+        /* Joke box */
+        .joke-box {
+            background: linear-gradient(135deg, #FFF7ED, #FEF3C7);
+            border: 1px solid #FDE68A;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+            text-align: center;
+            font-style: italic;
+            color: var(--gray-700);
+        }
+        .joke-box .joke-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 28px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+        tr:last-child td { border-bottom: none; }
+        td code {
+            font-size: 13px;
+        }
+
+        /* SVG diagrams */
+        .diagram {
+            margin: 32px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        /* Ordered / unordered lists */
+        ol, ul {
+            margin: 12px 0 20px 24px;
+            color: var(--gray-700);
+        }
+        li { margin-bottom: 8px; }
+
+        /* Step cards */
+        .step-card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 20px 0;
+        }
+        .step-card h4 {
+            margin-top: 0;
+            color: var(--blue);
+        }
+
+        /* Server grid */
+        .server-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .server-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .server-card .server-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        .server-card .server-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        .server-card.dev { background: #DBEAFE; border: 2px solid #93C5FD; }
+        .server-card.dev .server-name { color: #1D4ED8; }
+        .server-card.test { background: #D1FAE5; border: 2px solid #6EE7B7; }
+        .server-card.test .server-name { color: #059669; }
+        .server-card.uat { background: #EDE9FE; border: 2px solid #C4B5FD; }
+        .server-card.uat .server-name { color: #7C3AED; }
+        .server-card.prod { background: #FEE2E2; border: 2px solid #FCA5A5; }
+        .server-card.prod .server-name { color: #DC2626; }
+        .server-card.next-card { background: #FEF3C7; border: 2px solid #FCD34D; }
+        .server-card.next-card .server-name { color: #D97706; }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recap */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .recap-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+        .recap-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--blue);
+        }
+        .recap-item span {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Page break for printing */
+        .page-break {
+            page-break-before: always;
+        }
+
+        @media print {
+            .container { padding: 20px; }
+            .part-header { margin-top: 32px; }
+            pre { font-size: 12px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 32px; }
+            .server-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Animated flow arrows */
+        .flow-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--gray-300);
+            margin: 8px 0;
+        }
+
+        /* Badge styles */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge.frontend { background: #DBEAFE; color: #1D4ED8; }
+        .badge.backend { background: #D1FAE5; color: #059669; }
+        .badge.reports { background: #FEF3C7; color: #D97706; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 2 of 10</div>
+        <h1>Fohlio Tech Course</h1>
+        <div class="subtitle">Architecture, Servers & Git Flow</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand what Backend, Frontend, and Reports are</li>
+            <li>Know how all parts of Fohlio connect to each other</li>
+            <li>Remember Git Flow from Lesson 1 and go deeper</li>
+            <li>Know all our staging servers and what each one is for</li>
+            <li>Be able to connect your local frontend to any staging server</li>
+            <li>Create PRs, merge them, and resolve conflicts</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1: ARCHITECTURE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: How Fohlio Works</h2>
+
+    <p>Fohlio &mdash; this is not one single program. It's actually <strong>three separate programs</strong> that talk to each other. Think of it like a restaurant.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background -->
+            <rect x="0" y="0" width="760" height="380" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Frontend box -->
+            <rect x="40" y="40" width="200" height="140" rx="12" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="140" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="18" fill="#1D4ED8">Frontend</text>
+            <text x="140" y="105" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#6B7280">React + Rspack</text>
+            <text x="140" y="130" text-anchor="middle" font-family="Inter, sans-serif" font-size="28">&#x1F3AA;</text>
+            <text x="140" y="165" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6B7280">The "dining room"</text>
+
+            <!-- Backend box -->
+            <rect x="290" y="40" width="200" height="140" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="390" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="18" fill="#059669">Backend</text>
+            <text x="390" y="105" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#6B7280">Ruby on Rails</text>
+            <text x="390" y="130" text-anchor="middle" font-family="Inter, sans-serif" font-size="28">&#x1F468;&#x200D;&#x1F373;</text>
+            <text x="390" y="165" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6B7280">The "kitchen"</text>
+
+            <!-- Reports box -->
+            <rect x="540" y="40" width="180" height="140" rx="12" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="630" y="80" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="18" fill="#D97706">Reports</text>
+            <text x="630" y="105" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#6B7280">Node.js + Puppeteer</text>
+            <text x="630" y="130" text-anchor="middle" font-family="Inter, sans-serif" font-size="28">&#x1F4C4;</text>
+            <text x="630" y="165" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6B7280">The "printing press"</text>
+
+            <!-- Database -->
+            <rect x="290" y="240" width="200" height="100" rx="12" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2"/>
+            <text x="390" y="280" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="16" fill="#374151">Database</text>
+            <text x="390" y="305" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#6B7280">PostgreSQL + Redis</text>
+            <text x="390" y="330" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#6B7280">The "refrigerator"</text>
+
+            <!-- Arrows -->
+            <!-- Frontend -> Backend -->
+            <defs>
+                <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#93C5FD"/>
+                </marker>
+                <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6EE7B7"/>
+                </marker>
+                <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+                <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#FCD34D"/>
+                </marker>
+            </defs>
+
+            <line x1="240" y1="100" x2="285" y2="100" stroke="#93C5FD" stroke-width="2" marker-end="url(#arrowBlue)"/>
+            <text x="263" y="92" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">API</text>
+
+            <line x1="490" y1="100" x2="535" y2="100" stroke="#FCD34D" stroke-width="2" marker-end="url(#arrowOrange)"/>
+            <text x="513" y="92" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">Jobs</text>
+
+            <!-- Backend -> Database -->
+            <line x1="390" y1="185" x2="390" y2="235" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+            <text x="410" y="215" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">SQL</text>
+        </svg>
+        <div class="diagram-caption">Architecture overview: how all parts of Fohlio connect</div>
+    </div>
+
+    <!-- Frontend section -->
+    <h3><span class="badge frontend">Frontend</span> &mdash; What Users See</h3>
+
+    <p>Frontend is everything that happens <strong>in the browser</strong>. When you open Fohlio and see buttons, tables, images &mdash; that's the frontend.</p>
+
+    <div class="info-box blue">
+        <p><strong>Analogy:</strong> Frontend is the dining room in a restaurant. It's beautiful, the guests sit here, look at the menu, place orders. The dining room doesn't cook anything itself &mdash; it just shows what the kitchen sends out.</p>
+    </div>
+
+    <p>Our frontend tech stack:</p>
+    <ul>
+        <li><strong>React</strong> &mdash; library for building the interface</li>
+        <li><strong>Rspack</strong> &mdash; builds all the code into files the browser can understand</li>
+        <li><strong>Apollo Client</strong> &mdash; sends requests to the backend via GraphQL</li>
+        <li><strong>Zustand / Redux</strong> &mdash; stores the state of the application (what's open, what's selected)</li>
+    </ul>
+
+    <p>Where the code lives: <code>fohlio-frontend/</code></p>
+
+    <!-- Backend section -->
+    <h3><span class="badge backend">Backend</span> &mdash; The Brain</h3>
+
+    <p>Backend is the <strong>server</strong> that runs on a remote machine. It does all the heavy lifting: stores data, checks permissions, processes business logic.</p>
+
+    <div class="info-box green">
+        <p><strong>Analogy:</strong> The backend is the kitchen. You don't see it, but all the real work happens here. The waiter (frontend) takes the order, brings it to the kitchen (backend), the kitchen prepares the dish (processes data), and sends it back.</p>
+    </div>
+
+    <p>What our backend does:</p>
+    <ul>
+        <li>Stores all projects, products, specs in the database</li>
+        <li>Checks who can do what (permissions)</li>
+        <li>Provides a <strong>GraphQL API</strong> &mdash; a special "menu" for the frontend</li>
+        <li>Sends emails, processes images, generates export files</li>
+        <li>Handles payment and subscription logic</li>
+    </ul>
+
+    <p>Our backend tech stack:</p>
+    <ul>
+        <li><strong>Ruby on Rails</strong> &mdash; framework for the server</li>
+        <li><strong>PostgreSQL</strong> &mdash; main database</li>
+        <li><strong>Redis</strong> &mdash; fast cache and job queues</li>
+        <li><strong>GraphQL</strong> &mdash; language for communication with the frontend</li>
+    </ul>
+
+    <p>Where the code lives: <code>fohlio-website/</code></p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        Why did the backend developer quit?<br>
+        Because they didn't get any <strong>REST</strong>.<br>
+        <em>(and we use GraphQL anyway)</em>
+    </div>
+
+    <!-- Database & Redis section -->
+    <h3>PostgreSQL &amp; Redis &mdash; Where the Data Lives</h3>
+
+    <p>The backend doesn't remember anything by itself. Every time the server restarts, all data would be lost &mdash; unless it stores everything in a <strong>database</strong>. We use two databases, each for a different purpose.</p>
+
+    <h4>PostgreSQL &mdash; The Main Storage</h4>
+
+    <p><strong>PostgreSQL</strong> (often just "Postgres") is a relational database. It stores everything permanently: users, projects, products, specs, orders &mdash; all the important data.</p>
+
+    <div class="info-box blue">
+        <p><strong>Analogy:</strong> PostgreSQL is like a giant filing cabinet in the kitchen. Every order, every recipe, every customer record is carefully organized in labeled folders. It's reliable, structured, and you can always find what you need &mdash; but opening a drawer takes a moment.</p>
+    </div>
+
+    <p>Key facts about PostgreSQL:</p>
+    <ul>
+        <li>Stores data in <strong>tables</strong> with rows and columns (like Excel, but much more powerful)</li>
+        <li>Data is <strong>persistent</strong> &mdash; survives server restarts, crashes, even power outages</li>
+        <li>Uses <strong>SQL</strong> language to read and write data</li>
+        <li>Handles relationships: "this product belongs to this project which belongs to this organization"</li>
+        <li>Every staging server and production has its <strong>own separate database</strong></li>
+    </ul>
+
+    <h4>Redis &mdash; The Speed Demon</h4>
+
+    <p><strong>Redis</strong> is an in-memory data store. Unlike PostgreSQL, it keeps everything in <strong>RAM</strong> (computer's fast memory), which makes it incredibly fast &mdash; but it's not meant for permanent storage.</p>
+
+    <div class="info-box orange">
+        <p><strong>Analogy:</strong> If PostgreSQL is the filing cabinet, then Redis is the <strong>kitchen counter</strong>. It's right there, instantly accessible, and the chef puts things on it that they need <em>right now</em>: the current order ticket, the timer for the oven, and a note that says "Table 5 is waiting." It's fast, but you don't store your entire recipe book on the counter.</p>
+    </div>
+
+    <p>What Redis does at Fohlio:</p>
+
+    <table>
+        <tr>
+            <th>Use Case</th>
+            <th>What It Does</th>
+            <th>Why Not PostgreSQL?</th>
+        </tr>
+        <tr>
+            <td><strong>Cache</strong></td>
+            <td>Stores frequently requested data temporarily so the backend doesn't have to query PostgreSQL every time</td>
+            <td>Speed. Redis responds in microseconds, Postgres in milliseconds</td>
+        </tr>
+        <tr>
+            <td><strong>Session storage</strong></td>
+            <td>Remembers who is logged in and their current session</td>
+            <td>Sessions are temporary &mdash; no need to save permanently</td>
+        </tr>
+        <tr>
+            <td><strong>Job queues</strong></td>
+            <td>Stores tasks that need to be done later (like "generate this PDF", "send this email")</td>
+            <td>Queues need to be fast and ordered. Redis is built for this</td>
+        </tr>
+        <tr>
+            <td><strong>Real-time features</strong></td>
+            <td>Pub/Sub for live updates between users</td>
+            <td>PostgreSQL doesn't do real-time messaging well</td>
+        </tr>
+    </table>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Backend -->
+            <rect x="280" y="30" width="200" height="70" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="380" y="60" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#059669">Backend (Rails)</text>
+            <text x="380" y="80" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Decides where to store what</text>
+
+            <!-- PostgreSQL -->
+            <rect x="60" y="160" width="260" height="90" rx="12" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="190" y="190" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#1D4ED8">PostgreSQL</text>
+            <text x="190" y="210" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Permanent data: users, projects, products</text>
+            <text x="190" y="230" text-anchor="middle" font-family="Inter" font-size="10" fill="#93C5FD">Slow but reliable. Like a hard drive.</text>
+
+            <!-- Redis -->
+            <rect x="440" y="160" width="260" height="90" rx="12" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="2"/>
+            <text x="570" y="190" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#DC2626">Redis</text>
+            <text x="570" y="210" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Cache, sessions, job queues</text>
+            <text x="570" y="230" text-anchor="middle" font-family="Inter" font-size="10" fill="#FCA5A5">Lightning fast. Lives in RAM.</text>
+
+            <!-- Arrows -->
+            <line x1="330" y1="105" x2="200" y2="155" stroke="#93C5FD" stroke-width="2" marker-end="url(#arrowBlue)"/>
+            <text x="240" y="125" font-family="Inter" font-size="10" fill="#6B7280">SQL queries</text>
+
+            <line x1="430" y1="105" x2="560" y2="155" stroke="#FCA5A5" stroke-width="2" marker-end="url(#arrowGray)"/>
+            <text x="510" y="125" font-family="Inter" font-size="10" fill="#6B7280">GET / SET</text>
+
+            <!-- Speed comparison -->
+            <text x="190" y="265" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#93C5FD">~5-50ms per query</text>
+            <text x="570" y="265" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#FCA5A5">~0.1-1ms per operation</text>
+        </svg>
+        <div class="diagram-caption">PostgreSQL for permanent storage, Redis for speed-critical temporary data</div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Simple rule of thumb:</strong><br>
+        Need to save something <strong>forever</strong>? &rarr; PostgreSQL<br>
+        Need something <strong>fast</strong> and it's OK if it disappears? &rarr; Redis<br>
+        Need to <strong>queue a task</strong> for later? &rarr; Redis (via Bull queue)</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F3CE;&#xFE0F;</div>
+        PostgreSQL and Redis walk into a bar.<br>
+        PostgreSQL says: "Let me write down our order in my notebook. Permanently. With a backup."<br>
+        Redis says: "Already ordered. Already served. Already forgot."
+    </div>
+
+    <!-- Reports section -->
+    <h3><span class="badge reports">Reports</span> &mdash; The Printing Press</h3>
+
+    <p>Reports is a separate service that generates <strong>PDF documents</strong>. When a user clicks "Export to PDF" &mdash; the frontend tells the backend, the backend creates a <strong>job</strong>, and the reports service picks it up.</p>
+
+    <div class="info-box orange">
+        <p><strong>Analogy:</strong> Imagine the restaurant has its own printing press that makes beautiful menus and recipe books. The kitchen (backend) says "print the menu for table 5", and the printing press (reports) creates a gorgeous PDF.</p>
+    </div>
+
+    <p>How it works:</p>
+    <ol>
+        <li>User clicks "Export PDF" in the frontend</li>
+        <li>Frontend sends request to the backend</li>
+        <li>Backend puts a job in the <strong>queue</strong> (Redis + Bull)</li>
+        <li>Reports service picks up the job</li>
+        <li>It renders HTML with React, then converts it to PDF via <strong>Puppeteer</strong> (headless Chrome)</li>
+        <li>The finished PDF is uploaded to S3 storage</li>
+        <li>User gets a download link</li>
+    </ol>
+
+    <p>Where the code lives: <code>fohlio-node-reports/</code></p>
+
+    <!-- How they talk -->
+    <h3>How They Talk to Each Other</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="300" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- User -->
+            <circle cx="80" cy="150" r="35" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="80" y="145" text-anchor="middle" font-size="28">&#x1F9D1;&#x200D;&#x1F4BB;</text>
+            <text x="80" y="175" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">User</text>
+
+            <!-- Browser -->
+            <rect x="160" y="110" width="130" height="80" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="225" y="145" text-anchor="middle" font-family="Inter" font-weight="600" font-size="14" fill="#1D4ED8">Browser</text>
+            <text x="225" y="165" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Frontend code</text>
+
+            <!-- API -->
+            <rect x="345" y="110" width="130" height="80" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="410" y="140" text-anchor="middle" font-family="Inter" font-weight="600" font-size="14" fill="#059669">Rails API</text>
+            <text x="410" y="160" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Backend code</text>
+            <text x="410" y="178" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">GraphQL</text>
+
+            <!-- Database -->
+            <rect x="345" y="220" width="130" height="55" rx="10" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2"/>
+            <text x="410" y="252" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#374151">PostgreSQL</text>
+
+            <!-- Reports -->
+            <rect x="540" y="30" width="130" height="80" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="605" y="65" text-anchor="middle" font-family="Inter" font-weight="600" font-size="14" fill="#D97706">Reports</text>
+            <text x="605" y="85" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">PDF Generator</text>
+
+            <!-- S3 -->
+            <rect x="540" y="200" width="130" height="55" rx="10" fill="#FCE7F3" stroke="#F9A8D4" stroke-width="2"/>
+            <text x="605" y="232" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#BE185D">S3 Storage</text>
+
+            <!-- Redis -->
+            <rect x="540" y="125" width="130" height="50" rx="10" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="2"/>
+            <text x="605" y="155" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#DC2626">Redis Queue</text>
+
+            <!-- Arrows -->
+            <line x1="115" y1="150" x2="155" y2="150" stroke="#93C5FD" stroke-width="2" marker-end="url(#arrowBlue)"/>
+            <line x1="290" y1="150" x2="340" y2="150" stroke="#6EE7B7" stroke-width="2" marker-end="url(#arrowGreen)"/>
+            <line x1="410" y1="195" x2="410" y2="215" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Backend -> Redis -->
+            <line x1="475" y1="140" x2="535" y2="145" stroke="#FCA5A5" stroke-width="2" marker-end="url(#arrowGray)"/>
+            <!-- Redis -> Reports -->
+            <line x1="605" y1="125" x2="605" y2="115" stroke="#FCD34D" stroke-width="2" marker-end="url(#arrowOrange)"/>
+            <!-- Reports -> S3 -->
+            <line x1="605" y1="115" x2="605" y2="195" stroke="#F9A8D4" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+            <!-- Labels on arrows -->
+            <text x="310" y="140" font-family="Inter" font-size="9" fill="#6B7280">GraphQL</text>
+            <text x="495" y="132" font-family="Inter" font-size="9" fill="#6B7280">Job</text>
+        </svg>
+        <div class="diagram-caption">Full request flow: User -> Browser -> API -> Database | Backend -> Redis -> Reports -> S3</div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F355;</div>
+        Frontend, Backend, and Reports walk into a bar.<br>
+        Frontend says: "I'll have whatever looks good."<br>
+        Backend says: "I'll check if you're allowed to order."<br>
+        Reports says: "I'll print the receipt... in 30 seconds."
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: GIT FLOW RECAP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Git Flow Reminder</h2>
+
+    <p>In Lesson 1, we learned the basics of Git. Let's quickly recall the key concepts and then go deeper.</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Repository</strong>
+            <span>Project folder tracked by Git</span>
+        </div>
+        <div class="recap-item">
+            <strong>Commit</strong>
+            <span>Saved snapshot with a message</span>
+        </div>
+        <div class="recap-item">
+            <strong>Branch</strong>
+            <span>Parallel version of code</span>
+        </div>
+        <div class="recap-item">
+            <strong>Pull Request</strong>
+            <span>Request to merge your branch</span>
+        </div>
+    </div>
+
+    <h3>The Complete Workflow</h3>
+
+    <p>Here's our standard Git Flow for any task. It has <strong>two phases</strong>: daily development and periodic releases.</p>
+
+    <h4>Phase 1: Daily Development</h4>
+
+    <p>This is what you do every day for each Jira ticket:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="440" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Phase label -->
+            <rect x="20" y="10" width="180" height="26" rx="13" fill="#DBEAFE"/>
+            <text x="110" y="28" text-anchor="middle" font-family="Inter" font-weight="600" font-size="11" fill="#1D4ED8">DAILY DEVELOPMENT</text>
+
+            <!-- Row 1 -->
+            <!-- Step 1 -->
+            <rect x="30" y="50" width="155" height="60" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="108" y="75" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1D4ED8">1. Jira ticket</text>
+            <text x="108" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">e.g. FOH-1234</text>
+
+            <line x1="190" y1="80" x2="215" y2="80" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 2 -->
+            <rect x="220" y="50" width="155" height="60" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="298" y="75" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1D4ED8">2. Create branch</text>
+            <text x="298" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6B7280">from develop</text>
+
+            <line x1="380" y1="80" x2="405" y2="80" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 3 -->
+            <rect x="410" y="50" width="140" height="60" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="480" y="75" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#059669">3. Write code</text>
+            <text x="480" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">In Cursor</text>
+
+            <line x1="555" y1="80" x2="580" y2="80" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 4 -->
+            <rect x="585" y="50" width="145" height="60" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="658" y="75" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#059669">4. Commit + Push</text>
+            <text x="658" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">git push</text>
+
+            <!-- Row 2 -->
+            <line x1="658" y1="115" x2="658" y2="140" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 5 -->
+            <rect x="565" y="145" width="165" height="60" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="648" y="170" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#D97706">5. Create PR</text>
+            <text x="648" y="187" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">on GitHub</text>
+
+            <line x1="560" y1="175" x2="535" y2="175" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 6 -->
+            <rect x="360" y="145" width="170" height="60" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="445" y="170" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">6. Code Review</text>
+            <text x="445" y="187" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Team reviews your PR</text>
+
+            <line x1="355" y1="175" x2="330" y2="175" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 7 -->
+            <rect x="140" y="145" width="185" height="60" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="233" y="170" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#D97706">7. Deploy to staging</text>
+            <text x="233" y="187" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">test01-03 via Makefile</text>
+
+            <!-- Row 3 -->
+            <line x1="233" y1="210" x2="233" y2="235" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 8 -->
+            <rect x="140" y="240" width="185" height="60" rx="10" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="2"/>
+            <text x="233" y="265" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">8. QA Testing</text>
+            <text x="233" y="282" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">on staging server</text>
+
+            <line x1="330" y1="270" x2="355" y2="270" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 9 - bugs? -->
+            <rect x="360" y="240" width="155" height="60" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="438" y="265" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#D97706">9. Bugs found?</text>
+            <text x="438" y="282" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Fix & re-deploy</text>
+
+            <!-- Loop arrow back to step 7 -->
+            <path d="M438,305 L438,325 L100,325 L100,175 L135,175" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowOrange)"/>
+            <text x="105" y="255" text-anchor="middle" font-family="Inter" font-size="9" fill="#D97706" transform="rotate(-90, 105, 255)">fix &amp; re-test</text>
+
+            <!-- Step 10 -->
+            <line x1="520" y1="270" x2="545" y2="270" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <rect x="550" y="240" width="185" height="60" rx="10" fill="#D1FAE5" stroke="#059669" stroke-width="3"/>
+            <text x="643" y="262" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#059669">10. Merge to develop</text>
+            <text x="643" y="280" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Squash & Merge</text>
+
+            <!-- Notes -->
+            <text x="50" y="370" font-family="Inter" font-size="11" fill="#6B7280">* Branch names start with the Jira ticket number: FOH-1234-fix-button</text>
+            <text x="50" y="390" font-family="Inter" font-size="11" fill="#6B7280">* PRs should be small and focused on one task</text>
+            <text x="50" y="410" font-family="Inter" font-size="11" fill="#6B7280">* If QA finds bugs, you fix them on the SAME branch, push, and re-deploy</text>
+            <text x="50" y="430" font-family="Inter" font-size="11" fill="#6B7280">* Only merge to develop after QA approval</text>
+        </svg>
+        <div class="diagram-caption">Daily workflow: from Jira ticket to develop (steps 1-10)</div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Key point:</strong> Your branch does NOT go directly to <code>develop</code> after code review. First it gets <strong>deployed to a staging server</strong> (test01-03), QA tests it, you fix any bugs, and <strong>only then</strong> it gets merged to <code>develop</code>.</p>
+    </div>
+
+    <h4>Phase 2: Release Process</h4>
+
+    <p>When it's time for a new release (usually every 1-2 weeks), the Tech Lead kicks off the release process:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 310" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="310" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Phase label -->
+            <rect x="20" y="10" width="180" height="26" rx="13" fill="#FEE2E2"/>
+            <text x="110" y="28" text-anchor="middle" font-family="Inter" font-weight="600" font-size="11" fill="#DC2626">RELEASE PROCESS</text>
+
+            <!-- Step 1 -->
+            <rect x="30" y="55" width="195" height="70" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="128" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">1. Create release branch</text>
+            <text x="128" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6B7280">rc-25.8</text>
+            <text x="128" y="115" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">from develop</text>
+
+            <line x1="230" y1="90" x2="260" y2="90" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 2 -->
+            <rect x="265" y="55" width="180" height="70" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="355" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">2. Deploy to next</text>
+            <text x="355" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">next.fohlio.com</text>
+            <text x="355" y="115" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">via Makefile</text>
+
+            <line x1="450" y1="90" x2="480" y2="90" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 3 -->
+            <rect x="485" y="55" width="155" height="70" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="563" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">3. Release testing</text>
+            <text x="563" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Full QA round</text>
+            <text x="563" y="115" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">on next server</text>
+
+            <!-- Bug loop -->
+            <rect x="265" y="165" width="180" height="60" rx="10" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="2"/>
+            <text x="355" y="190" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">Bugs found?</text>
+            <text x="355" y="207" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Fix on rc-* branch, re-deploy</text>
+
+            <line x1="563" y1="130" x2="563" y2="180" stroke="#FCA5A5" stroke-width="1.5" stroke-dasharray="5 3"/>
+            <line x1="563" y1="180" x2="450" y2="195" stroke="#FCA5A5" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowGray)"/>
+
+            <path d="M265,195 L220,195 L220,90 L260,90" fill="none" stroke="#D97706" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrowOrange)"/>
+            <text x="210" y="150" text-anchor="middle" font-family="Inter" font-size="9" fill="#D97706" transform="rotate(-90, 210, 150)">fix &amp; re-deploy</text>
+
+            <!-- Step 4: merge to main -->
+            <line x1="563" y1="130" x2="563" y2="248" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <rect x="485" y="253" width="230" height="45" rx="10" fill="#D1FAE5" stroke="#059669" stroke-width="3"/>
+            <text x="600" y="275" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#059669">4. Merge rc-* to main</text>
+            <text x="600" y="290" text-anchor="middle" font-family="Inter" font-size="10" fill="#059669">Production deploy!</text>
+
+            <!-- Checkmark -->
+            <text x="660" y="265" font-size="16">&#x1F680;</text>
+
+            <!-- Notes -->
+            <text x="50" y="275" font-family="Inter" font-size="11" fill="#6B7280">* <tspan font-family="JetBrains Mono" font-size="10">rc</tspan> = release candidate</text>
+            <text x="50" y="295" font-family="Inter" font-size="11" fill="#6B7280">* Only Tech Lead creates and merges release branches</text>
+        </svg>
+        <div class="diagram-caption">Release workflow: from develop to production (rc-* branch)</div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>What is <code>rc-*</code>?</strong> RC stands for <strong>Release Candidate</strong>. It's a branch created from <code>develop</code> that contains all the features ready for the next release. The naming convention is <code>rc-YY.N</code> where YY is the year and N is the release number. Example: <code>rc-25.8</code> = year 2025, release #8. This branch is deployed to <code>next</code> for final testing. If bugs are found, they're fixed directly on the <code>rc-*</code> branch. Once everything is approved &mdash; it gets merged to <code>main</code> and goes to production.</p>
+    </div>
+
+    <h4>The Full Picture</h4>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 240" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="240" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- main branch -->
+            <line x1="50" y1="60" x2="710" y2="60" stroke="#DC2626" stroke-width="3"/>
+            <text x="30" y="64" text-anchor="end" font-family="JetBrains Mono" font-weight="700" font-size="11" fill="#DC2626">main</text>
+            <circle cx="680" cy="60" r="5" fill="#DC2626"/>
+
+            <!-- develop branch -->
+            <line x1="50" y1="120" x2="710" y2="120" stroke="#1D4ED8" stroke-width="3"/>
+            <text x="30" y="124" text-anchor="end" font-family="JetBrains Mono" font-weight="700" font-size="11" fill="#1D4ED8">develop</text>
+
+            <!-- Feature branch 1 -->
+            <path d="M150,120 Q170,170 200,170 L320,170 Q350,170 370,120" fill="none" stroke="#059669" stroke-width="2"/>
+            <circle cx="260" cy="170" r="4" fill="#059669"/>
+            <text x="260" y="192" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#059669">FOH-1234</text>
+            <text x="370" y="140" text-anchor="middle" font-family="Inter" font-size="8" fill="#6B7280">merge</text>
+
+            <!-- Feature branch 2 -->
+            <path d="M200,120 Q220,170 250,200 L400,200 Q430,200 460,120" fill="none" stroke="#7C3AED" stroke-width="2"/>
+            <circle cx="340" cy="200" r="4" fill="#7C3AED"/>
+            <text x="340" y="222" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#7C3AED">FOH-5678</text>
+            <text x="460" y="140" text-anchor="middle" font-family="Inter" font-size="8" fill="#6B7280">merge</text>
+
+            <!-- RC branch -->
+            <path d="M500,120 Q510,90 530,90 L620,90 Q640,90 650,60" fill="none" stroke="#D97706" stroke-width="2.5" stroke-dasharray="6 3"/>
+            <circle cx="580" cy="90" r="5" fill="#D97706"/>
+            <text x="580" y="82" text-anchor="middle" font-family="JetBrains Mono" font-weight="600" font-size="10" fill="#D97706">rc-25.8</text>
+            <circle cx="650" cy="60" r="6" fill="#D97706" stroke="#DC2626" stroke-width="2"/>
+
+            <!-- Labels -->
+            <rect x="530" y="40" width="30" height="14" rx="3" fill="#FEF3C7"/>
+            <text x="545" y="50" text-anchor="middle" font-family="Inter" font-size="8" fill="#D97706">next</text>
+
+            <rect x="660" y="40" width="35" height="14" rx="3" fill="#FEE2E2"/>
+            <text x="678" y="50" text-anchor="middle" font-family="Inter" font-size="8" fill="#DC2626">prod</text>
+
+            <!-- Staging deploy markers -->
+            <line x1="260" y1="170" x2="260" y2="155" stroke="#059669" stroke-width="1" stroke-dasharray="2 2"/>
+            <rect x="238" y="142" width="45" height="14" rx="3" fill="#D1FAE5"/>
+            <text x="260" y="152" text-anchor="middle" font-family="Inter" font-size="8" fill="#059669">test01</text>
+        </svg>
+        <div class="diagram-caption">Branch strategy: feature branches -> develop -> rc-* -> main</div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Step</th>
+            <th>What Happens</th>
+            <th>Where</th>
+        </tr>
+        <tr>
+            <td>1-4</td>
+            <td>Get ticket, create branch from <code>develop</code>, write code, push</td>
+            <td>Your laptop</td>
+        </tr>
+        <tr>
+            <td>5-6</td>
+            <td>Create PR, code review by team</td>
+            <td>GitHub</td>
+        </tr>
+        <tr>
+            <td>7-9</td>
+            <td>Deploy to staging, QA tests, fix bugs if any</td>
+            <td>test01-03</td>
+        </tr>
+        <tr>
+            <td>10</td>
+            <td>Merge to <code>develop</code> after QA approval</td>
+            <td>GitHub</td>
+        </tr>
+        <tr style="background: #FEF3C7;">
+            <td>Release</td>
+            <td>Create <code>rc-*</code> branch from develop, deploy to <code>next</code></td>
+            <td>next.fohlio.com</td>
+        </tr>
+        <tr style="background: #FEE2E2;">
+            <td>Ship it!</td>
+            <td>After release testing passes, merge <code>rc-*</code> to <code>main</code></td>
+            <td>app.fohlio.com</td>
+        </tr>
+    </table>
+
+    <h3>Branch Naming Convention</h3>
+
+    <p>We always name branches starting with the <strong>Jira ticket number</strong>:</p>
+
+    <pre><span class="comment"># Format:</span>
+FOH-{number}-short-description
+
+<span class="comment"># Examples:</span>
+FOH-1234-fix-login-button
+FOH-5678-add-pdf-export
+FOH-9012-update-product-table</pre>
+
+    <div class="info-box blue">
+        <p><strong>Why?</strong> When someone sees your branch or PR, they can immediately find the Jira ticket with all the requirements. And Jira automatically links to the PR!</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: STAGING SERVERS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Our Servers</h2>
+
+    <p>Before your code reaches real users, it goes through several stages of testing. Think of it like a book going through multiple rounds of editing before publication.</p>
+
+    <h3>Server Types</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="220" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- develop -->
+            <rect x="30" y="70" width="130" height="80" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="95" y="100" text-anchor="middle" font-family="JetBrains Mono" font-weight="600" font-size="14" fill="#1D4ED8">develop</text>
+            <text x="95" y="120" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Latest code</text>
+            <text x="95" y="140" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Might be unstable</text>
+
+            <line x1="165" y1="110" x2="195" y2="110" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- test/uat -->
+            <rect x="200" y="70" width="150" height="80" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="275" y="100" text-anchor="middle" font-family="JetBrains Mono" font-weight="600" font-size="14" fill="#059669">test / uat</text>
+            <text x="275" y="120" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">QA testing</text>
+            <text x="275" y="140" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Stable for testing</text>
+
+            <line x1="355" y1="110" x2="385" y2="110" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- next -->
+            <rect x="390" y="70" width="130" height="80" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="455" y="100" text-anchor="middle" font-family="JetBrains Mono" font-weight="600" font-size="14" fill="#D97706">next</text>
+            <text x="455" y="120" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Pre-production</text>
+            <text x="455" y="140" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Almost ready</text>
+
+            <line x1="525" y1="110" x2="555" y2="110" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- main -->
+            <rect x="560" y="60" width="160" height="100" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="3"/>
+            <text x="640" y="95" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="16" fill="#DC2626">main</text>
+            <text x="640" y="115" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">PRODUCTION</text>
+            <text x="640" y="135" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Real users here!</text>
+            <text x="640" y="150" text-anchor="middle" font-family="Inter" font-size="18">&#x1F525;</text>
+
+            <!-- Progress bar -->
+            <rect x="30" y="180" width="690" height="8" rx="4" fill="#E5E7EB"/>
+            <rect x="30" y="180" width="170" height="8" rx="4" fill="#93C5FD"/>
+            <rect x="200" y="180" width="185" height="8" rx="4" fill="#6EE7B7"/>
+            <rect x="385" y="180" width="155" height="8" rx="4" fill="#FCD34D"/>
+            <rect x="540" y="180" width="180" height="8" rx="4" fill="#FCA5A5"/>
+
+            <text x="95" y="205" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Unstable</text>
+            <text x="640" y="205" text-anchor="middle" font-family="Inter" font-size="10" fill="#DC2626">Stable</text>
+        </svg>
+        <div class="diagram-caption">Code stability increases as it moves from develop to main</div>
+    </div>
+
+    <h3>All Our Staging Servers</h3>
+
+    <table>
+        <tr>
+            <th>Server</th>
+            <th>Purpose</th>
+            <th>Who Uses</th>
+            <th>Branch</th>
+        </tr>
+        <tr>
+            <td><code>test01</code></td>
+            <td>Developer testing</td>
+            <td>Developers</td>
+            <td>Any branch</td>
+        </tr>
+        <tr>
+            <td><code>test02</code></td>
+            <td>Developer testing</td>
+            <td>Developers</td>
+            <td>Any branch</td>
+        </tr>
+        <tr>
+            <td><code>test03</code></td>
+            <td>Developer testing</td>
+            <td>Developers</td>
+            <td>Any branch</td>
+        </tr>
+        <tr>
+            <td><code>uat01</code></td>
+            <td>QA acceptance testing</td>
+            <td>QA team</td>
+            <td>Usually develop</td>
+        </tr>
+        <tr>
+            <td><code>uat02</code></td>
+            <td>QA acceptance testing</td>
+            <td>QA team</td>
+            <td>Usually develop</td>
+        </tr>
+        <tr>
+            <td><code>uat03</code></td>
+            <td>QA acceptance testing</td>
+            <td>QA team</td>
+            <td>Usually develop</td>
+        </tr>
+        <tr>
+            <td><code>next</code></td>
+            <td>Pre-production validation</td>
+            <td>Team leads, PM</td>
+            <td>next</td>
+        </tr>
+        <tr>
+            <td><code>develop</code></td>
+            <td>Integration (auto-deploy)</td>
+            <td>Everyone</td>
+            <td>develop</td>
+        </tr>
+        <tr style="background: #FEE2E2;">
+            <td><code><strong>main</strong></code></td>
+            <td><strong>Production</strong></td>
+            <td><strong>Real users!</strong></td>
+            <td><strong>main</strong></td>
+        </tr>
+    </table>
+
+    <div class="info-box red">
+        <p><strong>Important!</strong> <code>test01-03</code> are shared servers. Before deploying your branch there, check in Slack that nobody else is using it. If you overwrite someone's deployment, they'll have to redo it.</p>
+    </div>
+
+    <h3>Visual Map of Servers</h3>
+
+    <div class="server-grid">
+        <div class="server-card dev">
+            <div class="server-name">develop</div>
+            <div class="server-desc">Auto-deploy on merge.<br>Always latest code.</div>
+        </div>
+        <div class="server-card test">
+            <div class="server-name">test01</div>
+            <div class="server-desc">Free for devs.<br>Deploy any branch.</div>
+        </div>
+        <div class="server-card test">
+            <div class="server-name">test02</div>
+            <div class="server-desc">Free for devs.<br>Deploy any branch.</div>
+        </div>
+        <div class="server-card test">
+            <div class="server-name">test03</div>
+            <div class="server-desc">Free for devs.<br>Deploy any branch.</div>
+        </div>
+        <div class="server-card uat">
+            <div class="server-name">uat01</div>
+            <div class="server-desc">QA testing.<br>Managed by QA.</div>
+        </div>
+        <div class="server-card uat">
+            <div class="server-name">uat02</div>
+            <div class="server-desc">QA testing.<br>Managed by QA.</div>
+        </div>
+        <div class="server-card uat">
+            <div class="server-name">uat03</div>
+            <div class="server-desc">QA testing.<br>Managed by QA.</div>
+        </div>
+        <div class="server-card next-card">
+            <div class="server-name">next</div>
+            <div class="server-desc">Pre-production.<br>Final check.</div>
+        </div>
+        <div class="server-card prod">
+            <div class="server-name">main (prod)</div>
+            <div class="server-desc">Production!<br>Real users here.</div>
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F631;</div>
+        "It works on my machine!" &mdash; Famous last words before deploying to staging.<br>
+        That's exactly why we have 9 servers to catch bugs before users do.
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: DEPLOYING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Deploying</h2>
+
+    <p>At Fohlio, we deploy using <strong>Makefile commands</strong> in the terminal. The Makefile triggers GitHub Actions workflows that build and deploy the code to the target server.</p>
+
+    <h3>How Deploys Work</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 180" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="180" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Terminal -->
+            <rect x="40" y="50" width="140" height="80" rx="10" fill="#1E293B" stroke="#334155"/>
+            <text x="110" y="82" text-anchor="middle" font-family="JetBrains Mono" font-weight="600" font-size="14" fill="#86EFAC">$ make</text>
+            <text x="110" y="102" text-anchor="middle" font-family="Inter" font-size="11" fill="#94A3B8">Makefile command</text>
+
+            <line x1="185" y1="90" x2="225" y2="90" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- GitHub Actions -->
+            <rect x="230" y="50" width="170" height="80" rx="10" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2"/>
+            <text x="315" y="82" text-anchor="middle" font-family="Inter" font-weight="600" font-size="14" fill="#374151">GitHub Actions</text>
+            <text x="315" y="102" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Build + Deploy</text>
+
+            <line x1="405" y1="90" x2="445" y2="90" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Server -->
+            <rect x="450" y="50" width="140" height="80" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="520" y="82" text-anchor="middle" font-family="Inter" font-weight="600" font-size="14" fill="#059669">Server</text>
+            <text x="520" y="102" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">e.g. test01</text>
+
+            <line x1="595" y1="90" x2="625" y2="90" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Slack notification -->
+            <rect x="630" y="50" width="110" height="80" rx="10" fill="#4A154B" stroke="#4A154B"/>
+            <text x="685" y="82" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="white">Slack</text>
+            <text x="685" y="100" text-anchor="middle" font-family="Inter" font-size="10" fill="#E0C3E0">#deployments</text>
+            <text x="685" y="115" text-anchor="middle" font-family="Inter" font-size="10" fill="#E0C3E0">notification</text>
+
+            <text x="380" y="160" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Usually takes 3-5 minutes. Watch progress in #deployments Slack channel.</text>
+        </svg>
+    </div>
+
+    <h3>Deploy Commands (Makefile)</h3>
+
+    <p>Run these from the <code>fohlio-frontend</code> directory:</p>
+
+    <pre><span class="comment"># Deploy frontend to QA (test) servers:</span>
+make qa-test01-deploy
+make qa-test02-deploy
+make qa-test03-deploy
+
+<span class="comment"># Deploy frontend to staging (UAT) servers:</span>
+make stage-uat01-deploy
+make stage-uat02-deploy
+make stage-uat03-deploy
+
+<span class="comment"># Deploy to next (for release candidates):</span>
+make deploy-next
+
+<span class="comment"># Deploy a specific branch (set BRANCH env var):</span>
+<span class="keyword">BRANCH</span>=<span class="string">FOH-1234-fix-button</span> make qa-test01-deploy</pre>
+
+    <div class="info-box blue">
+        <p><strong>How it works under the hood:</strong> The Makefile runs <code>gh workflow run</code> which triggers a GitHub Actions workflow. The workflow builds your code, creates a Docker image, and deploys it to the target server. You can watch the progress in the <code>#deployments</code> Slack channel.</p>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Tip:</strong> Always check the <code>#deployments</code> Slack channel before deploying to see if someone is already using the server you want. A quick "Hey, is test01 free?" in the channel goes a long way!</p>
+    </div>
+
+    <h3>Server URLs</h3>
+
+    <p>After deploying, you can access each server at its URL:</p>
+
+    <table>
+        <tr>
+            <th>Server</th>
+            <th>URL</th>
+            <th>Deploy Command</th>
+        </tr>
+        <tr>
+            <td><code>test01</code></td>
+            <td><code>https://test01.fohlio.io</code></td>
+            <td><code>make qa-test01-deploy</code></td>
+        </tr>
+        <tr>
+            <td><code>test02</code></td>
+            <td><code>https://test02.fohlio.io</code></td>
+            <td><code>make qa-test02-deploy</code></td>
+        </tr>
+        <tr>
+            <td><code>test03</code></td>
+            <td><code>https://test03.fohlio.io</code></td>
+            <td><code>make qa-test03-deploy</code></td>
+        </tr>
+        <tr>
+            <td><code>uat01</code></td>
+            <td><code>https://uat01.fohlio.com</code></td>
+            <td><code>make stage-uat01-deploy</code></td>
+        </tr>
+        <tr>
+            <td><code>uat02</code></td>
+            <td><code>https://uat02.fohlio.com</code></td>
+            <td><code>make stage-uat02-deploy</code></td>
+        </tr>
+        <tr>
+            <td><code>uat03</code></td>
+            <td><code>https://uat03.fohlio.com</code></td>
+            <td><code>make stage-uat03-deploy</code></td>
+        </tr>
+        <tr>
+            <td><code>next</code></td>
+            <td><code>https://next.fohlio.com</code></td>
+            <td><code>make deploy-next</code></td>
+        </tr>
+        <tr>
+            <td><code>develop</code></td>
+            <td><code>https://develop.fohlio.io</code></td>
+            <td>Auto-deploy on merge</td>
+        </tr>
+        <tr style="background: #FEE2E2;">
+            <td><code><strong>main</strong></code></td>
+            <td><code><strong>https://app.fohlio.com</strong></code></td>
+            <td><code>make deploy-prod</code></td>
+        </tr>
+    </table>
+
+    <div class="info-box red">
+        <p><strong>Note the domains:</strong> Test servers use <code>fohlio.io</code>, while UAT/staging servers use <code>fohlio.com</code>. Production is <code>app.fohlio.com</code>.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5: CONNECTING FRONTEND LOCALLY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Connecting Local Frontend to Staging</h2>
+
+    <p>When you develop the frontend locally, you need a <strong>backend to talk to</strong>. You don't run the backend on your laptop &mdash; you point your local frontend to one of the staging servers.</p>
+
+    <div class="info-box green">
+        <p><strong>Analogy:</strong> You're redesigning the dining room (frontend) of the restaurant. You don't need to build a new kitchen &mdash; you just connect your new dining room to the existing kitchen on the staging server.</p>
+    </div>
+
+    <h3>Step-by-Step: Setting Up</h3>
+
+    <div class="step-card">
+        <h4>Step 1: Clone the Frontend Repo</h4>
+        <p>If you haven't already:</p>
+        <pre>git clone git@github.com:Fohlio/fohlio-frontend.git
+<span class="keyword">cd</span> fohlio-frontend</pre>
+    </div>
+
+    <div class="step-card">
+        <h4>Step 2: Install Dependencies</h4>
+        <pre>make setup</pre>
+        <p>This installs all required packages and sets up the project.</p>
+    </div>
+
+    <div class="step-card">
+        <h4>Step 3: Choose Which Backend to Connect To</h4>
+        <p>The Makefile has handy commands to switch your local frontend between different backends. Just run one of these:</p>
+        <pre><span class="comment"># Connect to test servers (fohlio.io):</span>
+make use-test01
+make use-test02
+make use-test03
+
+<span class="comment"># Connect to UAT servers (fohlio.com):</span>
+make use-uat01
+make use-uat02
+make use-uat03
+
+<span class="comment"># Connect to develop / next:</span>
+make use-develop
+make use-next
+
+<span class="comment"># Connect to production (careful!):</span>
+make use-live</pre>
+        <p>This automatically updates <code>.env.local</code> with the correct <code>REACT_APP_API_URL</code> and <code>REACT_APP_CABLE_URL</code> for the chosen server.</p>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>No need to edit .env.local manually!</strong> The <code>make use-*</code> commands do it for you. Just run the command and restart the dev server.</p>
+    </div>
+
+    <div class="step-card">
+        <h4>Step 4: Start the Dev Server</h4>
+        <pre>make s</pre>
+        <p>This starts the local development server. Open <code>http://localhost:3000</code> in your browser.</p>
+        <p><strong>Note:</strong> If you switch backends with <code>make use-*</code>, you need to restart the dev server (<code>Ctrl+C</code> then <code>make s</code> again).</p>
+    </div>
+
+    <div class="step-card">
+        <h4>Step 5: Verify Connection</h4>
+        <p>You should see the Fohlio login page. Log in with your test credentials. If you see data loading &mdash; you're connected to the staging backend!</p>
+    </div>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="200" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Your laptop -->
+            <rect x="40" y="50" width="200" height="100" rx="12" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="140" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="15" fill="#1D4ED8">Your Laptop</text>
+            <text x="140" y="100" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">localhost:3000</text>
+            <text x="140" y="120" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Frontend code</text>
+            <text x="140" y="140" text-anchor="middle" font-family="Inter" font-size="9" fill="#93C5FD">You edit this!</text>
+
+            <!-- Arrow -->
+            <line x1="245" y1="100" x2="335" y2="100" stroke="#6EE7B7" stroke-width="3" marker-end="url(#arrowGreen)" stroke-dasharray="8 4"/>
+            <text x="290" y="90" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">GraphQL</text>
+            <text x="290" y="125" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B7280">Internet</text>
+
+            <!-- Staging server -->
+            <rect x="340" y="40" width="380" height="120" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="530" y="70" text-anchor="middle" font-family="Inter" font-weight="600" font-size="15" fill="#059669">Staging Server (e.g. test01)</text>
+            <text x="530" y="95" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Rails Backend + PostgreSQL + Redis</text>
+            <text x="530" y="115" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">API + Database + Jobs</text>
+            <text x="530" y="140" text-anchor="middle" font-family="Inter" font-size="9" fill="#059669">You don't touch this</text>
+
+            <text x="380" y="190" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Your local frontend talks to the remote staging backend</text>
+        </svg>
+        <div class="diagram-caption">Local development setup: your frontend on localhost, backend on staging</div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4BB;</div>
+        A junior developer's laptop has 4 browser tabs:<br>
+        localhost:3000, Stack Overflow, ChatGPT, and the staging server.<br>
+        <em>Only one of them actually works as expected.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: PR PRACTICE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Practice &mdash; Pull Requests & Conflicts</h2>
+
+    <h3>Our Practice Repo</h3>
+
+    <p>For all exercises in this course, we use a <strong>shared repository</strong>:</p>
+
+    <pre><span class="keyword">https://github.com/Fohlio/fohlio-ai-courses</span></pre>
+
+    <div class="info-box blue">
+        <p><strong>Why a shared repo?</strong> In real work, you'll never code alone in your own repo. You'll always work in a shared team repository where everyone pushes branches and creates PRs. Let's practice the way it actually works!</p>
+    </div>
+
+    <h4>First: Clone the Shared Repo</h4>
+
+    <p>If you haven't already:</p>
+
+    <pre>git clone https://github.com/Fohlio/fohlio-ai-courses.git
+<span class="keyword">cd</span> fohlio-ai-courses</pre>
+
+    <p>If you already cloned it in Lesson 1, just pull the latest:</p>
+
+    <pre><span class="keyword">cd</span> fohlio-ai-courses
+git checkout main
+git pull</pre>
+
+    <h3>Exercise: Add Your Totem to totems.txt</h3>
+
+    <p>Everyone will add their line to the <strong>same file</strong> &mdash; <code>totems.txt</code>. This will intentionally create merge conflicts between students, just like in real team work!</p>
+
+    <h4>The Format</h4>
+
+    <p>Each person adds one line to <code>totems.txt</code> in this format:</p>
+
+    <pre><span class="string">[your github name] - [your github repo] - [your totem animal]</span>
+
+<span class="comment"># Examples:</span>
+anna-dev - my-first-repo - Wolf
+boris42 - boris-portfolio - Eagle
+maria_codes - hello-world - Fox</pre>
+
+    <div class="info-box orange">
+        <p><strong>Why the same file?</strong> In real projects, multiple developers often edit the same file &mdash; a config, a shared component, a migration. When everyone adds to <code>totems.txt</code>, you'll naturally get conflicts when merging. This is exactly what we want to practice!</p>
+    </div>
+
+    <h4>Step A: Create your branch and add your line</h4>
+
+    <pre>git checkout main
+git pull
+
+<span class="comment"># Create a branch with YOUR github name</span>
+git checkout -b YOUR-NAME-add-totem
+
+<span class="comment"># Open totems.txt in Cursor and add your line:</span>
+<span class="comment"># YOUR-GITHUB-NAME - YOUR-REPO - YOUR-TOTEM-ANIMAL</span>
+
+git add totems.txt
+git commit -m "Add totem for YOUR-NAME"
+git push -u origin YOUR-NAME-add-totem</pre>
+
+    <p>Go to GitHub &rarr; Create a Pull Request to <code>main</code>. Send me the PR link.</p>
+
+    <h4>Step B: What happens when PRs get merged</h4>
+
+    <p>Here's the fun part. I will merge PRs <strong>one by one</strong>. After the first PR is merged, everyone else's PR will have a conflict!</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="250" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Main branch line -->
+            <line x1="60" y1="80" x2="700" y2="80" stroke="#374151" stroke-width="3"/>
+            <text x="40" y="84" text-anchor="end" font-family="JetBrains Mono" font-weight="600" font-size="11" fill="#374151">main</text>
+
+            <!-- Starting commit -->
+            <circle cx="120" cy="80" r="6" fill="#374151"/>
+
+            <!-- Anna's branch (merged first) -->
+            <path d="M120,80 Q150,35 180,35 L350,35 Q380,35 400,80" fill="none" stroke="#059669" stroke-width="2"/>
+            <circle cx="270" cy="35" r="5" fill="#059669"/>
+            <text x="270" y="22" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#059669">anna-add-totem</text>
+            <circle cx="400" cy="80" r="8" fill="#059669"/>
+            <text x="400" y="107" text-anchor="middle" font-family="Inter" font-size="9" fill="#059669">merged!</text>
+
+            <!-- Boris's branch (conflict!) -->
+            <path d="M120,80 Q150,130 180,130 L550,130" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="5 3"/>
+            <circle cx="350" cy="130" r="5" fill="#DC2626"/>
+            <text x="350" y="150" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#DC2626">boris-add-totem</text>
+            <text x="600" y="135" font-family="Inter" font-weight="600" font-size="11" fill="#DC2626">CONFLICT!</text>
+
+            <!-- Maria's branch (conflict!) -->
+            <path d="M120,80 Q150,180 180,180 L550,180" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="5 3"/>
+            <circle cx="350" cy="180" r="5" fill="#D97706"/>
+            <text x="350" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#D97706">maria-add-totem</text>
+            <text x="600" y="185" font-family="Inter" font-weight="600" font-size="11" fill="#D97706">CONFLICT!</text>
+
+            <text x="380" y="237" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">After Anna's PR is merged, Boris and Maria must resolve conflicts</text>
+        </svg>
+        <div class="diagram-caption">Everyone edits the same file -- after the first merge, the rest get conflicts</div>
+    </div>
+
+    <h4>Step C: Resolve YOUR conflict</h4>
+
+    <p>When your PR shows "This branch has conflicts", here's what to do:</p>
+
+    <pre><span class="comment"># 1. Switch to your branch</span>
+git checkout YOUR-NAME-add-totem
+
+<span class="comment"># 2. Download the latest changes from GitHub</span>
+git fetch origin
+
+<span class="comment"># 3. Try to merge the updated main into your branch</span>
+git merge origin/main</pre>
+
+    <p>Git will print something like this:</p>
+
+    <pre style="background: #FEE2E2; color: #374151; border: 2px solid #FCA5A5;">Auto-merging totems.txt
+CONFLICT (content): Merge conflict in totems.txt
+Automatic merge failed; fix conflicts and then commit the result.</pre>
+
+    <div class="info-box blue">
+        <p><strong>Don't panic!</strong> This is completely normal. Git is saying: "I tried to merge automatically, but I found a spot where both branches changed the same thing. I've marked the conflict in the file. Please fix it."</p>
+    </div>
+
+    <h4>Step D: Understand the Conflict Markers</h4>
+
+    <p>Open <code>totems.txt</code> in Cursor. You'll see something like this:</p>
+
+    <pre style="background: #FFF7ED; color: #374151; border: 2px solid #FCD34D;"><span style="color: #DC2626; font-weight: bold;"><<<<<<< HEAD</span>
+boris42 - boris-portfolio - Eagle
+<span style="color: #DC2626; font-weight: bold;">=======</span>
+anna-dev - my-first-repo - Wolf
+<span style="color: #DC2626; font-weight: bold;">>>>>>>> origin/main</span></pre>
+
+    <p>Let's break down what each marker means:</p>
+
+    <table>
+        <tr>
+            <th>Marker</th>
+            <th>Meaning</th>
+        </tr>
+        <tr>
+            <td><code style="color: #DC2626;"><<<<<<< HEAD</code></td>
+            <td><strong>Start of conflict.</strong> Everything below until <code>=======</code> is YOUR changes (your branch)</td>
+        </tr>
+        <tr>
+            <td><code style="color: #DC2626;">=======</code></td>
+            <td><strong>Separator.</strong> Divides your changes from the incoming changes</td>
+        </tr>
+        <tr>
+            <td><code style="color: #DC2626;">>>>>>>> origin/main</code></td>
+            <td><strong>End of conflict.</strong> Everything between <code>=======</code> and this line is from <code>main</code></td>
+        </tr>
+    </table>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="220" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Your changes box -->
+            <rect x="40" y="20" width="320" height="170" rx="12" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="200" y="50" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#1D4ED8">YOUR changes (HEAD)</text>
+            <text x="200" y="75" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">What's on your branch</text>
+            <text x="200" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#374151"><<<<<<< HEAD</text>
+            <text x="200" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#1D4ED8">boris42 - boris-portfolio - Eagle</text>
+            <text x="200" y="155" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#374151">=======</text>
+
+            <!-- Separator -->
+            <text x="380" y="115" text-anchor="middle" font-family="Inter" font-weight="700" font-size="24" fill="#D1D5DB">vs</text>
+
+            <!-- Their changes box -->
+            <rect x="400" y="20" width="320" height="170" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="560" y="50" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#059669">THEIR changes (main)</text>
+            <text x="560" y="75" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">What got merged before you</text>
+            <text x="560" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#374151">=======</text>
+            <text x="560" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#059669">anna-dev - my-first-repo - Wolf</text>
+            <text x="560" y="155" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#374151">>>>>>>> origin/main</text>
+
+            <text x="380" y="210" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#6B7280">You decide: keep one, the other, or both!</text>
+        </svg>
+        <div class="diagram-caption">Anatomy of a merge conflict: YOUR changes vs THEIR changes</div>
+    </div>
+
+    <h4>Step E: Fix the Conflict</h4>
+
+    <p>You have <strong>3 options</strong> when resolving a conflict:</p>
+
+    <table>
+        <tr>
+            <th>Option</th>
+            <th>When to Use</th>
+            <th>What You Do</th>
+        </tr>
+        <tr>
+            <td><strong>Keep yours only</strong></td>
+            <td>Your version is correct, theirs is wrong or outdated</td>
+            <td>Delete their section + all markers</td>
+        </tr>
+        <tr>
+            <td><strong>Keep theirs only</strong></td>
+            <td>Their version is better, discard your changes</td>
+            <td>Delete your section + all markers</td>
+        </tr>
+        <tr>
+            <td><strong>Keep both</strong></td>
+            <td>Both changes are valid and should coexist</td>
+            <td>Delete only the markers, keep both sections</td>
+        </tr>
+    </table>
+
+    <p>In our case, we want <strong>BOTH totem entries</strong>! Delete ALL conflict markers and keep both lines:</p>
+
+    <div style="display: flex; gap: 16px; margin: 20px 0; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 280px;">
+            <p style="text-align: center; font-weight: 600; color: #DC2626; margin-bottom: 8px;">BEFORE (with conflict):</p>
+            <pre style="background: #FEE2E2; color: #374151; border: 2px solid #FCA5A5; font-size: 12px;"><span style="color: #DC2626;"><<<<<<< HEAD</span>
+boris42 - boris-portfolio - Eagle
+<span style="color: #DC2626;">=======</span>
+anna-dev - my-first-repo - Wolf
+<span style="color: #DC2626;">>>>>>>> origin/main</span></pre>
+        </div>
+        <div style="flex: 1; min-width: 280px;">
+            <p style="text-align: center; font-weight: 600; color: #059669; margin-bottom: 8px;">AFTER (resolved):</p>
+            <pre style="background: #ECFDF5; color: #374151; border: 2px solid #6EE7B7; font-size: 12px;">anna-dev - my-first-repo - Wolf
+boris42 - boris-portfolio - Eagle</pre>
+        </div>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>The #1 mistake:</strong> Forgetting to delete ALL the conflict markers. If you leave even one <code><<<<<<<</code> or <code>=======</code> or <code>>>>>>>></code> in the file, it will be broken! Always search the file for <code><<<<</code> after resolving to make sure nothing is left.</p>
+    </div>
+
+    <h4>Step F: Commit the Resolution and Push</h4>
+
+    <p>After you've edited the file and removed all conflict markers:</p>
+
+    <pre><span class="comment"># 1. Check which files have conflicts (they'll be in red)</span>
+git status
+
+<span class="comment"># 2. Stage the resolved file</span>
+git add totems.txt
+
+<span class="comment"># 3. Commit the merge</span>
+git commit -m "Resolve merge conflict: add my totem"
+
+<span class="comment"># 4. Push the fixed branch to GitHub</span>
+git push</pre>
+
+    <p>Now go back to GitHub and check your PR. The conflict warning should be gone, replaced by a green <strong>"This branch has no conflicts with the base branch"</strong> message!</p>
+
+    <p>Tell me and I'll merge it. Then the next person gets a conflict, resolves it, and so on!</p>
+
+    <div class="info-box green">
+        <p><strong>The end result:</strong> After everyone resolves their conflicts and all PRs are merged, <code>totems.txt</code> will contain the full list of the team with everyone's totem animal. Teamwork!</p>
+    </div>
+
+    <h4>Cursor Makes It Easier!</h4>
+
+    <div class="info-box purple">
+        <p><strong>Pro tip:</strong> Cursor (and VS Code) shows conflicts with a nice visual interface. Instead of editing the markers manually, you'll see colored highlights with buttons:</p>
+        <ul>
+            <li><strong>Accept Current Change</strong> &mdash; keep your version (HEAD)</li>
+            <li><strong>Accept Incoming Change</strong> &mdash; keep their version (main)</li>
+            <li><strong>Accept Both Changes</strong> &mdash; keep everything</li>
+            <li><strong>Compare Changes</strong> &mdash; see them side by side</li>
+        </ul>
+        <p>You can click these buttons instead of editing the markers manually. Much easier!</p>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Congratulations!</strong> You've just resolved your first merge conflict. In real projects, conflicts happen regularly &mdash; and now you know exactly how to handle them. The key steps are always the same: <code>fetch</code> &rarr; <code>merge</code> &rarr; fix markers &rarr; <code>add</code> &rarr; <code>commit</code> &rarr; <code>push</code>.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x2694;&#xFE0F;</div>
+        Merge conflicts are like arguments between coworkers.<br>
+        Git says: "You two wrote different things. <strong>Figure it out.</strong>"<br>
+        <em>The good news: Cursor's AI helps resolve them automatically!</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: JIRA & BRANCHES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: Jira Tickets & Branch Strategy</h2>
+
+    <h3>What is Jira?</h3>
+    <p>Jira is our task management tool. Every piece of work starts with a Jira ticket. The ticket contains:</p>
+    <ul>
+        <li><strong>Title</strong> &mdash; what needs to be done</li>
+        <li><strong>Description</strong> &mdash; detailed requirements</li>
+        <li><strong>Assignee</strong> &mdash; who's doing it</li>
+        <li><strong>Status</strong> &mdash; To Do / In Progress / Code Review / QA / Done</li>
+        <li><strong>Priority</strong> &mdash; how urgent it is</li>
+    </ul>
+
+    <h3>Ticket Number = Branch Name</h3>
+
+    <p>Every Jira ticket has a number like <code>FOH-1234</code>. Your branch <strong>must</strong> start with this number:</p>
+
+    <table>
+        <tr>
+            <th>Jira Ticket</th>
+            <th>Branch Name</th>
+            <th>PR Title</th>
+        </tr>
+        <tr>
+            <td>FOH-1234: Fix login button alignment</td>
+            <td><code>FOH-1234-fix-login-button</code></td>
+            <td>FOH-1234: Fix login button alignment</td>
+        </tr>
+        <tr>
+            <td>FOH-5678: Add product export</td>
+            <td><code>FOH-5678-add-product-export</code></td>
+            <td>FOH-5678: Add product export</td>
+        </tr>
+        <tr>
+            <td>FOH-9999: Update header design</td>
+            <td><code>FOH-9999-update-header</code></td>
+            <td>FOH-9999: Update header design</td>
+        </tr>
+    </table>
+
+    <div class="info-box purple">
+        <p><strong>Why is this important?</strong> Jira and GitHub are linked. When you include the ticket number, Jira automatically shows the PR on the ticket page. QA can find the code, PMs can track progress, and nobody gets lost.</p>
+    </div>
+
+    <h3>Key Git Branches</h3>
+
+    <table>
+        <tr>
+            <th>Branch</th>
+            <th>Purpose</th>
+            <th>Who Manages</th>
+            <th>Deployed To</th>
+        </tr>
+        <tr>
+            <td><code>FOH-XXXX-*</code></td>
+            <td>Feature branches (your daily work)</td>
+            <td>You!</td>
+            <td>Manually to test01-03</td>
+        </tr>
+        <tr>
+            <td><code>develop</code></td>
+            <td>Integration branch (all approved features)</td>
+            <td>Developers (after review + QA)</td>
+            <td>develop.fohlio.io</td>
+        </tr>
+        <tr>
+            <td><code>rc-*</code></td>
+            <td>Release candidate (e.g. <code>rc-25.8</code>)</td>
+            <td>Tech Lead</td>
+            <td>next.fohlio.com</td>
+        </tr>
+        <tr style="background: #FEE2E2;">
+            <td><code><strong>main</strong></code></td>
+            <td><strong>Production code</strong></td>
+            <td><strong>Tech Lead only</strong></td>
+            <td><strong>app.fohlio.com</strong></td>
+        </tr>
+    </table>
+
+    <div class="info-box purple">
+        <p><strong>Flow summary:</strong> <code>feature branch</code> &rarr; deploy to staging &rarr; QA &rarr; merge to <code>develop</code> &rarr; release time: create <code>rc-*</code> &rarr; deploy to <code>next</code> &rarr; QA &rarr; merge to <code>main</code> &rarr; production!</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Frontend</strong>
+            <span>React app in the browser. The "dining room".</span>
+        </div>
+        <div class="recap-item">
+            <strong>Backend</strong>
+            <span>Rails server + DB. The "kitchen".</span>
+        </div>
+        <div class="recap-item">
+            <strong>Reports</strong>
+            <span>Node.js PDF generator. The "printing press".</span>
+        </div>
+        <div class="recap-item">
+            <strong>Git Flow</strong>
+            <span>Branch &rarr; PR &rarr; staging &rarr; QA &rarr; develop &rarr; rc-* &rarr; next &rarr; main.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Staging Servers</strong>
+            <span>test01-03 (devs), uat01-03 (QA), next, develop.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Deploying</strong>
+            <span>make qa-test01-deploy / make use-test01</span>
+        </div>
+        <div class="recap-item">
+            <strong>Local Setup</strong>
+            <span>Frontend on localhost, backend on staging.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Merge Conflicts</strong>
+            <span>Normal! Keep both changes, remove markers.</span>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework Assignment</h2>
+
+        <p>All homework is done in the shared repo: <code>https://github.com/Fohlio/fohlio-ai-courses</code></p>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Add your totem to <code>totems.txt</code></strong>
+                <p>Clone <code>fohlio-ai-courses</code> (if you haven't already), create a branch, add your line to <code>totems.txt</code> in the format <code>[github name] - [repo] - [totem animal]</code>, and create a PR. Send me the PR link. Be ready to resolve a merge conflict when other students' PRs get merged first!</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Resolve the merge conflict</strong>
+                <p>After I merge someone else's PR, your PR will show a conflict. Resolve it by following the steps from Part 6 (<code>fetch</code> &rarr; <code>merge</code> &rarr; fix markers &rarr; <code>add</code> &rarr; <code>commit</code> &rarr; <code>push</code>). This is the most important skill from this lesson!</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Set up the frontend locally</strong>
+                <ul>
+                    <li>Clone <code>fohlio-frontend</code></li>
+                    <li>Run <code>make setup</code></li>
+                    <li>Run <code>make use-test01</code> (or any available staging server)</li>
+                    <li>Run <code>make s</code> and verify you see the login page</li>
+                    <li>Send me a screenshot of the running app</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 24px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Explore the codebase</strong>
+                <p>Open <code>fohlio-frontend</code> in Cursor and try to find:</p>
+                <ul>
+                    <li>Where is the login page? (hint: look in <code>src/__fsd__/</code>)</li>
+                    <li>Where are the GraphQL queries? (hint: look for <code>.graphql</code> files)</li>
+                    <li>What does <code>make s</code> actually do? (hint: look at the <code>Makefile</code>)</li>
+                </ul>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Quiz: answer these questions</strong>
+                <ul>
+                    <li>What language does the backend use?</li>
+                    <li>What does Redis do? Name 2 use cases.</li>
+                    <li>What's the difference between <code>test01</code> and <code>uat01</code>?</li>
+                    <li>Why do branch names start with a Jira ticket number?</li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio Tech Course &mdash; Lesson 2 of 10</p>
+        <p>Questions? Ask in the <code>#tech-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: HTML, CSS & JavaScript Basics</p>
+    </div>
+
+</div>
+
+</body>
+</html>
