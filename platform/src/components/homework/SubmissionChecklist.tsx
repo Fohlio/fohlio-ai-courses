@@ -1,24 +1,36 @@
 "use client";
 
-import { useState } from "react";
 import { Checkbox } from "@/components/ui/Checkbox";
+import type { ChecklistContent } from "@/lib/types";
 
 interface SubmissionChecklistProps {
-  taskId: string;
   items: string[];
+  value: ChecklistContent | null;
+  onChange: (content: ChecklistContent) => void;
+  disabled?: boolean;
 }
 
-export function SubmissionChecklist({ taskId: _taskId, items }: SubmissionChecklistProps) {
-  const [checked, setChecked] = useState<boolean[]>(
-    new Array(items.length).fill(false),
-  );
+export function SubmissionChecklist({
+  items,
+  value,
+  onChange,
+  disabled,
+}: SubmissionChecklistProps) {
+  function isChecked(index: number): boolean {
+    return (
+      value?.items?.find((i) => i.label === items[index])?.checked ?? false
+    );
+  }
 
   function toggle(index: number) {
-    setChecked((prev) => {
-      const next = [...prev];
-      next[index] = !next[index];
-      return next;
-    });
+    const newContent: ChecklistContent = {
+      type: "checklist",
+      items: items.map((label, i) => ({
+        label,
+        checked: i === index ? !isChecked(i) : isChecked(i),
+      })),
+    };
+    onChange(newContent);
   }
 
   return (
@@ -27,8 +39,9 @@ export function SubmissionChecklist({ taskId: _taskId, items }: SubmissionCheckl
         <Checkbox
           key={i}
           label={item}
-          checked={checked[i]}
+          checked={isChecked(i)}
           onChange={() => toggle(i)}
+          disabled={disabled}
         />
       ))}
     </div>

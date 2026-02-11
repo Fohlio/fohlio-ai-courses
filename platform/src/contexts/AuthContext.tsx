@@ -9,7 +9,6 @@ import {
   type ReactNode,
 } from "react";
 import type { UserRole } from "@/lib/types";
-import { ADMIN_GITHUB_NICKNAME } from "@/lib/constants";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -35,52 +34,10 @@ export interface AuthContextValue {
 }
 
 // ---------------------------------------------------------------------------
-// Constants
-// ---------------------------------------------------------------------------
-
-const STORAGE_KEY = "fohlio-course-session";
-
-// ---------------------------------------------------------------------------
 // Context
 // ---------------------------------------------------------------------------
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function resolveRole(githubNickname: string): UserRole {
-  return githubNickname.toLowerCase() === ADMIN_GITHUB_NICKNAME.toLowerCase()
-    ? "admin"
-    : "student";
-}
-
-function persistUser(user: AuthUser): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-  } catch {
-    // localStorage may be unavailable (SSR, privacy mode, quota exceeded).
-  }
-}
-
-function loadUser(): AuthUser | null {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw) as AuthUser;
-  } catch {
-    return null;
-  }
-}
-
-function clearPersistedUser(): void {
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-  } catch {
-    // Silently ignore.
-  }
-}
 
 // ---------------------------------------------------------------------------
 // Provider
@@ -90,26 +47,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Hydrate from localStorage on mount.
   useEffect(() => {
-    const stored = loadUser();
-    if (stored) {
-      setUser(stored);
-    }
-    setIsLoading(false);
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => setUser(data.user ?? null))
+      .catch(() => setUser(null))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const login = useCallback(
-    async (githubNickname: string, _password: string): Promise<void> => {
-      // Stub implementation -- no real password verification.
-      const newUser: AuthUser = {
-        id: crypto.randomUUID(),
-        githubNickname,
-        displayName: null,
-        role: resolveRole(githubNickname),
-      };
-      persistUser(newUser);
-      setUser(newUser);
+    async (githubNickname: string, password: string): Promise<void> => {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ githubNickname, password }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Login failed");
+      }
+
+      const data = await res.json();
+      setUser(data.user);
     },
     [],
   );
@@ -117,24 +77,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = useCallback(
     async (
       githubNickname: string,
-      _password: string,
+      password: string,
       displayName?: string,
     ): Promise<void> => {
-      const newUser: AuthUser = {
-        id: crypto.randomUUID(),
-        githubNickname,
-        displayName: displayName ?? null,
-        role: resolveRole(githubNickname),
-      };
-      persistUser(newUser);
-      setUser(newUser);
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ githubNickname, password, displayName }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Registration failed");
+      }
+
+      const data = await res.json();
+      setUser(data.user);
     },
     [],
   );
 
-  const logout = useCallback(() => {
-    clearPersistedUser();
+  const logout = useCallback(async () => {
+    await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     setUser(null);
+    window.location.href = "/login";
   }, []);
 
   const value = useMemo<AuthContextValue>(

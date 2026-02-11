@@ -4,6 +4,7 @@ import { getLessonBySlug } from "@/lib/constants";
 import { LessonHeader } from "@/components/lesson/LessonHeader";
 import { LessonGoals } from "@/components/lesson/LessonGoals";
 import { VideoPlayer } from "@/components/lesson/VideoPlayer";
+import { LessonContent } from "@/components/lesson/LessonContent";
 import { LessonNav } from "@/components/lesson/LessonNav";
 import { Button } from "@/components/ui/Button";
 
@@ -27,14 +28,7 @@ export default async function LessonPage({
       <LessonGoals goals={lesson.learningGoals} />
       <VideoPlayer videoUrl={lesson.videoUrl} />
 
-      <div className="rounded-xl border border-gray-200 bg-white p-8">
-        <p className="text-gray-500">
-          Lesson content will be loaded here. Source file:{" "}
-          <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm">
-            {lesson.contentUrl || "Not available yet"}
-          </code>
-        </p>
-      </div>
+      <LessonContent lesson={lesson} />
 
       {hasTasks && (
         <div className="flex justify-center">

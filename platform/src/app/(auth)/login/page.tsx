@@ -6,8 +6,6 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { Card } from "@/components/ui/Card";
-
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
@@ -46,74 +44,72 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-      <Card className="w-full max-w-md" data-testid="login-card">
-        <div className="mb-6 text-center">
-          <h1
-            className="text-2xl font-bold text-gray-900"
-            data-testid="login-heading"
-          >
-            Sign In
-          </h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Welcome back to Fohlio Tech Course
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {error && (
-            <div
-              className="rounded-lg bg-danger-light px-4 py-3 text-sm text-danger"
-              role="alert"
-              data-testid="login-error"
-            >
-              {error}
-            </div>
-          )}
-
-          <Input
-            label="GitHub Nickname"
-            type="text"
-            placeholder="e.g. octocat"
-            value={githubNickname}
-            onChange={(e) => setGithubNickname(e.target.value)}
-            autoComplete="username"
-            data-testid="login-nickname-input"
-          />
-
-          <Input
-            label="Password"
-            type="password"
-            placeholder="Your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            data-testid="login-password-input"
-          />
-
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            disabled={isSubmitting}
-            className="mt-2 w-full"
-            data-testid="login-submit-button"
-          >
-            {isSubmitting ? "Signing in..." : "Sign In"}
-          </Button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-gray-500">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/register"
-            className="font-medium text-brand hover:underline"
-            data-testid="login-register-link"
-          >
-            Register
-          </Link>
+    <>
+      <div className="mb-6 text-center">
+        <h1
+          className="text-2xl font-bold text-gray-900"
+          data-testid="login-heading"
+        >
+          Sign In
+        </h1>
+        <p className="mt-1 text-sm text-gray-500">
+          Welcome back to Fohlio Tech Course
         </p>
-      </Card>
-    </div>
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {error && (
+          <div
+            className="rounded-lg bg-danger-light px-4 py-3 text-sm text-danger"
+            role="alert"
+            data-testid="login-error"
+          >
+            {error}
+          </div>
+        )}
+
+        <Input
+          label="GitHub Nickname"
+          type="text"
+          placeholder="e.g. octocat"
+          value={githubNickname}
+          onChange={(e) => setGithubNickname(e.target.value)}
+          autoComplete="username"
+          data-testid="login-nickname-input"
+        />
+
+        <Input
+          label="Password"
+          type="password"
+          placeholder="Your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
+          data-testid="login-password-input"
+        />
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          disabled={isSubmitting}
+          className="mt-2 w-full"
+          data-testid="login-submit-button"
+        >
+          {isSubmitting ? "Signing in..." : "Sign In"}
+        </Button>
+      </form>
+
+      <p className="mt-6 text-center text-sm text-gray-500">
+        Don&apos;t have an account?{" "}
+        <Link
+          href="/register"
+          className="font-medium text-brand hover:underline"
+          data-testid="login-register-link"
+        >
+          Register
+        </Link>
+      </p>
+    </>
   );
 }

@@ -27,7 +27,7 @@ export interface Lesson {
   description: string;
   learningGoals: string[];
   contentType: LessonContentType;
-  contentUrl: string;
+  contentFile: string;
   videoUrl: string | null;
   isPublished: boolean;
   order: number;

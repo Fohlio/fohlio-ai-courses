@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fohlio Tech Course - Lesson 1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 16px 0 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13.5px;
+            line-height: 1.8;
+        }
+        pre .comment { color: #6B7280; }
+        pre .keyword { color: #93C5FD; }
+        pre .string { color: #86EFAC; }
+        pre .flag { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box.blue {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+        .info-box.green {
+            background: var(--green-light);
+            border-left: 4px solid var(--green);
+        }
+        .info-box.orange {
+            background: var(--orange-light);
+            border-left: 4px solid var(--orange);
+        }
+        .info-box.red {
+            background: var(--red-light);
+            border-left: 4px solid var(--red);
+        }
+        .info-box.purple {
+            background: var(--purple-light);
+            border-left: 4px solid var(--purple);
+        }
+        .info-box p:last-child { margin-bottom: 0; }
+        .info-box strong { color: var(--gray-900); }
+
+        /* Joke box */
+        .joke-box {
+            background: linear-gradient(135deg, #FFF7ED, #FEF3C7);
+            border: 1px solid #FDE68A;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+            text-align: center;
+            font-style: italic;
+            color: var(--gray-700);
+        }
+        .joke-box .joke-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 28px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+        tr:last-child td { border-bottom: none; }
+        td code {
+            font-size: 13px;
+        }
+
+        /* SVG diagrams */
+        .diagram {
+            margin: 32px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        /* Ordered / unordered lists */
+        ol, ul {
+            margin: 12px 0 20px 24px;
+            color: var(--gray-700);
+        }
+        li { margin-bottom: 8px; }
+
+        /* Step cards */
+        .step-card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 20px 0;
+        }
+        .step-card h4 {
+            margin-top: 0;
+            color: var(--blue);
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recap */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .recap-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+        .recap-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--blue);
+        }
+        .recap-item span {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Page break for printing */
+        .page-break {
+            page-break-before: always;
+        }
+
+        @media print {
+            .container { padding: 20px; }
+            .part-header { margin-top: 32px; }
+            pre { font-size: 12px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 32px; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Animated flow arrows */
+        .flow-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--gray-300);
+            margin: 8px 0;
+        }
+
+        /* Concept cards grid */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .concept-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .concept-card .concept-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+        .concept-card .concept-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+        .concept-card.repo { background: #DBEAFE; border: 2px solid #93C5FD; }
+        .concept-card.repo .concept-name { color: #1D4ED8; }
+        .concept-card.commit { background: #D1FAE5; border: 2px solid #6EE7B7; }
+        .concept-card.commit .concept-name { color: #059669; }
+        .concept-card.branch { background: #EDE9FE; border: 2px solid #C4B5FD; }
+        .concept-card.branch .concept-name { color: #7C3AED; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 1 of 10</div>
+        <h1>Fohlio Tech Course</h1>
+        <div class="subtitle">Introduction to Collaborative Development</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand why Git is essential for teamwork</li>
+            <li>Have Cursor and Git installed on your computer</li>
+            <li>Know basic Git concepts: repository, commit, branch</li>
+            <li>Be ready to complete your first homework assignment</li>
+        </ul>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: INSTALLING YOUR TOOLS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Installing Your Tools</h2>
+
+    <h3>Cursor &mdash; Your AI-Powered Code Editor</h3>
+
+    <p>Cursor is an AI-powered code editor that will be your main tool for writing and editing code. It looks and works like VS Code but has built-in AI assistance.</p>
+
+    <div class="step-card">
+        <h4>Step 1: Download Cursor</h4>
+        <ol>
+            <li>Go to <code>cursor.com</code></li>
+            <li>Click <strong>Download</strong> and install like any regular application</li>
+            <li>The free version is sufficient for this course</li>
+        </ol>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Why Cursor and not VS Code?</strong> Cursor is essentially VS Code with superpowers. It has built-in AI that can explain code, write code for you, and help debug issues. Since we're learning, having an AI assistant right in the editor is a huge advantage!</p>
+    </div>
+
+    <h3>Git &mdash; Version Control System</h3>
+
+    <p>Git is a version control system that tracks changes to your files. It's essential for collaborative work.</p>
+
+    <div class="step-card">
+        <h4>For Mac Users</h4>
+        <ol>
+            <li>Open <strong>Terminal</strong> (search for it in Spotlight)</li>
+            <li>Type the following command and press Enter:</li>
+        </ol>
+        <pre><span class="keyword">git</span> <span class="flag">--version</span></pre>
+        <p>If Git is not installed, macOS will prompt you to install Command Line Tools. Click <strong>Install</strong>.</p>
+    </div>
+
+    <div class="step-card">
+        <h4>For Windows Users</h4>
+        <ol>
+            <li>Go to <code>git-scm.com</code></li>
+            <li>Download the installer</li>
+            <li>Run it and keep all default settings</li>
+            <li>After installation, open Command Prompt or PowerShell and verify:</li>
+        </ol>
+        <pre><span class="keyword">git</span> <span class="flag">--version</span></pre>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Success!</strong> If you see a version number like <code>git version 2.39.0</code>, Git is installed correctly!</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4BB;</div>
+        A developer's first day at work:<br>
+        "Let me just install a few tools..."<br>
+        <em>*3 hours later*</em> "...almost done with the first one."
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: WHAT IS GIT -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: What is Git and Why Do We Need It?</h2>
+
+    <h3>The Problem Without Git</h3>
+
+    <p>Imagine working on a document with a colleague. Sound familiar?</p>
+
+    <pre><span class="string">contract_final.docx</span>
+<span class="string">contract_final_v2.docx</span>
+<span class="string">contract_final_LAST.docx</span>
+<span class="string">contract_final_LAST_mary_edits.docx</span>
+<span class="string">contract_USE_THIS_ONE.docx</span></pre>
+
+    <p>Now imagine <strong>hundreds of files</strong> and a team of <strong>10 people</strong> working simultaneously. Chaos!</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="260" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Without Git side -->
+            <rect x="30" y="20" width="340" height="220" rx="12" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="2"/>
+            <text x="200" y="50" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="16" fill="#DC2626">Without Git</text>
+            <text x="200" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="28">&#x1F631;</text>
+
+            <!-- Chaotic files -->
+            <rect x="55" y="85" width="130" height="24" rx="4" fill="#FCA5A5" opacity="0.5"/>
+            <text x="120" y="102" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#991B1B">final_v2.docx</text>
+            <rect x="100" y="100" width="140" height="24" rx="4" fill="#FCA5A5" opacity="0.5" transform="rotate(-5, 170, 112)"/>
+            <text x="170" y="117" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#991B1B">final_LAST.docx</text>
+            <rect x="70" y="125" width="155" height="24" rx="4" fill="#FCA5A5" opacity="0.5" transform="rotate(3, 147, 137)"/>
+            <text x="147" y="142" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#991B1B">LAST_mary_edits.docx</text>
+            <rect x="110" y="150" width="165" height="24" rx="4" fill="#FCA5A5" opacity="0.5" transform="rotate(-2, 192, 162)"/>
+            <text x="192" y="167" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#991B1B">USE_THIS_ONE.docx</text>
+            <rect x="60" y="175" width="120" height="24" rx="4" fill="#FCA5A5" opacity="0.5" transform="rotate(4, 120, 187)"/>
+            <text x="120" y="192" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#991B1B">final_REAL.docx</text>
+
+            <text x="200" y="225" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991B1B">Who changed what? Nobody knows!</text>
+
+            <!-- With Git side -->
+            <rect x="390" y="20" width="340" height="220" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="560" y="50" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="16" fill="#059669">With Git</text>
+            <text x="560" y="70" text-anchor="middle" font-family="Inter, sans-serif" font-size="28">&#x1F60E;</text>
+
+            <!-- Clean timeline -->
+            <line x1="420" y1="95" x2="420" y2="205" stroke="#6EE7B7" stroke-width="3"/>
+            <circle cx="420" cy="100" r="6" fill="#059669"/>
+            <text x="435" y="104" font-family="JetBrains Mono, monospace" font-size="10" fill="#374151">v1.0 - Initial draft</text>
+            <circle cx="420" cy="130" r="6" fill="#059669"/>
+            <text x="435" y="134" font-family="JetBrains Mono, monospace" font-size="10" fill="#374151">v1.1 - Fix typos (Anna)</text>
+            <circle cx="420" cy="160" r="6" fill="#059669"/>
+            <text x="435" y="164" font-family="JetBrains Mono, monospace" font-size="10" fill="#374151">v1.2 - Add section 3 (Bob)</text>
+            <circle cx="420" cy="190" r="6" fill="#059669"/>
+            <text x="435" y="194" font-family="JetBrains Mono, monospace" font-size="10" fill="#374151">v1.3 - Final review (Mary)</text>
+
+            <text x="560" y="225" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#059669">Complete history. Always one file.</text>
+        </svg>
+        <div class="diagram-caption">Without Git: file chaos. With Git: clean, organized history.</div>
+    </div>
+
+    <h3>What Git Does</h3>
+
+    <p>Git is a system that remembers the <strong>complete history of changes</strong> to your files. Each save (called a <strong>commit</strong>) is like a snapshot of your entire project at a specific moment in time.</p>
+
+    <div class="info-box blue">
+        <p><strong>Key Benefits:</strong></p>
+        <ul>
+            <li>You can go back to any point in history</li>
+            <li>Multiple people can work on the same project simultaneously</li>
+            <li>You can see who changed what, when, and why</li>
+            <li>Experiments don't break the main project</li>
+        </ul>
+    </div>
+
+    <h3>Three Core Concepts</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card repo">
+            <div class="concept-icon">&#x1F4C1;</div>
+            <div class="concept-name">Repository</div>
+            <div class="concept-desc">A project folder that Git tracks. Local (your computer) or remote (GitHub).</div>
+        </div>
+        <div class="concept-card commit">
+            <div class="concept-icon">&#x1F4BE;</div>
+            <div class="concept-name">Commit</div>
+            <div class="concept-desc">A saved snapshot with a description. Like a checkpoint in a video game.</div>
+        </div>
+        <div class="concept-card branch">
+            <div class="concept-icon">&#x1F333;</div>
+            <div class="concept-name">Branch</div>
+            <div class="concept-desc">A parallel version. Experiment safely, then merge back.</div>
+        </div>
+    </div>
+
+    <h4>1. Repository (repo)</h4>
+
+    <p>A repository is a project folder that Git tracks. There are two types:</p>
+
+    <ul>
+        <li><strong>Local</strong> &mdash; on your computer, where you write code</li>
+        <li><strong>Remote</strong> &mdash; on GitHub, accessible by the whole team</li>
+    </ul>
+
+    <h4>2. Commit</h4>
+
+    <p>A saved snapshot of your project with a description of what changed. Think of it like a <strong>checkpoint in a video game</strong> &mdash; you can always return to it.</p>
+
+    <div class="info-box green">
+        <p><strong>Good commit messages</strong> explain <em>what</em> and <em>why</em>: <code>"Fix login button alignment on mobile"</code> is much better than <code>"fixed stuff"</code>.</p>
+    </div>
+
+    <h4>3. Branch</h4>
+
+    <p>A parallel version of the project. You can experiment without affecting the main code. When your work is ready, you <strong>merge</strong> it back.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        Why do Git users never get lost?<br>
+        Because they always know which <strong>branch</strong> they're on.<br>
+        <em>(and if they do get lost, they just <code>git checkout main</code>)</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: BRANCHES AND WORKING TOGETHER -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Branches and Working Together</h2>
+
+    <h3>Why Branches Matter</h3>
+
+    <p>The main branch is called <code>main</code> (or sometimes <code>master</code>). This is your "clean copy" &mdash; code that works and is ready to use.</p>
+
+    <p>When you need to add a feature or fix a bug, you create a <strong>separate branch</strong>. Work there, test it. When everything is ready &mdash; merge changes back to main.</p>
+
+    <div class="info-box blue">
+        <p><strong>Analogy:</strong> <code>main</code> is like a published book. A branch is a draft of a new chapter. While the chapter isn't finished, readers see the old version. Once complete, you add the new chapter to the book.</p>
+    </div>
+
+    <!-- Branch visualization diagram -->
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Arrow marker definitions -->
+            <defs>
+                <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#93C5FD"/>
+                </marker>
+                <marker id="arrowGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6EE7B7"/>
+                </marker>
+                <marker id="arrowGray" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+                <marker id="arrowOrange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#FCD34D"/>
+                </marker>
+                <marker id="arrowPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#C4B5FD"/>
+                </marker>
+            </defs>
+
+            <!-- Title -->
+            <text x="380" y="30" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="14" fill="#374151">How Branches Work</text>
+
+            <!-- main branch line -->
+            <line x1="60" y1="80" x2="700" y2="80" stroke="#1D4ED8" stroke-width="4"/>
+            <text x="40" y="84" text-anchor="end" font-family="JetBrains Mono, monospace" font-weight="700" font-size="12" fill="#1D4ED8">main</text>
+
+            <!-- Commits on main -->
+            <circle cx="120" cy="80" r="7" fill="#1D4ED8"/>
+            <text x="120" y="64" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">v1.0</text>
+
+            <circle cx="350" cy="80" r="7" fill="#1D4ED8"/>
+
+            <circle cx="600" cy="80" r="9" fill="#1D4ED8" stroke="#059669" stroke-width="3"/>
+            <text x="600" y="64" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#059669">merge!</text>
+
+            <circle cx="680" cy="80" r="7" fill="#1D4ED8"/>
+            <text x="680" y="64" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">v1.1</text>
+
+            <!-- Feature branch -->
+            <path d="M120,80 Q150,140 190,150 L400,150 Q440,150 460,150" fill="none" stroke="#059669" stroke-width="2.5"/>
+            <text x="40" y="154" text-anchor="end" font-family="JetBrains Mono, monospace" font-weight="600" font-size="10" fill="#059669">feature</text>
+
+            <!-- Commits on feature branch -->
+            <circle cx="230" cy="150" r="6" fill="#059669"/>
+            <text x="230" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">write code</text>
+
+            <circle cx="330" cy="150" r="6" fill="#059669"/>
+            <text x="330" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">more changes</text>
+
+            <circle cx="430" cy="150" r="6" fill="#059669"/>
+            <text x="430" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">test &amp; fix</text>
+
+            <!-- Merge arrow back to main -->
+            <path d="M460,150 Q500,150 540,120 Q570,95 600,80" fill="none" stroke="#059669" stroke-width="2.5"/>
+
+            <!-- Labels -->
+            <rect x="480" y="108" width="80" height="22" rx="6" fill="#D1FAE5" stroke="#6EE7B7"/>
+            <text x="520" y="123" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="10" fill="#059669">Pull Request</text>
+
+            <!-- Explanation boxes -->
+            <rect x="60" y="210" width="200" height="50" rx="8" fill="#DBEAFE" stroke="#93C5FD"/>
+            <text x="160" y="233" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#1D4ED8">main stays clean</text>
+            <text x="160" y="249" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Users always see working code</text>
+
+            <rect x="280" y="210" width="200" height="50" rx="8" fill="#D1FAE5" stroke="#6EE7B7"/>
+            <text x="380" y="233" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#059669">Feature branch = your sandbox</text>
+            <text x="380" y="249" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Experiment freely here</text>
+
+            <rect x="500" y="210" width="200" height="50" rx="8" fill="#EDE9FE" stroke="#C4B5FD"/>
+            <text x="600" y="233" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#7C3AED">Merge when ready</text>
+            <text x="600" y="249" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">After review &amp; testing</text>
+        </svg>
+        <div class="diagram-caption">Feature branches let you experiment safely without breaking main</div>
+    </div>
+
+    <h3>The Basic Workflow</h3>
+
+    <table>
+        <tr>
+            <th>Step</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>Create a branch from main</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>Make your changes</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>Commit (save changes with a description)</td>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>Push (send to GitHub)</td>
+        </tr>
+        <tr>
+            <td><strong>5</strong></td>
+            <td>Create a Pull Request</td>
+        </tr>
+        <tr>
+            <td><strong>6</strong></td>
+            <td>Someone reviews your code</td>
+        </tr>
+        <tr>
+            <td><strong>7</strong></td>
+            <td>Merge into main</td>
+        </tr>
+    </table>
+
+    <!-- Git workflow diagram -->
+    <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="320" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Title -->
+            <text x="380" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="14" fill="#374151">The Git Workflow</text>
+
+            <!-- Step 1: Branch -->
+            <rect x="30" y="50" width="130" height="70" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="95" y="78" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#1D4ED8">1. Branch</text>
+            <text x="95" y="98" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Create from main</text>
+
+            <line x1="165" y1="85" x2="190" y2="85" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 2: Code -->
+            <rect x="195" y="50" width="110" height="70" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="250" y="78" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#059669">2. Code</text>
+            <text x="250" y="98" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Make changes</text>
+
+            <line x1="310" y1="85" x2="335" y2="85" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 3: Commit -->
+            <rect x="340" y="50" width="110" height="70" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="395" y="78" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#059669">3. Commit</text>
+            <text x="395" y="98" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Save snapshot</text>
+
+            <line x1="455" y1="85" x2="480" y2="85" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 4: Push -->
+            <rect x="485" y="50" width="110" height="70" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="540" y="78" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#D97706">4. Push</text>
+            <text x="540" y="98" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Send to GitHub</text>
+
+            <line x1="600" y1="85" x2="625" y2="85" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 5: PR -->
+            <rect x="630" y="50" width="100" height="70" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="680" y="78" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#D97706">5. PR</text>
+            <text x="680" y="98" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Pull Request</text>
+
+            <!-- Arrow down -->
+            <line x1="680" y1="125" x2="680" y2="155" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 6: Review -->
+            <rect x="600" y="160" width="160" height="70" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="680" y="188" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="13" fill="#7C3AED">6. Review</text>
+            <text x="680" y="208" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Team checks code</text>
+
+            <line x1="595" y1="195" x2="565" y2="195" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrowGray)"/>
+
+            <!-- Step 7: Merge -->
+            <rect x="385" y="160" width="175" height="70" rx="10" fill="#D1FAE5" stroke="#059669" stroke-width="3"/>
+            <text x="473" y="188" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="13" fill="#059669">7. Merge</text>
+            <text x="473" y="208" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Add to main branch</text>
+
+            <!-- Celebration -->
+            <text x="505" y="180" font-size="16">&#x1F389;</text>
+
+            <!-- Your computer vs GitHub labels -->
+            <rect x="30" y="270" width="290" height="30" rx="6" fill="#DBEAFE"/>
+            <text x="175" y="290" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="11" fill="#1D4ED8">Steps 1-3: On Your Computer</text>
+
+            <rect x="340" y="270" width="390" height="30" rx="6" fill="#FEF3C7"/>
+            <text x="535" y="290" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="11" fill="#D97706">Steps 4-7: On GitHub</text>
+        </svg>
+        <div class="diagram-caption">The complete Git workflow: from writing code to merging</div>
+    </div>
+
+    <h3>Pull Request (PR)</h3>
+
+    <p>A Pull Request is a formal request saying <strong>"please merge my changes into the main branch."</strong> It's created on GitHub.</p>
+
+    <div class="info-box purple">
+        <p><strong>Why use Pull Requests?</strong></p>
+        <ul>
+            <li>Others can see exactly what you changed</li>
+            <li>Code can be discussed and improved before merging</li>
+            <li>History is preserved &mdash; you can understand why code looks the way it does</li>
+        </ul>
+    </div>
+
+    <h3>Merge Conflicts</h3>
+
+    <p>Sometimes two people change the <strong>same part of the same file</strong>. Git doesn't know which version to keep &mdash; this is called a <strong>conflict</strong>.</p>
+
+    <p><strong>Example:</strong> Alice in her branch wrote <code>button color: red</code>, Bob in his branch wrote <code>button color: blue</code>.</p>
+
+    <p>Git will show:</p>
+
+    <pre style="background: #FFF7ED; color: #374151; border: 2px solid #FCD34D;"><span style="color: #DC2626; font-weight: bold;"><<<<<<< HEAD</span>
+button color: red
+<span style="color: #DC2626; font-weight: bold;">=======</span>
+button color: blue
+<span style="color: #DC2626; font-weight: bold;">>>>>>>> bob-branch</span></pre>
+
+    <p>You manually choose the correct version and delete the extra markers.</p>
+
+    <!-- Merge conflict visual -->
+    <div class="diagram">
+        <svg viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="250" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Title -->
+            <text x="380" y="28" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="14" fill="#374151">How Merge Conflicts Happen</text>
+
+            <!-- main branch -->
+            <line x1="80" y1="80" x2="680" y2="80" stroke="#374151" stroke-width="3"/>
+            <text x="60" y="84" text-anchor="end" font-family="JetBrains Mono, monospace" font-weight="600" font-size="11" fill="#374151">main</text>
+
+            <!-- Starting commit -->
+            <circle cx="150" cy="80" r="7" fill="#374151"/>
+            <text x="150" y="64" text-anchor="middle" font-family="Inter, sans-serif" font-size="9" fill="#6B7280">original file</text>
+
+            <!-- Alice's branch -->
+            <path d="M150,80 Q180,45 210,45 L390,45" fill="none" stroke="#DC2626" stroke-width="2.5"/>
+            <circle cx="310" cy="45" r="6" fill="#DC2626"/>
+            <text x="310" y="32" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#DC2626">alice-branch</text>
+            <text x="400" y="49" font-family="JetBrains Mono, monospace" font-size="9" fill="#DC2626">color: red</text>
+
+            <!-- Bob's branch -->
+            <path d="M150,80 Q180,130 210,130 L390,130" fill="none" stroke="#1D4ED8" stroke-width="2.5"/>
+            <circle cx="310" cy="130" r="6" fill="#1D4ED8"/>
+            <text x="310" y="150" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#1D4ED8">bob-branch</text>
+            <text x="400" y="134" font-family="JetBrains Mono, monospace" font-size="9" fill="#1D4ED8">color: blue</text>
+
+            <!-- Merge attempt -->
+            <path d="M390,45 Q480,45 520,80" fill="none" stroke="#DC2626" stroke-width="2" stroke-dasharray="5 3"/>
+            <path d="M390,130 Q480,130 520,80" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-dasharray="5 3"/>
+
+            <!-- Conflict point -->
+            <circle cx="520" cy="80" r="12" fill="#FEF3C7" stroke="#DC2626" stroke-width="3"/>
+            <text x="520" y="85" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="14" fill="#DC2626">!</text>
+
+            <text x="580" y="75" font-family="Inter, sans-serif" font-weight="700" font-size="12" fill="#DC2626">CONFLICT</text>
+            <text x="580" y="92" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Same file, same line</text>
+
+            <!-- Resolution -->
+            <rect x="120" y="180" width="520" height="50" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="380" y="202" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="12" fill="#059669">Resolution: You choose which version to keep (or combine both)</text>
+            <text x="380" y="220" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#6B7280">Don't worry -- Cursor and AI help resolve conflicts!</text>
+        </svg>
+        <div class="diagram-caption">When two people edit the same line, Git needs your help to decide what to keep</div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Don't worry!</strong> Merge conflicts sound scary but they're completely normal in team work. Cursor has built-in tools that make resolving them easy. We'll practice this in Lesson 2!</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x2694;&#xFE0F;</div>
+        Two developers walk into a bar. They both order a beer.<br>
+        The bartender says: <strong>"CONFLICT: which beer do I pour first?"</strong><br>
+        <em>They resolve it by merging both into one big glass.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: ESSENTIAL GIT COMMANDS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Essential Git Commands</h2>
+
+    <p>You'll use these commands in Cursor's terminal (open it with <code>Ctrl+`</code> or <code>Cmd+`</code> on Mac).</p>
+
+    <table>
+        <tr>
+            <th>What You Want</th>
+            <th>Command</th>
+        </tr>
+        <tr>
+            <td>Clone a repository from GitHub</td>
+            <td><code>git clone &lt;url&gt;</code></td>
+        </tr>
+        <tr>
+            <td>Create a new branch and switch to it</td>
+            <td><code>git checkout -b branch-name</code></td>
+        </tr>
+        <tr>
+            <td>See what files changed</td>
+            <td><code>git status</code></td>
+        </tr>
+        <tr>
+            <td>Add files to be saved</td>
+            <td><code>git add .</code></td>
+        </tr>
+        <tr>
+            <td>Save with a message</td>
+            <td><code>git commit -m "description"</code></td>
+        </tr>
+        <tr>
+            <td>Send to GitHub</td>
+            <td><code>git push</code></td>
+        </tr>
+        <tr>
+            <td>Get latest changes</td>
+            <td><code>git pull</code></td>
+        </tr>
+        <tr>
+            <td>Switch to another branch</td>
+            <td><code>git checkout branch-name</code></td>
+        </tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>Tip:</strong> You don't need to memorize all commands right away! Bookmark this page and use it as a reference. Over time, these commands will become second nature.</p>
+    </div>
+
+    <h3>A Typical Work Session</h3>
+
+    <pre><span class="comment"># 1. Get the latest code from main</span>
+<span class="keyword">git checkout</span> main
+<span class="keyword">git pull</span>
+
+<span class="comment"># 2. Create your branch</span>
+<span class="keyword">git checkout</span> <span class="flag">-b</span> fix-login-button
+
+<span class="comment"># 3. Make your changes in Cursor...</span>
+
+<span class="comment"># 4. Save your work</span>
+<span class="keyword">git add</span> .
+<span class="keyword">git commit</span> <span class="flag">-m</span> <span class="string">"Fix login button alignment"</span>
+
+<span class="comment"># 5. Send to GitHub</span>
+<span class="keyword">git push</span>
+
+<span class="comment"># 6. Go to GitHub and create a Pull Request</span></pre>
+
+    <div class="info-box green">
+        <p><strong>That's it!</strong> These 6 steps are the foundation of everything you'll do as a developer. Clone, branch, code, commit, push, PR. Repeat!</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4AC;</div>
+        Developer: "I'll just make one small commit before lunch."<br>
+        <em>*4 hours and 47 commits later*</em><br>
+        "...well, at least the tests pass now."
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Let's recap everything we learned in this lesson:</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Cursor</strong>
+            <span>AI-powered code editor. Your main work tool.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Git</strong>
+            <span>Version control system. Tracks all changes.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Repository</strong>
+            <span>Project folder tracked by Git (local + remote).</span>
+        </div>
+        <div class="recap-item">
+            <strong>Commit</strong>
+            <span>Saved snapshot. Like a video game checkpoint.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Branch</strong>
+            <span>Parallel version for safe experimentation.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Pull Request</strong>
+            <span>Request to merge your branch. Team reviews it.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Merge Conflict</strong>
+            <span>Two people edit the same spot. You fix it manually.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Workflow</strong>
+            <span>Branch &rarr; Code &rarr; Commit &rarr; Push &rarr; PR &rarr; Merge.</span>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework Assignment</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Install Cursor</strong>
+                <p>Download from <code>cursor.com</code> and install.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Create a GitHub Account</strong>
+                <p>Go to <code>github.com</code> and sign up. Send me your username.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Your First Commit</strong>
+                <ol style="list-style-type: lower-alpha;">
+                    <li>Create a new repository on GitHub</li>
+                    <li>Clone it to your computer using Cursor</li>
+                    <li>Create a file called <code>totem.txt</code></li>
+                    <li>Write the name of your totem animal inside</li>
+                    <li>Commit and push to GitHub</li>
+                </ol>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 24px;">Advanced (optional, for those who want more):</h3>
+        <ol>
+            <li>
+                <strong>Learn the Basics of Web Development</strong>
+                <p>Read brief introductions to HTML, CSS, and JavaScript (links in Helpful Resources below).</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Build a Simple Web Page</strong>
+                <p>Create an <code>index.html</code> file with a button. When clicked, an image of your totem animal appears. Push this to your GitHub repository.</p>
+            </li>
+        </ol>
+
+        <h2 style="margin-top: 40px;">Step-by-Step: Completing the Homework</h2>
+
+        <div class="step-card" style="background: white;">
+            <h4>Step 1: Create a Repository on GitHub</h4>
+            <ol>
+                <li>Go to <code>github.com</code> and log in</li>
+                <li>Click the <strong>+</strong> icon in the top right, select <strong>New repository</strong></li>
+                <li>Name it <code>my-first-repo</code></li>
+                <li>Check <strong>Add a README file</strong></li>
+                <li>Click <strong>Create repository</strong></li>
+            </ol>
+        </div>
+
+        <div class="step-card" style="background: white;">
+            <h4>Step 2: Clone to Your Computer</h4>
+            <ol>
+                <li>On your repository page, click the green <strong>Code</strong> button</li>
+                <li>Copy the HTTPS URL</li>
+                <li>Open Cursor</li>
+                <li>Open the terminal (<code>Ctrl+`</code> or <code>Cmd+`</code>)</li>
+                <li>Type:</li>
+            </ol>
+            <pre><span class="keyword">git clone</span> <span class="string">https://github.com/YOUR-USERNAME/my-first-repo.git</span></pre>
+            <p>Open the folder: <strong>File &gt; Open Folder &gt; my-first-repo</strong></p>
+        </div>
+
+        <div class="step-card" style="background: white;">
+            <h4>Step 3: Create Your File</h4>
+            <ol>
+                <li>In Cursor, right-click in the file explorer on the left</li>
+                <li>Select <strong>New File</strong></li>
+                <li>Name it <code>totem.txt</code></li>
+                <li>Write your totem animal name inside and save (<code>Ctrl+S</code>)</li>
+            </ol>
+        </div>
+
+        <div class="step-card" style="background: white;">
+            <h4>Step 4: Commit and Push</h4>
+            <p>In the terminal, type these commands one by one:</p>
+            <pre><span class="keyword">git add</span> .
+<span class="keyword">git commit</span> <span class="flag">-m</span> <span class="string">"Add my totem animal"</span>
+<span class="keyword">git push</span></pre>
+        </div>
+
+        <div class="step-card" style="background: white;">
+            <h4>Step 5: Verify on GitHub</h4>
+            <p>Go back to your repository on GitHub and refresh the page. You should see your <code>totem.txt</code> file!</p>
+        </div>
+
+        <div class="info-box green" style="background: #D1FAE5;">
+            <p><strong>Congratulations!</strong> You've just completed your first Git workflow: <strong>clone, edit, commit, push</strong>. This is the foundation of everything we'll do in this course.</p>
+        </div>
+
+        <h3 style="margin-top: 28px;">Helpful Resources</h3>
+        <ul>
+            <li><strong>HTML Basics:</strong> <code>developer.mozilla.org/en-US/docs/Learn/HTML</code></li>
+            <li><strong>CSS Basics:</strong> <code>developer.mozilla.org/en-US/docs/Learn/CSS</code></li>
+            <li><strong>JavaScript Basics:</strong> <code>developer.mozilla.org/en-US/docs/Learn/JavaScript</code></li>
+            <li><strong>Git Cheat Sheet:</strong> <code>education.github.com/git-cheat-sheet-education.pdf</code></li>
+        </ul>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio Tech Course &mdash; Lesson 1 of 10</p>
+        <p>Questions? Ask in the <code>#tech-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Architecture, Servers & Git Flow</p>
+    </div>
+
+</div>
+
+</body>
+</html>

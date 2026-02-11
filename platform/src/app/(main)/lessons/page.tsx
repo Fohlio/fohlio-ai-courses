@@ -1,7 +1,12 @@
+"use client";
+
 import { LESSONS } from "@/lib/constants";
 import { LessonCard } from "@/components/lesson/LessonCard";
+import { useProgress } from "@/hooks/useProgress";
 
 export default function LessonsPage() {
+  const { progress } = useProgress();
+
   return (
     <div>
       <div className="mb-8">
@@ -11,9 +16,14 @@ export default function LessonsPage() {
         </p>
       </div>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        {LESSONS.map((lesson) => (
-          <LessonCard key={lesson.id} lesson={lesson} />
-        ))}
+        {LESSONS.map((lesson) => {
+          const lp = progress?.lessonProgress.find(
+            (p) => p.lessonId === lesson.id,
+          );
+          return (
+            <LessonCard key={lesson.id} lesson={lesson} lessonProgress={lp} />
+          );
+        })}
       </div>
     </div>
   );

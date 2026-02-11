@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
+import { useProgress } from "@/hooks/useProgress";
 import { LESSONS } from "@/lib/constants";
-import { MOCK_STUDENTS } from "@/lib/mock-data";
 import { getProgressPercentage } from "@/lib/utils";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -22,16 +22,12 @@ const STATUS_BADGE_MAP: Record<
 function ProgressDashboard({ progress }: { progress: StudentProgress }) {
   const overallPercentage = getProgressPercentage(
     progress.completedTasks,
-    progress.totalTasks
+    progress.totalTasks,
   );
 
   return (
-    <div data-testid="progress-dashboard">
-      {/* Top stats row */}
-      <div
-        className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3"
-        data-testid="progress-stats"
-      >
+    <div>
+      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Card>
           <p className="text-sm font-medium text-gray-500">
             Lessons Completed
@@ -68,12 +64,8 @@ function ProgressDashboard({ progress }: { progress: StudentProgress }) {
         </Card>
       </div>
 
-      {/* Lessons table */}
       <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
-        <table
-          className="w-full text-left text-sm"
-          data-testid="progress-lessons-table"
-        >
+        <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50">
               <th className="px-4 py-3 font-medium text-gray-600">#</th>
@@ -92,7 +84,7 @@ function ProgressDashboard({ progress }: { progress: StudentProgress }) {
           <tbody>
             {LESSONS.map((lesson) => {
               const lp = progress.lessonProgress.find(
-                (p) => p.lessonId === lesson.id
+                (p) => p.lessonId === lesson.id,
               );
               const statusInfo = lp
                 ? STATUS_BADGE_MAP[lp.status]
@@ -102,7 +94,6 @@ function ProgressDashboard({ progress }: { progress: StudentProgress }) {
                 <tr
                   key={lesson.id}
                   className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50"
-                  data-testid={`progress-lesson-row-${lesson.number}`}
                 >
                   <td className="px-4 py-3 font-medium text-gray-900">
                     {lesson.number}
@@ -111,16 +102,19 @@ function ProgressDashboard({ progress }: { progress: StudentProgress }) {
                     <Link
                       href={`/lessons/${lesson.slug}/homework`}
                       className="text-brand hover:underline"
-                      data-testid={`progress-lesson-link-${lesson.slug}`}
                     >
                       {lesson.title}
                     </Link>
                   </td>
                   <td className="px-4 py-3 text-center text-gray-600">
-                    {lp ? `${lp.requiredCompleted}/${lp.requiredTotal}` : "0/0"}
+                    {lp
+                      ? `${lp.requiredCompleted}/${lp.requiredTotal}`
+                      : "0/0"}
                   </td>
                   <td className="px-4 py-3 text-center text-gray-600">
-                    {lp ? `${lp.advancedCompleted}/${lp.advancedTotal}` : "0/0"}
+                    {lp
+                      ? `${lp.advancedCompleted}/${lp.advancedTotal}`
+                      : "0/0"}
                   </td>
                   <td className="px-4 py-3 text-center">
                     <Badge variant={statusInfo.variant}>
@@ -139,8 +133,9 @@ function ProgressDashboard({ progress }: { progress: StudentProgress }) {
 
 export default function ProgressPage() {
   const { user, isLoading } = useAuth();
+  const { progress, loading } = useProgress();
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center">
         <p className="text-gray-500">Loading...</p>
@@ -150,10 +145,10 @@ export default function ProgressPage() {
 
   if (!user) {
     return (
-      <div className="mx-auto max-w-4xl px-4 py-12" data-testid="progress-page">
+      <div className="mx-auto max-w-4xl px-4 py-12">
         <h1 className="mb-6 text-2xl font-bold text-gray-900">My Progress</h1>
         <Card>
-          <p className="text-center text-gray-500" data-testid="progress-login-prompt">
+          <p className="text-center text-gray-500">
             Login to track your progress.
           </p>
         </Card>
@@ -161,36 +156,21 @@ export default function ProgressPage() {
     );
   }
 
-  // Find mock student data matching the logged-in user, or use the first mock student for demo
-  const studentData = MOCK_STUDENTS.find(
-    (s) => s.user.githubNickname === user.githubNickname
-  );
-
-  const progress: StudentProgress = studentData?.progress ?? {
-    userId: user.id,
-    githubNickname: user.githubNickname,
-    displayName: user.displayName,
-    totalLessons: 10,
-    completedLessons: 0,
-    totalTasks: 7,
-    completedTasks: 0,
-    completionPercentage: 0,
-    lessonProgress: LESSONS.map((lesson) => ({
-      lessonId: lesson.id,
-      lessonNumber: lesson.number,
-      totalTasks: 0,
-      completedTasks: 0,
-      requiredTotal: 0,
-      requiredCompleted: 0,
-      advancedTotal: 0,
-      advancedCompleted: 0,
-      status: "not_started" as const,
-    })),
-    lastActivityAt: null,
-  };
+  if (!progress) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-12">
+        <h1 className="mb-6 text-2xl font-bold text-gray-900">My Progress</h1>
+        <Card>
+          <p className="text-center text-gray-500">
+            Failed to load progress.
+          </p>
+        </Card>
+      </div>
+    );
+  }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12" data-testid="progress-page">
+    <div className="mx-auto max-w-4xl px-4 py-12">
       <h1 className="mb-6 text-2xl font-bold text-gray-900">My Progress</h1>
       <ProgressDashboard progress={progress} />
     </div>

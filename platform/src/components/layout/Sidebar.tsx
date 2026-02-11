@@ -100,6 +100,8 @@ function Sidebar() {
     >
       {/* Header */}
       <div className="flex h-16 items-center gap-2 border-b border-gray-200 px-6">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.svg" alt="" width={28} height={28} className="shrink-0 rounded-md" />
         <span className="text-lg font-semibold text-gray-900">
           Fohlio Tech Course
         </span>

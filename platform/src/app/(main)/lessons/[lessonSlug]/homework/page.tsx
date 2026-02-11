@@ -44,7 +44,7 @@ export default async function HomeworkPage({
       ) : (
         <div className="space-y-8">
           {lesson.homework.map((section) => (
-            <HomeworkSection key={section.id} section={section} />
+            <HomeworkSection key={section.id} section={section} lessonId={lesson.id} />
           ))}
         </div>
       )}

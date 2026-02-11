@@ -1,13 +1,12 @@
 "use client";
 
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { LESSONS, getAllHomeworkTasks } from "@/lib/constants";
-import { MOCK_STUDENTS } from "@/lib/mock-data";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
-import type { LessonStatus } from "@/lib/types";
+import type { LessonStatus, AdminStudentSummary } from "@/lib/types";
 
 const STATUS_BADGE_MAP: Record<
   LessonStatus,
@@ -18,15 +17,10 @@ const STATUS_BADGE_MAP: Record<
   completed: { label: "Completed", variant: "success" },
 };
 
-/**
- * Determines which tasks are "completed" for a student in a given lesson.
- * This uses the mock data's requiredCompleted and advancedCompleted counts
- * to simulate per-task status by marking the first N tasks as completed.
- */
 function getTaskStatuses(
   lessonId: string,
   requiredCompleted: number,
-  advancedCompleted: number
+  advancedCompleted: number,
 ) {
   const lesson = LESSONS.find((l) => l.id === lessonId);
   if (!lesson) return [];
@@ -35,7 +29,12 @@ function getTaskStatuses(
   const requiredTasks = tasks.filter((t) => t.category === "required");
   const advancedTasks = tasks.filter((t) => t.category === "advanced");
 
-  const statuses: { taskId: string; title: string; category: string; completed: boolean }[] = [];
+  const statuses: {
+    taskId: string;
+    title: string;
+    category: string;
+    completed: boolean;
+  }[] = [];
 
   requiredTasks.forEach((task, index) => {
     statuses.push({
@@ -58,23 +57,40 @@ function getTaskStatuses(
   return statuses;
 }
 
-interface StudentDetailPageProps {
+export default function StudentDetailPage({
+  params,
+}: {
   params: Promise<{ githubNickname: string }>;
-}
-
-export default function StudentDetailPage({ params }: StudentDetailPageProps) {
+}) {
   const { githubNickname } = use(params);
+  const [student, setStudent] = useState<AdminStudentSummary | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const student = MOCK_STUDENTS.find(
-    (s) => s.user.githubNickname === githubNickname
-  );
+  useEffect(() => {
+    fetch("/api/progress/all")
+      .then((res) => res.json())
+      .then((data) => {
+        const found = (data.students ?? []).find(
+          (s: AdminStudentSummary) =>
+            s.user.githubNickname === githubNickname,
+        );
+        setStudent(found ?? null);
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [githubNickname]);
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-4xl px-4 py-12">
+        <p className="text-gray-500">Loading...</p>
+      </div>
+    );
+  }
 
   if (!student) {
     return (
-      <div
-        className="mx-auto max-w-4xl px-4 py-12"
-        data-testid="student-not-found"
-      >
+      <div className="mx-auto max-w-4xl px-4 py-12">
         <h1 className="mb-4 text-2xl font-bold text-gray-900">
           Student not found
         </h1>
@@ -95,16 +111,11 @@ export default function StudentDetailPage({ params }: StudentDetailPageProps) {
   const { progress } = student;
 
   return (
-    <div
-      className="mx-auto max-w-4xl px-4 py-12"
-      data-testid="student-detail-page"
-    >
-      {/* Header */}
+    <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8">
         <Link
           href="/admin/students"
           className="mb-4 inline-block text-sm text-gray-500 hover:text-gray-700"
-          data-testid="student-detail-back-link"
         >
           &larr; Back to Students
         </Link>
@@ -142,11 +153,10 @@ export default function StudentDetailPage({ params }: StudentDetailPageProps) {
         </p>
       </div>
 
-      {/* Per-lesson list */}
-      <div className="space-y-4" data-testid="student-detail-lessons">
+      <div className="space-y-4">
         {LESSONS.map((lesson) => {
           const lp = progress.lessonProgress.find(
-            (p) => p.lessonId === lesson.id
+            (p) => p.lessonId === lesson.id,
           );
           const statusInfo = lp
             ? STATUS_BADGE_MAP[lp.status]
@@ -156,15 +166,12 @@ export default function StudentDetailPage({ params }: StudentDetailPageProps) {
             ? getTaskStatuses(
                 lesson.id,
                 lp.requiredCompleted,
-                lp.advancedCompleted
+                lp.advancedCompleted,
               )
             : [];
 
           return (
-            <Card
-              key={lesson.id}
-              data-testid={`student-lesson-${lesson.number}`}
-            >
+            <Card key={lesson.id}>
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-semibold text-gray-900">
@@ -182,20 +189,15 @@ export default function StudentDetailPage({ params }: StudentDetailPageProps) {
                 <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
               </div>
 
-              {/* Task list for lessons with homework */}
               {hasTasks && taskStatuses.length > 0 && (
                 <ul className="mt-4 space-y-2 border-t border-gray-100 pt-4">
                   {taskStatuses.map((task) => (
                     <li
                       key={task.taskId}
                       className="flex items-center gap-3 text-sm"
-                      data-testid={`student-task-${task.taskId}`}
                     >
                       {task.completed ? (
-                        <span
-                          className="flex h-5 w-5 items-center justify-center rounded-full bg-success-light text-success"
-                          aria-label="Completed"
-                        >
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 text-green-600">
                           <svg
                             className="h-3.5 w-3.5"
                             fill="none"
@@ -211,10 +213,7 @@ export default function StudentDetailPage({ params }: StudentDetailPageProps) {
                           </svg>
                         </span>
                       ) : (
-                        <span
-                          className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-100 text-gray-400"
-                          aria-label="Pending"
-                        >
+                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-100 text-gray-400">
                           <svg
                             className="h-3.5 w-3.5"
                             fill="none"
