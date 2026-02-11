@@ -1,13 +1,15 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-export default function LoginPage() {
+
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
 
   const [githubNickname, setGithubNickname] = useState("");
@@ -33,7 +35,8 @@ export default function LoginPage() {
 
     try {
       await login(githubNickname.trim(), password);
-      router.push("/lessons");
+      const redirectTo = searchParams.get("redirect") || "/lessons";
+      router.push(redirectTo);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Login failed. Please try again.",
@@ -111,5 +114,13 @@ export default function LoginPage() {
         </Link>
       </p>
     </>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }
