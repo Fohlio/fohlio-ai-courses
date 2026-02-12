@@ -1039,6 +1039,69 @@ FOH-9012-update-product-table</pre>
 
 
     <!-- ============================================ -->
+    <!-- GUIDE: GITHUB PERSONAL ACCESS TOKEN -->
+    <!-- ============================================ -->
+
+    <h3>How to Set Up a GitHub Personal Access Token</h3>
+
+    <p>When you try to <code>git push</code>, GitHub may ask for a password. Since 2021, GitHub <strong>no longer accepts regular passwords</strong> for Git operations. Instead, you need a <strong>Personal Access Token (PAT)</strong>.</p>
+
+    <div class="info-box orange">
+        <p><strong>Important:</strong> This is a one-time setup. Once configured, Git will remember your token and you won't need to enter it again.</p>
+    </div>
+
+    <div class="step-card">
+        <h4>Step 1: Create a Token on GitHub</h4>
+        <ol>
+            <li>Go to <strong>github.com</strong> &rarr; click your avatar (top right) &rarr; <strong>Settings</strong></li>
+            <li>Scroll down the left sidebar &rarr; <strong>Developer settings</strong></li>
+            <li><strong>Personal access tokens</strong> &rarr; <strong>Tokens (classic)</strong></li>
+            <li>Click <strong>Generate new token</strong> &rarr; <strong>Generate new token (classic)</strong></li>
+            <li>Fill in:
+                <ul>
+                    <li><strong>Note:</strong> any name, e.g. <code>my-push-token</code></li>
+                    <li><strong>Expiration:</strong> choose a duration (or &ldquo;No expiration&rdquo;)</li>
+                    <li><strong>Scopes:</strong> check <code>repo</code> (full repository access)</li>
+                </ul>
+            </li>
+            <li>Click <strong>Generate token</strong></li>
+            <li>Copy the token immediately &mdash; <strong>it will only be shown once!</strong></li>
+        </ol>
+    </div>
+
+    <div class="step-card">
+        <h4>Step 2: Remove Old Credentials</h4>
+
+        <p><strong>Windows</strong> (PowerShell):</p>
+        <pre>cmdkey /delete:git:https://github.com</pre>
+        <p>Or manually: open Start &rarr; search <strong>Credential Manager</strong> &rarr; <strong>Windows Credentials</strong> &rarr; find <code>git:https://github.com</code> &rarr; Remove</p>
+
+        <p><strong>Mac</strong> (Terminal):</p>
+        <pre>git credential-osxkeychain erase
+<span class="comment"># Then type:</span>
+host=github.com
+protocol=https
+<span class="comment"># Press Enter twice</span></pre>
+    </div>
+
+    <div class="step-card">
+        <h4>Step 3: Push Again</h4>
+        <pre>git push origin your-branch-name</pre>
+        <p>Git will ask for credentials:</p>
+        <ul>
+            <li><strong>Username:</strong> your GitHub username</li>
+            <li><strong>Password:</strong> paste your token (not your actual password!)</li>
+        </ul>
+        <p>The credentials will be saved automatically and future pushes should work without asking again.</p>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Tip:</strong> If Git keeps asking for credentials every time, you can tell it to remember them:</p>
+        <pre style="margin-bottom: 0;">git config <span class="flag">--global</span> credential.helper store</pre>
+    </div>
+
+
+    <!-- ============================================ -->
     <!-- PART 3: STAGING SERVERS -->
     <!-- ============================================ -->
 
