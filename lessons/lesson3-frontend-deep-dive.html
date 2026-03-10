@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fohlio Tech Course - Lesson 3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 10px;
+            overflow-x: auto;
+            margin: 16px 0 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13.5px;
+            line-height: 1.8;
+        }
+        pre .comment { color: #6B7280; }
+        pre .keyword { color: #93C5FD; }
+        pre .string { color: #86EFAC; }
+        pre .flag { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box.blue {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+        }
+        .info-box.green {
+            background: var(--green-light);
+            border-left: 4px solid var(--green);
+        }
+        .info-box.orange {
+            background: var(--orange-light);
+            border-left: 4px solid var(--orange);
+        }
+        .info-box.red {
+            background: var(--red-light);
+            border-left: 4px solid var(--red);
+        }
+        .info-box.purple {
+            background: var(--purple-light);
+            border-left: 4px solid var(--purple);
+        }
+        .info-box p:last-child { margin-bottom: 0; }
+        .info-box strong { color: var(--gray-900); }
+
+        /* Joke box */
+        .joke-box {
+            background: linear-gradient(135deg, #FFF7ED, #FEF3C7);
+            border: 1px solid #FDE68A;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+            text-align: center;
+            font-style: italic;
+            color: var(--gray-700);
+        }
+        .joke-box .joke-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0 28px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 14px 18px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        td {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--gray-200);
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+        tr:last-child td { border-bottom: none; }
+        td code {
+            font-size: 13px;
+        }
+
+        /* SVG diagrams */
+        .diagram {
+            margin: 32px 0;
+            text-align: center;
+            overflow-x: auto;
+        }
+        .diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        /* Ordered / unordered lists */
+        ol, ul {
+            margin: 12px 0 20px 24px;
+            color: var(--gray-700);
+        }
+        li { margin-bottom: 8px; }
+
+        /* Step cards */
+        .step-card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 20px 0;
+        }
+        .step-card h4 {
+            margin-top: 0;
+            color: var(--blue);
+        }
+
+        /* Story box */
+        .story-box {
+            background: linear-gradient(135deg, #F0F4FF, #E8EDFF);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin: 24px 0;
+            position: relative;
+        }
+        .story-box::before {
+            content: "\1F4D6";
+            position: absolute;
+            top: -14px;
+            left: 20px;
+            font-size: 24px;
+            background: white;
+            padding: 0 8px;
+            border-radius: 8px;
+        }
+        .story-box p {
+            color: var(--gray-700);
+            font-style: italic;
+            line-height: 1.8;
+        }
+        .story-box p:first-child {
+            margin-top: 8px;
+        }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Character card */
+        .character-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .character-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .character-card .char-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .character-card .char-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .character-card .char-role {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .character-card .char-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        /* FSD layer visualization */
+        .fsd-layers {
+            margin: 24px 0;
+        }
+        .fsd-layer {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .fsd-layer:hover {
+            transform: translateX(4px);
+        }
+        .fsd-layer .layer-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 20px;
+            margin-right: 16px;
+            width: 36px;
+        }
+        .fsd-layer .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 100px;
+        }
+        .fsd-layer .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+        .fsd-layer.l1 { background: #FEE2E2; }
+        .fsd-layer.l1 .layer-num, .fsd-layer.l1 .layer-name { color: #DC2626; }
+        .fsd-layer.l2 { background: #FEF3C7; }
+        .fsd-layer.l2 .layer-num, .fsd-layer.l2 .layer-name { color: #D97706; }
+        .fsd-layer.l3 { background: #DBEAFE; }
+        .fsd-layer.l3 .layer-num, .fsd-layer.l3 .layer-name { color: #1D4ED8; }
+        .fsd-layer.l4 { background: #EDE9FE; }
+        .fsd-layer.l4 .layer-num, .fsd-layer.l4 .layer-name { color: #7C3AED; }
+        .fsd-layer.l5 { background: #D1FAE5; }
+        .fsd-layer.l5 .layer-num, .fsd-layer.l5 .layer-name { color: #059669; }
+        .fsd-layer.l6 { background: #F3F4F6; }
+        .fsd-layer.l6 .layer-num, .fsd-layer.l6 .layer-name { color: #374151; }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recap */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .recap-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+        .recap-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--blue);
+        }
+        .recap-item span {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Page break for printing */
+        .page-break {
+            page-break-before: always;
+        }
+
+        /* Flow arrow */
+        .flow-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--gray-300);
+            margin: 8px 0;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge.frontend { background: #DBEAFE; color: #1D4ED8; }
+        .badge.tool { background: #D1FAE5; color: #059669; }
+        .badge.env { background: #FEF3C7; color: #D97706; }
+
+        @media print {
+            .container { padding: 20px; }
+            .part-header { margin-top: 32px; }
+            pre { font-size: 12px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 32px; }
+            .character-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 3 of 10</div>
+        <h1>Fohlio Tech Course</h1>
+        <div class="subtitle">Frontend Deep Dive: Setup & First Fix</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Know the main "characters" in our codebase and what each one does</li>
+            <li>Understand how the old and new systems coexist (and why some code looks different)</li>
+            <li>Understand how your local frontend connects to the backend server</li>
+            <li>Clone the repository and set up everything needed to run the project</li>
+            <li>Make your first code change via Cursor and create a Pull Request</li>
+        </ul>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- RECAP OF PREVIOUS LESSONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Quick Recap: Lessons 1 &amp; 2</h2>
+
+    <p>Before we go deeper, let's remember what we've covered so far:</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Lesson 1: Git &amp; GitHub</strong>
+            <span>Git saves snapshots of your code (commits). GitHub stores them online. Branches let you work without breaking anything. Pull Requests let the team review your changes before merging.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 2: Architecture</strong>
+            <span>Fohlio has 3 parts: <strong>Frontend</strong> (the dining room &mdash; what users see), <strong>Backend</strong> (the kitchen &mdash; processes data), and <strong>Reports</strong> (the printing press &mdash; generates PDFs). They talk via GraphQL.</span>
+        </div>
+    </div>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Servers</strong>
+            <span>We have test servers (test01-03), UAT servers (uat01-03), and production (app.fohlio.com). Each is a full copy of the restaurant with its own data.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Daily workflow</strong>
+            <span>Jira ticket &rarr; create branch &rarr; write code in Cursor &rarr; commit &amp; push &rarr; create PR &rarr; code review &rarr; deploy to staging &rarr; QA &rarr; merge.</span>
+        </div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Today's lesson</strong> zooms into the <strong>Frontend</strong> &mdash; the dining room. We'll see what's inside, learn how to set it up on your machine, and make your first change.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- BEFORE WE BEGIN: KEY CONCEPTS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Key Concepts: What Is Code, Anyway?</h2>
+
+    <p>Before we dive into the frontend, let's make sure we all speak the same language. If you already know these terms &mdash; skip ahead to Part 1.</p>
+
+    <h3>Code = Instructions for the Computer</h3>
+
+    <p><strong>Code</strong> is just text that tells the computer what to do. It looks like English mixed with math symbols. Here's a tiny example:</p>
+
+    <pre><span class="keyword">if</span> (user.isLoggedIn) {
+  showDashboard()
+} <span class="keyword">else</span> {
+  showLoginPage()
+}</pre>
+
+    <p>This says: "If the user is logged in &mdash; show the dashboard. Otherwise &mdash; show the login page." That's it. Code is instructions, written step by step.</p>
+
+    <div class="info-box blue">
+        <p><strong>Analogy:</strong> Code is like a recipe. A recipe says "mix flour and water, then bake at 180&deg;C for 30 minutes." Code says "take user data, show it in a table, and when they click 'Save' &mdash; send it to the server." Same idea: step-by-step instructions.</p>
+    </div>
+
+    <h3>Files &amp; Folders = How Code Is Organized</h3>
+
+    <p>A project is just a <strong>folder on your computer</strong> with many files inside. Each file contains code for one specific thing &mdash; a button, a page, a data request. Folders group related files together.</p>
+
+    <pre><span class="string">fohlio-frontend/</span>              <span class="comment"># The main project folder</span>
+  <span class="keyword">src/</span>                          <span class="comment"># "Source" - all the code lives here</span>
+    <span class="keyword">__fsd__/</span>                    <span class="comment"># Organized code (we'll explain this)</span>
+      <span class="string">2-pages/</span>                <span class="comment"># Each page of the app</span>
+        <span class="string">dashboard/</span>            <span class="comment"># The Dashboard page</span>
+          <span class="flag">Dashboard.tsx</span>       <span class="comment"># The actual code for the Dashboard</span></pre>
+
+    <div class="info-box green">
+        <p><strong>Think of it like a filing cabinet.</strong> The project is the cabinet. Folders are the drawers. Files are the individual documents inside. When Cursor opens a project, it shows you this filing cabinet in the left sidebar.</p>
+    </div>
+
+    <h3>JavaScript &amp; TypeScript = The Language We Write In</h3>
+
+    <p>Just like people speak English, Russian, or French &mdash; code is written in <strong>programming languages</strong>. Browsers (Chrome, Safari, Firefox) understand one language: <strong>JavaScript</strong>.</p>
+
+    <p>We use <strong>TypeScript</strong> &mdash; it's JavaScript with extra safety. Think of it as JavaScript with spell-check. It catches mistakes <em>before</em> the code runs, not after.</p>
+
+    <table>
+        <tr>
+            <th>Language</th>
+            <th>What It Is</th>
+            <th>Analogy</th>
+        </tr>
+        <tr>
+            <td><strong>JavaScript</strong></td>
+            <td>The language that browsers understand</td>
+            <td>Writing in English</td>
+        </tr>
+        <tr>
+            <td><strong>TypeScript</strong></td>
+            <td>JavaScript + safety checks (catches typos and wrong data types)</td>
+            <td>Writing in English with Grammarly turned on</td>
+        </tr>
+    </table>
+
+    <p>Code files end in <code>.ts</code> (TypeScript) or <code>.tsx</code> (TypeScript with visual elements). When you see these extensions in Cursor &mdash; that's our code.</p>
+
+    <h3>Libraries &amp; Packages = Tools We Don't Build Ourselves</h3>
+
+    <p>When you need a bookshelf, you don't grow a tree, chop the wood, and build it from scratch. You <strong>buy one from IKEA</strong>. Software works the same way.</p>
+
+    <p>A <strong>library</strong> (also called a <strong>package</strong>) is a set of ready-made code created by other developers that we download and use. Instead of building everything from scratch, we "buy" pre-built tools:</p>
+
+    <table>
+        <tr>
+            <th>What We Need</th>
+            <th>Library We Use</th>
+            <th>IKEA Analogy</th>
+        </tr>
+        <tr>
+            <td>Build the interface (buttons, forms, etc.)</td>
+            <td><strong>React</strong></td>
+            <td>The kitchen set &mdash; the biggest, most essential purchase</td>
+        </tr>
+        <tr>
+            <td>Ready-made UI components</td>
+            <td><strong>Ant Design</strong></td>
+            <td>Matching plates, cups, and cutlery &mdash; a coordinated set</td>
+        </tr>
+        <tr>
+            <td>Talk to the backend server</td>
+            <td><strong>Apollo Client</strong></td>
+            <td>A delivery service that brings groceries from the store</td>
+        </tr>
+        <tr>
+            <td>Our own custom components</td>
+            <td><strong>@fohlio/ui-kit</strong></td>
+            <td>Custom furniture built by our own workshop</td>
+        </tr>
+    </table>
+
+    <p>All libraries live in a folder called <code>node_modules/</code>. You'll see it in the project &mdash; <strong>never edit anything there</strong>. It's managed automatically.</p>
+
+    <div class="info-box orange">
+        <p><strong>Fun fact:</strong> Our project uses about <strong>1,500 packages</strong>. That sounds like a lot, but most are small utilities &mdash; like having 1,500 different IKEA parts that together make up your apartment. The command <code>yarn install</code> downloads all of them automatically.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F3EA;</div>
+        <code>node_modules/</code> is the heaviest object in the known universe.<br>
+        Heavier than a black hole. Heavier than your ex's emotional baggage.<br>
+        <em>And yet we delete it and reinstall it every other week.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: STORY OF FOHLIO-FRONTEND -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Story of fohlio-frontend</h2>
+
+    <p>In Lesson 2 we said that Frontend &mdash; it's the "dining room" of our restaurant. Guests (users) come here, see the menu (interface), and place orders (requests to backend).</p>
+
+    <p>Now let's look inside this dining room and meet the team of libraries that makes it work.</p>
+
+    <div class="info-box green">
+        <p><strong>Don't worry!</strong> This lesson introduces a lot of names. You don't need to memorize them all. The goal is to <strong>recognize</strong> them when you see them in the code &mdash; like knowing the names of your coworkers without remembering everyone's birthday. Cursor's AI will help you with the details.</p>
+    </div>
+
+    <!-- Characters -->
+    <h3>The Characters</h3>
+
+    <p>Our codebase has its heroes &mdash; programs and tools that work together to make the dining room function. You don't need to understand them deeply right now, just know who they are and what they do:</p>
+
+    <div class="character-grid">
+        <div class="character-card" style="background: #DBEAFE; border: 2px solid #93C5FD;">
+            <div class="char-icon">&#x2699;&#xFE0F;</div>
+            <div class="char-name" style="color: #1D4ED8;">React</div>
+            <div class="char-role" style="color: #1D4ED8;">Head Decorator</div>
+            <div class="char-desc">Builds everything the guest sees: buttons, tables, forms. Without React &mdash; the dining room would be empty walls.</div>
+        </div>
+        <div class="character-card" style="background: #FEF3C7; border: 2px solid #FCD34D;">
+            <div class="char-icon">&#x1F3D7;&#xFE0F;</div>
+            <div class="char-name" style="color: #D97706;">Rspack</div>
+            <div class="char-role" style="color: #D97706;">Construction Crew</div>
+            <div class="char-desc">Every morning before the restaurant opens, Rspack takes all the code files and assembles them into the finished dining room that browsers can show.</div>
+        </div>
+        <div class="character-card" style="background: #D1FAE5; border: 2px solid #6EE7B7;">
+            <div class="char-icon">&#x1F9D1;&#x200D;&#x1F4BC;</div>
+            <div class="char-name" style="color: #059669;">Apollo Client</div>
+            <div class="char-role" style="color: #059669;">Head Waiter</div>
+            <div class="char-desc">Takes orders from the guests (users), carries them to the kitchen (backend), and brings back the dishes (data). Speaks GraphQL fluently.</div>
+        </div>
+        <div class="character-card" style="background: #EDE9FE; border: 2px solid #C4B5FD;">
+            <div class="char-icon">&#x1F4DD;</div>
+            <div class="char-name" style="color: #7C3AED;">Zustand</div>
+            <div class="char-role" style="color: #7C3AED;">Notepad on the Wall</div>
+            <div class="char-desc">Remembers the current state of everything: which tab is open, what's selected, which modal is showing. Simple, fast, reliable.</div>
+        </div>
+        <div class="character-card" style="background: #FEE2E2; border: 2px solid #FCA5A5;">
+            <div class="char-icon">&#x1F4C1;</div>
+            <div class="char-name" style="color: #DC2626;">Redux + Sagas</div>
+            <div class="char-role" style="color: #DC2626;">Old Filing Cabinet</div>
+            <div class="char-desc">The previous system. Still works, but slow and complicated. Being gradually replaced by the nimble Zustand. Don't create new Redux code!</div>
+        </div>
+        <div class="character-card" style="background: #F3F4F6; border: 2px solid #D1D5DB;">
+            <div class="char-icon">&#x1F3E0;</div>
+            <div class="char-name" style="color: #374151;">@fohlio/ui-kit</div>
+            <div class="char-role" style="color: #374151;">Furniture Catalog</div>
+            <div class="char-desc">A separate library of ready-made components: buttons, inputs, tables. Like ordering furniture from a factory instead of building each chair from scratch.</div>
+        </div>
+    </div>
+
+    <div class="story-box">
+        <p>Imagine: the restaurant is getting ready for the day. <strong>Rspack</strong> (the Construction Crew) arrives first &mdash; takes thousands of code files and in a few seconds assembles them into one working dining room.</p>
+        <p>Then <strong>React</strong> (the Head Decorator) steps in. It builds every button, table, and sidebar. When a guest clicks something, React repaints only the changed part &mdash; not the entire room.</p>
+        <p>When the guest wants to see their project data, <strong>Apollo Client</strong> (the Head Waiter) runs to the kitchen (backend) and brings back exactly the data that was requested. No more, no less.</p>
+        <p>And <strong>Zustand</strong> (the Notepad) keeps track of what's happening right now: which project is selected, whether the sidebar is open, what the user is filtering by. If the guest switches a tab, Zustand updates the note, and React immediately repaints the room.</p>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>You don't need to memorize these names!</strong> Cursor's AI knows all of them. When you work with the code, just describe what you want in plain words, and Cursor will use the right tool. These names are here so you recognize them when you see them in the code.</p>
+    </div>
+
+    <!-- User Flow Example -->
+    <h3>Example: What Happens When a User Creates a Project</h3>
+
+    <p>Let's make this concrete. A user opens Fohlio and clicks <strong>"Create New Project."</strong> Here's what happens behind the scenes &mdash; step by step, with all our characters in action:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="520" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Title -->
+            <text x="380" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">User clicks "Create New Project"</text>
+
+            <!-- Step 1 -->
+            <rect x="30" y="50" width="700" height="60" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="55" y="75" font-family="Inter" font-weight="700" font-size="13" fill="#1D4ED8">Step 1</text>
+            <text x="120" y="75" font-family="Inter" font-size="13" fill="#374151">User clicks the "+ New Project" button</text>
+            <text x="55" y="97" font-family="Inter" font-size="11" fill="#6B7280">React shows a dialog window asking for the project name, address, and type.</text>
+
+            <!-- Arrow -->
+            <text x="380" y="125" text-anchor="middle" font-size="16" fill="#D1D5DB">&#x25BC;</text>
+
+            <!-- Step 2 -->
+            <rect x="30" y="135" width="700" height="60" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="55" y="160" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">Step 2</text>
+            <text x="120" y="160" font-family="Inter" font-size="13" fill="#374151">User types the project name and clicks "Create"</text>
+            <text x="55" y="182" font-family="Inter" font-size="11" fill="#6B7280">Zustand (the Notepad) temporarily remembers what the user typed. React shows a loading spinner.</text>
+
+            <!-- Arrow -->
+            <text x="380" y="210" text-anchor="middle" font-size="16" fill="#D1D5DB">&#x25BC;</text>
+
+            <!-- Step 3 -->
+            <rect x="30" y="220" width="700" height="60" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="55" y="245" font-family="Inter" font-weight="700" font-size="13" fill="#059669">Step 3</text>
+            <text x="120" y="245" font-family="Inter" font-size="13" fill="#374151">Apollo (the Waiter) runs to the kitchen</text>
+            <text x="55" y="267" font-family="Inter" font-size="11" fill="#6B7280">Apollo sends a GraphQL request to the backend: "Please create a project called 'Hotel Marrakech'."</text>
+
+            <!-- Arrow -->
+            <text x="380" y="295" text-anchor="middle" font-size="16" fill="#D1D5DB">&#x25BC;</text>
+
+            <!-- Step 4 -->
+            <rect x="30" y="305" width="700" height="60" rx="10" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2"/>
+            <text x="55" y="330" font-family="Inter" font-weight="700" font-size="13" fill="#374151">Step 4</text>
+            <text x="120" y="330" font-family="Inter" font-size="13" fill="#374151">The kitchen (Backend) cooks the order</text>
+            <text x="55" y="352" font-family="Inter" font-size="11" fill="#6B7280">Backend checks permissions, creates the project in the database (PostgreSQL), and sends back the result.</text>
+
+            <!-- Arrow -->
+            <text x="380" y="380" text-anchor="middle" font-size="16" fill="#D1D5DB">&#x25BC;</text>
+
+            <!-- Step 5 -->
+            <rect x="30" y="390" width="700" height="60" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="55" y="415" font-family="Inter" font-weight="700" font-size="13" fill="#059669">Step 5</text>
+            <text x="120" y="415" font-family="Inter" font-size="13" fill="#374151">Apollo brings the dish back and remembers it</text>
+            <text x="55" y="437" font-family="Inter" font-size="11" fill="#6B7280">Apollo receives the new project data, stores it in its cache (memory), so it won't need to ask again.</text>
+
+            <!-- Arrow -->
+            <text x="380" y="465" text-anchor="middle" font-size="16" fill="#D1D5DB">&#x25BC;</text>
+
+            <!-- Step 6 -->
+            <rect x="30" y="475" width="700" height="35" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="55" y="498" font-family="Inter" font-weight="700" font-size="13" fill="#1D4ED8">Step 6</text>
+            <text x="120" y="498" font-family="Inter" font-size="13" fill="#374151">React repaints the screen &mdash; the new project appears in the list. Done!</text>
+        </svg>
+        <div class="diagram-caption">The full journey of creating a project: from button click to data saved in the database and back</div>
+    </div>
+
+    <div class="story-box">
+        <p>Notice how each character does one job and passes the baton:</p>
+        <p><strong>React</strong> shows the button and the dialog &rarr; <strong>Zustand</strong> remembers what the user typed &rarr; <strong>Apollo</strong> carries the request to the kitchen &rarr; <strong>Backend</strong> saves it in the database &rarr; <strong>Apollo</strong> brings the answer back and caches it &rarr; <strong>React</strong> shows the updated screen.</p>
+        <p>It all happens in about <strong>1&ndash;2 seconds</strong>. Six handoffs, invisible to the user. They just see the button, the spinner, and the result.</p>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>This same pattern repeats everywhere:</strong> adding a product, editing a spec, uploading an image, changing a budget. The characters are always the same, just the "order" changes. Once you understand this flow, you understand 90% of how the frontend works.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F37D;&#xFE0F;</div>
+        User: *clicks "Create Project"*<br>
+        6 different programs: *frantically passing data like a relay race*<br>
+        User: "Why did it take a whole second?"<br>
+        <em>Be grateful. In 2005, this would have reloaded the entire page.</em>
+    </div>
+
+
+    <!-- The Big Migration Story -->
+    <h3>The Two Big Upgrades</h3>
+
+    <p>Every old restaurant has a history. Ours went through <strong>two major upgrades</strong>. You'll see traces of both the old and new systems in the code, so it's good to know what happened.</p>
+
+    <h4>Upgrade 1: From REST to GraphQL (How we talk to the kitchen)</h4>
+
+    <div class="story-box">
+        <p>In the early days, our dining room had a <strong>simple ordering system</strong>. The waiter would run to the kitchen with a form: "Give me everything about Project #42." The kitchen would prepare a <strong>huge tray</strong> with ALL information about the project &mdash; even the stuff nobody asked for. This old system was called <strong>REST</strong>.</p>
+        <p>The problem? Imagine ordering a salad and getting the entire menu on a tray. Slow and wasteful.</p>
+        <p>So the restaurant upgraded to <strong>GraphQL</strong> &mdash; a smart ordering system where the waiter says: "I need ONLY the project name, owner, and last 5 items." And the kitchen sends back <em>exactly</em> that. No more, no less.</p>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Why does this matter to you?</strong> When you look at the code, you'll see two styles of "talking to the kitchen". The old way (REST) looks like web addresses: <code>/api/projects/42</code>. The new way (GraphQL) looks like a wish list describing exactly what data you want. All new code uses GraphQL.</p>
+    </div>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- REST side -->
+            <rect x="30" y="30" width="330" height="220" rx="12" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="2" stroke-dasharray="6 4"/>
+            <text x="195" y="58" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#DC2626">Before: REST API</text>
+
+            <rect x="50" y="80" width="130" height="50" rx="8" fill="#FFF" stroke="#FCA5A5"/>
+            <text x="115" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#DC2626">Frontend</text>
+            <text x="115" y="118" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B7280">"GET /api/projects/42"</text>
+
+            <defs>
+                <marker id="arrRest" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#FCA5A5"/>
+                </marker>
+                <marker id="arrGql" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6EE7B7"/>
+                </marker>
+            </defs>
+
+            <line x1="185" y1="105" x2="210" y2="105" stroke="#FCA5A5" stroke-width="2" marker-end="url(#arrRest)"/>
+
+            <rect x="215" y="80" width="130" height="50" rx="8" fill="#FFF" stroke="#FCA5A5"/>
+            <text x="280" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#DC2626">Backend</text>
+            <text x="280" y="118" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B7280">Returns EVERYTHING</text>
+
+            <text x="195" y="160" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">10 different endpoints</text>
+            <text x="195" y="178" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Over-fetching (too much data)</text>
+            <text x="195" y="196" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Multiple requests per page</text>
+            <text x="195" y="220" text-anchor="middle" font-family="Inter" font-size="13" fill="#FCA5A5">Redux stores the responses</text>
+
+            <!-- GraphQL side -->
+            <rect x="400" y="30" width="330" height="220" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="565" y="58" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#059669">Now: GraphQL</text>
+
+            <rect x="420" y="80" width="130" height="50" rx="8" fill="#FFF" stroke="#6EE7B7"/>
+            <text x="485" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#059669">Frontend</text>
+            <text x="485" y="118" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B7280">"Give me name, owner"</text>
+
+            <line x1="555" y1="105" x2="580" y2="105" stroke="#6EE7B7" stroke-width="2" marker-end="url(#arrGql)"/>
+
+            <rect x="585" y="80" width="130" height="50" rx="8" fill="#FFF" stroke="#6EE7B7"/>
+            <text x="650" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#059669">Backend</text>
+            <text x="650" y="118" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B7280">Returns ONLY that</text>
+
+            <text x="565" y="160" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">1 endpoint: /graphql</text>
+            <text x="565" y="178" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Exact data you need</text>
+            <text x="565" y="196" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">One request per page</text>
+            <text x="565" y="220" text-anchor="middle" font-family="Inter" font-size="13" fill="#059669">Apollo Client caches it</text>
+        </svg>
+        <div class="diagram-caption">REST: "give me everything" vs GraphQL: "give me exactly what I need"</div>
+    </div>
+
+    <h4>Upgrade 2: From Redux to Apollo + Zustand (How we remember things)</h4>
+
+    <div class="story-box">
+        <p>With the old system, the restaurant needed a <strong>giant filing cabinet</strong> (called <strong>Redux</strong>) to store all the data. Every piece of data had to be manually filed and indexed. It worked, but was slow and complicated.</p>
+        <p>With the new system, <strong>Apollo Client</strong> (the Head Waiter) has its own memory. It said: "I'll automatically remember everything the kitchen sends me. No filing cabinet needed." The waiter remembers past orders and can answer repeat questions instantly.</p>
+        <p>For things like "is the sidebar open?" or "which tab is selected?", the team uses <strong>Zustand</strong> &mdash; a simple notepad. Write it down, read it back. Done.</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>What</th>
+            <th style="background: #DC2626;">Old Way</th>
+            <th style="background: #059669;">New Way</th>
+        </tr>
+        <tr>
+            <td><strong>Asking the kitchen for data</strong></td>
+            <td>REST (old-style web requests)</td>
+            <td>GraphQL (smart requests)</td>
+        </tr>
+        <tr>
+            <td><strong>Remembering kitchen data</strong></td>
+            <td>Redux (complicated filing cabinet)</td>
+            <td>Apollo (automatic memory)</td>
+        </tr>
+        <tr>
+            <td><strong>Remembering UI state</strong></td>
+            <td>Redux (same complicated system)</td>
+            <td>Zustand (simple notepad)</td>
+        </tr>
+        <tr>
+            <td><strong>Where in the code</strong></td>
+            <td><code>src/data/</code>, <code>src/containers/</code></td>
+            <td><code>src/__fsd__/</code></td>
+        </tr>
+    </table>
+
+    <div class="info-box red">
+        <p><strong>Simple rule for you:</strong> If you find yourself editing something in <code>src/data/</code> &mdash; that's old code. Fix the bug if needed, but don't add new things there. All new work goes into <code>src/__fsd__/</code> using the modern tools.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F355;</div>
+        REST is like texting your ex &mdash; you ask one question<br>
+        and get back 47 things you didn't ask for.<br>
+        GraphQL is like a therapist &mdash; you get exactly<br>
+        the answer to the question you asked.<br>
+        <em>Both cost money, but at least GraphQL is faster.</em>
+    </div>
+
+
+    <!-- FSD Architecture -->
+    <h3>The Room Layout: Feature-Sliced Design (FSD)</h3>
+
+    <p>The team also reorganized <strong>where things live</strong> in the code. Before, everything was mixed together &mdash; like throwing all your kitchen utensils, plates, and napkins into one drawer. With 400+ files, nobody could find anything.</p>
+
+    <p>The new system is called <strong>Feature-Sliced Design (FSD)</strong>. Think of it as a <strong>6-floor building</strong> where each floor has a clear purpose:</p>
+
+    <div class="fsd-layers">
+        <div class="fsd-layer l1">
+            <span class="layer-num">1</span>
+            <span class="layer-name">app</span>
+            <span class="layer-desc">The building itself: routing, providers, main layout</span>
+        </div>
+        <div class="fsd-layer l2">
+            <span class="layer-num">2</span>
+            <span class="layer-name">pages</span>
+            <span class="layer-desc">Individual rooms: Dashboard, Project Sheet, Billing...</span>
+        </div>
+        <div class="fsd-layer l3">
+            <span class="layer-num">3</span>
+            <span class="layer-name">widgets</span>
+            <span class="layer-desc">Big pieces of furniture: Analytics panel, Budget table...</span>
+        </div>
+        <div class="fsd-layer l4">
+            <span class="layer-num">4</span>
+            <span class="layer-name">features</span>
+            <span class="layer-desc">Interactive things: "Add product" button, approval workflow...</span>
+        </div>
+        <div class="fsd-layer l5">
+            <span class="layer-num">5</span>
+            <span class="layer-name">entities</span>
+            <span class="layer-desc">Core concepts: Project, Contact, Budget, Comment...</span>
+        </div>
+        <div class="fsd-layer l6">
+            <span class="layer-num">6</span>
+            <span class="layer-name">shared</span>
+            <span class="layer-desc">Basic tools everyone uses: UI components, helpers, API utils</span>
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>The one rule you need to know:</strong> New code always goes into <code>src/__fsd__/</code>. If you see folders like <code>src/components/</code> or <code>src/data/</code> &mdash; that's old code. Don't add new things there.</p>
+    </div>
+
+    <p>In the project, this structure lives in the folder <code>src/__fsd__/</code>. When you open it in Cursor, you'll see the 6 numbered folders. If you need to find where something is &mdash; just think about which floor it belongs to.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="320" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Old wing -->
+            <rect x="40" y="30" width="300" height="260" rx="12" fill="#FEE2E2" stroke="#FCA5A5" stroke-width="2" stroke-dasharray="6 4"/>
+            <text x="190" y="60" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#DC2626">Old Wing (Legacy)</text>
+            <text x="190" y="82" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Being phased out</text>
+
+            <rect x="60" y="100" width="120" height="45" rx="8" fill="#FFF" stroke="#FCA5A5"/>
+            <text x="120" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#DC2626">components/</text>
+
+            <rect x="200" y="100" width="120" height="45" rx="8" fill="#FFF" stroke="#FCA5A5"/>
+            <text x="260" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#DC2626">containers/</text>
+
+            <rect x="60" y="160" width="120" height="45" rx="8" fill="#FFF" stroke="#FCA5A5"/>
+            <text x="120" y="188" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#DC2626">data/ (Redux)</text>
+
+            <rect x="200" y="160" width="120" height="45" rx="8" fill="#FFF" stroke="#FCA5A5"/>
+            <text x="260" y="188" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#DC2626">__new__/</text>
+
+            <text x="190" y="240" text-anchor="middle" font-family="Inter" font-size="20" fill="#FCA5A5">&#x1F6A7;</text>
+            <text x="190" y="270" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Don't add new code here</text>
+
+            <!-- Arrow -->
+            <text x="380" y="165" text-anchor="middle" font-family="Inter" font-weight="700" font-size="28" fill="#D1D5DB">&#x27A1;</text>
+            <text x="380" y="185" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">migrating</text>
+
+            <!-- New wing -->
+            <rect x="420" y="30" width="300" height="260" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="570" y="60" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#059669">New Wing (FSD)</text>
+            <text x="570" y="82" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">All new features go here!</text>
+
+            <rect x="440" y="100" width="260" height="28" rx="6" fill="#FEE2E2"/>
+            <text x="570" y="119" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#DC2626">1-app/</text>
+
+            <rect x="440" y="133" width="260" height="28" rx="6" fill="#FEF3C7"/>
+            <text x="570" y="152" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#D97706">2-pages/</text>
+
+            <rect x="440" y="166" width="260" height="28" rx="6" fill="#DBEAFE"/>
+            <text x="570" y="185" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1D4ED8">3-widgets/</text>
+
+            <rect x="440" y="199" width="260" height="28" rx="6" fill="#EDE9FE"/>
+            <text x="570" y="218" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7C3AED">4-features/</text>
+
+            <rect x="440" y="232" width="260" height="28" rx="6" fill="#D1FAE5"/>
+            <text x="570" y="251" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#059669">5-entities/</text>
+
+            <rect x="440" y="265" width="260" height="22" rx="6" fill="#F3F4F6"/>
+            <text x="570" y="280" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#374151">6-shared/</text>
+        </svg>
+        <div class="diagram-caption">The Great Migration: from the chaotic old wing to the organized FSD structure</div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6A8;</div>
+        Putting new code in the old <code>src/components/</code> folder<br>
+        is like parking in a "No Parking" zone.<br>
+        You <em>can</em> do it. But someone will find you. And they will not be happy.<br>
+        <em>src/__fsd__/ is free parking with a view.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: ENVIRONMENT VARIABLES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Environment Variables</h2>
+
+    <p>Environment variables are like <strong>settings on a configuration board</strong>. They tell the frontend: "Which kitchen (backend server) should I send orders to?"</p>
+
+    <p>They live in a file called <code>.env.local</code> in the project folder. This file is <strong>personal to your machine</strong> &mdash; it's not shared with others via Git, because everyone might connect to a different server.</p>
+
+    <h3>The Two Most Important Variables</h3>
+
+    <p>90% of the time, you only care about these two:</p>
+
+    <table>
+        <tr>
+            <th>Variable</th>
+            <th>What It Does</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td><code>REACT_APP_API_URL</code></td>
+            <td>Where to send API requests (which backend/kitchen)</td>
+            <td><code>https://test01.fohlio.io/be</code></td>
+        </tr>
+        <tr>
+            <td><code>REACT_APP_CABLE_URL</code></td>
+            <td>Connection for live updates (when someone else edits the same project)</td>
+            <td><code>wss://test01.fohlio.io/be/cable</code></td>
+        </tr>
+    </table>
+
+    <p>When you run <code>make use-test01</code>, the Makefile automatically updates these two variables in your <code>.env.local</code> file. You don't need to edit them manually!</p>
+
+    <h3>What <code>.env.local</code> Looks Like</h3>
+
+    <pre><span class="comment"># Which backend server to connect to</span>
+<span class="keyword">REACT_APP_API_URL</span>=<span class="string">https://test01.fohlio.io/be</span>
+<span class="keyword">REACT_APP_CABLE_URL</span>=<span class="string">wss://test01.fohlio.io/be/cable</span></pre>
+
+    <div class="info-box purple">
+        <p><strong>That's it!</strong> There are other variables in the file (for analytics, payments, error tracking), but they're only used in production. You don't need to worry about them. If something doesn't work, ask Ivan &mdash; it's probably a missing env variable.</p>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Simple rule:</strong> After <code>make setup</code>, your <code>.env.local</code> has everything it needs. Just run <code>make use-test01</code> (or whichever server) to point to the right backend, and you're good to go.</p>
+    </div>
+
+    <h3>Switching Between Backends</h3>
+
+    <p>Here's a visual of what happens when you switch:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="200" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Your laptop -->
+            <rect x="40" y="50" width="180" height="100" rx="12" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="130" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="14" fill="#1D4ED8">Your Laptop</text>
+            <text x="130" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">.env.local</text>
+            <text x="130" y="120" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#93C5FD">API_URL = ???</text>
+            <text x="130" y="140" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B7280">make use-??? changes this</text>
+
+            <!-- Arrow with make command -->
+            <defs>
+                <marker id="arrowGreen3" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6EE7B7"/>
+                </marker>
+            </defs>
+            <line x1="225" y1="100" x2="355" y2="60" stroke="#6EE7B7" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrowGreen3)"/>
+            <line x1="225" y1="100" x2="355" y2="100" stroke="#93C5FD" stroke-width="3" marker-end="url(#arrowGreen3)"/>
+            <line x1="225" y1="100" x2="355" y2="140" stroke="#C4B5FD" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#arrowGreen3)"/>
+
+            <!-- Servers -->
+            <rect x="360" y="30" width="165" height="40" rx="8" fill="#D1FAE5" stroke="#6EE7B7"/>
+            <text x="443" y="55" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#059669">test01.fohlio.io</text>
+
+            <rect x="360" y="80" width="165" height="40" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="443" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#1D4ED8">test02.fohlio.io</text>
+
+            <rect x="360" y="130" width="165" height="40" rx="8" fill="#EDE9FE" stroke="#C4B5FD"/>
+            <text x="443" y="155" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#7C3AED">uat01.fohlio.com</text>
+
+            <!-- make commands -->
+            <text x="575" y="55" font-family="JetBrains Mono" font-size="10" fill="#6B7280">make use-test01</text>
+            <text x="575" y="105" font-family="JetBrains Mono" font-size="10" fill="#6B7280">make use-test02</text>
+            <text x="575" y="155" font-family="JetBrains Mono" font-size="10" fill="#6B7280">make use-uat01</text>
+        </svg>
+        <div class="diagram-caption">Your .env.local connects your local frontend to whichever backend you choose</div>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>Important:</strong> After running <code>make use-*</code>, you must <strong>restart the dev server</strong> (<code>Ctrl+C</code> then <code>make s</code> again). Environment variables are read at startup &mdash; changes won't apply until you restart.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F50C;</div>
+        "My frontend shows a blank page!"<br>
+        "Did you point it to a backend?"<br>
+        "...A what?"<br>
+        <em>A dining room with no kitchen is just a room with empty tables and broken dreams.</em>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>How to get env variables:</strong> After you clone the repository, <code>make setup</code> creates <code>.env.local</code> from the sample file. This gives you all the basic variables. If you need any secrets or special keys (Sentry, Stripe, etc.), ask Ivan in DMs &mdash; he'll send them to you.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: CLONING & PERMISSIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Cloning the Repository</h2>
+
+    <h3>Prerequisites</h3>
+
+    <p>Before you start, make sure you have:</p>
+
+    <table>
+        <tr>
+            <th>Tool</th>
+            <th>How to Check</th>
+            <th>How to Install</th>
+        </tr>
+        <tr>
+            <td><strong>Git</strong></td>
+            <td><code>git --version</code></td>
+            <td>Comes with Xcode CLI tools (Mac) or git-scm.com</td>
+        </tr>
+        <tr>
+            <td><strong>Node.js v20</strong></td>
+            <td><code>node --version</code></td>
+            <td>Install via <code>nvm</code> (recommended)</td>
+        </tr>
+        <tr>
+            <td><strong>Yarn</strong></td>
+            <td><code>yarn --version</code></td>
+            <td><code>corepack enable</code> (built into Node)</td>
+        </tr>
+        <tr>
+            <td><strong>GitHub CLI (gh)</strong></td>
+            <td><code>gh --version</code></td>
+            <td><code>brew install gh</code> (Mac)</td>
+        </tr>
+        <tr>
+            <td><strong>GitHub access</strong></td>
+            <td><code>ssh -T git@github.com</code></td>
+            <td>Add SSH key in GitHub settings</td>
+        </tr>
+        <tr>
+            <td><strong>Cursor</strong></td>
+            <td>Open the app</td>
+            <td>cursor.com</td>
+        </tr>
+    </table>
+
+    <h3>Step 1: Set Up Node.js with nvm</h3>
+
+    <p>We use a specific Node.js version (v20.12.2). <strong>nvm</strong> (Node Version Manager) lets you install and switch between versions easily:</p>
+
+    <pre><span class="comment"># Install nvm (if you don't have it)</span>
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+<span class="comment"># Close and reopen your terminal, then:</span>
+nvm install 20.12.2
+nvm use 20.12.2
+
+<span class="comment"># Verify:</span>
+node --version
+<span class="comment"># Should print: v20.12.2</span></pre>
+
+    <div class="info-box green">
+        <p><strong>Why nvm?</strong> Different projects might need different Node versions. With nvm, you can switch instantly. The file <code>.nvmrc</code> in the project root tells nvm which version to use. Just run <code>nvm use</code> in the project folder.</p>
+    </div>
+
+    <h3>Step 2: GitHub Permissions</h3>
+
+    <p>You need access to two things on GitHub:</p>
+
+    <ol>
+        <li><strong>Fohlio organization</strong> &mdash; to clone the repository. Ask your team lead to add you.</li>
+        <li><strong>GitHub Packages token</strong> &mdash; to download <code>@fohlio/ui-kit</code>. This requires a special setup.</li>
+    </ol>
+
+    <div class="info-box orange">
+        <p><strong>What is <code>@fohlio/ui-kit</code>?</strong> It's our private npm package hosted on GitHub Packages (not the public npm). It contains reusable UI components: buttons, inputs, modals. The project can't install without it.</p>
+    </div>
+
+    <h3>Step 3: Set Up the GitHub Token for @fohlio/ui-kit</h3>
+
+    <p>The project uses <strong>GitHub Packages</strong> to host the private <code>@fohlio/ui-kit</code> package. To download it during <code>yarn install</code>, you need to authenticate. We use the <strong>GitHub CLI (<code>gh</code>)</strong> for this &mdash; it's the easiest way.</p>
+
+    <div class="step-card">
+        <h4>3a. Install GitHub CLI</h4>
+        <p>If you don't have <code>gh</code> yet:</p>
+        <pre><span class="comment"># Mac (via Homebrew):</span>
+brew install gh
+
+<span class="comment"># Verify:</span>
+gh --version</pre>
+    </div>
+
+    <div class="step-card">
+        <h4>3b. Log in to GitHub via CLI</h4>
+        <p>If you haven't logged in to <code>gh</code> yet:</p>
+        <pre><span class="comment"># This will open a browser for OAuth login:</span>
+gh auth login</pre>
+        <p>Follow the prompts: choose GitHub.com, HTTPS, and authenticate in the browser.</p>
+    </div>
+
+    <div class="step-card">
+        <h4>3c. Add the <code>read:packages</code> Scope and Configure Yarn</h4>
+        <p>These two commands are the magic. Run them in any directory:</p>
+        <pre><span class="comment"># 1. Add the read:packages scope to your gh token</span>
+gh auth refresh -s read:packages
+
+<span class="comment"># 2. Tell Yarn to use your gh token for @fohlio packages</span>
+yarn config set --home <span class="string">'npmScopes.fohlio.npmAuthToken'</span> <span class="string">"$(gh auth token)"</span></pre>
+        <p>That's it! Two commands. No manual token copying, no editing <code>~/.npmrc</code>.</p>
+    </div>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="220" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Step 1 -->
+            <rect x="30" y="30" width="200" height="80" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="130" y="58" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">1. gh auth login</text>
+            <text x="130" y="78" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Log in to GitHub</text>
+            <text x="130" y="95" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">(one-time, in browser)</text>
+
+            <defs>
+                <marker id="arr1" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+            </defs>
+
+            <line x1="235" y1="70" x2="265" y2="70" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr1)"/>
+
+            <!-- Step 2 -->
+            <rect x="270" y="30" width="210" height="80" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="375" y="55" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#059669">2. gh auth refresh</text>
+            <text x="375" y="75" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6B7280">-s read:packages</text>
+            <text x="375" y="95" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Adds package read scope</text>
+
+            <line x1="485" y1="70" x2="515" y2="70" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr1)"/>
+
+            <!-- Step 3 -->
+            <rect x="520" y="30" width="210" height="80" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="625" y="55" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">3. yarn config set</text>
+            <text x="625" y="75" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6B7280">npmScopes.fohlio</text>
+            <text x="625" y="95" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Saves token for Yarn</text>
+
+            <!-- How it works -->
+            <rect x="30" y="140" width="700" height="55" rx="12" fill="#FFF" stroke="#E5E7EB"/>
+            <text x="380" y="165" text-anchor="middle" font-family="Inter" font-weight="600" font-size="14" fill="#374151">How it works:</text>
+            <text x="380" y="185" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280"><![CDATA[.yarnrc.yml says "@fohlio packages are on GitHub" + yarn config has the token = yarn install works]]></text>
+        </svg>
+        <div class="diagram-caption">Token setup: just 3 commands using GitHub CLI. No manual token management!</div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Token expired?</strong> If <code>yarn install</code> starts failing with <code>401 Unauthorized</code>, just re-run the same two commands:</p>
+        <pre style="margin: 8px 0; background: var(--gray-900); font-size: 12px; padding: 12px;">gh auth refresh -s read:packages
+yarn config set --home <span class="string">'npmScopes.fohlio.npmAuthToken'</span> <span class="string">"$(gh auth token)"</span></pre>
+    </div>
+
+    <h4>How Does This All Connect?</h4>
+
+    <p>Two config layers work together:</p>
+
+    <table>
+        <tr>
+            <th>Config</th>
+            <th>Where</th>
+            <th>What It Does</th>
+        </tr>
+        <tr>
+            <td><code>.yarnrc.yml</code></td>
+            <td>In the project</td>
+            <td>"All <code>@fohlio/*</code> packages come from <code>npm.pkg.github.com</code>"</td>
+        </tr>
+        <tr>
+            <td><code>yarn config --home</code></td>
+            <td>Your home directory (<code>~/.yarnrc.yml</code>)</td>
+            <td>"Use this token to authenticate with GitHub Packages"</td>
+        </tr>
+    </table>
+
+    <p>When you run <code>yarn install</code>, Yarn reads the project config ("where to get @fohlio packages") and your home config ("how to authenticate"). Together, they let Yarn download <code>@fohlio/ui-kit</code>.</p>
+
+    <h3>Step 4: Clone and Set Up</h3>
+
+    <p>Now let's actually clone and set up the project:</p>
+
+    <pre><span class="comment"># 1. Clone the repository</span>
+git clone git@github.com:Fohlio/fohlio-frontend.git
+
+<span class="comment"># 2. Enter the project directory</span>
+<span class="keyword">cd</span> fohlio-frontend
+
+<span class="comment"># 3. Use the correct Node.js version</span>
+nvm use
+
+<span class="comment"># 4. Enable Yarn (if you haven't)</span>
+corepack enable
+
+<span class="comment"># 5. Setup: install dependencies + create .env.local</span>
+make setup
+
+<span class="comment"># 6. Point to a staging backend</span>
+make use-test01
+
+<span class="comment"># 7. Start the dev server!</span>
+make s</pre>
+
+    <div class="info-box green">
+        <p><strong>That's it!</strong> Open <code>http://localhost:3000</code> in your browser. You should see the Fohlio login page. Log in with your staging credentials (ask Ivan for them).</p>
+    </div>
+
+    <h3>Troubleshooting</h3>
+
+    <table>
+        <tr>
+            <th>Problem</th>
+            <th>Cause</th>
+            <th>Fix</th>
+        </tr>
+        <tr>
+            <td><code>401 Unauthorized</code> during yarn install</td>
+            <td>Missing or expired GitHub token</td>
+            <td>Run <code>gh auth refresh -s read:packages</code> then <code>yarn config set --home 'npmScopes.fohlio.npmAuthToken' "$(gh auth token)"</code></td>
+        </tr>
+        <tr>
+            <td><code>nvm: command not found</code></td>
+            <td>nvm not installed</td>
+            <td>Install nvm, then close and reopen your terminal</td>
+        </tr>
+        <tr>
+            <td>Blank page at localhost:3000</td>
+            <td>Wrong <code>REACT_APP_API_URL</code></td>
+            <td>Run <code>make use-test01</code> and restart with <code>make s</code></td>
+        </tr>
+        <tr>
+            <td><code>CORS error</code> in console</td>
+            <td>Staging server not expecting localhost</td>
+            <td>Try a different staging server (test02, test03)</td>
+        </tr>
+        <tr>
+            <td><code>make: command not found</code></td>
+            <td>Missing build tools on Mac</td>
+            <td>Run <code>xcode-select --install</code></td>
+        </tr>
+    </table>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F527;</div>
+        The 5 stages of project setup:<br>
+        1. Confidence &mdash; "This will take 10 minutes"<br>
+        2. Confusion &mdash; "What is <code>~/.npmrc</code>?"<br>
+        3. Anger &mdash; "401 UNAUTHORIZED?!"<br>
+        4. Bargaining &mdash; "Maybe I'll just use the staging URL directly..."<br>
+        5. Acceptance &mdash; <em>"I should have read the lesson first."</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: FOLDER STRUCTURE MAP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Folder Structure Map</h2>
+
+    <p>Here's a map of the entire <code>fohlio-frontend/</code> directory. The files marked with a star are the ones you'll interact with most.</p>
+
+    <pre><span class="string">fohlio-frontend/</span>
+<span class="keyword">src/</span>                          <span class="comment"># All source code</span>
+  <span class="keyword">__fsd__/</span>                    <span class="comment"># &#x2B50; Feature-Sliced Design (new code goes here)</span>
+    <span class="string">1-app/</span>                  <span class="comment">#   App routing, providers, layout</span>
+    <span class="string">2-pages/</span>                <span class="comment">#   29 page components</span>
+    <span class="string">3-widgets/</span>              <span class="comment">#   46 composite UI blocks</span>
+    <span class="string">4-features/</span>             <span class="comment">#   16+ feature groups</span>
+    <span class="string">5-entities/</span>             <span class="comment">#   20+ domain entities</span>
+    <span class="string">6-shared/</span>               <span class="comment">#   Shared UI, API, helpers</span>
+  <span class="keyword">__new__/</span>                    <span class="comment"># Transition layer (legacy-to-FSD)</span>
+  <span class="keyword">components/</span>                 <span class="comment"># Legacy UI components</span>
+  <span class="keyword">containers/</span>                 <span class="comment"># Legacy container components</span>
+  <span class="keyword">data/</span>                       <span class="comment"># Legacy Redux + Sagas</span>
+  <span class="string">App.tsx</span>                     <span class="comment"># Root component</span>
+  <span class="string">index.tsx</span>                   <span class="comment"># Entry point</span>
+  <span class="string">schema.graphql.ts</span>           <span class="comment"># Auto-generated (don't edit!)</span>
+  <span class="string">operations.graphql.ts</span>       <span class="comment"># Auto-generated (don't edit!)</span>
+<span class="keyword">rspack/</span>                       <span class="comment"># Build config (don't touch!)</span>
+<span class="keyword">public/</span>                       <span class="comment"># Static files, translations</span>
+  <span class="string">locales/</span>                    <span class="comment"># en, fr, ja, zh translations</span>
+<span class="flag">.env.local</span>                    <span class="comment"># &#x2B50; Your personal env config</span>
+<span class="flag">.env.local.sample</span>             <span class="comment"># Template for .env.local</span>
+<span class="flag">.yarnrc.yml</span>                   <span class="comment"># Yarn config (GitHub packages registry)</span>
+<span class="flag">.nvmrc</span>                        <span class="comment"># Node.js version (v20.12.2)</span>
+<span class="flag">Makefile</span>                      <span class="comment"># &#x2B50; All dev commands</span>
+<span class="flag">package.json</span>                  <span class="comment"># Dependencies and scripts</span>
+<span class="flag">tsconfig.json</span>                 <span class="comment"># TypeScript + path aliases</span></pre>
+
+    <div class="info-box purple">
+        <p><strong>Files you'll use daily:</strong></p>
+        <ul>
+            <li><code>src/__fsd__/</code> &mdash; where all your code lives</li>
+            <li><code>Makefile</code> &mdash; all commands (<code>make s</code>, <code>make use-*</code>, etc.)</li>
+            <li><code>.env.local</code> &mdash; your backend connection</li>
+        </ul>
+        <p><strong>Files you should NEVER edit:</strong></p>
+        <ul>
+            <li><code>schema.graphql.ts</code>, <code>operations.graphql.ts</code> &mdash; auto-generated by GraphQL codegen</li>
+            <li><code>rspack/</code> &mdash; build configuration, affects all developers</li>
+        </ul>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>React</strong>
+            <span>Builds the UI. "Head Decorator" of the dining room.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Rspack</strong>
+            <span>Bundles all code. The "Construction Crew".</span>
+        </div>
+        <div class="recap-item">
+            <strong>Apollo Client</strong>
+            <span>Fetches data via GraphQL. The "Head Waiter".</span>
+        </div>
+        <div class="recap-item">
+            <strong>Zustand</strong>
+            <span>Modern state management. The "Notepad".</span>
+        </div>
+        <div class="recap-item">
+            <strong>REST &rarr; GraphQL</strong>
+            <span>Old REST (fetch everything) &rarr; GraphQL (fetch only what you need). Apollo Client.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Redux &rarr; Zustand</strong>
+            <span>Old Redux + Sagas (complex) &rarr; Zustand (simple) + Apollo cache (automatic).</span>
+        </div>
+        <div class="recap-item">
+            <strong>FSD Architecture</strong>
+            <span>6 layers: app &rarr; pages &rarr; widgets &rarr; features &rarr; entities &rarr; shared.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Environment Variables</strong>
+            <span>API_URL + CABLE_URL in .env.local. Switch via <code>make use-*</code>.</span>
+        </div>
+        <div class="recap-item">
+            <strong>GitHub Token</strong>
+            <span><code>gh auth refresh -s read:packages</code> + <code>yarn config set</code> for @fohlio/ui-kit.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Setup Commands</strong>
+            <span><code>make setup</code> &rarr; <code>make use-test01</code> &rarr; <code>make s</code></span>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework Assignment</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Clone fohlio-frontend and run it locally</strong>
+                <p>Follow the steps from Part 3:</p>
+                <ul>
+                    <li>Install <code>nvm</code> and Node.js v20.12.2</li>
+                    <li>Install GitHub CLI: <code>brew install gh</code></li>
+                    <li>Log in: <code>gh auth login</code></li>
+                    <li>Set up the token: <code>gh auth refresh -s read:packages</code> and <code>yarn config set --home 'npmScopes.fohlio.npmAuthToken' "$(gh auth token)"</code></li>
+                    <li>Clone <code>fohlio-frontend</code></li>
+                    <li>Run <code>make setup</code>, <code>make use-test01</code>, <code>make s</code></li>
+                    <li>Send me a screenshot of the running app in the browser</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Write me in DMs for env variables and staging credentials</strong>
+                <p>After you successfully run the project, message Ivan in Slack to get:</p>
+                <ul>
+                    <li>Staging login credentials (email + password for test servers)</li>
+                    <li>Any additional env variables you might need</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Make your first fix via Cursor</strong>
+                <p>This is your main exercise. You'll practice the full workflow: branch &rarr; fix &rarr; commit &rarr; PR.</p>
+                <ol>
+                    <li>Make sure you're on the latest <code>develop</code> branch:
+                        <pre style="margin: 8px 0; font-size: 12px;">git checkout develop
+git pull origin develop</pre>
+                    </li>
+                    <li>Create a new branch:
+                        <pre style="margin: 8px 0; font-size: 12px;">git checkout -b YOUR-NAME-first-fix</pre>
+                    </li>
+                    <li>Open the project in <strong>Cursor</strong>:
+                        <pre style="margin: 8px 0; font-size: 12px;">cursor .</pre>
+                    </li>
+                    <li>Find the file <code>src/__fsd__/6-shared/ui/index.ts</code></li>
+                    <li>Add a comment at the top of the file:
+                        <pre style="margin: 8px 0; font-size: 12px; background: #1F2937; padding: 8px 12px; border-radius: 6px;"><span class="comment">// Course exercise: YOUR-NAME was here</span></pre>
+                    </li>
+                    <li>Commit and push:
+                        <pre style="margin: 8px 0; font-size: 12px;">git add .
+git commit -m "Exercise: add comment by YOUR-NAME"
+git push -u origin YOUR-NAME-first-fix</pre>
+                    </li>
+                    <li>Create a <strong>Pull Request</strong> on GitHub to <code>develop</code> branch</li>
+                    <li>Send me the PR link</li>
+                </ol>
+            </li>
+        </ol>
+
+        <div class="info-box blue" style="margin-top: 24px;">
+            <p><strong>Tip:</strong> Try using Cursor's AI to help you! Open the Cursor chat (<code>Cmd+L</code>) and ask it to "add a comment at the top of src/__fsd__/6-shared/ui/index.ts". This is your first taste of AI-assisted coding.</p>
+        </div>
+
+        <h3 style="margin-top: 24px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Explore the FSD structure</strong>
+                <p>Open <code>src/__fsd__/</code> in Cursor and try to find:</p>
+                <ul>
+                    <li>Where is the Dashboard page?</li>
+                    <li>What entities exist? (look in <code>5-entities/</code>)</li>
+                    <li>Can you find a Zustand store? (search for <code>create(</code> from zustand)</li>
+                </ul>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Try Cursor AI on the codebase</strong>
+                <p>Open Cursor's chat and ask:</p>
+                <ul>
+                    <li>"What does <code>make s</code> do?"</li>
+                    <li>"Explain the FSD layer structure"</li>
+                    <li>"Where are the GraphQL queries defined?"</li>
+                </ul>
+                <p>Compare what Cursor tells you with what you learned in this lesson!</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio Tech Course &mdash; Lesson 3 of 10</p>
+        <p>Questions? Ask in the <code>#tech-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: React Basics & Component Thinking</p>
+    </div>
+
+</div>
+
+</body>
+</html>
