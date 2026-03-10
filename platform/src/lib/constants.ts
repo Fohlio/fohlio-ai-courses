@@ -145,6 +145,101 @@ export const LESSONS: Lesson[] = [
       },
     ],
   },
+  {
+    id: "lesson-3",
+    slug: "frontend-deep-dive",
+    number: 3,
+    title: "Frontend Deep Dive: Setup & First Fix",
+    subtitle: "FSD architecture, environment, cloning & first PR",
+    description:
+      "Explore the fohlio-frontend codebase through a story, understand environment variables, set up permissions for ui-kit, and make your first code change via Cursor.",
+    learningGoals: [
+      "Understand the fohlio-frontend architecture and key characters (React, Rspack, Apollo, Zustand)",
+      "Know what FSD (Feature-Sliced Design) is and why we use it",
+      "Understand environment variables and how they work",
+      "Set up GitHub token for @fohlio/ui-kit access",
+      "Make your first code fix and create a Pull Request",
+    ],
+    contentType: "html",
+    contentFile: "lesson3-frontend-deep-dive.html",
+    videoUrl: null,
+    isPublished: true,
+    order: 3,
+    homework: [
+      {
+        id: "hw-3-required",
+        category: "required",
+        tasks: [
+          {
+            id: "task-3-1",
+            lessonId: "lesson-3",
+            title: "Clone fohlio-frontend and run it locally",
+            description:
+              "Follow the steps from the lesson: install nvm + Node.js v20.12.2, set up GitHub CLI token (gh auth refresh -s read:packages), clone fohlio-frontend, run make setup && make use-test01 && make s. Send a screenshot of the running app.",
+            category: "required",
+            submissionType: "screenshot",
+            order: 1,
+          },
+          {
+            id: "task-3-2",
+            lessonId: "lesson-3",
+            title: "Get env variables and staging credentials",
+            description:
+              "Write Ivan in DMs to get the .env.local file and staging server login credentials. Confirm you received them.",
+            category: "required",
+            submissionType: "text",
+            order: 2,
+          },
+          {
+            id: "task-3-3",
+            lessonId: "lesson-3",
+            title: "Make your first fix via Cursor",
+            description:
+              "Create a branch (YOUR-NAME-first-fix), open the project in Cursor, add a comment '// Course exercise: YOUR-NAME was here' to src/__fsd__/6-shared/ui/index.ts, commit, push, and create a PR to develop. Send the PR link.",
+            category: "required",
+            submissionType: "pr_link",
+            order: 3,
+          },
+        ],
+      },
+      {
+        id: "hw-3-advanced",
+        category: "advanced",
+        tasks: [
+          {
+            id: "task-3-4",
+            lessonId: "lesson-3",
+            title: "Explore the FSD structure",
+            description:
+              "Open src/__fsd__/ in Cursor and find the following:",
+            category: "advanced",
+            submissionType: "checklist",
+            order: 1,
+            checklistItems: [
+              "Where is the Dashboard page?",
+              "What entities exist in 5-entities/?",
+              "Can you find a Zustand store? (search for 'create(' from zustand)",
+            ],
+          },
+          {
+            id: "task-3-5",
+            lessonId: "lesson-3",
+            title: "Try Cursor AI on the codebase",
+            description:
+              "Open Cursor chat (Cmd+L) and ask these questions, then share what you learned:",
+            category: "advanced",
+            submissionType: "checklist",
+            order: 2,
+            checklistItems: [
+              "What does 'make s' do?",
+              "Explain the FSD layer structure",
+              "Where are the GraphQL queries defined?",
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export function getLessonBySlug(slug: string): Lesson | undefined {
