@@ -240,6 +240,102 @@ export const LESSONS: Lesson[] = [
       },
     ],
   },
+  {
+    id: "lesson-4",
+    slug: "ai-fundamentals",
+    number: 4,
+    title: "Understanding AI: LLMs, Agents & Tools",
+    subtitle: "What is an LLM, context window, chatbots vs agents, MCP, skills & subagents",
+    description:
+      "Understand how Large Language Models work, what the context window is, the difference between chatbots and agents, and how MCP, skills, and subagents extend AI capabilities.",
+    learningGoals: [
+      "Understand what a Large Language Model (LLM) is and how it works at a high level",
+      "Know what the context window is and why it matters",
+      "Understand the difference between a chatbot and an agent",
+      "Know what MCP (Model Context Protocol) is and why it exists",
+      "Understand skills and subagents as building blocks for AI workflows",
+    ],
+    contentType: "html",
+    contentFile: "lesson4-ai-fundamentals.html",
+    videoUrl: null,
+    isPublished: true,
+    order: 4,
+    homework: [
+      {
+        id: "hw-4-required",
+        category: "required",
+        tasks: [
+          {
+            id: "task-4-1",
+            lessonId: "lesson-4",
+            title: "Chat vs Agent mode in Cursor",
+            description:
+              "Open fohlio-frontend in Cursor. First, ask a question in Chat mode (Cmd+L): 'What is the login page?'. Then ask the same question in Agent mode (Cmd+I). Send two screenshots showing the difference in how each mode responds.",
+            category: "required",
+            submissionType: "screenshot",
+            order: 1,
+          },
+          {
+            id: "task-4-2",
+            lessonId: "lesson-4",
+            title: "Explain chatbot vs agent",
+            description:
+              "In your own words (2-3 sentences), explain the difference between a chatbot and an agent. Use a real example from your experience with Cursor Chat vs Agent mode.",
+            category: "required",
+            submissionType: "text",
+            order: 2,
+          },
+          {
+            id: "task-4-3",
+            lessonId: "lesson-4",
+            title: "Test the context window limits",
+            description:
+              "Open a new Cursor chat (Cmd+L), attach 3-4 large files from fohlio-frontend (e.g. any files over 200 lines), and ask a question about all of them at once. Then start a fresh chat and ask the same question with only the most relevant file attached. Describe: did the quality of the answer change? Why?",
+            category: "required",
+            submissionType: "text",
+            order: 3,
+          },
+        ],
+      },
+      {
+        id: "hw-4-advanced",
+        category: "advanced",
+        tasks: [
+          {
+            id: "task-4-4",
+            lessonId: "lesson-4",
+            title: "Quiz: AI Concepts",
+            description:
+              "Answer the following questions about AI concepts covered in this lesson:",
+            category: "advanced",
+            submissionType: "quiz",
+            order: 1,
+            quizQuestions: [
+              "What happens when the context window fills up during a long conversation?",
+              "Name 2 MCP servers and what they do.",
+              "What is a 'token' and why does it matter?",
+              "Why would an agent use subagents instead of doing everything itself?",
+            ],
+          },
+          {
+            id: "task-4-5",
+            lessonId: "lesson-4",
+            title: "Explore Cursor Agent capabilities",
+            description:
+              "Open fohlio-frontend in Cursor Agent mode (Cmd+I) and try the following:",
+            category: "advanced",
+            submissionType: "checklist",
+            order: 2,
+            checklistItems: [
+              "Ask Agent to find all GraphQL queries in the project",
+              "Ask Agent to explain the FSD folder structure",
+              "Ask Agent to suggest an improvement to any file and review its suggestion",
+            ],
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export function getLessonBySlug(slug: string): Lesson | undefined {

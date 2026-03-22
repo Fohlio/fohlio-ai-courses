@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fohlio Tech Course - Lesson 4</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 140px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recap */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .recap-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+        .recap-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--blue);
+        }
+        .recap-item span {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Flow arrow */
+        .flow-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--gray-300);
+            margin: 8px 0;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge.ai { background: #EDE9FE; color: #7C3AED; }
+        .badge.tool { background: #D1FAE5; color: #059669; }
+        .badge.concept { background: #FEF3C7; color: #D97706; }
+
+        @media print {
+            .container { padding: 20px; }
+            .part-header { margin-top: 32px; }
+            pre { font-size: 12px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 32px; }
+            .concept-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 4 of 10</div>
+        <h1>Fohlio Tech Course</h1>
+        <div class="subtitle">Understanding AI: LLMs, Agents & Tools</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand what a Large Language Model (LLM) is and how it works at a high level</li>
+            <li>Know what the context window is and why it matters</li>
+            <li>Understand the difference between a chatbot and an agent</li>
+            <li>Know what MCP (Model Context Protocol) is and why it exists</li>
+            <li>Understand skills and subagents as building blocks for AI workflows</li>
+        </ul>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- RECAP OF PREVIOUS LESSONS -->
+    <!-- ============================================ -->
+
+    <div class="lesson-content">
+
+    <h3>Quick Recap: Lessons 1&ndash;3</h3>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Lesson 1</strong>
+            <span>Git basics, Cursor installation, repository cloning</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 2</strong>
+            <span>Architecture, staging servers, branching & PRs</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 3</strong>
+            <span>Frontend deep dive, FSD structure, first code fix</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 4 (today)</strong>
+            <span>AI fundamentals &mdash; LLMs, agents, MCP, and how it all fits together</span>
+        </div>
+    </div>
+
+    <p>In the previous three lessons, you've learned to work with Git, understand the codebase architecture, and make your first code changes using Cursor's AI. Now it's time to understand <strong>what AI actually is</strong>, how it works under the hood, and how we use it as a powerful tool in our workflow.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: WHAT IS AN LLM? -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: What Is an LLM?</h2>
+
+    <p>You've been using AI through Cursor &mdash; typing questions in chat, getting code suggestions. But what exactly <em>is</em> the AI behind it?</p>
+
+    <h3>The Restaurant Analogy (continued)</h3>
+
+    <div class="story-box">
+        <p>Remember our restaurant from Lesson 3? React is the decorator, Apollo is the waiter, the backend is the kitchen. Now imagine we hire a new staff member: a <strong>brilliant consultant</strong> who has read every cookbook, every restaurant review, and every food blog ever written.</p>
+        <p>This consultant doesn't actually <em>know</em> anything &mdash; it has never cooked a dish or tasted food. But it has seen so many examples of cooking that it can <strong>predict with incredible accuracy</strong> what the next ingredient should be in any recipe, what the answer to any food question would be, and even write a new recipe from scratch.</p>
+        <p>That consultant is an <strong>LLM &mdash; a Large Language Model</strong>.</p>
+    </div>
+
+    <h3>How It Actually Works (simplified)</h3>
+
+    <p>An LLM is a neural network trained on massive amounts of text. Here's the core idea:</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Training</span>
+        <div class="step-desc">The model reads billions of pages of text &mdash; books, websites, code, conversations &mdash; and learns <strong>patterns</strong>. Not facts, not rules, but patterns of how words and ideas follow each other.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Prediction</span>
+        <div class="step-desc">When you ask a question, the model doesn't "look up" an answer. It <strong>predicts the most likely next word</strong>, then the next, then the next &mdash; generating a response one token at a time.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Fine-tuning</span>
+        <div class="step-desc">After initial training, the model is refined to be <strong>helpful, honest, and harmless</strong>. This is why it answers questions instead of just completing random text.</div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Key insight:</strong> An LLM doesn't "understand" things the way humans do. It's extremely good at recognizing and continuing patterns. When you ask "What is React?", it generates an answer because it has seen thousands of explanations of React and predicts what a good answer looks like. The result is impressively useful &mdash; but it's pattern matching, not understanding.</p>
+    </div>
+
+    <h3>What Is a Token?</h3>
+
+    <p>LLMs don't read words &mdash; they read <strong>tokens</strong>. A token is roughly 3/4 of a word in English. Some examples:</p>
+
+    <table>
+        <tr>
+            <th>Text</th>
+            <th>Tokens</th>
+            <th>Count</th>
+        </tr>
+        <tr>
+            <td><code>Hello</code></td>
+            <td>"Hello"</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td><code>Hello world</code></td>
+            <td>"Hello" + " world"</td>
+            <td>2</td>
+        </tr>
+        <tr>
+            <td><code>function getData()</code></td>
+            <td>"function" + " get" + "Data" + "()"</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td><code>A 500-word email</code></td>
+            <td>&mdash;</td>
+            <td>~375 tokens</td>
+        </tr>
+    </table>
+
+    <p>Why does this matter? Because everything has a <strong>cost per token</strong>, and there's a <strong>limit</strong> to how many tokens the model can process at once. That limit is called the <strong>context window</strong>.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F916;</div>
+        Developer: "Can you read my entire codebase?"<br>
+        LLM: "Sure! Send it over."<br>
+        Developer: *sends 2 million lines of code*<br>
+        LLM: "I said I <em>can</em> read, not that I have infinite memory."<br>
+        <em>Context windows are big, but not that big. Yet.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: THE CONTEXT WINDOW -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: The Context Window</h2>
+
+    <p>The <strong>context window</strong> is the most important concept you need to understand about LLMs. It determines what the model can "see" and work with at any given moment.</p>
+
+    <h3>The Desk Analogy</h3>
+
+    <div class="story-box">
+        <p>Imagine the LLM is a brilliant analyst sitting at a desk. The <strong>context window</strong> is the <strong>size of that desk</strong>.</p>
+        <p>Everything the analyst needs to work with must fit on the desk: your question, the relevant code files, the conversation history, any instructions. If the desk is too small, some papers fall off and the analyst forgets about them.</p>
+        <p>A bigger desk = the analyst can juggle more information at once. A smaller desk = the analyst has to work with less context and might miss important details.</p>
+    </div>
+
+    <h3>Context Window Sizes</h3>
+
+    <p>Different models have different desk sizes:</p>
+
+    <table>
+        <tr>
+            <th>Model</th>
+            <th>Context Window</th>
+            <th>Roughly Equals</th>
+        </tr>
+        <tr>
+            <td>GPT-3.5</td>
+            <td>4K tokens</td>
+            <td>~3,000 words (a short essay)</td>
+        </tr>
+        <tr>
+            <td>GPT-4</td>
+            <td>128K tokens</td>
+            <td>~96,000 words (a novel)</td>
+        </tr>
+        <tr>
+            <td>Claude Sonnet 4.6</td>
+            <td>200K tokens</td>
+            <td>~150,000 words (two novels)</td>
+        </tr>
+        <tr>
+            <td>Claude Opus 4.6</td>
+            <td>200K&ndash;1M tokens</td>
+            <td>~750,000 words (an encyclopedia)</td>
+        </tr>
+    </table>
+
+    <h3>What Goes Into the Context Window?</h3>
+
+    <p>Every time you chat with an AI, the context window is filled with several things:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="340" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">What's on the Desk (Context Window)</text>
+
+            <!-- System prompt -->
+            <rect x="30" y="50" width="700" height="45" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="55" y="78" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">System Prompt</text>
+            <text x="250" y="78" font-family="Inter" font-size="12" fill="#6B7280">"You are a helpful coding assistant. Follow these rules..."</text>
+
+            <!-- Conversation history -->
+            <rect x="30" y="105" width="700" height="80" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="55" y="133" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">Conversation History</text>
+            <text x="250" y="133" font-family="Inter" font-size="12" fill="#6B7280">All previous messages in this chat session</text>
+            <text x="55" y="155" font-family="Inter" font-size="11" fill="#6B7280">User: "How does the login page work?"</text>
+            <text x="55" y="173" font-family="Inter" font-size="11" fill="#6B7280">Assistant: "The login page uses..."</text>
+
+            <!-- Files / context -->
+            <rect x="30" y="195" width="700" height="55" rx="8" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="55" y="223" font-family="Inter" font-weight="600" font-size="13" fill="#059669">Files &amp; Context</text>
+            <text x="250" y="223" font-family="Inter" font-size="12" fill="#6B7280">Code files, docs, search results attached to the conversation</text>
+            <text x="55" y="241" font-family="Inter" font-size="11" fill="#6B7280">login.tsx (450 lines), auth.ts (200 lines), README.md...</text>
+
+            <!-- Current question -->
+            <rect x="30" y="260" width="700" height="45" rx="8" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="55" y="288" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">Your Current Question</text>
+            <text x="280" y="288" font-family="Inter" font-size="12" fill="#6B7280">"Can you add a 'Remember Me' checkbox to the login form?"</text>
+
+            <!-- Capacity bar -->
+            <rect x="30" y="315" width="700" height="16" rx="8" fill="#E5E7EB"/>
+            <rect x="30" y="315" width="490" height="16" rx="8" fill="#3451B2"/>
+            <text x="385" y="327" text-anchor="middle" font-family="Inter" font-weight="600" font-size="9" fill="white">70% used</text>
+        </svg>
+        <div class="diagram-caption">The context window is shared between system prompt, history, files, and your question</div>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>Why this matters practically:</strong> If your conversation is too long, the model starts to "forget" earlier messages. If you attach too many files, there's less room for reasoning. This is why tools like Cursor are smart about which files to include &mdash; they pick only the most relevant ones to fit within the context window.</p>
+    </div>
+
+    <h3>Practical Tips for Working With Context</h3>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Start fresh conversations for new topics</span>
+        <div class="step-desc">Don't keep using the same chat for hours. When you switch tasks, start a new conversation so the context isn't polluted with irrelevant history.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Be specific about what you need</span>
+        <div class="step-desc">Instead of "fix this file", say "fix the authentication check on line 42 of login.tsx". The more precise you are, the less context the model wastes figuring out what you mean.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Include only relevant files</span>
+        <div class="step-desc">Don't drag your entire project into the chat. Include only the files that are relevant to your question. Cursor does this automatically, but manual control helps.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: CHATBOT VS AGENT -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Chatbot vs Agent</h2>
+
+    <p>You've probably used ChatGPT, Claude, or the chat in Cursor. These are all <strong>chatbots</strong>. But recently you've heard the word <strong>"agent"</strong> everywhere. What's the difference?</p>
+
+    <h3>The Restaurant Analogy (again)</h3>
+
+    <div class="story-box">
+        <p>A <strong>chatbot</strong> is like a restaurant consultant who sits at a table and answers your questions. "What wine goes with salmon?" &mdash; they give you a great answer. "How should I reorganize the kitchen?" &mdash; another great answer. But they <strong>never leave their chair</strong>. They can only talk.</p>
+        <p>An <strong>agent</strong> is like a consultant who can actually <strong>get up and do things</strong>. You say "reorganize the kitchen" and they walk in, move the equipment, rearrange the shelves, test the new layout, and come back with a report. They can <strong>use tools</strong>, <strong>make decisions</strong>, and <strong>take multiple steps</strong> to complete a task.</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Feature</th>
+            <th>Chatbot</th>
+            <th>Agent</th>
+        </tr>
+        <tr>
+            <td><strong>Input</strong></td>
+            <td>Text question</td>
+            <td>Goal / task description</td>
+        </tr>
+        <tr>
+            <td><strong>Output</strong></td>
+            <td>Text response</td>
+            <td>Actions + results</td>
+        </tr>
+        <tr>
+            <td><strong>Tools</strong></td>
+            <td>None &mdash; can only generate text</td>
+            <td>Can read files, run commands, search the web, edit code</td>
+        </tr>
+        <tr>
+            <td><strong>Multi-step?</strong></td>
+            <td>One question &rarr; one answer</td>
+            <td>Plans steps, executes them, adapts based on results</td>
+        </tr>
+        <tr>
+            <td><strong>Memory</strong></td>
+            <td>Only within the current conversation</td>
+            <td>Can save notes for future conversations</td>
+        </tr>
+        <tr>
+            <td><strong>Example</strong></td>
+            <td>ChatGPT web chat</td>
+            <td>Claude Code, Cursor Agent mode</td>
+        </tr>
+    </table>
+
+    <h3>The Agent Loop</h3>
+
+    <p>An agent works in a <strong>loop</strong>: Think &rarr; Act &rarr; Observe &rarr; Repeat.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">The Agent Loop</text>
+
+            <!-- User gives task -->
+            <rect x="30" y="50" width="160" height="60" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="110" y="75" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">User Task</text>
+            <text x="110" y="97" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">"Fix the login bug"</text>
+
+            <!-- Arrow -->
+            <line x1="195" y1="80" x2="230" y2="80" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+            <defs>
+                <marker id="arrAgent" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+            </defs>
+
+            <!-- Think -->
+            <rect x="235" y="50" width="140" height="60" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="305" y="72" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">1. Think</text>
+            <text x="305" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">"I need to find</text>
+            <text x="305" y="104" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">the login code first"</text>
+
+            <!-- Arrow down -->
+            <line x1="305" y1="115" x2="305" y2="145" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+
+            <!-- Act -->
+            <rect x="235" y="150" width="140" height="60" rx="10" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="305" y="172" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#059669">2. Act</text>
+            <text x="305" y="192" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Search files, read code,</text>
+            <text x="305" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">edit files, run tests</text>
+
+            <!-- Arrow right -->
+            <line x1="380" y1="180" x2="415" y2="180" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+
+            <!-- Observe -->
+            <rect x="420" y="150" width="140" height="60" rx="10" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="490" y="172" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">3. Observe</text>
+            <text x="490" y="192" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Read tool results,</text>
+            <text x="490" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">check if task is done</text>
+
+            <!-- Arrow up back to Think -->
+            <line x1="490" y1="145" x2="490" y2="80" stroke="#D1D5DB" stroke-width="2"/>
+            <line x1="490" y1="80" x2="380" y2="80" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+            <text x="450" y="118" font-family="Inter" font-size="10" fill="#D97706">repeat</text>
+
+            <!-- Done -->
+            <rect x="590" y="150" width="140" height="60" rx="10" fill="#D1FAE5" stroke="#059669" stroke-width="2"/>
+            <text x="660" y="172" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#059669">Done!</text>
+            <text x="660" y="192" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Return result</text>
+            <text x="660" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">to user</text>
+
+            <!-- Arrow from Observe to Done -->
+            <line x1="565" y1="180" x2="585" y2="180" stroke="#059669" stroke-width="2" marker-end="url(#arrAgent)"/>
+
+            <!-- Label -->
+            <text x="380" y="260" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">The agent repeats this loop until the task is complete (or it gets stuck and asks for help)</text>
+        </svg>
+        <div class="diagram-caption">An agent autonomously loops through thinking, acting, and observing</div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Real-world example:</strong> When you use Cursor in <strong>Agent mode</strong> (Cmd+I), it doesn't just answer &mdash; it reads your files, searches for relevant code, writes changes, and even runs your tests. That's the agent loop in action. Claude Code works the same way in the terminal.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F9E0;</div>
+        User: "Can you fix this bug?"<br>
+        Chatbot: "Sure! Here's how you could fix it: [explanation]"<br>
+        Agent: *reads 15 files, finds the bug, edits 3 files, runs the tests* "Done. Here's what I changed and why."<br>
+        <em>Same question, very different energy.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: MCP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: MCP &mdash; The Tool Belt</h2>
+
+    <p>So agents can "do things." But how exactly does an agent interact with the outside world &mdash; read files, search the web, create GitHub pull requests? The answer is <strong>MCP &mdash; Model Context Protocol</strong>.</p>
+
+    <h3>What Is MCP?</h3>
+
+    <div class="story-box">
+        <p>Back to our restaurant. The consultant (LLM) is brilliant, but can they personally chop onions, check the inventory system, or call the supplier? No. They need <strong>tools</strong>.</p>
+        <p>MCP is like a <strong>universal tool belt</strong>. It's a standard protocol that lets AI agents connect to external services and tools in a consistent way. Instead of every tool having its own unique integration, MCP provides <strong>one standard way</strong> for AI to use any tool.</p>
+    </div>
+
+    <h3>How MCP Works</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="300" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">MCP: How AI Connects to Tools</text>
+
+            <!-- AI Agent -->
+            <rect x="30" y="100" width="160" height="80" rx="12" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="110" y="130" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#7C3AED">AI Agent</text>
+            <text x="110" y="150" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">(Claude, GPT, etc.)</text>
+            <text x="110" y="168" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">"I need to read a file"</text>
+
+            <!-- MCP Protocol -->
+            <rect x="240" y="80" width="160" height="120" rx="12" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="320" y="110" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#D97706">MCP</text>
+            <text x="320" y="130" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Standard Protocol</text>
+            <text x="320" y="155" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Translates AI requests</text>
+            <text x="320" y="170" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">into tool actions</text>
+            <text x="320" y="190" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">(like USB for AI tools)</text>
+
+            <!-- Arrows from Agent to MCP -->
+            <line x1="195" y1="140" x2="235" y2="140" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+
+            <!-- Tools column -->
+            <rect x="460" y="50" width="270" height="230" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="595" y="75" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#059669">MCP Servers (Tools)</text>
+
+            <rect x="480" y="90" width="230" height="35" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="595" y="112" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">File System &mdash; read, write, search files</text>
+
+            <rect x="480" y="135" width="230" height="35" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="595" y="157" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">GitHub &mdash; create PRs, read issues</text>
+
+            <rect x="480" y="180" width="230" height="35" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="595" y="202" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Vercel &mdash; deploy, check builds</text>
+
+            <rect x="480" y="225" width="230" height="35" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="595" y="247" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Browser &mdash; navigate, screenshot, click</text>
+
+            <!-- Arrow from MCP to Tools -->
+            <line x1="405" y1="140" x2="455" y2="140" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+        </svg>
+        <div class="diagram-caption">MCP is a standard "USB port" &mdash; any tool that speaks MCP can plug into any AI agent</div>
+    </div>
+
+    <h3>Why MCP Matters</h3>
+
+    <p>Before MCP, every AI tool had to build custom integrations for each service. Want GitHub? Custom code. Want Figma? More custom code. Want a browser? Even more custom code.</p>
+
+    <p>MCP solves this with a <strong>standard protocol</strong>, much like USB solved the "every device needs a different cable" problem:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F50C;</div>
+            <div class="card-title">Before MCP</div>
+            <div class="card-subtitle" style="color: var(--red);">Every cable is different</div>
+            <div class="card-desc">Each AI app builds custom integrations. If you switch from GPT to Claude, all integrations break.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F50C;</div>
+            <div class="card-title">With MCP</div>
+            <div class="card-subtitle" style="color: var(--green);">One standard port</div>
+            <div class="card-desc">Build the tool once as an MCP server. Any AI that speaks MCP can use it. Switch AI models freely.</div>
+        </div>
+    </div>
+
+    <h3>MCP Tools We Use</h3>
+
+    <p>Here are some MCP servers that are connected to our AI tools right now:</p>
+
+    <table>
+        <tr>
+            <th>MCP Server</th>
+            <th>What It Does</th>
+            <th>Example Use</th>
+        </tr>
+        <tr>
+            <td><strong>GitHub</strong></td>
+            <td>Create PRs, read issues, review code</td>
+            <td>"Create a PR for this branch"</td>
+        </tr>
+        <tr>
+            <td><strong>Playwright</strong></td>
+            <td>Navigate websites, take screenshots, click buttons</td>
+            <td>"Open staging and screenshot the login page"</td>
+        </tr>
+        <tr>
+            <td><strong>Vercel</strong></td>
+            <td>Deploy apps, check build logs, manage environments</td>
+            <td>"Deploy this branch to preview"</td>
+        </tr>
+        <tr>
+            <td><strong>Figma</strong></td>
+            <td>Read design files, get component specs</td>
+            <td>"What are the colors in this design?"</td>
+        </tr>
+        <tr>
+            <td><strong>Context7</strong></td>
+            <td>Look up library documentation</td>
+            <td>"How does React useEffect work?"</td>
+        </tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>In practice:</strong> When you use Claude Code or Cursor's agent mode, MCP tools work behind the scenes. You just say what you want &mdash; "create a GitHub issue for this bug" &mdash; and the agent uses the right MCP tool automatically. You don't need to know the technical details of MCP to benefit from it.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: SKILLS & SUBAGENTS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Skills & Subagents</h2>
+
+    <p>Now we get to the most powerful part: how agents can be extended with <strong>skills</strong> and <strong>subagents</strong> to handle complex, multi-step workflows.</p>
+
+    <h3>What Are Skills?</h3>
+
+    <div class="story-box">
+        <p>A <strong>skill</strong> is like a <strong>recipe card</strong> for the agent. Instead of explaining a complex task from scratch every time, you write it down once as a skill, and the agent can follow it whenever needed.</p>
+        <p>For example: instead of typing "Read the git log, look at all changes, write a good commit message, and create a commit" every time, you just type <code>/commit</code> and the skill handles all of that automatically.</p>
+    </div>
+
+    <p>Skills are essentially <strong>reusable prompts with instructions</strong> that tell the agent what to do. They can be simple (like formatting a commit message) or complex (like running a full code review workflow).</p>
+
+    <h4>Example Skills We Use</h4>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--blue);">/commit</div>
+            <div class="layer-desc">Analyze changes, write a commit message, create a commit</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--green);">/review-pr</div>
+            <div class="layer-desc">Review a Pull Request and leave detailed feedback</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F3AF;</div>
+            <div class="layer-name" style="color: var(--orange);">/simplify</div>
+            <div class="layer-desc">Review changed code for quality, then fix any issues</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F6E0;</div>
+            <div class="layer-name" style="color: var(--purple);">/bug-tracing</div>
+            <div class="layer-desc">Systematic bug diagnosis with hypothesis-driven debugging</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--red);">/prd-creation</div>
+            <div class="layer-desc">Create a Product Requirements Document for a new feature</div>
+        </div>
+    </div>
+
+    <h3>What Are Subagents?</h3>
+
+    <div class="story-box">
+        <p>Imagine the main consultant (agent) gets a really big task: "redesign the entire menu." Instead of doing everything alone, they call in <strong>specialist consultants</strong>:</p>
+        <ul style="margin: 12px 0; padding-left: 20px;">
+            <li>A <strong>food critic</strong> to analyze the current menu</li>
+            <li>A <strong>chef</strong> to design new dishes</li>
+            <li>A <strong>designer</strong> to create the menu layout</li>
+            <li>A <strong>financial analyst</strong> to check the pricing</li>
+        </ul>
+        <p>Each specialist works on their part independently and reports back. The main consultant coordinates everything.</p>
+        <p>That's exactly what <strong>subagents</strong> do. The main agent spawns specialized sub-agents that work in parallel on different parts of the task.</p>
+    </div>
+
+    <h4>Types of Subagents</h4>
+
+    <p>Different subagent types are designed for different specialties:</p>
+
+    <table>
+        <tr>
+            <th>Subagent Type</th>
+            <th>Specialty</th>
+            <th>When to Use</th>
+        </tr>
+        <tr>
+            <td><strong>code-architect</strong></td>
+            <td>Full-stack development</td>
+            <td>Implementing features, writing code</td>
+        </tr>
+        <tr>
+            <td><strong>ux-designer</strong></td>
+            <td>UI/UX design</td>
+            <td>Designing screens, prototyping</td>
+        </tr>
+        <tr>
+            <td><strong>db-optimiser</strong></td>
+            <td>Database performance</td>
+            <td>Schema design, query optimization</td>
+        </tr>
+        <tr>
+            <td><strong>security-auditor</strong></td>
+            <td>Application security</td>
+            <td>Finding vulnerabilities, reviewing auth</td>
+        </tr>
+        <tr>
+            <td><strong>code-tester</strong></td>
+            <td>Automated testing</td>
+            <td>Writing tests, validating behavior</td>
+        </tr>
+        <tr>
+            <td><strong>researcher</strong></td>
+            <td>Deep web research</td>
+            <td>Market analysis, finding solutions</td>
+        </tr>
+    </table>
+
+    <div class="info-box purple">
+        <p><strong>Why subagents?</strong> Two reasons. First, <strong>parallelism</strong> &mdash; the main agent can launch 5 subagents at once and get results faster. Second, <strong>context protection</strong> &mdash; each subagent has its own context window. The main agent's context doesn't get cluttered with search results and intermediate work.</p>
+    </div>
+
+    <h3>How It All Fits Together</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="380" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">The Full Picture: LLM + Agent + MCP + Skills + Subagents</text>
+
+            <!-- User -->
+            <rect x="30" y="60" width="120" height="50" rx="10" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="90" y="82" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">You</text>
+            <text x="90" y="100" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">"Fix the login bug"</text>
+
+            <!-- Arrow -->
+            <line x1="155" y1="85" x2="200" y2="85" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+
+            <!-- Main Agent -->
+            <rect x="205" y="50" width="200" height="70" rx="12" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="305" y="75" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#7C3AED">Main Agent</text>
+            <text x="305" y="95" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">LLM brain + agent loop</text>
+            <text x="305" y="112" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Thinks, plans, coordinates</text>
+
+            <!-- Skills -->
+            <rect x="440" y="50" width="140" height="70" rx="12" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="510" y="75" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">Skills</text>
+            <text x="510" y="95" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">/commit, /review-pr</text>
+            <text x="510" y="110" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Reusable recipes</text>
+
+            <!-- Arrow Agent to Skills -->
+            <line x1="410" y1="85" x2="435" y2="85" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+
+            <!-- MCP Tools -->
+            <rect x="610" y="50" width="130" height="70" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="675" y="75" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#059669">MCP Tools</text>
+            <text x="675" y="95" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">GitHub, Figma,</text>
+            <text x="675" y="110" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Browser, Files</text>
+
+            <!-- Arrow Skills to MCP -->
+            <line x1="585" y1="85" x2="605" y2="85" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arrAgent)"/>
+
+            <!-- Subagents label -->
+            <text x="305" y="155" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">spawns subagents:</text>
+
+            <!-- Arrow down -->
+            <line x1="305" y1="125" x2="305" y2="165" stroke="#C4B5FD" stroke-width="2" marker-end="url(#arrAgent)"/>
+
+            <!-- Subagent 1 -->
+            <rect x="30" y="175" width="160" height="55" rx="8" fill="white" stroke="#C4B5FD" stroke-width="1.5"/>
+            <text x="110" y="198" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">Explore Agent</text>
+            <text x="110" y="218" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">"Find login-related files"</text>
+
+            <!-- Subagent 2 -->
+            <rect x="210" y="175" width="190" height="55" rx="8" fill="white" stroke="#C4B5FD" stroke-width="1.5"/>
+            <text x="305" y="198" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">Code Architect Agent</text>
+            <text x="305" y="218" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">"Implement the fix"</text>
+
+            <!-- Subagent 3 -->
+            <rect x="420" y="175" width="160" height="55" rx="8" fill="white" stroke="#C4B5FD" stroke-width="1.5"/>
+            <text x="500" y="198" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">Code Tester Agent</text>
+            <text x="500" y="218" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">"Write tests for the fix"</text>
+
+            <!-- Dotted lines from main to subagents -->
+            <line x1="230" y1="125" x2="110" y2="170" stroke="#C4B5FD" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="305" y1="125" x2="305" y2="170" stroke="#C4B5FD" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="380" y1="125" x2="500" y2="170" stroke="#C4B5FD" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+            <!-- Result -->
+            <rect x="130" y="280" width="500" height="70" rx="12" fill="#D1FAE5" stroke="#059669" stroke-width="2"/>
+            <text x="380" y="305" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#059669">Result: Bug Fixed!</text>
+            <text x="380" y="325" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">3 files modified, 2 tests added, PR created on GitHub</text>
+            <text x="380" y="342" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">All done automatically in ~2 minutes</text>
+
+            <!-- Arrows from subagents to result -->
+            <line x1="110" y1="235" x2="250" y2="275" stroke="#6EE7B7" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="305" y1="235" x2="380" y2="275" stroke="#6EE7B7" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="500" y1="235" x2="510" y2="275" stroke="#6EE7B7" stroke-width="1.5" stroke-dasharray="4 3"/>
+        </svg>
+        <div class="diagram-caption">The full AI stack: You give a task &rarr; Agent thinks and coordinates &rarr; Skills provide recipes &rarr; MCP connects to tools &rarr; Subagents parallelize work</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: PRACTICAL TOOLS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Cursor's Two Modes &mdash; Theory Meets Practice</h2>
+
+    <p>You already know Cursor from Lesson 3. Now that you understand chatbots and agents, let's look at <strong>what's actually happening</strong> when you use Cursor's two modes.</p>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--purple);">&#x1F4AC;</span>
+        <span class="step-title">Chat Mode (Cmd+L) = Chatbot</span>
+        <div class="step-desc">Text in, text out. You ask a question &mdash; it gives an answer based on the files currently open. Good for <strong>learning, exploring, and asking questions</strong>. The context window includes your open files and conversation history.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--green);">&#x1F916;</span>
+        <span class="step-title">Agent Mode (Cmd+I) = Agent</span>
+        <div class="step-desc"><strong>Agent</strong> behavior &mdash; it reads files on its own, searches the codebase, writes code, and can even run terminal commands. Uses the agent loop (think &rarr; act &rarr; observe). Can edit <strong>multiple files</strong> in one go without you opening them.</div>
+    </div>
+
+    <h3>When to Use Which?</h3>
+
+    <table>
+        <tr>
+            <th>Situation</th>
+            <th>Use Chat (Cmd+L)</th>
+            <th>Use Agent (Cmd+I)</th>
+        </tr>
+        <tr>
+            <td>"What does this function do?"</td>
+            <td style="color: var(--green); font-weight: 600;">&#10003;</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>"Explain this error message"</td>
+            <td style="color: var(--green); font-weight: 600;">&#10003;</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>"Fix the bug in this component"</td>
+            <td></td>
+            <td style="color: var(--green); font-weight: 600;">&#10003;</td>
+        </tr>
+        <tr>
+            <td>"Refactor this across 5 files"</td>
+            <td></td>
+            <td style="color: var(--green); font-weight: 600;">&#10003;</td>
+        </tr>
+        <tr>
+            <td>"Add a new feature with tests"</td>
+            <td></td>
+            <td style="color: var(--green); font-weight: 600;">&#10003;</td>
+        </tr>
+        <tr>
+            <td>"What is GraphQL?"</td>
+            <td style="color: var(--green); font-weight: 600;">&#10003;</td>
+            <td></td>
+        </tr>
+    </table>
+
+    <div class="info-box green">
+        <p><strong>Rule of thumb:</strong> Use <strong>Chat</strong> when you want to <em>learn</em> something. Use <strong>Agent</strong> when you want to <em>do</em> something. Chat is the consultant answering questions at the table. Agent is the consultant who gets up and reorganizes the kitchen.</p>
+    </div>
+
+    <h3>MCP and Skills in Practice</h3>
+
+    <p>All the concepts we discussed &mdash; MCP tools, skills, subagents &mdash; are used behind the scenes by developer tools like Cursor Agent. When Cursor's agent searches your codebase, reads files, or runs commands, it's using the same patterns we described. You don't need to configure MCP yourself &mdash; but understanding <em>how it works</em> helps you understand what the AI can and cannot do.</p>
+
+    <div class="info-box blue">
+        <p><strong>Good to know:</strong> Advanced AI tools like Claude Code (a terminal-based agent) can also use MCP to connect to GitHub, Figma, and other services directly. For our course, Cursor is your main tool &mdash; but the concepts you learned today apply to all AI agents.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Let's recap the key concepts from this lesson:</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>LLM</strong>
+            <span>A neural network trained on text that predicts the next token. Not "understanding" &mdash; but incredibly useful pattern matching.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Context Window</strong>
+            <span>The "desk" where everything must fit: your question, code files, conversation history, system instructions.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Chatbot</strong>
+            <span>Text in, text out. Can only answer questions. No tools, no actions, no multi-step reasoning.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Agent</strong>
+            <span>Think &rarr; Act &rarr; Observe loop. Can use tools, make decisions, and complete complex tasks autonomously.</span>
+        </div>
+        <div class="recap-item">
+            <strong>MCP</strong>
+            <span>Model Context Protocol &mdash; a "USB standard" that lets AI connect to any external tool: GitHub, Figma, browsers, databases.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Skills</strong>
+            <span>Reusable "recipe cards" for the agent. Type /commit and the agent knows exactly what to do.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Subagents</strong>
+            <span>Specialized mini-agents that run in parallel. Each has its own context window and expertise.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Cursor Modes</strong>
+            <span>Chat (Cmd+L) = chatbot for questions. Agent (Cmd+I) = agent for actions. Same AI, different capabilities.</span>
+        </div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>The big picture:</strong> AI is not magic &mdash; it's a tool with clear strengths and limitations. The LLM is the brain. The agent loop gives it hands. MCP connects it to the world. Skills give it recipes. Subagents let it delegate. Understanding these pieces helps you use AI more effectively and debug problems when they arise.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F52E;</div>
+        Junior dev in 2020: "I need to learn React, TypeScript, GraphQL, Docker, Kubernetes, AWS..."<br>
+        Junior dev in 2025: "I need to learn how to <em>talk to the AI</em> that knows React, TypeScript, GraphQL, Docker, Kubernetes, AWS..."<br>
+        <em>The skills changed, but the learning never stops.</em>
+    </div>
+
+    </div><!-- end lesson-content -->
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Chat vs Agent mode in Cursor</strong>
+                <p>Open fohlio-frontend in Cursor and compare the two modes:</p>
+                <ul>
+                    <li>Open <strong>Chat mode</strong> (<code>Cmd+L</code>) and ask: "What is the login page?"</li>
+                    <li>Then open <strong>Agent mode</strong> (<code>Cmd+I</code>) and ask the same question: "What is the login page?"</li>
+                    <li>Notice the difference: Chat just answers, Agent actually searches files and reads code</li>
+                    <li>Send <strong>two screenshots</strong> showing both responses</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Explain chatbot vs agent</strong>
+                <p>In your own words (2&ndash;3 sentences), explain the difference between a chatbot and an agent. Use a real example from your experience with Cursor Chat vs Agent mode.</p>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Test the context window limits</strong>
+                <p>This exercise helps you feel the context window in practice:</p>
+                <ul>
+                    <li>Open a <strong>new</strong> Cursor chat (<code>Cmd+L</code>)</li>
+                    <li>Attach 3&ndash;4 large files from fohlio-frontend (any files over 200 lines)</li>
+                    <li>Ask a question about all of them at once</li>
+                    <li>Then start a <strong>fresh chat</strong> and ask the same question with only the most relevant file attached</li>
+                    <li>Describe: did the quality of the answer change? Why do you think that happened?</li>
+                </ul>
+            </li>
+        </ol>
+
+        <div class="info-box blue" style="margin-top: 24px;">
+            <p><strong>Tip:</strong> If Chat mode doesn't seem to "see" a file, make sure you've attached it using the <code>@</code> button or dragged it into the chat. Agent mode finds files on its own.</p>
+        </div>
+
+        <h3 style="margin-top: 24px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Quiz: AI Concepts</strong>
+                <p>Answer the following questions:</p>
+                <ul>
+                    <li>What happens when the context window fills up during a long conversation?</li>
+                    <li>Name 2 MCP servers and what they do.</li>
+                    <li>What is a "token" and why does it matter?</li>
+                    <li>Why would an agent use subagents instead of doing everything itself?</li>
+                </ul>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Explore Cursor Agent capabilities</strong>
+                <p>Open fohlio-frontend in Cursor Agent mode (<code>Cmd+I</code>) and try these:</p>
+                <ul>
+                    <li>Ask Agent to find all GraphQL queries in the project</li>
+                    <li>Ask Agent to explain the FSD folder structure</li>
+                    <li>Ask Agent to suggest an improvement to any file and review its suggestion</li>
+                </ul>
+                <p>Check off each one after you've tried it!</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio Tech Course &mdash; Lesson 4 of 10</p>
+        <p>Questions? Ask in the <code>#tech-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Prompting Techniques & AI-Assisted Development</p>
+    </div>
+
+</div>
+
+</body>
+</html>
