@@ -268,9 +268,9 @@ export const LESSONS: Lesson[] = [
           {
             id: "task-4-1",
             lessonId: "lesson-4",
-            title: "Chat vs Agent mode in Cursor",
+            title: "Install Claude Desktop and connect Notion",
             description:
-              "Open fohlio-frontend in Cursor. First, ask a question in Chat mode (Cmd+L): 'What is the login page?'. Then ask the same question in Agent mode (Cmd+I). Send two screenshots showing the difference in how each mode responds.",
+              "Download Claude Desktop from claude.ai/download. Go to Settings → Connectors, click Add Connector, enter https://mcp.notion.com/mcp and complete the OAuth flow. Ask Claude about any Notion page. Send a screenshot showing Claude reading a Notion page.",
             category: "required",
             submissionType: "screenshot",
             order: 1,
@@ -278,19 +278,19 @@ export const LESSONS: Lesson[] = [
           {
             id: "task-4-2",
             lessonId: "lesson-4",
-            title: "Explain chatbot vs agent",
+            title: "Connect Jira (Atlassian) to Claude Desktop",
             description:
-              "In your own words (2-3 sentences), explain the difference between a chatbot and an agent. Use a real example from your experience with Cursor Chat vs Agent mode.",
+              "In Claude Desktop Settings → Connectors, add the Atlassian connector and connect it to our Jira workspace. Ask Claude about your tickets (e.g. 'What are my open tickets?'). Send a screenshot of the result.",
             category: "required",
-            submissionType: "text",
+            submissionType: "screenshot",
             order: 2,
           },
           {
             id: "task-4-3",
             lessonId: "lesson-4",
-            title: "Test the context window limits",
+            title: "Explain chatbot vs agent",
             description:
-              "Open a new Cursor chat (Cmd+L), attach 3-4 large files from fohlio-frontend (e.g. any files over 200 lines), and ask a question about all of them at once. Then start a fresh chat and ask the same question with only the most relevant file attached. Describe: did the quality of the answer change? Why?",
+              "In your own words (2-3 sentences), explain the difference between a chatbot and an agent. Think about what you learned in this lesson and use a real example.",
             category: "required",
             submissionType: "text",
             order: 3,
@@ -312,24 +312,24 @@ export const LESSONS: Lesson[] = [
             order: 1,
             quizQuestions: [
               "What happens when the context window fills up during a long conversation?",
-              "Name 2 MCP servers and what they do.",
+              "Name 2 MCP connectors and what they do.",
               "What is a 'token' and why does it matter?",
-              "Why would an agent use subagents instead of doing everything itself?",
+              "Why is MCP compared to USB? What problem does it solve?",
             ],
           },
           {
             id: "task-4-5",
             lessonId: "lesson-4",
-            title: "Explore Cursor Agent capabilities",
+            title: "Connect more MCP tools",
             description:
-              "Open fohlio-frontend in Cursor Agent mode (Cmd+I) and try the following:",
+              "Try connecting additional connectors in Claude Desktop and test each one:",
             category: "advanced",
             submissionType: "checklist",
             order: 2,
             checklistItems: [
-              "Ask Agent to find all GraphQL queries in the project",
-              "Ask Agent to explain the FSD folder structure",
-              "Ask Agent to suggest an improvement to any file and review its suggestion",
+              "Connect GitHub and ask Claude about a repository or PR",
+              "Connect Google Drive and ask Claude to find a document",
+              "Try any other connector that looks useful to you",
             ],
           },
         ],

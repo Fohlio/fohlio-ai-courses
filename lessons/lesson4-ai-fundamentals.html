@@ -1189,12 +1189,81 @@
         <p><strong>Rule of thumb:</strong> Use <strong>Chat</strong> when you want to <em>learn</em> something. Use <strong>Agent</strong> when you want to <em>do</em> something. Chat is the consultant answering questions at the table. Agent is the consultant who gets up and reorganizes the kitchen.</p>
     </div>
 
-    <h3>MCP and Skills in Practice</h3>
+    <h3>MCP in Practice: Connecting Claude to Notion</h3>
 
-    <p>All the concepts we discussed &mdash; MCP tools, skills, subagents &mdash; are used behind the scenes by developer tools like Cursor Agent. When Cursor's agent searches your codebase, reads files, or runs commands, it's using the same patterns we described. You don't need to configure MCP yourself &mdash; but understanding <em>how it works</em> helps you understand what the AI can and cannot do.</p>
+    <p>Enough theory &mdash; let's see MCP in action. We'll connect <strong>Claude Desktop</strong> (a free app) to <strong>Notion</strong>, so Claude can read and search your actual Notion pages.</p>
 
-    <div class="info-box blue">
-        <p><strong>Good to know:</strong> Advanced AI tools like Claude Code (a terminal-based agent) can also use MCP to connect to GitHub, Figma, and other services directly. For our course, Cursor is your main tool &mdash; but the concepts you learned today apply to all AI agents.</p>
+    <div class="info-box green">
+        <p><strong>What is Claude Desktop?</strong> It's a free desktop app from Anthropic (the company that makes Claude). Think of it as a smarter version of ChatGPT &mdash; but one that can <strong>connect to your tools</strong> via MCP. You can download it at <code>claude.ai/download</code>.</p>
+    </div>
+
+    <h4>Step-by-step: Connect Notion MCP</h4>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Install Claude Desktop</span>
+        <div class="step-desc">Download and install from <code>claude.ai/download</code>. Sign in with your account (you need a Pro, Max, Team, or Enterprise plan for MCP connectors).</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Open Settings &rarr; Connectors</span>
+        <div class="step-desc">In Claude Desktop, go to <strong>Settings &rarr; Connectors</strong>. This is where all MCP connections are configured.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Add the Notion connector</span>
+        <div class="step-desc">Click <strong>Add Connector</strong> and enter the URL: <code>https://mcp.notion.com/mcp</code>. Then complete the OAuth flow &mdash; Notion will ask you to grant access to your workspace.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Chat about your Notion pages</span>
+        <div class="step-desc">Now you can ask Claude things like: "Find the page about onboarding in my Notion" or "Summarize the meeting notes from last week." Claude uses the Notion MCP to <strong>search and read your actual pages</strong>.</div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>This is MCP in action!</strong> Remember the diagram from Part 4? Claude (the AI Agent) sends a request through MCP to the Notion Server, which searches your workspace and returns the data. Claude then uses that data to answer your question. You just connected a "USB cable" between Claude and Notion.</p>
+    </div>
+
+    <h4>Other Useful MCP Connectors</h4>
+
+    <p>Notion is just the beginning. Here are other connectors you can add in Claude Desktop the same way:</p>
+
+    <table>
+        <tr>
+            <th>Connector</th>
+            <th>What It Does</th>
+            <th>URL</th>
+        </tr>
+        <tr>
+            <td><strong>Atlassian (Jira)</strong></td>
+            <td>Search tickets, read issue details, check sprint progress</td>
+            <td>Available in Connectors list</td>
+        </tr>
+        <tr>
+            <td><strong>GitHub</strong></td>
+            <td>Search code, read PRs, review issues</td>
+            <td>Available in Connectors list</td>
+        </tr>
+        <tr>
+            <td><strong>Google Drive</strong></td>
+            <td>Search and read documents, spreadsheets, presentations</td>
+            <td>Available in Connectors list</td>
+        </tr>
+        <tr>
+            <td><strong>Slack</strong></td>
+            <td>Search messages, read channel history</td>
+            <td>Available in Connectors list</td>
+        </tr>
+    </table>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F50C;</div>
+        Before MCP: "Let me copy this Jira ticket, paste it into Claude, then copy the Notion page, paste that too..."<br>
+        After MCP: "Claude, look at ticket FOH-1234 and compare it with the spec in Notion."<br>
+        <em>Same AI brain, but now it can reach the data itself.</em>
     </div>
 
 
@@ -1265,36 +1334,31 @@
         <h3>Required (for everyone):</h3>
         <ol>
             <li>
-                <strong>Chat vs Agent mode in Cursor</strong>
-                <p>Open fohlio-frontend in Cursor and compare the two modes:</p>
+                <strong>Install Claude Desktop and connect Notion</strong>
+                <p>Follow the steps from Part 6:</p>
                 <ul>
-                    <li>Open <strong>Chat mode</strong> (<code>Cmd+L</code>) and ask: "What is the login page?"</li>
-                    <li>Then open <strong>Agent mode</strong> (<code>Cmd+I</code>) and ask the same question: "What is the login page?"</li>
-                    <li>Notice the difference: Chat just answers, Agent actually searches files and reads code</li>
-                    <li>Send <strong>two screenshots</strong> showing both responses</li>
+                    <li>Download and install Claude Desktop from <code>claude.ai/download</code></li>
+                    <li>Go to <strong>Settings &rarr; Connectors</strong></li>
+                    <li>Click <strong>Add Connector</strong>, enter <code>https://mcp.notion.com/mcp</code></li>
+                    <li>Complete the OAuth flow to connect your Notion workspace</li>
+                    <li>Ask Claude about any page in your Notion (e.g. "Find the onboarding doc")</li>
+                    <li>Send a <strong>screenshot</strong> showing Claude successfully reading a Notion page</li>
                 </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Connect Jira (Atlassian) to Claude Desktop</strong>
+                <p>In <strong>Settings &rarr; Connectors</strong>, find and add the <strong>Atlassian</strong> connector. Connect it to our Jira workspace. Then ask Claude something like "What are my open tickets?" or "Summarize ticket FOH-XXXX" (use any real ticket number). Send a <strong>screenshot</strong> of the result.</p>
             </li>
 
             <li style="margin-top: 16px;">
                 <strong>Explain chatbot vs agent</strong>
-                <p>In your own words (2&ndash;3 sentences), explain the difference between a chatbot and an agent. Use a real example from your experience with Cursor Chat vs Agent mode.</p>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Test the context window limits</strong>
-                <p>This exercise helps you feel the context window in practice:</p>
-                <ul>
-                    <li>Open a <strong>new</strong> Cursor chat (<code>Cmd+L</code>)</li>
-                    <li>Attach 3&ndash;4 large files from fohlio-frontend (any files over 200 lines)</li>
-                    <li>Ask a question about all of them at once</li>
-                    <li>Then start a <strong>fresh chat</strong> and ask the same question with only the most relevant file attached</li>
-                    <li>Describe: did the quality of the answer change? Why do you think that happened?</li>
-                </ul>
+                <p>In your own words (2&ndash;3 sentences), explain the difference between a chatbot and an agent. Think about what you learned in this lesson and use a real example.</p>
             </li>
         </ol>
 
         <div class="info-box blue" style="margin-top: 24px;">
-            <p><strong>Tip:</strong> If Chat mode doesn't seem to "see" a file, make sure you've attached it using the <code>@</code> button or dragged it into the chat. Agent mode finds files on its own.</p>
+            <p><strong>Tip:</strong> MCP connectors in Claude Desktop require a Pro, Max, Team, or Enterprise plan. If you don't have one, ask Ivan in Slack &mdash; we'll sort it out.</p>
         </div>
 
         <h3 style="margin-top: 24px;">Advanced (optional):</h3>
@@ -1304,18 +1368,18 @@
                 <p>Answer the following questions:</p>
                 <ul>
                     <li>What happens when the context window fills up during a long conversation?</li>
-                    <li>Name 2 MCP servers and what they do.</li>
+                    <li>Name 2 MCP connectors and what they do.</li>
                     <li>What is a "token" and why does it matter?</li>
-                    <li>Why would an agent use subagents instead of doing everything itself?</li>
+                    <li>Why is MCP compared to USB? What problem does it solve?</li>
                 </ul>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Explore Cursor Agent capabilities</strong>
-                <p>Open fohlio-frontend in Cursor Agent mode (<code>Cmd+I</code>) and try these:</p>
+                <strong>Connect more MCP tools</strong>
+                <p>Try connecting additional connectors in Claude Desktop and test each one:</p>
                 <ul>
-                    <li>Ask Agent to find all GraphQL queries in the project</li>
-                    <li>Ask Agent to explain the FSD folder structure</li>
-                    <li>Ask Agent to suggest an improvement to any file and review its suggestion</li>
+                    <li>Connect <strong>GitHub</strong> and ask Claude about a repository or PR</li>
+                    <li>Connect <strong>Google Drive</strong> and ask Claude to find a document</li>
+                    <li>Try any other connector that looks useful to you</li>
                 </ul>
                 <p>Check off each one after you've tried it!</p>
             </li>
