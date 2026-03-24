@@ -32,6 +32,12 @@ export interface Lesson {
   isPublished: boolean;
   order: number;
   homework: HomeworkSection[];
+  referenceMaterials?: ReferenceMaterial[];
+}
+
+export interface ReferenceMaterial {
+  title: string;
+  url: string;
 }
 
 export type LessonContentType = "html" | "pdf" | "markdown";

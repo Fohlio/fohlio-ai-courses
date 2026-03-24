@@ -260,6 +260,12 @@ export const LESSONS: Lesson[] = [
     videoUrl: null,
     isPublished: true,
     order: 4,
+    referenceMaterials: [
+      {
+        title: "Skills Marketplace — discover and share AI skills",
+        url: "https://skillsmp.com/",
+      },
+    ],
     homework: [
       {
         id: "hw-4-required",

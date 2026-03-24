@@ -2,7 +2,27 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Database setup
+
+Create a local PostgreSQL database and seed it:
+
+```bash
+# Create .env with these values:
+# DATABASE_URL=postgresql://postgres:postgres@localhost:5432/fohlio_courses
+# JWT_SECRET=super-secret-dev-key-change-in-prod
+
+npx prisma generate
+npx prisma db push
+npx tsx scripts/create-admin.ts   # creates seed admin user
+```
+
+### Test credentials
+
+| Role  | Login        | Password   |
+|-------|--------------|------------|
+| Admin | `ivanbunin`  | `admin123` |
+
+### Run the dev server
 
 ```bash
 npm run dev
