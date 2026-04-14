@@ -965,24 +965,24 @@
     <div class="story-box">
         <p>Back to our restaurant. Claude Desktop is like sitting <em>with</em> the brilliant consultant at the same table. You talk, they answer, you go back and forth. Great for collaboration.</p>
         <p><strong>Manus</strong> is different. Manus is like giving the consultant a task and saying: &laquo;Go figure this out. Come back when you're done.&raquo; The consultant leaves, visits 15 restaurants, talks to 30 people, creates a spreadsheet, and emails you the result 20 minutes later.</p>
-        <p>Manus is an <strong>autonomous AI agent platform</strong> that launched in early 2025. It works in a cloud sandbox with its own browser, file system, and tools &mdash; completely independently. You describe a task, Manus plans and executes it, and delivers the output.</p>
+        <p>Manus is an <strong>autonomous AI agent platform</strong> (B2B SaaS) that launched in early 2025. It runs entirely <strong>in the cloud</strong> &mdash; you don't install anything on your computer. It has its own browser, file system, and tools in a cloud sandbox. You describe a task, Manus plans and executes it, and delivers the output. You can even close your laptop &mdash; Manus keeps working.</p>
         <div class="tech-note">
-            <strong>Think of it this way:</strong> Claude Desktop = working <em>together</em> in real-time. Manus = delegating and checking the result later.
+            <strong>Key distinction:</strong> Anthropic (the company behind Claude) is an <em>AI model provider</em> &mdash; they build the AI brain and offer it through various interfaces (Claude Desktop, API, Claude Code). Manus is a <em>B2B SaaS product</em> &mdash; a platform that uses AI models (including Claude's!) to automate business tasks end-to-end. Claude Desktop = working <em>together</em> on your computer. Manus = delegating to a cloud agent and checking the result later.
         </div>
     </div>
 
     <div class="concept-grid">
         <div class="concept-card" style="background: var(--blue-light);">
             <div class="card-icon">&#x1F4AC;</div>
-            <div class="card-title" style="color: var(--blue);">Claude Desktop</div>
-            <div class="card-subtitle" style="color: var(--blue);">Chat-first assistant</div>
-            <div class="card-desc">You ask questions, get answers, work together in real-time. MCP connects it to your tools.</div>
+            <div class="card-title" style="color: var(--blue);">Claude (Anthropic)</div>
+            <div class="card-subtitle" style="color: var(--blue);">AI model provider</div>
+            <div class="card-desc">Anthropic builds the AI brain. Claude Desktop, API, Claude Code &mdash; different interfaces to the same model. Runs <strong>on your computer</strong>, works in real-time dialogue with you.</div>
         </div>
         <div class="concept-card" style="background: var(--purple-light);">
             <div class="card-icon">&#x1F3AF;</div>
             <div class="card-title" style="color: var(--purple);">Manus</div>
-            <div class="card-subtitle" style="color: var(--purple);">Task-first autonomous agent</div>
-            <div class="card-desc">You give it a task, it works independently in a cloud sandbox, and delivers the result.</div>
+            <div class="card-subtitle" style="color: var(--purple);">B2B SaaS &mdash; autonomous agent platform</div>
+            <div class="card-desc">A cloud product that uses AI models (including Claude) to automate tasks. Runs <strong>in the cloud</strong> &mdash; no install needed, works even when your laptop is closed.</div>
         </div>
     </div>
 
@@ -1009,6 +1009,41 @@
             <div class="layer-name" style="color: var(--orange);">Deep research</div>
             <div class="layer-desc">Multi-step research tasks: competitor analysis, market research</div>
         </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x23F0;</div>
+            <div class="layer-name" style="color: var(--green);">Scheduled Tasks</div>
+            <div class="layer-desc">Set up recurring tasks that run automatically on a schedule &mdash; daily reports, weekly summaries, periodic data collection</div>
+        </div>
+    </div>
+
+    <h4>Scheduled Tasks &mdash; Manus's Killer Feature</h4>
+
+    <div class="story-box">
+        <p>This is where Manus really shines as a cloud platform. Because it runs on servers (not your laptop), Manus can execute tasks <strong>on a schedule</strong> &mdash; even when you're asleep.</p>
+    </div>
+
+    <p>Examples of what you can schedule:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--blue);">Daily digest</div>
+            <div class="layer-desc">&laquo;Every morning at 9 AM, check my Jira board, summarize what changed, and post it to Slack.&raquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--purple);">Competitor monitoring</div>
+            <div class="layer-desc">&laquo;Every Monday, check competitors' pricing pages and flag any changes.&raquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E5;</div>
+            <div class="layer-name" style="color: var(--orange);">Lead processing</div>
+            <div class="layer-desc">&laquo;Every 6 hours, check new HubSpot leads and enrich them with LinkedIn data.&raquo;</div>
+        </div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Why this matters:</strong> Claude Desktop can't do this &mdash; it's a desktop app that requires your computer to be on and the app to be open. Manus runs in the cloud, so scheduled tasks execute regardless of whether you're at your desk. This is the fundamental advantage of a cloud-based agent platform over a local desktop tool.</p>
     </div>
 
     <h4>Manus Pricing</h4>
@@ -1127,7 +1162,7 @@
     </div>
 
     <div class="info-box blue">
-        <p><strong>Key difference:</strong> In Claude Desktop, MCP tools are available in your chat. In Manus, MCP tools are available for the agent's autonomous work. Claude is like a conversation partner with superpowers. Manus is like a remote employee you send on a mission.</p>
+        <p><strong>Key difference:</strong> In Claude Desktop, MCP tools are available in your chat &mdash; on <em>your</em> computer, while <em>you</em> are working. In Manus, MCP tools are available for the agent's autonomous cloud work &mdash; it can run tasks on a schedule, even at 3 AM. Claude is a conversation partner with superpowers (model provider). Manus is a cloud employee you send on a mission (B2B SaaS).</p>
     </div>
 
     <div class="joke-box">
