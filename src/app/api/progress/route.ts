@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
-import { calculateStudentProgress } from "@/lib/progress";
+import { getOverallStudentProgress } from "@/lib/courseQueries";
 
 export async function GET() {
   const user = await getCurrentUser();
@@ -9,17 +8,10 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const submissions = await prisma.taskSubmission.findMany({
-    where: { userId: user.id },
-    select: { taskId: true, lessonId: true, status: true, updatedAt: true },
+  const progress = await getOverallStudentProgress({
+    id: user.id,
+    role: user.role,
   });
 
-  const progress = calculateStudentProgress(
-    user.id,
-    user.githubNickname,
-    user.displayName,
-    submissions,
-  );
-
-  return NextResponse.json({ progress });
+  return NextResponse.json({ data: progress });
 }

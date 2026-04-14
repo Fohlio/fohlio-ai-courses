@@ -1,16 +1,17 @@
 import Link from "next/link";
 import type { Lesson } from "@/lib/types";
-import { LESSONS } from "@/lib/constants";
 
 interface LessonNavProps {
   currentLesson: Lesson;
+  lessons: Lesson[];
 }
 
-function LessonNav({ currentLesson }: LessonNavProps) {
-  const currentIndex = LESSONS.findIndex((l) => l.id === currentLesson.id);
-  const prevLesson = currentIndex > 0 ? LESSONS[currentIndex - 1] : null;
+function LessonNav({ currentLesson, lessons }: LessonNavProps) {
+  const sortedLessons = [...lessons].sort((left, right) => left.order - right.order);
+  const currentIndex = sortedLessons.findIndex((lesson) => lesson.id === currentLesson.id);
+  const prevLesson = currentIndex > 0 ? sortedLessons[currentIndex - 1] : null;
   const nextLesson =
-    currentIndex < LESSONS.length - 1 ? LESSONS[currentIndex + 1] : null;
+    currentIndex < sortedLessons.length - 1 ? sortedLessons[currentIndex + 1] : null;
 
   return (
     <nav
@@ -20,7 +21,7 @@ function LessonNav({ currentLesson }: LessonNavProps) {
       <div className="flex-1">
         {prevLesson && (
           <Link
-            href={`/lessons/${prevLesson.slug}`}
+            href={`/courses/${currentLesson.courseSlug}/lessons/${prevLesson.slug}`}
             className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
             data-testid="lesson-nav-prev"
           >
@@ -46,7 +47,7 @@ function LessonNav({ currentLesson }: LessonNavProps) {
       <div className="flex flex-1 justify-end">
         {nextLesson && (
           <Link
-            href={`/lessons/${nextLesson.slug}`}
+            href={`/courses/${currentLesson.courseSlug}/lessons/${nextLesson.slug}`}
             className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-4 py-2.5 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
             data-testid="lesson-nav-next"
           >

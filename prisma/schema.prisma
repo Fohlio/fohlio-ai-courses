@@ -16,7 +16,8 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
-  submissions TaskSubmission[]
+  ownedCourses Course[]         @relation("CourseOwner")
+  submissions  TaskSubmission[]
 
   @@map("users")
 }
@@ -26,11 +27,129 @@ enum UserRole {
   admin
 }
 
+model Course {
+  id            String       @id @default(cuid())
+  slug          String       @unique
+  title         String
+  subtitle      String?
+  description   String
+  coverImageUrl String?
+  status        CourseStatus @default(draft)
+  ownerId       String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  publishedAt   DateTime?
+  archivedAt    DateTime?
+
+  owner       User             @relation("CourseOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  lessons     Lesson[]
+
+  @@index([status])
+  @@index([ownerId])
+  @@map("courses")
+}
+
+enum CourseStatus {
+  draft
+  published
+  archived
+}
+
+model Lesson {
+  id                     String            @id @default(cuid())
+  courseId               String
+  slug                   String
+  order                  Int
+  title                  String
+  subtitle               String?
+  description            String
+  learningGoals          Json
+  contentType            LessonContentType @default(html)
+  contentHtml            String
+  pdfUrl                 String?
+  videoUrl               String?
+  isPublished            Boolean           @default(true)
+  unresolvedMediaSources Json?
+  createdAt              DateTime          @default(now())
+  updatedAt              DateTime          @updatedAt
+
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  tasks       HomeworkTask[]
+  assets      LessonAsset[]
+
+  @@unique([courseId, slug])
+  @@index([courseId, order])
+  @@map("lessons")
+}
+
+enum LessonContentType {
+  html
+  pdf
+}
+
+model LessonAsset {
+  id          String    @id @default(cuid())
+  lessonId    String
+  kind        AssetKind
+  fileName    String
+  pathname    String
+  url         String
+  contentType String
+  size        Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([lessonId])
+  @@map("lesson_assets")
+}
+
+enum AssetKind {
+  image
+  video
+  html_source
+}
+
+model HomeworkTask {
+  id             String           @id @default(cuid())
+  lessonId       String
+  title          String
+  description    String
+  category       HomeworkCategory @default(required)
+  submissionType SubmissionType   @default(text)
+  order          Int
+  quizQuestions  Json?
+  checklistItems Json?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  lesson       Lesson            @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([lessonId, category, order])
+  @@index([lessonId, order])
+  @@map("homework_tasks")
+}
+
+enum HomeworkCategory {
+  required
+  advanced
+}
+
+enum SubmissionType {
+  pr_link
+  screenshot
+  text
+  quiz
+  checklist
+}
+
 model TaskSubmission {
   id        String           @id @default(cuid())
   userId    String
   taskId    String
   lessonId  String
+  courseId  String?
   status    SubmissionStatus @default(submitted)
   content   Json
   createdAt DateTime         @default(now())
@@ -39,6 +158,8 @@ model TaskSubmission {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, taskId])
+  @@index([courseId, userId])
+  @@index([lessonId, userId])
   @@map("task_submissions")
 }
 

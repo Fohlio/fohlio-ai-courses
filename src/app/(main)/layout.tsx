@@ -13,7 +13,7 @@ export default function MainLayout({
       <Sidebar />
       <Header />
       <main className="md:pl-64">
-        <div className="mx-auto max-w-4xl p-6 md:p-8">{children}</div>
+        <div className="mx-auto max-w-6xl p-6 md:p-8">{children}</div>
       </main>
     </div>
   );

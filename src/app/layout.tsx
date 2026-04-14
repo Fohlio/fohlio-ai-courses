@@ -14,8 +14,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fohlio Tech Course",
-  description: "Internal course platform for the Fohlio Tech Course",
+  title: "Fohlio Courses",
+  description: "Multi-author internal course platform for Fohlio",
 };
 
 export default function RootLayout({

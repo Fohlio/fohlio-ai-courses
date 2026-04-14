@@ -209,15 +209,22 @@ All API routes MUST follow this response shape:
 | **Responsive** | Mobile-first: base → `sm:` → `md:` → `lg:` |
 | **Max content width** | Lessons: `max-w-3xl`, admin tables: `max-w-5xl` |
 
-### Testing Strategy (to implement)
+### Testing Strategy
 
 | Layer | Tool | What to Test |
 |---|---|---|
 | **Unit** | Vitest | `lib/progress.ts`, `lib/content.ts`, utility functions |
 | **Integration** | Vitest + test DB | API routes with real PostgreSQL |
-| **E2E** | Playwright | Login flow, submit homework, admin views |
+| **E2E** | Playwright | Login flow, progress → homework navigation, homework submission, studio lesson lifecycle |
 
 Priority order: integration tests for API routes > unit tests for progress calculation > E2E for critical paths.
+
+**Playwright standards:**
+- Config lives in `playwright.config.ts` with a dedicated `setup` project and dependent browser projects
+- Authentication state is created by `e2e/auth.setup.ts` and stored in `e2e/.auth/`
+- Prefer `getByRole`, `getByLabel`, and explicit `data-testid` hooks over CSS selectors
+- Reuse an existing local dev server via Playwright `webServer` when possible; CI should launch its own
+- Keep E2E data app-driven: create/login users and ensure draft courses through public APIs where practical
 
 ### Prisma Conventions
 

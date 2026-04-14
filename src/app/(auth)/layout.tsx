@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo.svg" alt="" width={36} height={36} className="rounded-lg" />
           <h1 className="text-2xl font-bold text-gray-900">
-            Fohlio Tech Course
+            Fohlio Courses
           </h1>
         </div>
         <div

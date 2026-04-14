@@ -129,14 +129,14 @@ const adminNavItems: NavItem[] = [
     icon: <DashboardIcon className="h-5 w-5" />,
   },
   {
+    label: "Courses",
+    href: "/admin/courses",
+    icon: <BookOpenIcon className="h-5 w-5" />,
+  },
+  {
     label: "Students",
     href: "/admin/students",
     icon: <UsersIcon className="h-5 w-5" />,
-  },
-  {
-    label: "Lessons",
-    href: "/admin/lessons",
-    icon: <BookOpenIcon className="h-5 w-5" />,
   },
 ];
 
@@ -152,7 +152,7 @@ function AdminSidebar() {
       {/* Header */}
       <div className="flex h-16 items-center gap-2 border-b border-gray-200 px-6">
         <span className="text-lg font-semibold text-gray-900">
-          Fohlio Tech Course
+          Fohlio Courses
         </span>
         <Badge variant="danger">Admin</Badge>
       </div>
@@ -190,7 +190,7 @@ function AdminSidebar() {
       {/* Footer */}
       <div className="border-t border-gray-200 p-4 space-y-3">
         <Link
-          href="/lessons"
+          href="/courses"
           data-testid="admin-back-to-course"
           className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900"
         >

@@ -44,7 +44,7 @@ export default function RegisterPage() {
         password,
         displayName.trim() || undefined,
       );
-      router.push("/lessons");
+      router.push("/courses");
     } catch (err) {
       setError(
         err instanceof Error
@@ -61,7 +61,7 @@ export default function RegisterPage() {
       <div className="mb-6 text-center">
         <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Join the Fohlio Tech Course
+          Join Fohlio Courses
         </p>
       </div>
 

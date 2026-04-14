@@ -3,12 +3,13 @@ import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 import { ADMIN_GITHUB_NICKNAME } from "./constants";
+import { env } from "./env";
 
 // ---------------------------------------------------------------------------
 // Constants
 // ---------------------------------------------------------------------------
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
+const JWT_SECRET = new TextEncoder().encode(env.JWT_SECRET);
 const COOKIE_NAME = "fohlio-session";
 const TOKEN_EXPIRY = "7d";
 const SALT_ROUNDS = 10;

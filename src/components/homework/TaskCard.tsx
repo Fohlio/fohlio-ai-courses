@@ -39,6 +39,7 @@ function isContentValid(content: SubmissionContent | null): boolean {
 
 interface TaskCardProps {
   task: HomeworkTask;
+  courseId: string;
   lessonId: string;
   initialSubmission: {
     status: string;
@@ -46,7 +47,12 @@ interface TaskCardProps {
   } | null;
 }
 
-export function TaskCard({ task, lessonId, initialSubmission }: TaskCardProps) {
+export function TaskCard({
+  task,
+  courseId,
+  lessonId,
+  initialSubmission,
+}: TaskCardProps) {
   const [content, setContent] = useState<SubmissionContent | null>(
     (initialSubmission?.content as SubmissionContent) ?? null,
   );
@@ -65,6 +71,7 @@ export function TaskCard({ task, lessonId, initialSubmission }: TaskCardProps) {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          courseId,
           lessonId,
           content,
           completed: true,

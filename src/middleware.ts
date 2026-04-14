@@ -5,7 +5,7 @@ import { jwtVerify } from "jose";
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 const COOKIE_NAME = "fohlio-session";
 
-const PROTECTED_PREFIXES = ["/lessons", "/progress", "/admin"];
+const PROTECTED_PREFIXES = ["/courses", "/lessons", "/progress", "/studio", "/admin"];
 const ADMIN_PREFIXES = ["/admin"];
 const AUTH_PATHS = ["/login", "/register"];
 
@@ -45,11 +45,11 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isAdmin && user?.role !== "admin") {
-    return NextResponse.redirect(new URL("/lessons", request.url));
+    return NextResponse.redirect(new URL("/courses", request.url));
   }
 
   if (isAuth && user) {
-    return NextResponse.redirect(new URL("/lessons", request.url));
+    return NextResponse.redirect(new URL("/courses", request.url));
   }
 
   return NextResponse.next();

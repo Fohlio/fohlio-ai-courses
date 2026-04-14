@@ -15,17 +15,22 @@ interface Submission {
 
 interface HomeworkSectionProps {
   section: HomeworkSectionType;
+  courseId: string;
   lessonId: string;
 }
 
-export function HomeworkSection({ section, lessonId }: HomeworkSectionProps) {
+export function HomeworkSection({
+  section,
+  courseId,
+  lessonId,
+}: HomeworkSectionProps) {
   const [submissions, setSubmissions] = useState<Record<string, Submission>>(
     {},
   );
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/submissions?lessonId=${lessonId}`)
+    fetch(`/api/submissions?courseId=${courseId}&lessonId=${lessonId}`)
       .then((res) => res.json())
       .then((data) => {
         const map: Record<string, Submission> = {};
@@ -36,7 +41,7 @@ export function HomeworkSection({ section, lessonId }: HomeworkSectionProps) {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
-  }, [lessonId]);
+  }, [courseId, lessonId]);
 
   const title =
     section.category === "required"
@@ -54,6 +59,7 @@ export function HomeworkSection({ section, lessonId }: HomeworkSectionProps) {
             <TaskCard
               key={task.id}
               task={task}
+              courseId={courseId}
               lessonId={lessonId}
               initialSubmission={submissions[task.id] ?? null}
             />

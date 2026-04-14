@@ -1,8 +1,44 @@
-import type { Lesson } from "./types";
+interface LegacyHomeworkTask {
+  id: string;
+  lessonId: string;
+  title: string;
+  description: string;
+  category: "required" | "advanced";
+  submissionType: "pr_link" | "screenshot" | "text" | "quiz" | "checklist";
+  order: number;
+  quizQuestions?: string[];
+  checklistItems?: string[];
+}
+
+interface LegacyHomeworkSection {
+  id: string;
+  category: "required" | "advanced";
+  tasks: LegacyHomeworkTask[];
+}
+
+export interface LegacyLesson {
+  id: string;
+  slug: string;
+  number: number;
+  title: string;
+  subtitle: string;
+  description: string;
+  learningGoals: string[];
+  contentType: "html" | "pdf" | "markdown";
+  contentFile: string;
+  videoUrl: string | null;
+  isPublished: boolean;
+  order: number;
+  referenceMaterials?: Array<{
+    title: string;
+    url: string;
+  }>;
+  homework: LegacyHomeworkSection[];
+}
 
 export const ADMIN_GITHUB_NICKNAME = "ivanbunin";
 
-export const LESSONS: Lesson[] = [
+export const LESSONS: LegacyLesson[] = [
   {
     id: "lesson-1",
     slug: "git-intro",
@@ -485,18 +521,18 @@ export const LESSONS: Lesson[] = [
   },
 ];
 
-export function getLessonBySlug(slug: string): Lesson | undefined {
+export function getLessonBySlug(slug: string): LegacyLesson | undefined {
   return LESSONS.find((l) => l.slug === slug);
 }
 
-export function getLessonByNumber(num: number): Lesson | undefined {
+export function getLessonByNumber(num: number): LegacyLesson | undefined {
   return LESSONS.find((l) => l.number === num);
 }
 
-export function getPublishedLessons(): Lesson[] {
+export function getPublishedLessons(): LegacyLesson[] {
   return LESSONS.filter((l) => l.isPublished);
 }
 
-export function getAllHomeworkTasks(lesson: Lesson) {
+export function getAllHomeworkTasks(lesson: LegacyLesson) {
   return lesson.homework.flatMap((section) => section.tasks);
 }

@@ -13,11 +13,11 @@ export async function PUT(
 
   const { taskId } = await params;
   const body = await request.json();
-  const { lessonId, content } = body;
+  const { lessonId, courseId, content } = body;
 
-  if (!content?.type || !lessonId) {
+  if (!content?.type || !lessonId || !courseId) {
     return NextResponse.json(
-      { error: "lessonId and content are required" },
+      { error: "courseId, lessonId and content are required" },
       { status: 400 },
     );
   }
@@ -30,10 +30,12 @@ export async function PUT(
       userId: user.id,
       taskId,
       lessonId,
+      courseId,
       status,
       content,
     },
     update: {
+      courseId,
       status,
       content,
     },
