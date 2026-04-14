@@ -514,8 +514,23 @@ export async function deleteLesson(
     return err("Course not found.");
   }
 
+  const lesson = await prisma.lesson.findFirst({
+    where: {
+      id: lessonId,
+      courseId,
+    },
+    select: { id: true },
+  });
+
+  if (!lesson) {
+    return err("Lesson not found.");
+  }
+
   const hasSubmissions = await prisma.taskSubmission.count({
-    where: { lessonId },
+    where: {
+      lessonId: lesson.id,
+      courseId,
+    },
   });
 
   if (hasSubmissions > 0) {
@@ -523,7 +538,7 @@ export async function deleteLesson(
   }
 
   await prisma.lesson.delete({
-    where: { id: lessonId },
+    where: { id: lesson.id },
   });
 
   const remainingLessons = await prisma.lesson.findMany({

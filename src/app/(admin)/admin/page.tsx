@@ -1,12 +1,20 @@
+import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth";
 import { getAdminCourseSummaries, getAdminStudentSummaries } from "@/lib/courseQueries";
 import { Card } from "@/components/ui/Card";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
+  const user = await getCurrentUser();
+
+  if (!user || user.role !== "admin") {
+    notFound();
+  }
+
   const [courses, students] = await Promise.all([
-    getAdminCourseSummaries(),
+    getAdminCourseSummaries({ id: user.id, role: user.role }),
     getAdminStudentSummaries(),
   ]);
 

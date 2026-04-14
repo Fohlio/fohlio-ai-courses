@@ -15,8 +15,18 @@ export async function POST(request: Request) {
   });
 
   if (!result.ok) {
-    const status = result.error === "Forbidden" ? 403 : 400;
-    return NextResponse.json({ error: result.error }, { status });
+    if (result.error.error === "Forbidden") {
+      return NextResponse.json({ error: result.error.error }, { status: 403 });
+    }
+
+    if (
+      result.error.type === "validation" ||
+      result.error.error === "ValidationError"
+    ) {
+      return NextResponse.json({ error: result.error.error }, { status: 400 });
+    }
+
+    return NextResponse.json({ error: result.error.error }, { status: 500 });
   }
 
   return NextResponse.json(result.data);

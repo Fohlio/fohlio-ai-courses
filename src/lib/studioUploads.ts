@@ -10,6 +10,11 @@ interface Viewer {
   role: UserRole;
 }
 
+interface StudioUploadError {
+  error: string;
+  type: "auth" | "validation" | "server";
+}
+
 const UploadPayloadSchema = z.object({
   courseId: z.string().min(1),
   lessonId: z.string().min(1),
@@ -45,14 +50,16 @@ function getUploadConstraints(kind: AssetKind) {
 export async function handleStudioUploadRequest(
   request: Request,
   viewer: Viewer,
-): Promise<Result<unknown, string>> {
+): Promise<Result<unknown, StudioUploadError>> {
   if (!env.BLOB_READ_WRITE_TOKEN) {
-    return err("BLOB_READ_WRITE_TOKEN is missing. Uploads are disabled until it is configured.");
+    return err({
+      error: "BLOB_READ_WRITE_TOKEN is missing. Uploads are disabled until it is configured.",
+      type: "server",
+    });
   }
 
-  const body = (await request.json()) as HandleUploadBody;
-
   try {
+    const body = (await request.json()) as HandleUploadBody;
     const response = await handleUpload({
       body,
       request,
@@ -125,8 +132,45 @@ export async function handleStudioUploadRequest(
     return ok(response);
   } catch (error) {
     console.error("Studio upload error:", error);
-    return err(
-      error instanceof Error ? error.message : "Failed to prepare lesson upload.",
-    );
+
+    if (error instanceof z.ZodError) {
+      return err({
+        error: "ValidationError",
+        type: "validation",
+      });
+    }
+
+    if (error instanceof SyntaxError) {
+      return err({
+        error: "ValidationError",
+        type: "validation",
+      });
+    }
+
+    if (error instanceof Error) {
+      if (error.message === "Forbidden") {
+        return err({
+          error: error.message,
+          type: "auth",
+        });
+      }
+
+      if (error.message === "Lesson not found") {
+        return err({
+          error: error.message,
+          type: "validation",
+        });
+      }
+
+      return err({
+        error: error.message,
+        type: "server",
+      });
+    }
+
+    return err({
+      error: "Failed to prepare lesson upload.",
+      type: "server",
+    });
   }
 }

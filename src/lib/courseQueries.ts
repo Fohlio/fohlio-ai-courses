@@ -21,9 +21,15 @@ import type {
   UserRole,
 } from "./types";
 
-interface Viewer {
+export interface Viewer {
   id: string;
   role: UserRole;
+}
+
+function assertAdmin(viewer: Viewer): void {
+  if (viewer.role !== "admin") {
+    throw new Error("Forbidden");
+  }
 }
 
 function isOwnerOrAdmin(courseOwnerId: string, viewer: Viewer | null): boolean {
@@ -373,7 +379,9 @@ export async function getAdminStudentSummaries(): Promise<AdminStudentSummary[]>
   }));
 }
 
-export async function getAdminCourseSummaries(): Promise<AdminCourseSummary[]> {
+export async function getAdminCourseSummaries(viewer: Viewer): Promise<AdminCourseSummary[]> {
+  assertAdmin(viewer);
+
   const students = await prisma.user.findMany({
     where: { role: "student" },
     select: { id: true },

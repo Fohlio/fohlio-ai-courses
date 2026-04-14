@@ -1,4 +1,6 @@
+import { notFound } from "next/navigation";
 import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth";
 import { getAdminCourseSummaries } from "@/lib/courseQueries";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
@@ -6,7 +8,13 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 export const dynamic = "force-dynamic";
 
 export default async function AdminCoursesPage() {
-  const courses = await getAdminCourseSummaries();
+  const user = await getCurrentUser();
+
+  if (!user || user.role !== "admin") {
+    notFound();
+  }
+
+  const courses = await getAdminCourseSummaries({ id: user.id, role: user.role });
 
   return (
     <div className="space-y-6">
