@@ -17,12 +17,12 @@ export async function GET() {
   });
 
   const allSubmissions = await prisma.taskSubmission.findMany({
-    where: { userId: { in: users.map((u) => u.id) } },
+    where: { userId: { in: users.map((u: { id: string }) => u.id) } },
     select: { userId: true, taskId: true, lessonId: true, status: true, updatedAt: true },
   });
 
-  const students: AdminStudentSummary[] = users.map((user) => {
-    const subs = allSubmissions.filter((s) => s.userId === user.id);
+  const students: AdminStudentSummary[] = users.map((user: { id: string; githubNickname: string; displayName: string | null }) => {
+    const subs = allSubmissions.filter((s: { userId: string }) => s.userId === user.id);
     const progress = calculateStudentProgress(
       user.id,
       user.githubNickname,

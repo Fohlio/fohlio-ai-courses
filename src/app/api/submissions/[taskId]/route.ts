@@ -13,7 +13,7 @@ export async function PUT(
 
   const { taskId } = await params;
   const body = await request.json();
-  const { lessonId, content, completed } = body;
+  const { lessonId, content } = body;
 
   if (!content?.type || !lessonId) {
     return NextResponse.json(
@@ -22,7 +22,7 @@ export async function PUT(
     );
   }
 
-  const status = completed ? "submitted" : "submitted";
+  const status = "submitted";
 
   const submission = await prisma.taskSubmission.upsert({
     where: { userId_taskId: { userId: user.id, taskId } },

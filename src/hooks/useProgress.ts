@@ -5,11 +5,10 @@ import type { StudentProgress } from "@/lib/types";
 export function useProgress() {
   const { user } = useAuth();
   const [progress, setProgress] = useState<StudentProgress | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!user ? false : true);
 
   useEffect(() => {
     if (!user) {
-      setLoading(false);
       return;
     }
 
