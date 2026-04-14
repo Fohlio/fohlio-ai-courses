@@ -15,7 +15,7 @@ export interface PdfContent {
 
 export type LessonContent = HtmlContent | PdfContent;
 
-const LESSONS_DIR = join(process.cwd(), "..", "lessons");
+const LESSONS_DIR = join(process.cwd(), "public", "lessons");
 
 /**
  * Reads lesson content from the filesystem.
