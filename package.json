@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3026",
     "build": "prisma generate && next build",
+    "build:vercel": "prisma generate && prisma db push && tsx scripts/backfill-legacy-course.ts && next build",
     "start": "next start -p 3026",
     "lint": "eslint",
     "e2e": "playwright test",

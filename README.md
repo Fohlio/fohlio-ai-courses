@@ -43,9 +43,17 @@ npm run db:generate   # regenerate Prisma client
 npm run db:push       # push schema changes to Postgres
 npm run db:seed       # ensure admin user + legacy course backfill
 npm run db:backfill   # re-run only the legacy course backfill
+npm run build:vercel  # Vercel build: generate Prisma client, push schema, backfill legacy course, build
 npm run e2e:install   # install Playwright Chromium
 npm run e2e           # run end-to-end tests
 ```
+
+### Vercel deployment
+
+- Vercel now uses `npm run build:vercel` as the build command.
+- That build path runs `prisma generate`, `prisma db push`, and `scripts/backfill-legacy-course.ts` before `next build`.
+- The backfill script is safe to run repeatedly. It does not create a default admin user in production. If the `ivanbunin` admin row does not exist yet, it skips the legacy-course import and logs a warning.
+- Legacy lesson HTML comes from `public/lessons/*.html` and is written into `lessons.contentHtml` during the backfill step. Newly authored lessons are already stored in the database.
 
 ### Uploads
 

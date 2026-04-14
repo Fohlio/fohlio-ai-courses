@@ -2,6 +2,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { getCourseCatalog } from "@/lib/courseQueries";
 import { CourseCard } from "@/components/course/CourseCard";
 
+export const dynamic = "force-dynamic";
+
 export default async function CoursesPage() {
   const user = await getCurrentUser();
 

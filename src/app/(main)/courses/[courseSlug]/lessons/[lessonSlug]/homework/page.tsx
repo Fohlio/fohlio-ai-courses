@@ -4,6 +4,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlugOrId } from "@/lib/courseQueries";
 import { HomeworkSection } from "@/components/homework/HomeworkSection";
 
+export const dynamic = "force-dynamic";
+
 export default async function LessonHomeworkPage({
   params,
 }: {

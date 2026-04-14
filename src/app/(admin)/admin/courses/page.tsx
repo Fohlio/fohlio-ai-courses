@@ -3,6 +3,8 @@ import { getAdminCourseSummaries } from "@/lib/courseQueries";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminCoursesPage() {
   const courses = await getAdminCourseSummaries();
 

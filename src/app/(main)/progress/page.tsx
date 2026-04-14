@@ -4,6 +4,8 @@ import { getOverallStudentProgress } from "@/lib/courseQueries";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProgressPage() {
   const user = await getCurrentUser();
 

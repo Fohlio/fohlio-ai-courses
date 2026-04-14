@@ -2,6 +2,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { getStudioCourses } from "@/lib/courseQueries";
 import { StudioCourseList } from "@/components/studio/StudioCourseList";
 
+export const dynamic = "force-dynamic";
+
 export default async function StudioPage() {
   const user = await getCurrentUser();
 

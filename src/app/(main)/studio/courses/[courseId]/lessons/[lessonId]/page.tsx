@@ -3,6 +3,8 @@ import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlugOrId } from "@/lib/courseQueries";
 import { StudioLessonEditor } from "@/components/studio/StudioLessonEditor";
 
+export const dynamic = "force-dynamic";
+
 export default async function StudioLessonPage({
   params,
 }: {

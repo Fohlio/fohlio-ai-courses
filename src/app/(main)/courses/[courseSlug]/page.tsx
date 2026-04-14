@@ -4,6 +4,8 @@ import { getCourseBySlugOrId } from "@/lib/courseQueries";
 import { CourseLessonList } from "@/components/course/CourseLessonList";
 import { Badge } from "@/components/ui/Badge";
 
+export const dynamic = "force-dynamic";
+
 export default async function CoursePage({
   params,
 }: {
