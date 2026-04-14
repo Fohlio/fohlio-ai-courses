@@ -8,6 +8,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const courseId = request.nextUrl.searchParams.get("courseId");
   const lessonId = request.nextUrl.searchParams.get("lessonId");
   if (!lessonId) {
     return NextResponse.json(
@@ -17,7 +18,7 @@ export async function GET(request: NextRequest) {
   }
 
   const submissions = await prisma.taskSubmission.findMany({
-    where: { userId: user.id, lessonId },
+    where: { userId: user.id, lessonId, courseId: courseId ?? undefined },
   });
 
   return NextResponse.json({ submissions });

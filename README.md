@@ -1,19 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
 ### Database setup
 
-Create a local PostgreSQL database and seed it:
+Spin up PostgreSQL in Docker, then sync Prisma and seed the default admin + migrated legacy course:
 
 ```bash
 # Create .env with these values:
-# DATABASE_URL=postgresql://postgres:postgres@localhost:5432/fohlio_courses
+# DATABASE_URL=postgresql://postgres:postgres@localhost:5433/fohlio_courses
 # JWT_SECRET=super-secret-dev-key-change-in-prod
+# BLOB_READ_WRITE_TOKEN=your-vercel-blob-token
 
+docker compose up db -d
 npx prisma generate
 npx prisma db push
-npx tsx scripts/create-admin.ts   # creates seed admin user
+npx tsx scripts/create-admin.ts   # creates seed admin user + backfills legacy course
 ```
 
 ### Test credentials
@@ -36,21 +36,32 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Helpful scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run db:generate   # regenerate Prisma client
+npm run db:push       # push schema changes to Postgres
+npm run db:seed       # ensure admin user + legacy course backfill
+npm run db:backfill   # re-run only the legacy course backfill
+npm run build:vercel  # Vercel build: generate Prisma client, push schema, backfill legacy course, build
+npm run e2e:install   # install Playwright Chromium
+npm run e2e           # run end-to-end tests
+```
 
-## Learn More
+### Vercel deployment
 
-To learn more about Next.js, take a look at the following resources:
+- Vercel now uses `npm run build:vercel` as the build command.
+- That build path runs `prisma generate`, `prisma db push`, and `scripts/backfill-legacy-course.ts` before `next build`.
+- The backfill script is safe to run repeatedly. It does not create a default admin user in production. If the `ivanbunin` admin row does not exist yet, it skips the legacy-course import and logs a warning.
+- Legacy lesson HTML comes from `public/lessons/*.html` and is written into `lessons.contentHtml` during the backfill step. Newly authored lessons are already stored in the database.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Uploads
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Image and video uploads in the course constructor use Vercel Blob.
+- If `BLOB_READ_WRITE_TOKEN` is missing, the studio still works, but asset uploads are disabled and show a clear error.
 
-## Deploy on Vercel
+### E2E test accounts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Playwright setup creates or reuses `e2e-student` with password `e2e-student-123` by default.
+- Override with `E2E_GITHUB_NICKNAME` and `E2E_PASSWORD` if needed.
+- The setup project also ensures one draft course named `E2E Course` exists for studio tests.

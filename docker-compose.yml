@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: fohlio
       POSTGRES_DB: fohlio_courses
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -24,6 +24,7 @@ services:
     environment:
       DATABASE_URL: postgresql://fohlio:fohlio@db:5432/fohlio_courses
       JWT_SECRET: change-me-in-production
+      BLOB_READ_WRITE_TOKEN: ${BLOB_READ_WRITE_TOKEN:-}
     depends_on:
       db:
         condition: service_healthy

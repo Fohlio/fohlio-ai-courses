@@ -1,0 +1,176 @@
+import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
+import { z } from "zod";
+import { env } from "./env";
+import { prisma } from "./prisma";
+import { err, ok, type Result } from "./result";
+import type { AssetKind, UserRole } from "./types";
+
+interface Viewer {
+  id: string;
+  role: UserRole;
+}
+
+interface StudioUploadError {
+  error: string;
+  type: "auth" | "validation" | "server";
+}
+
+const UploadPayloadSchema = z.object({
+  courseId: z.string().min(1),
+  lessonId: z.string().min(1),
+  kind: z.enum(["image", "video", "html_source"]),
+  fileName: z.string().min(1),
+});
+
+function isOwnerOrAdmin(ownerId: string, viewer: Viewer): boolean {
+  return viewer.role === "admin" || viewer.id === ownerId;
+}
+
+function getUploadConstraints(kind: AssetKind) {
+  switch (kind) {
+    case "video":
+      return {
+        allowedContentTypes: ["video/*"],
+        maximumSizeInBytes: 250 * 1024 * 1024,
+      };
+    case "html_source":
+      return {
+        allowedContentTypes: ["text/html"],
+        maximumSizeInBytes: 2 * 1024 * 1024,
+      };
+    case "image":
+    default:
+      return {
+        allowedContentTypes: ["image/*"],
+        maximumSizeInBytes: 10 * 1024 * 1024,
+      };
+  }
+}
+
+export async function handleStudioUploadRequest(
+  request: Request,
+  viewer: Viewer,
+): Promise<Result<unknown, StudioUploadError>> {
+  if (!env.BLOB_READ_WRITE_TOKEN) {
+    return err({
+      error: "BLOB_READ_WRITE_TOKEN is missing. Uploads are disabled until it is configured.",
+      type: "server",
+    });
+  }
+
+  try {
+    const body = (await request.json()) as HandleUploadBody;
+    const response = await handleUpload({
+      body,
+      request,
+      onBeforeGenerateToken: async (_pathname, clientPayload) => {
+        const parsedPayload = UploadPayloadSchema.parse(
+          clientPayload ? JSON.parse(clientPayload) : {},
+        );
+        const course = await prisma.course.findUnique({
+          where: { id: parsedPayload.courseId },
+          select: { ownerId: true },
+        });
+
+        if (!course || !isOwnerOrAdmin(course.ownerId, viewer)) {
+          throw new Error("Forbidden");
+        }
+
+        const lesson = await prisma.lesson.findFirst({
+          where: {
+            id: parsedPayload.lessonId,
+            courseId: parsedPayload.courseId,
+          },
+          select: { id: true },
+        });
+
+        if (!lesson) {
+          throw new Error("Lesson not found");
+        }
+
+        const constraints = getUploadConstraints(parsedPayload.kind);
+
+        return {
+          token: env.BLOB_READ_WRITE_TOKEN,
+          addRandomSuffix: true,
+          validUntil: Date.now() + 1000 * 60 * 15,
+          tokenPayload: JSON.stringify(parsedPayload),
+          ...constraints,
+        };
+      },
+      onUploadCompleted: async ({ blob, tokenPayload }) => {
+        const parsedPayload = UploadPayloadSchema.parse(
+          tokenPayload ? JSON.parse(tokenPayload) : {},
+        );
+
+        const existingAsset = await prisma.lessonAsset.findFirst({
+          where: {
+            lessonId: parsedPayload.lessonId,
+            pathname: blob.pathname,
+          },
+          select: { id: true },
+        });
+
+        if (existingAsset) {
+          return;
+        }
+
+        await prisma.lessonAsset.create({
+          data: {
+            lessonId: parsedPayload.lessonId,
+            kind: parsedPayload.kind,
+            fileName: parsedPayload.fileName,
+            pathname: blob.pathname,
+            url: blob.url,
+            contentType: blob.contentType || "application/octet-stream",
+            size: null,
+          },
+        });
+      },
+    });
+
+    return ok(response);
+  } catch (error) {
+    console.error("Studio upload error:", error);
+
+    if (error instanceof z.ZodError) {
+      return err({
+        error: "ValidationError",
+        type: "validation",
+      });
+    }
+
+    if (error instanceof SyntaxError) {
+      return err({
+        error: "ValidationError",
+        type: "validation",
+      });
+    }
+
+    if (error instanceof Error) {
+      if (error.message === "Forbidden") {
+        return err({
+          error: error.message,
+          type: "auth",
+        });
+      }
+
+      if (error.message === "Lesson not found") {
+        return err({
+          error: error.message,
+          type: "validation",
+        });
+      }
+
+      return err({
+        error: error.message,
+        type: "server",
+      });
+    }
+
+    return err({
+      error: "Failed to prepare lesson upload.",
+      type: "server",
+    });
+  }
+}

@@ -1,47 +1,44 @@
-"use client";
-
 import Link from "next/link";
-import { useAuth } from "@/hooks/useAuth";
-import { useProgress } from "@/hooks/useProgress";
-import { LESSONS } from "@/lib/constants";
-import { getProgressPercentage } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth";
+import { getOverallStudentProgress } from "@/lib/courseQueries";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { ProgressBar } from "@/components/ui/ProgressBar";
-import type { LessonStatus, StudentProgress } from "@/lib/types";
 
-const STATUS_BADGE_MAP: Record<
-  LessonStatus,
-  { label: string; variant: "gray" | "warning" | "success" }
-> = {
-  not_started: { label: "Not Started", variant: "gray" },
-  in_progress: { label: "In Progress", variant: "warning" },
-  completed: { label: "Completed", variant: "success" },
-};
+export const dynamic = "force-dynamic";
 
-function ProgressDashboard({ progress }: { progress: StudentProgress }) {
-  const overallPercentage = getProgressPercentage(
-    progress.completedTasks,
-    progress.totalTasks,
-  );
+export default async function ProgressPage() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return null;
+  }
+
+  const progress = await getOverallStudentProgress({
+    id: user.id,
+    role: user.role,
+  });
 
   return (
-    <div>
-      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Progress</h1>
+        <p className="mt-1 text-gray-500">
+          Track progress across every published course you are taking.
+        </p>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-3">
         <Card>
-          <p className="text-sm font-medium text-gray-500">
-            Lessons Completed
-          </p>
+          <p className="text-sm font-medium text-gray-500">Courses started</p>
           <p className="mt-1 text-2xl font-bold text-gray-900">
-            {progress.completedLessons}
+            {progress.courseProgress.filter((course) => course.completedTasks > 0).length}
             <span className="text-base font-normal text-gray-400">
-              /{progress.totalLessons}
+              /{progress.totalCourses}
             </span>
           </p>
         </Card>
-
         <Card>
-          <p className="text-sm font-medium text-gray-500">Tasks Completed</p>
+          <p className="text-sm font-medium text-gray-500">Tasks completed</p>
           <p className="mt-1 text-2xl font-bold text-gray-900">
             {progress.completedTasks}
             <span className="text-base font-normal text-gray-400">
@@ -49,130 +46,70 @@ function ProgressDashboard({ progress }: { progress: StudentProgress }) {
             </span>
           </p>
         </Card>
-
         <Card>
-          <p className="text-sm font-medium text-gray-500">Overall</p>
+          <p className="text-sm font-medium text-gray-500">Overall completion</p>
           <p className="mt-1 text-2xl font-bold text-gray-900">
-            {overallPercentage}%
+            {progress.completionPercentage}%
           </p>
-          <ProgressBar
-            value={overallPercentage}
-            size="sm"
-            color="brand"
-            className="mt-2"
-          />
         </Card>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
-        <table className="w-full text-left text-sm">
-          <thead>
-            <tr className="border-b border-gray-200 bg-gray-50">
-              <th className="px-4 py-3 font-medium text-gray-600">#</th>
-              <th className="px-4 py-3 font-medium text-gray-600">Title</th>
-              <th className="px-4 py-3 text-center font-medium text-gray-600">
-                Required
-              </th>
-              <th className="px-4 py-3 text-center font-medium text-gray-600">
-                Advanced
-              </th>
-              <th className="px-4 py-3 text-center font-medium text-gray-600">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {LESSONS.map((lesson) => {
-              const lp = progress.lessonProgress.find(
-                (p) => p.lessonId === lesson.id,
-              );
-              const statusInfo = lp
-                ? STATUS_BADGE_MAP[lp.status]
-                : STATUS_BADGE_MAP.not_started;
-
-              return (
-                <tr
-                  key={lesson.id}
-                  className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50"
+      <div className="space-y-4">
+        {progress.courseProgress.map((course) => (
+          <Card key={course.courseId}>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <Link
+                  href={`/courses/${course.courseSlug}`}
+                  className="text-lg font-semibold text-gray-900 hover:text-brand"
                 >
-                  <td className="px-4 py-3 font-medium text-gray-900">
-                    {lesson.number}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Link
-                      href={`/lessons/${lesson.slug}/homework`}
-                      className="text-brand hover:underline"
-                    >
-                      {lesson.title}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-3 text-center text-gray-600">
-                    {lp
-                      ? `${lp.requiredCompleted}/${lp.requiredTotal}`
-                      : "0/0"}
-                  </td>
-                  <td className="px-4 py-3 text-center text-gray-600">
-                    {lp
-                      ? `${lp.advancedCompleted}/${lp.advancedTotal}`
-                      : "0/0"}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <Badge variant={statusInfo.variant}>
-                      {statusInfo.label}
-                    </Badge>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  {course.courseTitle}
+                </Link>
+                <p className="mt-1 text-sm text-gray-500">
+                  {course.completedLessons}/{course.totalLessons} lessons complete
+                </p>
+              </div>
+              <div className="min-w-40">
+                <div className="mb-2 flex items-center justify-between text-xs text-gray-500">
+                  <span>{course.completedTasks}/{course.totalTasks} tasks</span>
+                  <span>{course.completionPercentage}%</span>
+                </div>
+                <ProgressBar
+                  value={course.completionPercentage}
+                  size="sm"
+                  color={
+                    course.completionPercentage >= 80
+                      ? "success"
+                      : course.completionPercentage > 0
+                        ? "brand"
+                        : "warning"
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              {course.lessonProgress.map((lesson) => (
+                <Link
+                  key={lesson.lessonId}
+                  href={`/courses/${course.courseSlug}/lessons/${lesson.lessonSlug}/homework`}
+                  className="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 transition-colors hover:border-brand/30 hover:bg-brand-light/40"
+                >
+                  <p className="font-medium text-gray-900">
+                    Lesson {lesson.lessonNumber}: {lesson.lessonTitle}
+                  </p>
+                  <p className="mt-1 text-sm text-gray-500">
+                    {lesson.completedTasks}/{lesson.totalTasks} tasks
+                  </p>
+                  <p className="mt-3 text-xs font-medium uppercase tracking-wide text-brand">
+                    Open Homework
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </Card>
+        ))}
       </div>
-    </div>
-  );
-}
-
-export default function ProgressPage() {
-  const { user, isLoading } = useAuth();
-  const { progress, loading } = useProgress();
-
-  if (isLoading || loading) {
-    return (
-      <div className="flex min-h-[50vh] items-center justify-center">
-        <p className="text-gray-500">Loading...</p>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="mx-auto max-w-4xl px-4 py-12">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900">My Progress</h1>
-        <Card>
-          <p className="text-center text-gray-500">
-            Login to track your progress.
-          </p>
-        </Card>
-      </div>
-    );
-  }
-
-  if (!progress) {
-    return (
-      <div className="mx-auto max-w-4xl px-4 py-12">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900">My Progress</h1>
-        <Card>
-          <p className="text-center text-gray-500">
-            Failed to load progress.
-          </p>
-        </Card>
-      </div>
-    );
-  }
-
-  return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <h1 className="mb-6 text-2xl font-bold text-gray-900">My Progress</h1>
-      <ProgressDashboard progress={progress} />
     </div>
   );
 }

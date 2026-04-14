@@ -11,15 +11,15 @@ function LessonHeader({ lesson }: LessonHeaderProps) {
         className="inline-flex w-fit items-center rounded-full bg-brand-light px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand"
         data-testid="lesson-header-badge"
       >
-        Lesson {lesson.number} of 10
+        Lesson {lesson.number}
       </span>
 
       <h1 className="text-3xl font-bold text-foreground" data-testid="lesson-header-title">
-        {lesson.subtitle}
+        {lesson.title}
       </h1>
 
       <p className="text-gray-500" data-testid="lesson-header-subtitle">
-        {lesson.title}
+        {lesson.subtitle || lesson.description}
       </p>
     </header>
   );

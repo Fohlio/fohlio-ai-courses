@@ -35,7 +35,7 @@ function LoginForm() {
 
     try {
       await login(githubNickname.trim(), password);
-      const redirectTo = searchParams.get("redirect") || "/lessons";
+      const redirectTo = searchParams.get("redirect") || "/courses";
       router.push(redirectTo);
     } catch (err) {
       setError(
@@ -56,7 +56,7 @@ function LoginForm() {
           Sign In
         </h1>
         <p className="mt-1 text-sm text-gray-500">
-          Welcome back to Fohlio Tech Course
+          Welcome back to Fohlio Courses
         </p>
       </div>
 

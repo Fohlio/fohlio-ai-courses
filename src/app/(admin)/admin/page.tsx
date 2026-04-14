@@ -1,128 +1,133 @@
-"use client";
-
-import { useEffect, useState } from "react";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { LESSONS } from "@/lib/constants";
-import { formatDate } from "@/lib/utils";
+import { getCurrentUser } from "@/lib/auth";
+import { getAdminCourseSummaries, getAdminStudentSummaries } from "@/lib/courseQueries";
 import { Card } from "@/components/ui/Card";
-import type { AdminStudentSummary } from "@/lib/types";
 
-export default function AdminDashboardPage() {
-  const [students, setStudents] = useState<AdminStudentSummary[]>([]);
-  const [loading, setLoading] = useState(true);
+export const dynamic = "force-dynamic";
 
-  useEffect(() => {
-    fetch("/api/progress/all")
-      .then((res) => res.json())
-      .then((data) => setStudents(data.students ?? []))
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+export default async function AdminDashboardPage() {
+  const user = await getCurrentUser();
 
-  if (loading) {
-    return (
-      <div className="mx-auto max-w-5xl px-4 py-12">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900">
-          Admin Dashboard
-        </h1>
-        <p className="text-gray-500">Loading...</p>
-      </div>
-    );
+  if (!user || user.role !== "admin") {
+    notFound();
   }
 
-  const totalStudents = students.length;
+  const [courses, students] = await Promise.all([
+    getAdminCourseSummaries({ id: user.id, role: user.role }),
+    getAdminStudentSummaries(),
+  ]);
+
   const averageCompletion =
-    totalStudents > 0
+    students.length > 0
       ? Math.round(
           students.reduce(
-            (sum, s) => sum + s.progress.completionPercentage,
+            (sum, student) => sum + student.progress.completionPercentage,
             0,
-          ) / totalStudents,
+          ) / students.length,
         )
       : 0;
-  const publishedLessons = LESSONS.filter((l) => l.isPublished).length;
-
   const recentStudents = [...students]
-    .filter((s) => s.progress.lastActivityAt !== null)
-    .sort((a, b) => {
-      const aTime = new Date(a.progress.lastActivityAt!).getTime();
-      const bTime = new Date(b.progress.lastActivityAt!).getTime();
-      return bTime - aTime;
+    .filter((student) =>
+      student.progress.courseProgress.some((course) => course.lastActivityAt),
+    )
+    .sort((left, right) => {
+      const leftTime = Math.max(
+        ...left.progress.courseProgress.map((course) =>
+          course.lastActivityAt ? new Date(course.lastActivityAt).getTime() : 0,
+        ),
+      );
+      const rightTime = Math.max(
+        ...right.progress.courseProgress.map((course) =>
+          course.lastActivityAt ? new Date(course.lastActivityAt).getTime() : 0,
+        ),
+      );
+      return rightTime - leftTime;
     })
-    .slice(0, 5);
+    .slice(0, 6);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12">
-      <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-        <Link
-          href="/admin/students"
-          className="text-sm font-medium text-brand hover:underline"
-        >
-          View All Students
+    <div className="space-y-8">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="mt-1 text-gray-500">
+            Global visibility across authors, courses, and learners.
+          </p>
+        </div>
+        <Link href="/admin/courses" className="text-sm font-medium text-brand hover:underline">
+          Review all courses
         </Link>
       </div>
 
-      <div className="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3">
         <Card>
-          <p className="text-sm font-medium text-gray-500">Total Students</p>
+          <p className="text-sm font-medium text-gray-500">Published courses</p>
           <p className="mt-1 text-2xl font-bold text-gray-900">
-            {totalStudents}
+            {courses.filter((course) => course.course.status === "published").length}
           </p>
         </Card>
-
         <Card>
-          <p className="text-sm font-medium text-gray-500">
-            Average Completion
-          </p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">
-            {averageCompletion}%
-          </p>
+          <p className="text-sm font-medium text-gray-500">Students</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{students.length}</p>
         </Card>
-
         <Card>
-          <p className="text-sm font-medium text-gray-500">
-            Published Lessons
-          </p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">
-            {publishedLessons}
-            <span className="text-base font-normal text-gray-400">
-              /{LESSONS.length}
-            </span>
-          </p>
+          <p className="text-sm font-medium text-gray-500">Average completion</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{averageCompletion}%</p>
         </Card>
       </div>
 
-      <div>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">
-          Recent Activity
-        </h2>
+      <section className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900">Course health</h2>
+          <Link href="/admin/courses" className="text-sm font-medium text-brand hover:underline">
+            Open course list
+          </Link>
+        </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          {courses.slice(0, 4).map((summary) => (
+            <Card key={summary.course.id}>
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <Link
+                    href={`/admin/courses/${summary.course.id}`}
+                    className="font-semibold text-gray-900 hover:text-brand"
+                  >
+                    {summary.course.title}
+                  </Link>
+                  <p className="mt-1 text-sm text-gray-500">
+                    {summary.course.owner.githubNickname}
+                  </p>
+                </div>
+                <div className="text-right text-sm text-gray-500">
+                  <p>{summary.averageCompletion}% average</p>
+                  <p>{summary.studentsCompleted}/{summary.totalStudents} complete</p>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-lg font-semibold text-gray-900">Recent learner activity</h2>
         {recentStudents.length === 0 ? (
           <Card>
-            <p className="text-center text-gray-500">No recent activity.</p>
+            <p className="text-sm text-gray-500">No learner activity yet.</p>
           </Card>
         ) : (
           <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50">
-                  <th className="px-4 py-3 font-medium text-gray-600">
-                    Student
-                  </th>
-                  <th className="px-4 py-3 font-medium text-gray-600">
-                    Progress
-                  </th>
-                  <th className="px-4 py-3 font-medium text-gray-600">
-                    Last Activity
-                  </th>
+                  <th className="px-4 py-3 font-medium text-gray-600">Student</th>
+                  <th className="px-4 py-3 font-medium text-gray-600">Progress</th>
+                  <th className="px-4 py-3 font-medium text-gray-600">Courses</th>
                 </tr>
               </thead>
               <tbody>
                 {recentStudents.map((student) => (
-                  <tr
-                    key={student.user.id}
-                    className="border-b border-gray-100 last:border-b-0 hover:bg-gray-50"
-                  >
+                  <tr key={student.user.id} className="border-b border-gray-100">
                     <td className="px-4 py-3">
                       <Link
                         href={`/admin/students/${student.user.githubNickname}`}
@@ -130,19 +135,10 @@ export default function AdminDashboardPage() {
                       >
                         {student.user.githubNickname}
                       </Link>
-                      {student.user.displayName && (
-                        <span className="ml-2 text-gray-500">
-                          ({student.user.displayName})
-                        </span>
-                      )}
                     </td>
-                    <td className="px-4 py-3 text-gray-600">
-                      {student.progress.completionPercentage}%
-                    </td>
+                    <td className="px-4 py-3">{student.progress.completionPercentage}%</td>
                     <td className="px-4 py-3 text-gray-500">
-                      {student.progress.lastActivityAt
-                        ? formatDate(new Date(student.progress.lastActivityAt))
-                        : "Never"}
+                      {student.progress.courseProgress.length}
                     </td>
                   </tr>
                 ))}
@@ -150,7 +146,7 @@ export default function AdminDashboardPage() {
             </table>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

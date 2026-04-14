@@ -2,6 +2,7 @@ import "dotenv/config";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import bcrypt from "bcryptjs";
+import { backfillLegacyCourse } from "../src/lib/legacyCourse";
 
 const ADMIN_GITHUB_NICKNAME = "ivanbunin";
 
@@ -28,6 +29,9 @@ async function main() {
   });
 
   console.log("Admin user created:", user.id, user.githubNickname);
+
+  await backfillLegacyCourse(prisma);
+  console.log("Legacy course backfilled.");
 }
 
 main()

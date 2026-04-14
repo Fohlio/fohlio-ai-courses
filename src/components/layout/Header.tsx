@@ -37,7 +37,7 @@ function Header() {
       </button>
 
       <span className="flex-1 text-center text-base font-semibold text-gray-900">
-        Fohlio Tech Course
+        Fohlio Courses
       </span>
 
       {/* Spacer to balance the hamburger button on the left */}

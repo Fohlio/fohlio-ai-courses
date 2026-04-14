@@ -17,6 +17,7 @@ export function SubmissionText({
     <div className="flex flex-col gap-1.5">
       <label className="text-sm font-medium text-gray-700">Your answer</label>
       <textarea
+        data-testid="submission-text-input"
         value={value?.text ?? ""}
         onChange={(e) => onChange({ type: "text", text: e.target.value })}
         placeholder="Type your answer here..."

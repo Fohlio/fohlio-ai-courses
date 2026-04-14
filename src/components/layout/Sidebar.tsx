@@ -90,6 +90,27 @@ function LogOutIcon({ className }: { className?: string }) {
   );
 }
 
+/** Inline SVG icon: Edit3 */
+function EditIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </svg>
+  );
+}
+
 interface NavItem {
   label: string;
   href: string;
@@ -98,14 +119,19 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    label: "Lessons",
-    href: "/lessons",
+    label: "Courses",
+    href: "/courses",
     icon: <BookOpenIcon className="h-5 w-5" />,
   },
   {
     label: "Progress",
     href: "/progress",
     icon: <BarChartIcon className="h-5 w-5" />,
+  },
+  {
+    label: "Studio",
+    href: "/studio",
+    icon: <EditIcon className="h-5 w-5" />,
   },
 ];
 
@@ -123,7 +149,7 @@ function Sidebar() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/logo.svg" alt="" width={28} height={28} className="shrink-0 rounded-md" />
         <span className="text-lg font-semibold text-gray-900">
-          Fohlio Tech Course
+          Fohlio Courses
         </span>
       </div>
 
