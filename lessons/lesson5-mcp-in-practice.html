@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fohlio Tech Course - Lesson 5</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 140px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recap */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .recap-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+        .recap-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--blue);
+        }
+        .recap-item span {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Flow arrow */
+        .flow-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--gray-300);
+            margin: 8px 0;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge.ai { background: #EDE9FE; color: #7C3AED; }
+        .badge.tool { background: #D1FAE5; color: #059669; }
+        .badge.concept { background: #FEF3C7; color: #D97706; }
+
+        /* Tool card (new for lesson 5) */
+        .tool-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+            transition: box-shadow 0.2s;
+        }
+        .tool-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .tool-card .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .tool-card .tool-icon {
+            font-size: 28px;
+            width: 40px;
+            text-align: center;
+        }
+        .tool-card .tool-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--gray-900);
+        }
+        .tool-card .tool-category {
+            margin-left: auto;
+        }
+        .tool-card .tool-desc {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+        .tool-card .tool-examples {
+            font-size: 13px;
+            color: var(--gray-700);
+            background: var(--gray-50);
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+        .tool-card .tool-examples code {
+            font-size: 12px;
+        }
+
+        /* Recall box — active learning checkpoint */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        @media print {
+            .container { padding: 20px; }
+            .part-header { margin-top: 32px; }
+            pre { font-size: 12px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 32px; }
+            .concept-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 5 of 10</div>
+        <h1>Fohlio Tech Course</h1>
+        <div class="subtitle">MCP in Practice: Connecting AI to Your Tools</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand what an API is and how MCP differs from traditional APIs</li>
+            <li>Know how to add MCP servers to Claude Desktop step by step</li>
+            <li>Know what Manus is and how to add MCP servers to it</li>
+            <li>Have a catalog of useful MCP servers for GTM teams</li>
+            <li>Be able to connect AI to your actual work tools: Notion, Jira, GitHub, HubSpot, and more</li>
+        </ul>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- RECAP -->
+    <!-- ============================================ -->
+
+    <div class="lesson-content">
+
+    <h3>Quick Recap: Lessons 1&ndash;4</h3>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Lessons 1&ndash;3</strong>
+            <span>Git, architecture, frontend setup, first PR</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 4</strong>
+            <span>LLMs, context window, chatbot vs agent, MCP concept, skills &amp; subagents</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 5 (today)</strong>
+            <span>MCP in practice &mdash; hands-on with Claude Desktop, Manus, and real tools</span>
+        </div>
+        <div class="recap-item">
+            <strong>Key from L4</strong>
+            <span>MCP = &laquo;USB-standard&raquo; for AI &mdash; one protocol to connect any tool</span>
+        </div>
+    </div>
+
+    <p>In Lesson 4 we learned that MCP is a universal protocol &mdash; like a USB standard for AI tools. Today we go from theory to <strong>practice</strong>: we'll plug in the cables, hear the satisfying <em>click</em>, and watch Claude start reading your Notion, Jira, and GitHub by itself.</p>
+
+    <p>By the end of this lesson, you'll look at copy-pasting data between tools the way we look at fax machines &mdash; with a mix of nostalgia and disbelief.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: WHAT IS AN API? -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: What Is an API?</h2>
+
+    <p>Before diving deeper into MCP, let's understand the foundation it's built on: <strong>APIs</strong>. Don't worry &mdash; no coding required. Just our old friend, the restaurant.</p>
+
+    <h3>The Restaurant Analogy (continued)</h3>
+
+    <div class="story-box">
+        <p>Remember our restaurant from Lessons 3 and 4? React decorates the dining room, Apollo is the waiter, the backend is the kitchen, and our brilliant LLM consultant sits at a corner table, ready to help.</p>
+        <p>Now imagine you want sushi from the Japanese place next door. You can't just walk into their kitchen &mdash; you're a stranger there. Instead, they have a <strong>waiter</strong> with a <strong>specific menu</strong> and ordering rules: &laquo;Write your order on this card, in this format, and hand it to me.&raquo;</p>
+        <p>That waiter + menu + ordering rules = <strong>API</strong> (Application Programming Interface). It's a defined contract for how one program can talk to another.</p>
+        <div class="tech-note">
+            <strong>In plain English:</strong> An API is a doorway with a bouncer. The bouncer says: &laquo;I accept requests in <em>this</em> format, and I'll give you answers in <em>that</em> format. Follow the rules, and we're good.&raquo;
+        </div>
+    </div>
+
+    <h3>API in Real Life</h3>
+
+    <p>Every time software communicates with other software, it uses an API:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4F1;</div>
+            <div class="layer-name" style="color: var(--blue);">Mobile App</div>
+            <div class="layer-desc">Uses the Fohlio API to load your projects and products</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F310;</div>
+            <div class="layer-name" style="color: var(--green);">Website</div>
+            <div class="layer-desc">Uses the Stripe API to process payments</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F916;</div>
+            <div class="layer-name" style="color: var(--orange);">Claude</div>
+            <div class="layer-desc">Uses the Notion API to read your pages</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--purple);">Slack Bot</div>
+            <div class="layer-desc">Uses the Slack API to send messages in channels</div>
+        </div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Key idea:</strong> An API is a contract. It says: &laquo;Send me a request in this exact format, and I'll send you a response in this exact format.&raquo; Without APIs, programs would have no way to talk to each other.</p>
+    </div>
+
+    <h3>The Problem with APIs (for AI)</h3>
+
+    <p>APIs are great for developers. But there's a catch when <em>AI</em> needs to use them:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F4A5;</div>
+            <div class="card-title" style="color: var(--red);">Every API Is Different</div>
+            <div class="card-desc">Notion API works differently from Jira API, which works differently from GitHub API. It's like every restaurant in the food court has a different language on their menu.</div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F527;</div>
+            <div class="card-title" style="color: var(--red);">Custom Code for Each</div>
+            <div class="card-desc">To connect AI to each tool, someone has to write custom integration code. Imagine hiring a separate translator for each restaurant. Expensive!</div>
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F354;</div>
+        You: &laquo;I want sushi, pizza, and tacos.&raquo;<br>
+        Without API: You walk into 3 kitchens, get kicked out of 2.<br>
+        With API: You call 3 waiters, fill out 3 different order forms in 3 different formats.<br>
+        With MCP: You tell one assistant what you want, and they handle all 3 waiters for you.<br>
+        <em>MCP is the personal food concierge you didn't know you needed.</em>
+    </div>
+
+    <p>This is exactly the problem MCP solves. Let's see how.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Recall check &mdash; before moving on</div>
+        <div class="recall-question">Think about your own work: which tools do you use that already &laquo;talk to each other&raquo; automatically? (Hint: Jira &rarr; Slack notifications, Notion &rarr; Calendar, GitHub &rarr; something?) Under the hood, every one of those integrations is an API.</div>
+        <div class="recall-hint">No right answer &mdash; just notice that APIs are already everywhere around you. Now think: why might AI need something different?</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: API vs MCP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: API vs MCP &mdash; What's the Difference?</h2>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess first &mdash; then read</div>
+        <div class="recall-question">You already know that API = a waiter with a menu. Before reading the explanation below, try to guess: <strong>why can't AI just use regular APIs directly?</strong> Write one sentence in your head. Then read on and see if you were right.</div>
+        <div class="recall-hint">Even a wrong guess helps. Your brain just created a &laquo;hook&raquo; that the next section will stick to much better.</div>
+    </div>
+
+    <p>Now for the most important concept in this lesson. If you remember one thing, make it this.</p>
+
+    <h3>The USB Analogy (revisited)</h3>
+
+    <div class="story-box">
+        <p>Imagine a world before USB. Your printer needs a <strong>parallel port</strong> cable. Your camera needs <strong>FireWire</strong>. Your phone needs a <strong>30-pin connector</strong>. Your mouse needs <strong>PS/2</strong>. You open your drawer and it looks like a snake pit of different cables.</p>
+        <p>Then USB arrived: <strong>one standard connector</strong> for everything. Any device, any computer &mdash; same plug. The drawer went from chaos to one cable that rules them all.</p>
+        <p><strong>API</strong> = the snake-pit era. Each tool has its own cable, its own rules. <strong>MCP</strong> = USB &mdash; one standard protocol that works everywhere, for everyone.</p>
+        <div class="tech-note">
+            <strong>Fun fact:</strong> MCP was created by Anthropic in November 2024. By late 2025, it was donated to the <strong>Agentic AI Foundation</strong> under the Linux Foundation, with OpenAI, Google, Microsoft, AWS, and GitHub as supporters. It's becoming the <em>actual</em> industry standard &mdash; not just an analogy.
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Aspect</th>
+            <th>Traditional API</th>
+            <th>MCP</th>
+        </tr>
+        <tr>
+            <td><strong>Format</strong></td>
+            <td>Each API has its own format (REST, GraphQL, etc.)</td>
+            <td>One standard format for all tools</td>
+        </tr>
+        <tr>
+            <td><strong>Authentication</strong></td>
+            <td>Different for each service (API keys, OAuth, tokens)</td>
+            <td>Standardized &mdash; usually one-time OAuth in the app</td>
+        </tr>
+        <tr>
+            <td><strong>Integration Effort</strong></td>
+            <td>Developer writes custom code per tool</td>
+            <td>Install an MCP server &mdash; AI connects instantly</td>
+        </tr>
+        <tr>
+            <td><strong>Who Can Set Up</strong></td>
+            <td>Developers only</td>
+            <td>Anyone (point-and-click or paste a URL)</td>
+        </tr>
+        <tr>
+            <td><strong>Discovery</strong></td>
+            <td>AI doesn't know what tools are available</td>
+            <td>AI automatically sees all connected tools</td>
+        </tr>
+        <tr>
+            <td><strong>Best Analogy</strong></td>
+            <td>Different cable for every device</td>
+            <td>USB &mdash; one connector for everything</td>
+        </tr>
+    </table>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="300" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Without MCP vs With MCP</text>
+
+            <!-- Left side: without MCP -->
+            <text x="190" y="55" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">Without MCP (custom APIs)</text>
+
+            <rect x="130" y="70" width="120" height="40" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+            <text x="190" y="95" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">AI Agent</text>
+
+            <!-- Custom lines to each tool -->
+            <line x1="160" y1="115" x2="60" y2="150" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="180" y1="115" x2="140" y2="150" stroke="#E8790C" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="200" y1="115" x2="220" y2="150" stroke="#1A8F5C" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <line x1="220" y1="115" x2="300" y2="150" stroke="#3451B2" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+            <rect x="20" y="155" width="80" height="35" rx="6" fill="#FEE2E2" stroke="#DC2626"/>
+            <text x="60" y="177" text-anchor="middle" font-family="Inter" font-size="10" fill="#DC2626">Notion API</text>
+
+            <rect x="110" y="155" width="70" height="35" rx="6" fill="#FFF3E5" stroke="#E8790C"/>
+            <text x="145" y="177" text-anchor="middle" font-family="Inter" font-size="10" fill="#E8790C">Jira API</text>
+
+            <rect x="190" y="155" width="75" height="35" rx="6" fill="#E6F9F0" stroke="#1A8F5C"/>
+            <text x="227" y="177" text-anchor="middle" font-family="Inter" font-size="10" fill="#1A8F5C">GitHub API</text>
+
+            <rect x="275" y="155" width="75" height="35" rx="6" fill="#E8EDFF" stroke="#3451B2"/>
+            <text x="312" y="177" text-anchor="middle" font-family="Inter" font-size="10" fill="#3451B2">Slack API</text>
+
+            <text x="190" y="215" text-anchor="middle" font-family="Inter" font-size="11" fill="#DC2626">4 different formats, 4 auth methods</text>
+            <text x="190" y="230" text-anchor="middle" font-family="Inter" font-size="11" fill="#DC2626">custom code for each one</text>
+
+            <!-- Divider -->
+            <line x1="380" y1="50" x2="380" y2="280" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="6 4"/>
+
+            <!-- Right side: with MCP -->
+            <text x="570" y="55" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">With MCP (standard protocol)</text>
+
+            <rect x="510" y="70" width="120" height="40" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+            <text x="570" y="95" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">AI Agent</text>
+
+            <!-- Single MCP line -->
+            <line x1="570" y1="115" x2="570" y2="145" stroke="#1A8F5C" stroke-width="3"/>
+
+            <rect x="520" y="148" width="100" height="35" rx="8" fill="#D1FAE5" stroke="#059669" stroke-width="2"/>
+            <text x="570" y="170" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#059669">MCP</text>
+
+            <!-- Lines from MCP to tools -->
+            <line x1="540" y1="188" x2="450" y2="220" stroke="#059669" stroke-width="1.5"/>
+            <line x1="555" y1="188" x2="530" y2="220" stroke="#059669" stroke-width="1.5"/>
+            <line x1="585" y1="188" x2="610" y2="220" stroke="#059669" stroke-width="1.5"/>
+            <line x1="600" y1="188" x2="690" y2="220" stroke="#059669" stroke-width="1.5"/>
+
+            <rect x="415" y="225" width="70" height="30" rx="6" fill="white" stroke="#059669"/>
+            <text x="450" y="244" text-anchor="middle" font-family="Inter" font-size="10" fill="#059669">Notion</text>
+
+            <rect x="495" y="225" width="70" height="30" rx="6" fill="white" stroke="#059669"/>
+            <text x="530" y="244" text-anchor="middle" font-family="Inter" font-size="10" fill="#059669">Jira</text>
+
+            <rect x="575" y="225" width="70" height="30" rx="6" fill="white" stroke="#059669"/>
+            <text x="610" y="244" text-anchor="middle" font-family="Inter" font-size="10" fill="#059669">GitHub</text>
+
+            <rect x="655" y="225" width="70" height="30" rx="6" fill="white" stroke="#059669"/>
+            <text x="690" y="244" text-anchor="middle" font-family="Inter" font-size="10" fill="#059669">Slack</text>
+
+            <text x="570" y="278" text-anchor="middle" font-family="Inter" font-size="11" fill="#059669">1 standard, same format for all</text>
+        </svg>
+        <div class="diagram-caption">Left: each tool needs custom integration. Right: MCP provides one standard interface for all tools.</div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Why this matters for you:</strong> Without MCP, only developers could connect AI to tools. With MCP, <em>anyone</em> can do it &mdash; just paste a URL or click a button. That's the revolution.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F50C;</div>
+        API: &laquo;To connect Notion, read 47 pages of docs, get an API key, write authentication code, handle pagination...&raquo;<br>
+        MCP: &laquo;Paste this URL, click Allow.&raquo;<br>
+        <em>The same result &mdash; Claude reads your Notion &mdash; but one took 5 seconds.</em>
+    </div>
+
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Feynman Test &mdash; the most important check in this lesson</div>
+        <div class="recall-question">Explain the difference between API and MCP <strong>using your own analogy</strong> &mdash; not USB, not restaurants. Something from your life. If a friend asked you &laquo;what's MCP?&raquo;, what would you say?</div>
+        <div class="recall-hint">If you can't find an analogy &mdash; that's a signal. It means you understood the concept but haven't <em>owned</em> it yet. Re-read the table above, focus on the &laquo;Who Can Set Up&raquo; row, and try again. That's where the magic is.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: MCP IN CLAUDE DESKTOP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Adding MCP Servers to Claude Desktop</h2>
+
+    <div class="story-box">
+        <p>Imagine this moment: you open Claude Desktop, type &laquo;What tickets do I have in Jira?&raquo; and Claude <em>actually checks Jira</em> and lists your tickets. No copy-pasting. No switching tabs. No &laquo;here's how you could find out...&raquo; &mdash; it just <strong>does it</strong>.</p>
+        <p>That's what we're setting up right now. In 5 minutes, you'll have a Claude that can reach into your real work tools.</p>
+    </div>
+
+    <p>Claude Desktop supports two ways to add MCP servers: <strong>Connectors</strong> (built-in, easy) and <strong>manual configuration</strong> (JSON file, flexible). Let's learn both.</p>
+
+    <h3>Method 1: Connectors (the easy way)</h3>
+
+    <p>Connectors are pre-built MCP integrations &mdash; like pre-configured USB cables. You just plug them in: paste a URL, click Allow, done.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Open Claude Desktop Settings</span>
+        <div class="step-desc">Click on your profile icon in the bottom left &rarr; <strong>Settings</strong>. Or use the keyboard shortcut.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Go to the &laquo;Connectors&raquo; tab</span>
+        <div class="step-desc">In the Settings panel, find and click <strong>Connectors</strong> (or <strong>MCP</strong> depending on your version). You'll see a list of already connected services (if any).</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Click &laquo;Add Connector&raquo;</span>
+        <div class="step-desc">A dialog will appear asking for a URL. Enter the MCP URL for the service you want to connect. For example:<br>
+        <code>https://mcp.notion.com/mcp</code> for Notion.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Authenticate via OAuth</span>
+        <div class="step-desc">The service (Notion, Jira, etc.) will open a browser window asking you to <strong>grant access</strong>. Click &laquo;Allow&raquo;. This is a one-time step.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">5</span>
+        <span class="step-title">Start using it!</span>
+        <div class="step-desc">Now when you chat with Claude, it can access that service. Try: &laquo;Find the onboarding page in my Notion&raquo; or &laquo;What are my open Jira tickets?&raquo;</div>
+    </div>
+
+    <h4>Available Built-in Connectors</h4>
+
+    <table>
+        <tr>
+            <th>Service</th>
+            <th>What You Can Do</th>
+            <th>MCP URL</th>
+        </tr>
+        <tr>
+            <td><strong>Notion</strong></td>
+            <td>Search pages, read content, find documents</td>
+            <td><code>https://mcp.notion.com/mcp</code></td>
+        </tr>
+        <tr>
+            <td><strong>Atlassian (Jira + Confluence)</strong></td>
+            <td>Search tickets, read issues, check sprints, read wiki</td>
+            <td>Available in connector list</td>
+        </tr>
+        <tr>
+            <td><strong>GitHub</strong></td>
+            <td>Search code, read PRs, review issues, list repos</td>
+            <td>Available in connector list</td>
+        </tr>
+        <tr>
+            <td><strong>Google Drive</strong></td>
+            <td>Search docs, read spreadsheets, find presentations</td>
+            <td>Available in connector list</td>
+        </tr>
+        <tr>
+            <td><strong>Slack</strong></td>
+            <td>Search messages, read channel history</td>
+            <td>Available in connector list</td>
+        </tr>
+        <tr>
+            <td><strong>Sentry</strong></td>
+            <td>View errors, search issues, check project health</td>
+            <td>Available in connector list</td>
+        </tr>
+    </table>
+
+    <div class="info-box orange">
+        <p><strong>Important:</strong> Connectors require a Claude Pro, Max, Team, or Enterprise plan. Free plans don't have MCP access. If you need a plan, ask Ivan in Slack.</p>
+    </div>
+
+    <h3>Method 2: Manual Configuration (JSON file)</h3>
+
+    <p>Some MCP servers aren't available as built-in connectors. In that case, you can add them manually through a JSON config file.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Open the config file</span>
+        <div class="step-desc">
+            In Claude Desktop: <strong>Settings</strong> (gear icon) &rarr; <strong>Developer</strong> tab &rarr; <strong>Edit Config</strong> button.<br>
+            Or open the file directly:<br>
+            On <strong>macOS</strong>: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code><br>
+            On <strong>Windows</strong>: <code>%APPDATA%\Claude\claude_desktop_config.json</code>
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Add the MCP server entry</span>
+        <div class="step-desc">Add your MCP server to the <code>mcpServers</code> section. Here's a real example with Notion and HubSpot:</div>
+    </div>
+
+    <pre><code>{
+  <span class="string">"mcpServers"</span>: {
+    <span class="string">"notionApi"</span>: {
+      <span class="string">"command"</span>: <span class="string">"npx"</span>,
+      <span class="string">"args"</span>: [<span class="string">"-y"</span>, <span class="string">"@notionhq/notion-mcp-server"</span>],
+      <span class="string">"env"</span>: {
+        <span class="string">"NOTION_TOKEN"</span>: <span class="string">"ntn_your_token_here"</span>
+      }
+    },
+    <span class="string">"HubspotMCP"</span>: {
+      <span class="string">"command"</span>: <span class="string">"npx"</span>,
+      <span class="string">"args"</span>: [<span class="string">"-y"</span>, <span class="string">"@hubspot/mcp-server"</span>],
+      <span class="string">"env"</span>: {
+        <span class="string">"PRIVATE_APP_ACCESS_TOKEN"</span>: <span class="string">"your_hubspot_token"</span>
+      }
+    }
+  }
+}</code></pre>
+
+    <div class="info-box green">
+        <p><strong>You can add multiple servers at once!</strong> Just add more entries inside <code>mcpServers</code>. Each one gets its own name, command, and credentials. Claude will see all of them.</p>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Restart Claude Desktop</span>
+        <div class="step-desc">Close and reopen the app. In a new chat, click <strong>Search and Tools</strong> &mdash; you'll see your connected servers and their tools listed. Enable them if needed.</div>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>When to use which method?</strong> Use <strong>Connectors</strong> (Method 1) for popular services &mdash; it's easier and handles auth automatically. Use <strong>Manual config</strong> (Method 2) for custom or community MCP servers that aren't in the built-in list.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6E0;</div>
+        Connector method: &laquo;Paste URL. Click Allow. Done.&raquo; (30 seconds)<br>
+        Manual JSON method: &laquo;Open config file. Add 6 lines. Restart app.&raquo; (2 minutes)<br>
+        Old API method: &laquo;Read 47 pages of docs. Get API key. Write auth code. Debug CORS. Question your career choices.&raquo; (2 days)<br>
+        <em>Progress.</em>
+    </div>
+
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Quick recall &mdash; don't peek</div>
+        <div class="recall-question">Without scrolling up: what are the <strong>two methods</strong> for adding MCP servers to Claude Desktop? And when would you use each one?</div>
+        <div class="recall-hint">If you remember both &mdash; great, you're ready to move on. If you remember only one &mdash; scroll back to the section headers, not the details. The structure matters more than the steps.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: WHAT IS MANUS? -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Manus &mdash; Another AI Agent Platform</h2>
+
+    <h3>What is Manus?</h3>
+
+    <div class="story-box">
+        <p>Back to our restaurant. Claude Desktop is like sitting <em>with</em> the brilliant consultant at the same table. You talk, they answer, you go back and forth. Great for collaboration.</p>
+        <p><strong>Manus</strong> is different. Manus is like giving the consultant a task and saying: &laquo;Go figure this out. Come back when you're done.&raquo; The consultant leaves, visits 15 restaurants, talks to 30 people, creates a spreadsheet, and emails you the result 20 minutes later.</p>
+        <p>Manus is an <strong>autonomous AI agent platform</strong> that launched in early 2025. It works in a cloud sandbox with its own browser, file system, and tools &mdash; completely independently. You describe a task, Manus plans and executes it, and delivers the output.</p>
+        <div class="tech-note">
+            <strong>Think of it this way:</strong> Claude Desktop = working <em>together</em> in real-time. Manus = delegating and checking the result later.
+        </div>
+    </div>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4AC;</div>
+            <div class="card-title" style="color: var(--blue);">Claude Desktop</div>
+            <div class="card-subtitle" style="color: var(--blue);">Chat-first assistant</div>
+            <div class="card-desc">You ask questions, get answers, work together in real-time. MCP connects it to your tools.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F3AF;</div>
+            <div class="card-title" style="color: var(--purple);">Manus</div>
+            <div class="card-subtitle" style="color: var(--purple);">Task-first autonomous agent</div>
+            <div class="card-desc">You give it a task, it works independently in a cloud sandbox, and delivers the result.</div>
+        </div>
+    </div>
+
+    <h3>What Can Manus Do?</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F310;</div>
+            <div class="layer-name" style="color: var(--purple);">Browse the web</div>
+            <div class="layer-desc">Opens real websites, clicks buttons, fills forms, extracts data</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4BB;</div>
+            <div class="layer-name" style="color: var(--blue);">Write code</div>
+            <div class="layer-desc">Creates scripts, apps, data analysis in a cloud sandbox</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4C1;</div>
+            <div class="layer-name" style="color: var(--green);">Create files</div>
+            <div class="layer-desc">Generates documents, spreadsheets, presentations, reports</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--orange);">Deep research</div>
+            <div class="layer-desc">Multi-step research tasks: competitor analysis, market research</div>
+        </div>
+    </div>
+
+    <h4>Manus Pricing</h4>
+
+    <table>
+        <tr>
+            <th>Plan</th>
+            <th>Price</th>
+            <th>Credits/month</th>
+            <th>Parallel tasks</th>
+        </tr>
+        <tr>
+            <td><strong>Free</strong></td>
+            <td>$0</td>
+            <td>1,000 (one-time) + 300/day</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td><strong>Standard</strong></td>
+            <td>$20/month</td>
+            <td>4,000 + 300/day</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td><strong>Extended</strong></td>
+            <td>$200/month</td>
+            <td>40,000 + 300/day</td>
+            <td>20</td>
+        </tr>
+    </table>
+
+    <div class="info-box orange">
+        <p><strong>Heads up:</strong> Complex tasks (deep research, multi-step analysis) can consume 500&ndash;900 credits each. There's no cost preview before a task runs. Start with the free tier to see how it works for you.</p>
+    </div>
+
+    <h3>Adding MCP Servers to Manus</h3>
+
+    <p>Manus has <strong>built-in connectors</strong> for popular services, plus support for custom MCP servers.</p>
+
+    <h4>Built-in connectors (the easy path)</h4>
+
+    <p>These are available out of the box via OAuth &mdash; no JSON config needed:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E7;</div>
+            <div class="layer-name" style="color: var(--green);">Gmail</div>
+            <div class="layer-desc">Send, search, and read emails</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--blue);">Notion</div>
+            <div class="layer-desc">Search and create pages, query databases</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--orange);">HubSpot</div>
+            <div class="layer-desc">CRM contacts, deals, companies</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4AC;</div>
+            <div class="layer-name" style="color: var(--purple);">Slack</div>
+            <div class="layer-desc">Read and send messages</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4BB;</div>
+            <div class="layer-name" style="color: var(--blue);">GitHub</div>
+            <div class="layer-desc">Repos, issues, PRs</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4C5;</div>
+            <div class="layer-name" style="color: var(--green);">Google Calendar</div>
+            <div class="layer-desc">View and create events</div>
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Open Manus Settings</span>
+        <div class="step-desc">Log into <code>manus.im</code>, go to your profile &rarr; <strong>Settings &rarr; Integrations</strong>.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Choose a connector</span>
+        <div class="step-desc">Click on the service you want (Gmail, Notion, HubSpot, etc.) and complete the <strong>OAuth flow</strong> &mdash; log into the service and grant Manus access.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Use it in your tasks</span>
+        <div class="step-desc">Just mention the service in your prompt. Manus automatically picks the right connector.<br>Example: &laquo;Check my Google Calendar for this week and create a summary in Notion.&raquo;</div>
+    </div>
+
+    <h4>Custom MCP servers (for everything else)</h4>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Go to Settings &rarr; Integrations &rarr; Custom MCP Servers</span>
+        <div class="step-desc">Click <strong>Add Server</strong> and enter the server details.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Configure the server</span>
+        <div class="step-desc">Provide:<br>
+        &bull; <strong>Server name</strong> &mdash; a descriptive label (e.g., &laquo;Internal CRM&raquo;)<br>
+        &bull; <strong>Server URL</strong> &mdash; the HTTPS endpoint of your MCP server<br>
+        &bull; <strong>Authentication</strong> &mdash; API key, Bearer token, or other credentials</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Verify and use</span>
+        <div class="step-desc">Manus will check the connection and discover available tools. Start using them in your tasks.</div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Key difference:</strong> In Claude Desktop, MCP tools are available in your chat. In Manus, MCP tools are available for the agent's autonomous work. Claude is like a conversation partner with superpowers. Manus is like a remote employee you send on a mission.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F60E;</div>
+        Claude Desktop: &laquo;What should I search in your Notion?&raquo;<br>
+        Manus: &laquo;I already searched your Notion, compared it with Jira tickets, built a spreadsheet, and sent you the link. Anything else?&raquo;<br>
+        <em>Different tools for different jobs.</em>
+    </div>
+
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Real-world application &mdash; your turn</div>
+        <div class="recall-question">Think about a <strong>real task from your actual work</strong> this week. Would you give it to <strong>Claude Desktop</strong> (working together, step by step) or to <strong>Manus</strong> (delegate and get the result later)? Why?</div>
+        <div class="recall-hint">The dividing line isn't about difficulty. It's about whether you want to be <em>in the process</em> or just <em>get the output</em>. There's no wrong answer &mdash; but knowing the difference will save you time every day.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: MCP CATALOG FOR GTM TEAMS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: MCP Catalog for GTM Teams</h2>
+
+    <div class="story-box">
+        <p>Now for the fun part. Imagine you walk into a hardware store, and instead of a wall of random cables, you see a neatly organized display: &laquo;USB cables for your camera, your printer, your phone.&raquo; Everything is labeled, compatible, and ready to plug in.</p>
+        <p>That's what this section is &mdash; a <strong>curated catalog of MCP &laquo;cables&raquo;</strong> for the tools your team actually uses. Browse through, find your tools, and connect them.</p>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>What is a GTM team?</strong> GTM = Go-To-Market. It includes everyone involved in bringing a product to customers: marketing, sales, customer success, product managers, content creators. If you talk to customers or think about how the product reaches them &mdash; you're GTM.</p>
+    </div>
+
+    <p>For each tool below, we show what it does and give you <strong>real prompts you can try</strong> once you connect it. Think of these as test drives.</p>
+
+    <h3>Productivity &amp; Knowledge Management</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4DD;</div>
+            <div class="tool-name">Notion</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">Search pages, read documents, query databases. Claude can access your team wiki, meeting notes, product specs &mdash; everything in your Notion workspace.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;Find the product roadmap in Notion&raquo; &bull; &laquo;Summarize the last team meeting notes&raquo; &bull; &laquo;What does the onboarding checklist say?&raquo;
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4C5;</div>
+            <div class="tool-name">Google Calendar</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">View your schedule, create events, find free time slots. Useful for planning meetings, checking availability, and scheduling follow-ups.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;What meetings do I have tomorrow?&raquo; &bull; &laquo;Find a 30-minute slot this week for a call with marketing&raquo;
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4C2;</div>
+            <div class="tool-name">Google Drive</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">Search and read documents, spreadsheets, and presentations across your entire Google Drive. Great for finding sales decks, reports, and shared docs.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;Find the Q1 sales report in Drive&raquo; &bull; &laquo;What's in the latest product brief?&raquo;
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4E7;</div>
+            <div class="tool-name">Gmail</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">Search emails, read messages, draft responses. AI can help you find conversations, summarize email threads, and prepare replies.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;Find the last email from our design partner&raquo; &bull; &laquo;Summarize the email thread about the new launch&raquo;
+        </div>
+    </div>
+
+    <h3>Project Management &amp; Engineering</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F3AF;</div>
+            <div class="tool-name">Atlassian (Jira + Confluence)</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">Search Jira tickets, read issue details, check sprint progress, browse Confluence wiki pages. Crucial for cross-team alignment.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;What are the open bugs in the current sprint?&raquo; &bull; &laquo;Summarize ticket FOH-1234&raquo; &bull; &laquo;What does the API spec say in Confluence?&raquo;
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4BB;</div>
+            <div class="tool-name">GitHub</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">Search code, browse repositories, read Pull Requests and issues. Even non-technical team members can use Claude to explore what the engineering team is building.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;What PRs were merged this week?&raquo; &bull; &laquo;What does the README of fohlio-frontend say?&raquo; &bull; &laquo;Are there any open issues tagged 'bug'?&raquo;
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4AC;</div>
+            <div class="tool-name">Slack</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">Search messages across channels, read conversation history. Find decisions, discussions, and context that live in Slack.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;What was discussed in #product-launch last week?&raquo; &bull; &laquo;Find the message about the pricing decision&raquo;
+        </div>
+    </div>
+
+    <h3>Sales &amp; CRM</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4CA;</div>
+            <div class="tool-name">HubSpot</div>
+            <span class="badge tool">Official MCP</span>
+        </div>
+        <div class="tool-desc">Access contacts, deals, companies, and marketing campaigns. HubSpot has an <strong>official MCP server</strong> (<code>@hubspot/mcp-server</code>) that connects Claude to your CRM data for sales analysis, pipeline management, and reporting.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;What deals are in the pipeline this quarter?&raquo; &bull; &laquo;Show me the contact info for Acme Corp&raquo; &bull; &laquo;Create a note on the Acme Corp deal&raquo;
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Note on HubSpot:</strong> The official HubSpot MCP server is in <strong>Public Beta</strong>. Setup requires manual configuration (Method 2 from Part 3) with a HubSpot Private App access token. See <code>developers.hubspot.com/mcp</code> for details. Full CRM features require a HubSpot Pro plan.</p>
+    </div>
+
+    <h3>Design &amp; Research</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F3A8;</div>
+            <div class="tool-name">Figma</div>
+            <span class="badge tool">Official MCP</span>
+        </div>
+        <div class="tool-desc">Read design files, get component specs, extract colors, and even generate code from frames. Figma's official MCP server (<code>figma-developer-mcp</code>) lets product and marketing teams reference designs without opening Figma.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;What colors are used in the landing page design?&raquo; &bull; &laquo;Describe the layout of the signup screen&raquo;
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F50D;</div>
+            <div class="tool-name">Web Search (Tavily / Exa)</div>
+            <span class="badge ai">Community MCP</span>
+        </div>
+        <div class="tool-desc">AI-powered web search that returns structured results. Perfect for competitive research, market analysis, and finding industry trends.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;Research our top 5 competitors&raquo; &bull; &laquo;Find recent articles about interior design software trends&raquo;
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4F9;</div>
+            <div class="tool-name">Fathom (Meeting Notes)</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">Access meeting recordings, transcripts, and AI summaries from Fathom. Great for reviewing sales calls, customer interviews, and team meetings.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;Summarize my last customer call&raquo; &bull; &laquo;What action items came out of yesterday's team meeting?&raquo;
+        </div>
+    </div>
+
+    <h3>Monitoring &amp; Error Tracking</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F6A8;</div>
+            <div class="tool-name">Sentry</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">View application errors, search for issues, check project health. Even non-technical team members can understand what's broken and how it affects users.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;What errors happened in production today?&raquo; &bull; &laquo;Are there any critical unresolved issues?&raquo;
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F680;</div>
+            <div class="tool-name">Vercel</div>
+            <span class="badge tool">Connector</span>
+        </div>
+        <div class="tool-desc">Check deployments, view build logs, monitor app status. Know if the latest release went smoothly without asking engineering.</div>
+        <div class="tool-examples">
+            <strong>Try asking:</strong> &laquo;Was today's deployment successful?&raquo; &bull; &laquo;What was the last deployment error?&raquo;
+        </div>
+    </div>
+
+    <h3>Where to Find More MCP Servers</h3>
+
+    <div class="info-box purple">
+        <p><strong>MCP ecosystem in 2025&ndash;2026:</strong> In late 2025, Anthropic donated MCP to the <strong>Agentic AI Foundation</strong> under the Linux Foundation. Co-founders include OpenAI and Block, with support from AWS, Google, Microsoft, GitHub, and Cloudflare. There are now <strong>10,000+ public MCP servers</strong> and 97M+ SDK downloads per month. MCP is becoming the industry standard.</p>
+    </div>
+
+    <table>
+        <tr>
+            <th>Directory</th>
+            <th>Description</th>
+            <th>URL</th>
+        </tr>
+        <tr>
+            <td><strong>MCP Registry (official)</strong></td>
+            <td>Official registry with API for discovering public MCP servers</td>
+            <td><code>registry.modelcontextprotocol.io</code></td>
+        </tr>
+        <tr>
+            <td><strong>MCP Servers (GitHub)</strong></td>
+            <td>Anthropic's reference implementations and official servers</td>
+            <td><code>github.com/modelcontextprotocol/servers</code></td>
+        </tr>
+        <tr>
+            <td><strong>mcp.so</strong></td>
+            <td>Largest community catalog with filtering and search</td>
+            <td><code>mcp.so</code></td>
+        </tr>
+        <tr>
+            <td><strong>PulseMCP</strong></td>
+            <td>Ratings, analytics, and popularity tracking</td>
+            <td><code>pulsemcp.com</code></td>
+        </tr>
+        <tr>
+            <td><strong>Smithery</strong></td>
+            <td>Marketplace for MCP servers with one-click install</td>
+            <td><code>smithery.ai</code></td>
+        </tr>
+    </table>
+
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Your personal MCP stack &mdash; design it now</div>
+        <div class="recall-question">Before reading the scenarios below, look at the catalog above and pick <strong>3 tools that would help YOUR specific role</strong>. For each one, write down one question you'd ask Claude. Don't think too hard &mdash; the first question that comes to mind is usually the best one.</div>
+        <div class="recall-hint">This isn't just an exercise. These are probably the first 3 things you should actually connect after the lesson. The scenarios below will give you more ideas &mdash; but your own instinct matters most.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: PRACTICAL SCENARIOS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Real Scenarios &mdash; &laquo;Show Me the Magic&raquo;</h2>
+
+    <div class="story-box">
+        <p>Theory is nice, but you're probably thinking: &laquo;OK, I get it. USB cables. Plug in. But what does this <em>actually</em> look like in my workday?&raquo;</p>
+        <p>Great question. Let's walk through real scenarios for different roles. For each one, notice the pattern: <strong>AI + multiple tools = something that was impossible (or painfully slow) before</strong>.</p>
+    </div>
+
+    <h3>Product Manager</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--purple);">&#x1F4CB;</span>
+        <span class="step-title">Morning standup prep (2 min instead of 15)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Open Jira. Scroll through tickets. Switch to Notion. Read sprint notes. Switch to Slack. Check if anyone flagged blockers. Copy key points into a doc. 15 minutes gone.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, check my Jira board &mdash; what tickets moved since yesterday? Also look at the Notion sprint doc and summarize any blockers mentioned in #dev-standup on Slack.&raquo;<br><br>
+            <strong>MCP tools used:</strong> Atlassian + Notion + Slack &mdash; Claude reads all three and gives you one clean summary. You walk into standup with perfect context.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--purple);">&#x1F4CB;</span>
+        <span class="step-title">Writing a feature brief (30 min instead of 2 hours)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Read customer feedback in Notion. Find related Jira tickets. Check the Figma mockups. Look at the GitHub PR that explored this. Draft the brief from scratch.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, look at the customer feedback in our Notion database tagged 'export', the related Jira tickets, and the Figma designs for the new export flow. Draft a feature brief following our template.&raquo;<br><br>
+            <strong>MCP tools used:</strong> Notion + Atlassian + Figma &mdash; Claude gathers context from 3 sources and writes a structured draft. You just refine it.
+        </div>
+    </div>
+
+    <h3>Marketing / Content</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--green);">&#x1F4F0;</span>
+        <span class="step-title">Competitive research (20 min instead of a full day)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Visit 5 competitor websites. Screenshot new features. Read their blog posts. Check their social media. Compile into a spreadsheet. Die a little inside.<br><br>
+            <strong>The Manus way:</strong> &laquo;Research what our top 5 competitors (list them) launched in the last month. Check their websites, blogs, and changelogs. Create a comparison table with screenshots.&raquo;<br><br>
+            <strong>Tool:</strong> Manus with web browsing &mdash; it works autonomously for 10&ndash;15 minutes, visits all 5 sites, and delivers a structured file. You review it with coffee.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--green);">&#x1F4F0;</span>
+        <span class="step-title">Release blog post (20 min instead of 1.5 hours)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Ask engineering &laquo;what shipped?&raquo; Get a list of Jira tickets. Try to make sense of PR descriptions. Write something vaguely marketing-sounding. Send to PM for fact-checking.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, read our product changelog in Notion and the last 5 merged PRs on GitHub. Draft a blog post about what's new this month, in a tone that customers will understand.&raquo;<br><br>
+            <strong>MCP tools used:</strong> Notion + GitHub &mdash; Claude cross-references internal sources, translates developer-speak into customer value. No &laquo;what shipped?&raquo; Slack pings required.
+        </div>
+    </div>
+
+    <h3>Sales / Customer Success</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--orange);">&#x1F91D;</span>
+        <span class="step-title">Pre-call prep (30 sec instead of 15 min)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Open HubSpot, check the deal. Open Notion, find the account page. Open Slack, search for their name. Open Jira, check if they reported bugs. Tab-switch until dizzy.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, check HubSpot for the Acme Corp deal status, find any Slack discussions about them in the last month, and check if they have open Jira tickets. Give me a 5-bullet briefing for my call in 10 minutes.&raquo;<br><br>
+            <strong>MCP tools used:</strong> HubSpot + Slack + Atlassian &mdash; multi-source briefing in 30 seconds. You walk into the call knowing <em>everything</em>.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--orange);">&#x1F91D;</span>
+        <span class="step-title">Post-call follow-up (5 min instead of 20 min)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Try to remember what was said. Open notes app. Write an email. Forget half the action items. Send. Cringe later.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, read the Fathom transcript of my last call with Acme Corp. Draft a follow-up email with action items, next steps, and a proposed meeting date from my Google Calendar next week.&raquo;<br><br>
+            <strong>MCP tools used:</strong> Fathom + Gmail + Google Calendar &mdash; from meeting transcript to polished email with scheduling, in one prompt.
+        </div>
+    </div>
+
+    <h3>Revenue Operations</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--blue);">&#x1F4CA;</span>
+        <span class="step-title">Weekly pipeline report (5 min instead of 45 min)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Export from HubSpot. Clean data in Google Sheets. Cross-reference with goals. Format. Add commentary. Send in Slack.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, pull the current pipeline from HubSpot, compare it against our quarterly targets in the Google Sheet, and draft a summary for the #sales-leadership Slack channel. Highlight any deals at risk.&raquo;<br><br>
+            <strong>MCP tools used:</strong> HubSpot + Google Drive + Slack &mdash; from raw CRM data to leadership-ready summary in one ask.
+        </div>
+    </div>
+
+    <h3>Content Marketing</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--green);">&#x270D;</span>
+        <span class="step-title">Content repurposing (30 min instead of 5 hours)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> You published a great blog post. Now you need a LinkedIn carousel, a Twitter thread, an email newsletter version, and 5 social quotes. Open the blog. Rewrite for each platform. Format. 5 hours of your life.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, read the blog post 'Why Interior Design Software Needs AI' from our Notion blog drafts. Create: a LinkedIn carousel (8 slides, under 60 words each), a Twitter/X thread (5 tweets with data points), an email newsletter summary (200 words), and 5 social media quotes with suggested visuals.&raquo;<br><br>
+            <strong>MCP tools used:</strong> Notion &mdash; Claude reads the source content and generates all platform-specific versions in one go. You just review and post.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--green);">&#x270D;</span>
+        <span class="step-title">SEO content gap analysis (15 min instead of 3 hours)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Export keyword data from an SEO tool. Manually Google the top 10 results. Read competing articles. Figure out what they covered and what they missed. Write a brief. Die of boredom.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, search the web for the top 5 articles about 'AI for interior design firms'. Analyze each one: what they cover, what they miss, their structure. Cross-reference with our Notion content calendar. What gaps can we fill? Create a content brief with an angle recommendation.&raquo;<br><br>
+            <strong>MCP tools used:</strong> Web search + Notion &mdash; Claude reads competitor content, compares with your existing coverage, and finds the gap nobody else has filled.
+        </div>
+    </div>
+
+    <h3>Customer Success</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--red);">&#x1F6A8;</span>
+        <span class="step-title">Proactive churn detection (5 min instead of 1 hour)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Check product analytics for declining usage. Cross-reference with CRM for health scores and renewal dates. Check Jira for open bugs affecting the customer. Write an internal alert. Draft a customer email. 55 minutes per at-risk account.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, check Sentry for any production errors affecting Acme Corp. Look at their Jira tickets from the last month. Pull their deal info from HubSpot &mdash; when does their contract renew? Draft a 'checking in' email that acknowledges their pain points and offers a solutions call.&raquo;<br><br>
+            <strong>MCP tools used:</strong> Sentry + Atlassian + HubSpot + Gmail &mdash; from data scattered across 4 tools to a proactive outreach in one prompt. The customer thinks you're psychic.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--red);">&#x1F6A8;</span>
+        <span class="step-title">QBR preparation (25 min instead of 4 hours)</span>
+        <div class="step-desc">
+            <strong>The old way:</strong> Gather usage data. Pull support ticket history. Compile NPS trends. Review contract terms. Build a slide deck. Hate your job briefly. 4 hours per QBR.<br><br>
+            <strong>The MCP way:</strong> &laquo;Claude, prepare a QBR summary for Acme Corp. From HubSpot: contract value, renewal date, stakeholder contacts. From Jira: all tickets filed in Q1, resolution times. From Notion: their onboarding notes and success plan. Structure it as: Executive Summary, Value Delivered, Open Issues, Expansion Opportunities, Next Steps.&raquo;<br><br>
+            <strong>MCP tools used:</strong> HubSpot + Atlassian + Notion &mdash; the QBR prep that used to eat half a day now takes a coffee break.
+        </div>
+    </div>
+
+    <h3>Time Savings Summary</h3>
+
+    <p>Here's what we see across all these scenarios:</p>
+
+    <table>
+        <tr>
+            <th>Role</th>
+            <th>Scenario</th>
+            <th>Old Time</th>
+            <th>MCP Time</th>
+            <th>Saved</th>
+        </tr>
+        <tr>
+            <td>Product Manager</td>
+            <td>Standup prep</td>
+            <td>15 min</td>
+            <td>2 min</td>
+            <td>~85%</td>
+        </tr>
+        <tr>
+            <td>Product Manager</td>
+            <td>Feature brief</td>
+            <td>2 hrs</td>
+            <td>30 min</td>
+            <td>~75%</td>
+        </tr>
+        <tr>
+            <td>Marketing</td>
+            <td>Competitive research</td>
+            <td>1 day</td>
+            <td>20 min</td>
+            <td>~90%</td>
+        </tr>
+        <tr>
+            <td>Marketing</td>
+            <td>Release blog post</td>
+            <td>1.5 hrs</td>
+            <td>20 min</td>
+            <td>~80%</td>
+        </tr>
+        <tr>
+            <td>Content</td>
+            <td>Content repurposing</td>
+            <td>5 hrs</td>
+            <td>30 min</td>
+            <td>~90%</td>
+        </tr>
+        <tr>
+            <td>Sales</td>
+            <td>Pre-call prep</td>
+            <td>15 min</td>
+            <td>30 sec</td>
+            <td>~95%</td>
+        </tr>
+        <tr>
+            <td>Sales</td>
+            <td>Post-call follow-up</td>
+            <td>20 min</td>
+            <td>5 min</td>
+            <td>~75%</td>
+        </tr>
+        <tr>
+            <td>RevOps</td>
+            <td>Pipeline report</td>
+            <td>45 min</td>
+            <td>5 min</td>
+            <td>~89%</td>
+        </tr>
+        <tr>
+            <td>Customer Success</td>
+            <td>Churn detection</td>
+            <td>55 min</td>
+            <td>5 min</td>
+            <td>~90%</td>
+        </tr>
+        <tr>
+            <td>Customer Success</td>
+            <td>QBR preparation</td>
+            <td>4 hrs</td>
+            <td>25 min</td>
+            <td>~90%</td>
+        </tr>
+    </table>
+
+    <div class="info-box green">
+        <p><strong>The math:</strong> If a GTM team of 10 people each saves 30 minutes per day with MCP, that's <strong>50 hours per week</strong> &mdash; more than a full-time employee's worth of time. And the quality often goes <em>up</em>, because AI cross-references data you'd never bother to check manually.</p>
+    </div>
+
+    <h3>Real Companies Already Doing This</h3>
+
+    <p>This isn't theory. Real companies are using MCP for GTM workflows right now:</p>
+
+    <table>
+        <tr>
+            <th>Company</th>
+            <th>What They Do with MCP</th>
+        </tr>
+        <tr>
+            <td><strong>Metadata.io</strong></td>
+            <td>Campaign deployment, creative optimization, and budget reallocation &mdash; all through AI agents connected via MCP</td>
+        </tr>
+        <tr>
+            <td><strong>Lusha</strong></td>
+            <td>Prospect research, call prep, lead enrichment, buyer committee mapping &mdash; shipped their own MCP server for B2B sales data</td>
+        </tr>
+        <tr>
+            <td><strong>Instantly.ai</strong></td>
+            <td>Automated lead classification, follow-up drafting, and pipeline management &mdash; with documented MCP workflows and real prompts</td>
+        </tr>
+        <tr>
+            <td><strong>Atlassian</strong></td>
+            <td>AI agents embedded in Jira that can be assigned tasks, operate within Jira's permission model &mdash; official MCP server with Anthropic partnership</td>
+        </tr>
+        <tr>
+            <td><strong>HubSpot</strong></td>
+            <td>MCP Client in Breeze Studio connecting to Notion, Atlassian, Asana, and Zapier MCP servers</td>
+        </tr>
+        <tr>
+            <td><strong>GrowthSpree</strong></td>
+            <td>Cross-platform revenue attribution using HubSpot MCP + Google Ads MCP together</td>
+        </tr>
+        <tr>
+            <td><strong>1ClickReport</strong></td>
+            <td>Built 26 SEO-optimized blog posts in 30 days using Claude + MCP pipeline</td>
+        </tr>
+    </table>
+
+    <div class="info-box purple">
+        <p><strong>Industry stats (2026):</strong> 28% of Fortune 500 companies have deployed MCP. 81% of companies using MCP use it for lookups in third-party software. The most popular categories: business communications (Slack), CRMs (HubSpot, Salesforce), and knowledge management (Notion).</p>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>The pattern in every scenario:</strong> MCP's power isn't in connecting one tool. It's in <strong>cross-referencing multiple sources in a single question</strong>. The AI doesn't just fetch data &mdash; it <em>synthesizes</em> across tools. That's the leap from &laquo;smart text box&raquo; to &laquo;actual work partner.&raquo;</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4C8;</div>
+        Manager on Monday morning: &laquo;Can you prepare a status update for the leadership meeting?&raquo;<br><br>
+        <strong>2024:</strong> Opens Jira (5 min). Copies tickets. Opens Notion (3 min). Copies notes. Opens GitHub (3 min). Copies PRs. Opens Slack (4 min). Searches for context. Pastes everything into Claude (2 min). Formats (3 min). Total: 20 minutes.<br><br>
+        <strong>2025:</strong> &laquo;Claude, prepare a status update for leadership using Jira, Notion, GitHub, and Slack data from this week.&raquo; Total: 1 minute.<br><br>
+        <em>Same deliverable. Same quality. 19 minutes you'll never miss.</em>
+    </div>
+
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Final self-test &mdash; the whole lesson in 60 seconds</div>
+        <div class="recall-question">Close your eyes (figuratively) and answer these without scrolling up:<br><br>
+        1. What is an API, in one sentence?<br>
+        2. How does MCP differ from an API?<br>
+        3. Two ways to add MCP to Claude Desktop?<br>
+        4. When Manus, when Claude Desktop?<br>
+        5. Name 3 MCP tools useful for your role.</div>
+        <div class="recall-hint">If you got 4-5: you're ready for homework. If 2-3: skim the part headers and re-read the ones that feel fuzzy. If 0-1: re-read Parts 1-2, they're the foundation for everything else.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Let's recap the key concepts from this lesson:</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>API</strong>
+            <span>A contract between programs. &laquo;Send me this format &mdash; I'll reply in this format.&raquo; The foundation of all software communication.</span>
+        </div>
+        <div class="recap-item">
+            <strong>MCP vs API</strong>
+            <span>MCP is a standard wrapper around APIs. One protocol for all tools, instead of custom code for each one.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Claude Desktop</strong>
+            <span>Chat-first AI with MCP connectors. Add tools via Settings &rarr; Connectors (URL) or manual JSON config.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Manus</strong>
+            <span>Autonomous AI agent. Give it a task, it works independently in a cloud sandbox. Also supports MCP.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Connectors</strong>
+            <span>Built-in MCP integrations in Claude Desktop. Paste a URL, click Allow, done.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Manual Config</strong>
+            <span>JSON file for adding custom MCP servers. More flexible, but requires editing a config file.</span>
+        </div>
+        <div class="recap-item">
+            <strong>GTM MCP Stack</strong>
+            <span>Notion, Jira, GitHub, Slack, Google Drive, Gmail, HubSpot, Fathom, Sentry &mdash; all connectable via MCP.</span>
+        </div>
+        <div class="recap-item">
+            <strong>The Power of MCP</strong>
+            <span>Cross-referencing multiple sources in one question. No copy-paste. The AI reaches the data directly.</span>
+        </div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>The big picture:</strong> MCP is what transforms AI from a &laquo;smart text box&raquo; into a &laquo;connected brain.&raquo; When Claude or Manus can access your Notion, Jira, GitHub, and Slack simultaneously &mdash; it goes from answering questions to <em>actually doing work</em>. The more tools you connect, the more useful AI becomes.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F52E;</div>
+        <strong>Evolution of &laquo;What can AI do?&raquo;</strong><br><br>
+        2023: &laquo;AI is just a fancy autocomplete.&raquo;<br>
+        2024: &laquo;OK, AI can write code, but it can't access my tools.&raquo;<br>
+        2025: &laquo;AI just read my Jira, Notion, Slack, HubSpot, and Gmail, cross-referenced everything, and wrote a perfect status report.&raquo;<br>
+        2026: &laquo;AI just did my job while I was making coffee. Is this... freedom?&raquo;<br><br>
+        <em>The correct emotional response is a mix of excitement and mild existential concern. That's normal.</em>
+    </div>
+
+    </div><!-- end lesson-content -->
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Connect 3 MCP tools and share one insight</strong>
+                <p>Connect at least 3 tools via Settings &rarr; Connectors:</p>
+                <ul>
+                    <li>Notion (<code>https://mcp.notion.com/mcp</code>)</li>
+                    <li>Atlassian (Jira)</li>
+                    <li>One more of your choice (GitHub, Google Drive, Gmail, Slack, etc.)</li>
+                </ul>
+                <p>Send a <strong>screenshot</strong> showing all 3 connected. Then answer: <strong>What surprised you or worked differently than you expected?</strong> (2&ndash;3 sentences. What was easier? What didn't work? What took longer?)</p>
+                <div class="info-box orange" style="margin-top: 8px;">
+                    <p><strong>Why we ask this:</strong> Reflecting on surprise is how the brain converts &laquo;I did a thing&raquo; into &laquo;I learned a thing.&raquo; The screenshot proves setup. The insight proves understanding.</p>
+                </div>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Solve a real work question using 2+ MCP tools</strong>
+                <p>Don't use the examples from this lesson &mdash; find a <strong>real question from your actual work</strong> that requires looking at 2 or more sources. Something that was on your mind this week. Ask Claude with your connected tools.</p>
+                <p>Send a <strong>screenshot</strong> of the result and answer: <strong>How long would this have taken you before MCP?</strong> (estimate in minutes)</p>
+                <div class="info-box orange" style="margin-top: 8px;">
+                    <p><strong>Why your own question matters:</strong> Using examples from the lesson is recognition (&laquo;I've seen this before&raquo;). Using your own problem is transfer (&laquo;I can apply this to anything&raquo;). Transfer is the goal.</p>
+                </div>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Explain API vs MCP to a non-technical friend</strong>
+                <p>In your own words (3&ndash;5 sentences), explain the difference between an API and MCP. The rules:</p>
+                <ul>
+                    <li>Use an analogy that is <strong>NOT from this lesson</strong> (not USB, not restaurants, not waiters)</li>
+                    <li>Your explanation should make a non-technical person say &laquo;ah, got it!&raquo;</li>
+                    <li>If you get stuck &mdash; re-read Part 2 and try again</li>
+                </ul>
+                <div class="info-box orange" style="margin-top: 8px;">
+                    <p><strong>This is the Feynman Technique:</strong> If you can explain it simply with your own analogy, you truly understand it. If you can't &mdash; that's the gap. Re-read the source and fill it.</p>
+                </div>
+            </li>
+        </ol>
+
+        <div class="info-box blue" style="margin-top: 24px;">
+            <p><strong>Tip:</strong> If you don't have a Claude Pro/Max/Team plan, ask Ivan in Slack. MCP connectors require a paid plan.</p>
+        </div>
+
+        <h3 style="margin-top: 24px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Design your personal MCP workflow</strong>
+                <p>Think about your role and your typical work week. Design a workflow where Claude + MCP saves you the most time:</p>
+                <ul>
+                    <li>Which 3&ndash;5 tools would you connect?</li>
+                    <li>What specific question or task would you automate?</li>
+                    <li>What's the &laquo;old way&raquo; (how you do it now) vs the &laquo;MCP way&raquo;?</li>
+                    <li>How many minutes per day would this save?</li>
+                </ul>
+                <p>Write it up in the format from Part 6 of the lesson: Old way &rarr; MCP way &rarr; Tools used.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Try Manus with a real task</strong>
+                <p>Create an account at <code>manus.im</code> and give it a task you'd normally spend 30+ minutes on:</p>
+                <ul>
+                    <li>Research a topic and create a report</li>
+                    <li>Analyze a competitor's website</li>
+                    <li>Create a presentation or spreadsheet from online data</li>
+                </ul>
+                <p>Send the result and answer: <strong>Would you use Manus or Claude Desktop for this task? Why?</strong></p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Quiz: MCP &amp; Tools (active recall)</strong>
+                <p>Answer <strong>without looking at the lesson</strong>. After answering, check yourself against the lesson &mdash; and note what you got wrong:</p>
+                <ul>
+                    <li>What are the two methods of adding MCP servers to Claude Desktop? When would you use each?</li>
+                    <li>Name 3 MCP connectors and what each does &mdash; from memory.</li>
+                    <li>What is the main difference between Claude Desktop and Manus? Use your own words, not a quote.</li>
+                    <li>Why is MCP compared to USB? What specific problem does it solve?</li>
+                </ul>
+                <div class="info-box orange" style="margin-top: 8px;">
+                    <p><strong>The self-check matters more than the answers:</strong> The moment you notice &laquo;wait, I couldn't remember this&raquo; is when the real learning happens. That's Active Recall.</p>
+                </div>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Find and pitch a new MCP server</strong>
+                <p>Browse the MCP directories (<code>mcp.so</code>, <code>smithery.ai</code>) and find an MCP server nobody in our team uses yet. Write a 3-sentence pitch: what it connects to, what problem it solves, and who on the team should try it first.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio Tech Course &mdash; Lesson 5 of 10</p>
+        <p>Questions? Ask in the <code>#tech-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Prompting Techniques &mdash; Getting the Best Results from AI</p>
+    </div>
+
+</div>
+
+</body>
+</html>

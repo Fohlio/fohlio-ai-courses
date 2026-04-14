@@ -342,6 +342,147 @@ export const LESSONS: Lesson[] = [
       },
     ],
   },
+  {
+    id: "lesson-5",
+    slug: "mcp-in-practice",
+    number: 5,
+    title: "MCP in Practice: Connecting AI to Your Tools",
+    subtitle: "API vs MCP, Claude Desktop & Manus setup, MCP catalog for GTM teams",
+    description:
+      "Understand what APIs are and how MCP differs from them, learn to add MCP servers to Claude Desktop and Manus step by step, and discover a curated catalog of MCP tools for GTM teams.",
+    learningGoals: [
+      "Understand what an API is and how MCP differs from traditional APIs",
+      "Know how to add MCP servers to Claude Desktop step by step",
+      "Know what Manus is and how to add MCP servers to it",
+      "Have a catalog of useful MCP servers for GTM teams",
+      "Be able to connect AI to your actual work tools: Notion, Jira, GitHub, HubSpot, and more",
+    ],
+    contentType: "html",
+    contentFile: "lesson5-mcp-in-practice.html",
+    videoUrl: null,
+    isPublished: true,
+    order: 5,
+    referenceMaterials: [
+      {
+        title: "MCP Registry (official) — discover public MCP servers",
+        url: "https://registry.modelcontextprotocol.io/",
+      },
+      {
+        title: "MCP Servers (GitHub) — reference implementations",
+        url: "https://github.com/modelcontextprotocol/servers",
+      },
+      {
+        title: "mcp.so — largest community MCP server catalog",
+        url: "https://mcp.so",
+      },
+      {
+        title: "PulseMCP — MCP server ratings and analytics",
+        url: "https://pulsemcp.com",
+      },
+      {
+        title: "Smithery — MCP server marketplace",
+        url: "https://smithery.ai",
+      },
+      {
+        title: "HubSpot MCP — official setup guide",
+        url: "https://developers.hubspot.com/mcp",
+      },
+      {
+        title: "Manus AI — autonomous agent platform",
+        url: "https://manus.im",
+      },
+    ],
+    homework: [
+      {
+        id: "hw-5-required",
+        category: "required",
+        tasks: [
+          {
+            id: "task-5-1",
+            lessonId: "lesson-5",
+            title: "Connect 3 MCP tools and share one insight",
+            description:
+              "Connect at least 3 tools via Settings → Connectors: Notion, Atlassian (Jira), and one more of your choice. Send a screenshot showing all 3 connected, plus 2-3 sentences about what surprised you or worked differently than expected.",
+            category: "required",
+            submissionType: "screenshot",
+            order: 1,
+          },
+          {
+            id: "task-5-2",
+            lessonId: "lesson-5",
+            title: "Solve a real work question using 2+ MCP tools",
+            description:
+              "Find a real question from your actual work (not from the lesson examples) that requires 2+ connected tools to answer. Ask Claude, send a screenshot, and estimate how long this would have taken before MCP.",
+            category: "required",
+            submissionType: "screenshot",
+            order: 2,
+          },
+          {
+            id: "task-5-3",
+            lessonId: "lesson-5",
+            title: "Explain API vs MCP to a non-technical friend",
+            description:
+              "In your own words (3-5 sentences), explain the difference between an API and MCP using an analogy that is NOT from the lesson (not USB, not restaurants). Your explanation should make a non-technical person say 'ah, got it!'",
+            category: "required",
+            submissionType: "text",
+            order: 3,
+          },
+        ],
+      },
+      {
+        id: "hw-5-advanced",
+        category: "advanced",
+        tasks: [
+          {
+            id: "task-5-4",
+            lessonId: "lesson-5",
+            title: "Design your personal MCP workflow",
+            description:
+              "Think about your role and typical work week. Design a workflow: which 3-5 tools to connect, what task to automate, old way vs MCP way, and estimated time savings. Write it in the format from Part 6: Old way → MCP way → Tools used.",
+            category: "advanced",
+            submissionType: "text",
+            order: 1,
+          },
+          {
+            id: "task-5-5",
+            lessonId: "lesson-5",
+            title: "Try Manus with a real task",
+            description:
+              "Create an account at manus.im and give it a task you'd normally spend 30+ minutes on. Send the result and answer: Would you use Manus or Claude Desktop for this task? Why?",
+            category: "advanced",
+            submissionType: "screenshot",
+            order: 2,
+          },
+          {
+            id: "task-5-6",
+            lessonId: "lesson-5",
+            title: "Quiz: MCP & Tools (active recall)",
+            description:
+              "Answer WITHOUT looking at the lesson, then check yourself and note what you got wrong:",
+            category: "advanced",
+            submissionType: "quiz",
+            order: 3,
+            quizQuestions: [
+              "What are the two methods of adding MCP servers to Claude Desktop? When would you use each?",
+              "Name 3 MCP connectors and what each does — from memory.",
+              "What is the main difference between Claude Desktop and Manus? Use your own words.",
+              "Why is MCP compared to USB? What specific problem does it solve?",
+            ],
+          },
+          {
+            id: "task-5-7",
+            lessonId: "lesson-5",
+            title: "Find and pitch a new MCP server",
+            description:
+              "Browse mcp.so or smithery.ai, find an MCP server nobody on the team uses yet. Write a 3-sentence pitch: what it connects to, what problem it solves, and who should try it first.",
+            category: "advanced",
+            submissionType: "text",
+            order: 4,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export function getLessonBySlug(slug: string): Lesson | undefined {
