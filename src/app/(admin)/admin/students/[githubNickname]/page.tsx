@@ -1,10 +1,55 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAdminStudentSummaries } from "@/lib/courseQueries";
+import {
+  getAdminStudentSubmissionsByNickname,
+  getAdminStudentSummaries,
+  type AdminStudentSubmissionEntry,
+} from "@/lib/courseQueries";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
+import { SubmissionViewer } from "@/components/admin/SubmissionViewer";
 
 export const dynamic = "force-dynamic";
+
+const dateFormatter = new Intl.DateTimeFormat("en", {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+
+interface LessonGroup {
+  courseId: string;
+  courseTitle: string;
+  lessonId: string;
+  lessonNumber: number;
+  lessonTitle: string;
+  submissions: AdminStudentSubmissionEntry[];
+}
+
+function groupSubmissionsByLesson(
+  submissions: AdminStudentSubmissionEntry[],
+): LessonGroup[] {
+  const groups = new Map<string, LessonGroup>();
+  for (const submission of submissions) {
+    const key = `${submission.courseId}::${submission.lessonId}`;
+    let group = groups.get(key);
+    if (!group) {
+      group = {
+        courseId: submission.courseId,
+        courseTitle: submission.courseTitle,
+        lessonId: submission.lessonId,
+        lessonNumber: submission.lessonNumber,
+        lessonTitle: submission.lessonTitle,
+        submissions: [],
+      };
+      groups.set(key, group);
+    }
+    group.submissions.push(submission);
+  }
+  return Array.from(groups.values()).sort(
+    (a, b) =>
+      a.courseId.localeCompare(b.courseId) || a.lessonNumber - b.lessonNumber,
+  );
+}
 
 export default async function AdminStudentDetailPage({
   params,
@@ -12,12 +57,17 @@ export default async function AdminStudentDetailPage({
   params: Promise<{ githubNickname: string }>;
 }) {
   const { githubNickname } = await params;
-  const students = await getAdminStudentSummaries();
+  const [students, submissions] = await Promise.all([
+    getAdminStudentSummaries(),
+    getAdminStudentSubmissionsByNickname(githubNickname),
+  ]);
   const student = students.find((item) => item.user.githubNickname === githubNickname);
 
   if (!student) {
     notFound();
   }
+
+  const lessonGroups = groupSubmissionsByLesson(submissions);
 
   return (
     <div className="space-y-8">
@@ -99,6 +149,67 @@ export default async function AdminStudentDetailPage({
             </Card>
           ))}
         </div>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-lg font-semibold text-gray-900">Submissions</h2>
+        {lessonGroups.length === 0 ? (
+          <Card>
+            <p className="text-sm text-gray-500">
+              No submissions yet from this student.
+            </p>
+          </Card>
+        ) : (
+          <div className="space-y-4">
+            {lessonGroups.map((group) => (
+              <Card key={`${group.courseId}-${group.lessonId}`}>
+                <div className="border-b border-gray-100 pb-3">
+                  <p className="text-xs font-medium uppercase tracking-wide text-gray-400">
+                    {group.courseTitle}
+                  </p>
+                  <p className="mt-1 font-semibold text-gray-900">
+                    Lesson {group.lessonNumber}: {group.lessonTitle}
+                  </p>
+                </div>
+                <div className="mt-4 space-y-5">
+                  {group.submissions.map((submission) => (
+                    <div key={submission.submissionId} className="space-y-2">
+                      <div className="flex flex-wrap items-baseline justify-between gap-2">
+                        <p className="text-sm font-medium text-gray-900">
+                          {submission.taskTitle}
+                        </p>
+                        <div className="flex items-center gap-2 text-xs">
+                          <span
+                            className={`rounded-full px-2 py-0.5 font-medium ${
+                              submission.taskCategory === "required"
+                                ? "bg-blue-100 text-blue-700"
+                                : "bg-purple-100 text-purple-700"
+                            }`}
+                          >
+                            {submission.taskCategory}
+                          </span>
+                          <span
+                            className={`rounded-full px-2 py-0.5 font-medium ${
+                              submission.status === "reviewed"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-gray-100 text-gray-600"
+                            }`}
+                          >
+                            {submission.status}
+                          </span>
+                          <span className="text-gray-400">
+                            {dateFormatter.format(new Date(submission.submittedAt))}
+                          </span>
+                        </div>
+                      </div>
+                      <SubmissionViewer content={submission.content} />
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
