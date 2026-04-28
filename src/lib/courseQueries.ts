@@ -373,18 +373,16 @@ export async function getAdminStudentSummaries(): Promise<AdminStudentSummary[]>
     orderBy: { updatedAt: "desc" },
   })).map(mapSubmission);
 
-  return users
-    .map((user) => {
-      const userSubmissions = submissions.filter(
-        (submission) => submission.userId === user.id,
-      );
-      return {
-        user,
-        progress: calculateOverallProgress(publishedCourses, userSubmissions),
-        hasSubmissions: userSubmissions.length > 0,
-      };
-    })
-    .filter((entry) => entry.user.role === "student" || entry.hasSubmissions);
+  return users.map((user) => {
+    const userSubmissions = submissions.filter(
+      (submission) => submission.userId === user.id,
+    );
+    return {
+      user,
+      progress: calculateOverallProgress(publishedCourses, userSubmissions),
+      hasSubmissions: userSubmissions.length > 0,
+    };
+  });
 }
 
 export interface AdminStudentSubmissionEntry {
