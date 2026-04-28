@@ -519,6 +519,171 @@ export const LESSONS: LegacyLesson[] = [
       },
     ],
   },
+  {
+    id: "lesson-6",
+    slug: "skills-for-gtm",
+    number: 6,
+    title: "Skills: Teaching AI How You Work",
+    subtitle: "Claude Skills, the GTM skill stack, and building your first skill in 10 minutes",
+    description:
+      "Understand what Claude Skills are and how they differ from prompts and MCP. Learn the canonical mental model (Skills = Brain, MCP = Hands, Subagents = Workers), use Anthropic's built-in document skills, build your first custom skill via Skill Creator, and install proven skills tailored to your GTM role.",
+    learningGoals: [
+      "Understand what a Claude Skill is and how it differs from a prompt or MCP connector",
+      "Know the canonical mental model: MCP = Hands, Skills = Brain, Subagents = Workers",
+      "Be able to use Anthropic's built-in document skills (pptx, xlsx, docx, pdf, brand-guidelines)",
+      "Build your first custom skill in under 10 minutes via Skill Creator (no code)",
+      "Know how to write a description that actually triggers (the make-or-break field)",
+      "Have a curated GTM skill stack tailored to your role",
+    ],
+    contentType: "html",
+    contentFile: "lesson6-skills-for-gtm.html",
+    videoUrl: null,
+    isPublished: true,
+    order: 6,
+    referenceMaterials: [
+      {
+        title: "Anthropic — Equipping agents for the real world with Agent Skills (engineering blog)",
+        url: "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills",
+      },
+      {
+        title: "Skills explained: How Skills compares to prompts, Projects, MCP, and subagents (Anthropic)",
+        url: "https://claude.com/blog/skills-explained",
+      },
+      {
+        title: "Agent Skills overview — official Claude API docs",
+        url: "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview",
+      },
+      {
+        title: "Skill authoring best practices — official Claude API docs",
+        url: "https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices",
+      },
+      {
+        title: "anthropics/skills — official Anthropic skills repository (20k+ stars)",
+        url: "https://github.com/anthropics/skills",
+      },
+      {
+        title: "Agent Skills Specification (open standard, Dec 2025)",
+        url: "https://agentskills.io",
+      },
+      {
+        title: "The Complete Guide to Building Skills for Claude (Anthropic, 32-page PDF)",
+        url: "https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf",
+      },
+      {
+        title: "Summit53 — 7 open-source Claude Code skills for sales leaders",
+        url: "https://www.summit53.com/blog/claude-code-skills-sales-intelligence",
+      },
+      {
+        title: "alirezarezvani/claude-skills — customer-success-manager skill (open source)",
+        url: "https://github.com/alirezarezvani/claude-skills",
+      },
+      {
+        title: "OpenClaudia — 34 open-source marketing skills (MIT license)",
+        url: "https://github.com/OpenClaudia/openclaudia-skills",
+      },
+      {
+        title: "FunnelStory — Claude Skills for CSMs (15 slash commands)",
+        url: "https://docs.funnelstory.ai/guides/claude-skills-for-csm",
+      },
+      {
+        title: "Awesome Claude Skills directory (1,030+ entries)",
+        url: "https://awesome-skills.com/",
+      },
+      {
+        title: "Skills Marketplace (skillsmp.com)",
+        url: "https://skillsmp.com/",
+      },
+    ],
+    homework: [
+      {
+        id: "hw-6-required",
+        category: "required",
+        tasks: [
+          {
+            id: "task-6-1",
+            lessonId: "lesson-6",
+            title: "Build your first skill via Skill Creator",
+            description:
+              "Pick a repeated task from your work (recap email, meeting prep, status update, follow-up template). At claude.ai, type 'Use the skill-creator skill to help me build a skill for [your use case].' Answer the structured questions, download the ZIP, upload via Settings → Capabilities → Skills, and test it in a fresh chat. Send a screenshot of the skill activated plus 2-3 sentences on what surprised you.",
+            category: "required",
+            submissionType: "screenshot",
+            order: 1,
+          },
+          {
+            id: "task-6-2",
+            lessonId: "lesson-6",
+            title: "Install one community skill from the GTM stack",
+            description:
+              "Pick one skill from Part 7 that fits your role (Sales: Summit53 / OstraconAI; Marketing: Brand Voice / OpenClaudia; CS: customer-success-manager / FunnelStory; Content: Voice DNA; RevOps: /revenue-monitor). Install it, run it on a real task from your week. Send a screenshot and 2-3 sentences on what worked, what didn't, what you'd change.",
+            category: "required",
+            submissionType: "screenshot",
+            order: 2,
+          },
+          {
+            id: "task-6-3",
+            lessonId: "lesson-6",
+            title: "Write a great description",
+            description:
+              "Take the skill from task #1 and rewrite its description applying all four rules from Part 6 (WHAT+WHEN+trigger phrases, front-loaded matchable phrases, pushy language, describe WHEN not HOW). Send the description (under 1024 chars) plus one sentence per rule explaining how your description applies it.",
+            category: "required",
+            submissionType: "text",
+            order: 3,
+          },
+        ],
+      },
+      {
+        id: "hw-6-advanced",
+        category: "advanced",
+        tasks: [
+          {
+            id: "task-6-4",
+            lessonId: "lesson-6",
+            title: "Compose two skills",
+            description:
+              "Design and verify a scenario where Claude automatically uses two skills together (e.g. brand-guidelines + pptx for an on-brand deck). Send the output and name both skills Claude composed.",
+            category: "advanced",
+            submissionType: "screenshot",
+            order: 1,
+          },
+          {
+            id: "task-6-5",
+            lessonId: "lesson-6",
+            title: "Quiz: Skills, MCP, Subagents (active recall)",
+            description: "Answer without looking back at the lesson. Then check yourself and note what you got wrong:",
+            category: "advanced",
+            submissionType: "quiz",
+            order: 2,
+            quizQuestions: [
+              "What is progressive disclosure? Name the three levels.",
+              "What are the four rules for writing a description?",
+              "If a workflow needs live HubSpot data, do you need a Skill, an MCP server, or both? Why?",
+              "Pick one analogy other than the restaurant or USB. Use it to explain Skills vs MCP vs Subagents in three sentences.",
+            ],
+          },
+          {
+            id: "task-6-6",
+            lessonId: "lesson-6",
+            title: "Pitch a custom skill for your team",
+            description:
+              "Write a 5-sentence pitch for a custom skill that would help your team. What workflow does it capture? Who would use it? What 3-5 example outputs would seed it? How much time/week would it save? Who else should help build/test it? Bonus: actually build it and ship it.",
+            category: "advanced",
+            submissionType: "text",
+            order: 3,
+          },
+          {
+            id: "task-6-7",
+            lessonId: "lesson-6",
+            title: "Find and pitch a new skill",
+            description:
+              "Browse github.com/anthropics/skills, awesome-skills.com, or skillsmp.com. Find a skill nobody on the team uses yet. Write a 3-sentence pitch: what it does, what problem it solves, who should try it first.",
+            category: "advanced",
+            submissionType: "text",
+            order: 4,
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export function getLessonBySlug(slug: string): LegacyLesson | undefined {
