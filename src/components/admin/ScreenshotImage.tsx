@@ -72,21 +72,23 @@ export function ScreenshotImage({ fileUrl, fileName }: ScreenshotImageProps) {
   const label = prettyFileName(fileUrl, fileName);
 
   if (!canEmbed || errored) {
+    const isUrl = /^https?:\/\//i.test(fileUrl);
+    if (isUrl) {
+      return (
+        <a
+          href={fileUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="break-all text-sm font-medium text-brand hover:underline"
+        >
+          {fileUrl}
+        </a>
+      );
+    }
     return (
-      <a
-        href={fileUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-brand hover:bg-gray-100"
-      >
-        <span className="text-2xl">🖼️</span>
-        <div className="min-w-0 flex-1">
-          <div className="truncate">{label}</div>
-          <div className="text-xs font-normal text-gray-500">
-            Open screenshot in new tab ↗
-          </div>
-        </div>
-      </a>
+      <div className="whitespace-pre-wrap break-words rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm text-gray-800">
+        {fileUrl}
+      </div>
     );
   }
 
