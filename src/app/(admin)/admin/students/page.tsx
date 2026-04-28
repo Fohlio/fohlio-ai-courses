@@ -5,8 +5,30 @@ import { ProgressBar } from "@/components/ui/ProgressBar";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminStudentsPage() {
-  const students = await getAdminStudentSummaries();
+const dateFormatter = new Intl.DateTimeFormat("en", {
+  dateStyle: "medium",
+});
+
+export default async function AdminStudentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const allStudents = await getAdminStudentSummaries();
+  const { q } = await searchParams;
+  const search = q?.trim().toLowerCase() ?? "";
+
+  const students = search
+    ? allStudents.filter((entry) => {
+        const haystack = [
+          entry.user.githubNickname,
+          entry.user.displayName ?? "",
+        ]
+          .join(" ")
+          .toLowerCase();
+        return haystack.includes(search);
+      })
+    : allStudents;
 
   return (
     <div className="space-y-6">
@@ -17,9 +39,40 @@ export default async function AdminStudentsPage() {
         </p>
       </div>
 
+      <form className="flex gap-2">
+        <input
+          name="q"
+          defaultValue={search}
+          placeholder="Search by nickname or name…"
+          className="flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+        />
+        <button
+          type="submit"
+          className="rounded-lg bg-brand px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+        >
+          Search
+        </button>
+        {search && (
+          <Link
+            href="/admin/students"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Clear
+          </Link>
+        )}
+      </form>
+
+      <p className="text-xs text-gray-500">
+        {students.length} of {allStudents.length} users
+      </p>
+
       {students.length === 0 ? (
         <Card>
-          <p className="text-sm text-gray-500">No students registered yet.</p>
+          <p className="text-sm text-gray-500">
+            {search
+              ? `No users match "${search}".`
+              : "No users registered yet."}
+          </p>
         </Card>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
@@ -28,7 +81,8 @@ export default async function AdminStudentsPage() {
               <tr className="border-b border-gray-200 bg-gray-50">
                 <th className="px-4 py-3 font-medium text-gray-600">Student</th>
                 <th className="px-4 py-3 font-medium text-gray-600">Progress</th>
-                <th className="px-4 py-3 font-medium text-gray-600">Courses</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Submissions</th>
+                <th className="px-4 py-3 font-medium text-gray-600">Joined</th>
               </tr>
             </thead>
             <tbody>
@@ -42,7 +96,9 @@ export default async function AdminStudentsPage() {
                       {student.user.githubNickname}
                     </Link>
                     {student.user.displayName && (
-                      <span className="ml-2 text-gray-500">({student.user.displayName})</span>
+                      <span className="ml-2 text-gray-500">
+                        ({student.user.displayName})
+                      </span>
                     )}
                     {student.user.role === "admin" && (
                       <span className="ml-2 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">
@@ -69,7 +125,12 @@ export default async function AdminStudentsPage() {
                     </div>
                   </td>
                   <td className="px-4 py-3 text-gray-500">
-                    {student.progress.courseProgress.length}
+                    {student.progress.completedTasks}/{student.progress.totalTasks}
+                  </td>
+                  <td className="px-4 py-3 text-gray-500">
+                    {student.user.createdAt
+                      ? dateFormatter.format(new Date(student.user.createdAt))
+                      : "—"}
                   </td>
                 </tr>
               ))}

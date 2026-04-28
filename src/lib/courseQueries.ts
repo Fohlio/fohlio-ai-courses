@@ -363,6 +363,7 @@ export async function getAdminStudentSummaries(): Promise<AdminStudentSummary[]>
       githubNickname: true,
       displayName: true,
       role: true,
+      createdAt: true,
     },
   });
   const publishedCourses = (await getCourseRecords())
