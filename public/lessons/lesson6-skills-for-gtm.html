@@ -487,7 +487,7 @@
     <div class="header">
         <div class="lesson-badge">Lesson 6 of 10</div>
         <h1>Fohlio Tech Course</h1>
-        <div class="subtitle">Skills: Teaching AI How You Work</div>
+        <div class="subtitle">Skills in Manus &amp; Claude: Teaching AI How You Work</div>
     </div>
 
     <!-- GOALS -->
@@ -495,10 +495,10 @@
         <h3>Learning Goals</h3>
         <p>By the end of this lesson you will:</p>
         <ul>
-            <li>Understand what a Claude Skill is and how it differs from a prompt or an MCP connector</li>
+            <li>Understand what an Agent Skill is and how it differs from a prompt or MCP connector &mdash; and why the same SKILL.md works in <strong>both Manus and Claude</strong></li>
             <li>Know the canonical mental model: <strong>MCP = the Hands, Skills = the Brain, Subagents = the Workers</strong></li>
-            <li>Be able to use Anthropic's built-in document skills (pptx, xlsx, docx, pdf, brand-guidelines)</li>
-            <li>Build your first custom skill in under 10 minutes &mdash; without writing code</li>
+            <li>Be able to use Anthropic's built-in document skills (pptx, xlsx, docx, pdf, brand-guidelines) and Manus Playbooks</li>
+            <li>Build your first custom Skill in Manus via <strong>auto-package</strong> &mdash; no code, no YAML editing</li>
             <li>Know how to write a description that actually triggers (the make-or-break field)</li>
             <li>Have a curated GTM skill stack tailored to your role: Sales, Marketing, CS, Content, RevOps</li>
         </ul>
@@ -737,6 +737,11 @@
             <div class="layer-name" style="color: var(--blue);">Claude Desktop / Claude.ai</div>
             <div class="layer-desc">Pro / Max / Team / Enterprise plans. Upload skill ZIP via Settings.</div>
         </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F3AF;</div>
+            <div class="layer-name" style="color: var(--orange);">Manus</div>
+            <div class="layer-desc">Same SKILL.md format. Cloud-based, no install. Even auto-generates skills from successful runs.</div>
+        </div>
         <div class="layer-item" style="background: var(--purple-light);">
             <div class="layer-icon">&#x1F5C2;</div>
             <div class="layer-name" style="color: var(--purple);">Claude Code</div>
@@ -747,15 +752,19 @@
             <div class="layer-name" style="color: var(--green);">Claude API &amp; Agent SDK</div>
             <div class="layer-desc">For developers building products on top of Claude</div>
         </div>
-        <div class="layer-item" style="background: var(--orange-light);">
+        <div class="layer-item" style="background: var(--red-light);">
             <div class="layer-icon">&#x1F30D;</div>
-            <div class="layer-name" style="color: var(--orange);">Other AI tools</div>
+            <div class="layer-name" style="color: var(--red);">Other AI tools</div>
             <div class="layer-desc">Cursor, Copilot, ChatGPT, Gemini CLI &mdash; the format became an open standard in Dec 2025</div>
         </div>
     </div>
 
+    <div class="info-box orange">
+        <p><strong>Why Manus matters for our team:</strong> Most of you already use Manus for autonomous work. Good news &mdash; Manus was one of the first non-Anthropic platforms to adopt the open Skills standard. Any SKILL.md you build works in Manus too, and Manus has a <em>unique</em> non-engineer-friendly path: after running a task to a successful outcome, just say <em>&laquo;Package this workflow into a Skill.&raquo;</em> Manus auto-generates the SKILL.md from your run. <strong>No code, no YAML, no Markdown editing.</strong> We'll use this in Part 5.</p>
+    </div>
+
     <div class="info-box purple">
-        <p><strong>The big context:</strong> On December 18, 2025 Anthropic published Skills as an open standard at <code>agentskills.io</code>. Within weeks, 26+ tools adopted it &mdash; including OpenAI's ChatGPT and Codex CLI. The Anthropic skills GitHub repo crossed <strong>20,000 stars</strong>, with tens of thousands of community-built skills in circulation. Skills are not a Claude-only thing anymore.</p>
+        <p><strong>The big context:</strong> On December 18, 2025 Anthropic published Skills as an open standard at <code>agentskills.io</code>. Within weeks, 26+ tools adopted it &mdash; including OpenAI's ChatGPT, Codex CLI, and Manus. The Anthropic skills GitHub repo crossed <strong>20,000 stars</strong>, with tens of thousands of community-built skills in circulation. Skills are not a Claude-only thing anymore.</p>
     </div>
 
     <div class="recall-box">
@@ -1036,35 +1045,87 @@
 
     <h2 class="part-header">Part 5: Build Your First Skill in 10 Minutes (no code)</h2>
 
-    <p>This is the part of the lesson that earns its keep. You'll build a real skill, today, in under 10 minutes, without writing code or opening a terminal.</p>
+    <p>This is the part of the lesson that earns its keep. You'll build a real skill, today, in under 10 minutes, without writing code or opening a terminal. Three paths &mdash; pick the one that fits your day.</p>
 
     <h3>Three paths &mdash; pick yours</h3>
 
     <div class="concept-grid">
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F3AF;</div>
+            <div class="card-title" style="color: var(--orange);">Path A: Manus auto-package</div>
+            <div class="card-subtitle" style="color: var(--orange);">Easiest &mdash; from a real run</div>
+            <div class="card-desc">Run a task in Manus, then say <em>&laquo;Package this workflow into a Skill.&raquo;</em> Manus auto-generates SKILL.md from your run. Zero authoring.</div>
+        </div>
         <div class="concept-card" style="background: var(--green-light);">
             <div class="card-icon">&#x1F198;</div>
-            <div class="card-title" style="color: var(--green);">Path A: Skill Creator</div>
-            <div class="card-subtitle" style="color: var(--green);">Recommended &mdash; no code</div>
-            <div class="card-desc">Use Anthropic's built-in <code>skill-creator</code> meta-skill. Claude asks you questions, generates the skill for you.</div>
-        </div>
-        <div class="concept-card" style="background: var(--blue-light);">
-            <div class="card-icon">&#x1F4D1;</div>
-            <div class="card-title" style="color: var(--blue);">Path B: Reverse engineer</div>
-            <div class="card-subtitle" style="color: var(--blue);">Best for voice / tone skills</div>
-            <div class="card-desc">Paste 5 examples of your best work, ask Claude to extract the rules into a skill.</div>
+            <div class="card-title" style="color: var(--green);">Path B: Claude Skill Creator</div>
+            <div class="card-subtitle" style="color: var(--green);">Structured Q&amp;A approach</div>
+            <div class="card-desc">Use Anthropic's built-in <code>skill-creator</code> meta-skill. Claude asks structured questions, generates the skill for you.</div>
         </div>
     </div>
 
     <div class="concept-grid">
-        <div class="concept-card" style="background: var(--orange-light);">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4D1;</div>
+            <div class="card-title" style="color: var(--blue);">Path C: Reverse engineer</div>
+            <div class="card-subtitle" style="color: var(--blue);">Best for voice / tone skills</div>
+            <div class="card-desc">Paste 5 examples of your best work, ask Manus or Claude to extract the rules into a skill.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
             <div class="card-icon">&#x1F4DD;</div>
-            <div class="card-title" style="color: var(--orange);">Path C: Hand-written</div>
-            <div class="card-subtitle" style="color: var(--orange);">For Claude Code users</div>
+            <div class="card-title" style="color: var(--purple);">Path D: Hand-written</div>
+            <div class="card-subtitle" style="color: var(--purple);">For Claude Code users</div>
             <div class="card-desc">Write SKILL.md by hand at <code>~/.claude/skills/&lt;name&gt;/</code>. Most flexible, takes 15 min the first time.</div>
         </div>
     </div>
 
-    <h3>Path A: The Skill Creator (10 minutes)</h3>
+    <h3>Path A: Manus auto-package &mdash; the GTM-friendly default</h3>
+
+    <p>This is the lowest-effort path and the one most of you should use. Manus learns the workflow <em>from your actual successful run</em>, not from your verbal description of it. You don't have to imagine all the edge cases up front &mdash; you just <em>do the work</em> once and Manus extracts the skill.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Run a real task in Manus to a good result</span>
+        <div class="step-desc">Open <code>manus.im</code>. Pick a task you do repeatedly: a discovery-call prep, a follow-up email, a competitive battlecard, an account brief. Run it end to end. Refine until you're happy with the output.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Ask Manus to package it</span>
+        <div class="step-desc">In the same conversation, type:<br><br>
+        <strong>&laquo;Package this workflow into a Skill.&raquo;</strong><br><br>
+        Manus analyzes everything you and it just did, and generates a SKILL.md with the right description, workflow, output format, and any scripts/references it needed.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Review &amp; rename in your Skill Library</span>
+        <div class="step-desc">The new skill shows up in your Manus Skill Library. Open it, give it a clear name (kebab-case, like <code>discovery-call-prep</code>), edit the description if needed using the rules from Part 6 below.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Trigger it next time with a slash command</span>
+        <div class="step-desc">In a new conversation, type <code>/discovery-call-prep</code>. Manus runs the same workflow against your new inputs &mdash; in a fresh cloud sandbox, while you do something else.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">5</span>
+        <span class="step-title">Optional: share to the Team Skill Library</span>
+        <div class="step-desc">If your team has Manus Team / Enterprise, push the skill to the Team Skill Library so other GTM folks (BDRs, AEs, CSMs) get the same verified workflow. One person builds, ten people benefit.</div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Why this is the GTM superpower:</strong> Building a skill the traditional way means describing edge cases you haven't met yet. Manus's auto-package flips that &mdash; you do the work once <em>well</em>, and the skill captures the actual decisions and gotchas you encountered. <em>Skill-by-doing</em>, not skill-by-imagining.</p>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Pair Manus Skills with a Project for persistent context:</strong> Create a Project in Manus called <em>&laquo;Fohlio GTM&raquo;</em>. Add a Master Instruction (your role, target ICP, brand voice basics) and upload knowledge files (battlecards, ICP doc, sales playbook PDFs, brand guidelines). Every Skill you trigger inside that Project automatically inherits the context. Skills = procedural how-to. Projects = persistent who-we-are. <strong>Together they're the team's playbook in software form.</strong></p>
+    </div>
+
+    <h3>Path B: Claude Skill Creator (10 minutes)</h3>
+
+    <p>If you're working primarily in Claude Desktop instead of Manus, use Anthropic's built-in <code>skill-creator</code>. Same idea, structured Q&amp;A flow.</p>
 
     <div class="step-card">
         <span class="step-number">1</span>
@@ -1098,23 +1159,17 @@
 
     <div class="step-card">
         <span class="step-number">4</span>
-        <span class="step-title">Get your skill ZIP</span>
-        <div class="step-desc">Claude generates a properly formatted SKILL.md (with optional supporting files) and packages it as a downloadable ZIP. Download it.</div>
+        <span class="step-title">Download &amp; upload</span>
+        <div class="step-desc">Claude generates a SKILL.md packaged as a ZIP. Download it. Then Settings &rarr; Capabilities &rarr; Skills &rarr; <strong>Upload skill</strong>. Toggle on.</div>
     </div>
 
     <div class="step-card">
         <span class="step-number">5</span>
-        <span class="step-title">Upload it</span>
-        <div class="step-desc">Settings &rarr; Capabilities &rarr; Skills &rarr; <strong>Upload skill</strong>. Pick the ZIP. Toggle the skill on.</div>
+        <span class="step-title">Test in a fresh chat</span>
+        <div class="step-desc">Open a new conversation. Use a phrase that should match your description. Claude should pick up the skill automatically. <strong>Bonus &mdash; the same ZIP also works in Manus</strong>: drop it in the Manus Skills UI and the skill is portable across both platforms.</div>
     </div>
 
-    <div class="step-card">
-        <span class="step-number">6</span>
-        <span class="step-title">Test it &mdash; start a NEW chat</span>
-        <div class="step-desc">Open a fresh conversation. Use a phrase that should match your description. Claude should pick up the skill automatically. If it doesn't &mdash; the description is the problem (more on this in Part 6).</div>
-    </div>
-
-    <h3>Path B: Reverse engineer your own voice</h3>
+    <h3>Path C: Reverse engineer your own voice</h3>
 
     <p>This is the most underrated path for marketing and content people. You already have great work in your sent folder. Let Claude turn it into a skill.</p>
 
@@ -1360,7 +1415,78 @@ Metrics (if available)
 
     <h2 class="part-header">Part 7: The GTM Skill Stack (your role &times; proven skills)</h2>
 
-    <p>You don't have to start from scratch. The community has published thousands of working skills, many specifically for GTM roles. Here's a curated stack by role &mdash; everything below is real, public, and battle-tested.</p>
+    <p>You don't have to start from scratch. Two big libraries are already published: <strong>Manus Playbook</strong> (ready-to-run templates inside Manus) and the community Claude Skills ecosystem. We'll cover both. Everything below is real, public, and battle-tested.</p>
+
+    <h3>The Manus Playbook gallery (start here)</h3>
+
+    <p>Manus ships a curated <strong>Playbook</strong> at <code>manus.im/playbook</code> with parameterized starting points for every GTM function. These are essentially &laquo;canned skills&raquo; you launch and tweak instead of building from scratch. Most useful for non-engineers who want results in minutes.</p>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4BC;</div>
+            <div class="tool-name">B2B Software Sales Deck Generator</div>
+            <div class="tool-category"><span class="badge ai">Manus Playbook</span></div>
+        </div>
+        <div class="tool-desc">Input rough notes + buyer details + deal stage. Output: polished, persona-tailored sales presentation with the right talk-track per slide. The starter template you'll replace your generic deck with.</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> <code>manus.im/playbook/b2b-software-sales-deck</code><br>
+            <strong>Pair with:</strong> a Manus Project carrying your Fohlio brand voice + ICP + battlecard PDFs.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F50D;</div>
+            <div class="tool-name">Account Health Analyzer</div>
+            <div class="tool-category"><span class="badge ai">Manus Playbook</span></div>
+        </div>
+        <div class="tool-desc">Monitor and improve account performance with AI-generated health reports. Pull usage / engagement / support signals, output a customer-facing summary or internal alert.</div>
+        <div class="tool-examples">
+            <strong>Use case:</strong> CSM Monday morning &mdash; trigger across all 30 accounts, get a prioritized health sheet, then act.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4F0;</div>
+            <div class="tool-name">YouTube Influencer Finder &amp; Reddit Sentiment Analyzer</div>
+            <div class="tool-category"><span class="badge ai">Manus Playbook</span></div>
+        </div>
+        <div class="tool-desc">Two marketing playbooks worth a look: surface relevant niche YouTubers in interior-design / B2B SaaS adjacent space, and pull sentiment / pain points from relevant subreddits to feed positioning work.</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> Both at <code>manus.im/playbook</code><br>
+            <strong>Why GTM:</strong> Cheap competitive insight without paying a research firm.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4B0;</div>
+            <div class="tool-name">Sales Funnel Builder, Territory Mapping, Quote Generator, Commission Calculator</div>
+            <div class="tool-category"><span class="badge ai">Manus Playbook</span></div>
+        </div>
+        <div class="tool-desc">RevOps-flavored playbook bundle. Build a funnel diagram from a CSV, map territories from a customer list, generate quotes with tiered structures, calculate commissions with automated formulas.</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> <code>manus.im/playbook</code> (filter: Sales / RevOps)<br>
+            <strong>Pair with:</strong> the HubSpot Manus connector for live data.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4DC;</div>
+            <div class="tool-name">PRD Templates, Launch Checklists, Competitive Trackers</div>
+            <div class="tool-category"><span class="badge ai">Manus Solutions for Product</span></div>
+        </div>
+        <div class="tool-desc">Manus's product-management bundle. Built once as Skills, reused for every feature launch. Especially useful for PMM and the GTM-facing parts of every product launch.</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> <code>manus.im/solutions/product</code>
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>How to use the Manus Playbook in 60 seconds:</strong> open <code>manus.im/playbook</code>, filter by category (Sales / Marketing / CS / RevOps / Product), click the playbook card, fill the parameter form, hit Run. Manus opens a fresh cloud session, executes, returns the artifact (deck / spreadsheet / report). When you find a playbook you'll reuse, run it once cleanly, then say <em>&laquo;Package this as a Skill&raquo;</em> &mdash; now it's a one-click slash command for you forever.</p>
+    </div>
 
     <h3>Sales</h3>
 
@@ -1792,40 +1918,40 @@ Metrics (if available)
         <h3>Required (for everyone):</h3>
         <ol>
             <li>
-                <strong>Build your first skill via Skill Creator</strong>
-                <p>Pick one repeated task from your work (a recap email, a meeting prep, a status update, a follow-up template &mdash; something you do at least once a week). Build a skill for it using <strong>Path A from Part 5</strong>:</p>
+                <strong>Run a Manus Playbook for your role</strong>
+                <p>Open <code>manus.im/playbook</code>. Pick <strong>one</strong> playbook that matches your role:</p>
                 <ul>
-                    <li>Open a new chat at <code>claude.ai</code></li>
-                    <li>Type: &laquo;Use the skill-creator skill to help me build a skill for [your use case].&raquo;</li>
-                    <li>Answer the structured questions Claude asks</li>
-                    <li>Download the ZIP and upload via Settings &rarr; Capabilities &rarr; Skills</li>
-                    <li>Test it in a fresh chat with a real prompt</li>
+                    <li>Sales: B2B Software Sales Deck Generator, Sales Funnel Builder, or AI Sales Quote Generator</li>
+                    <li>Marketing: YouTube Influencer Finder, Reddit Sentiment Analyzer, or Marketing Presentation Maker</li>
+                    <li>CS: Account Health Analyzer</li>
+                    <li>RevOps: Sales Territory Mapping or Commission Calculator</li>
+                    <li>PMM / Product: PRD Templates or Launch Checklists (under <code>manus.im/solutions/product</code>)</li>
                 </ul>
-                <p>Send: <strong>screenshot</strong> of the skill activated in a new chat + <strong>2&ndash;3 sentences</strong> on what surprised you about the experience.</p>
+                <p>Run it against a <strong>real task</strong> from your week (not a toy example). Send: <strong>screenshot of the result</strong> + <strong>2&ndash;3 sentences</strong> on what worked, what felt off, and how long it would have taken without Manus.</p>
                 <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>Why we ask this:</strong> Building one skill teaches you more than reading ten posts. The first time Claude picks up your skill automatically &mdash; you understand the model.</p>
+                    <p><strong>Why this first:</strong> Playbooks are the gentlest on-ramp &mdash; click, fill form, run. You'll feel skill-quality output before you build one yourself.</p>
                 </div>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Install one community skill from the GTM stack</strong>
-                <p>Pick <strong>one</strong> skill from Part 7 that fits your role:</p>
+                <strong>Build your first Skill in Manus via auto-package</strong>
+                <p>Use <strong>Path A from Part 5</strong>. Pick a repeated task you do at least weekly (recap email, meeting prep, account brief, follow-up template, status update):</p>
                 <ul>
-                    <li>Sales: Summit53 sales bundle, or one of OstraconAI's six skills</li>
-                    <li>Marketing: Brand Voice skill, or one OpenClaudia skill</li>
-                    <li>CS: <code>customer-success-manager</code> (alirezarezvani), or one FunnelStory slash command</li>
-                    <li>Content: Voice DNA Skill</li>
-                    <li>RevOps: Summit53 <code>/revenue-monitor</code></li>
+                    <li>Run the task in Manus end-to-end until you're happy with the output</li>
+                    <li>In the same conversation type: <strong>&laquo;Package this workflow into a Skill.&raquo;</strong></li>
+                    <li>Manus auto-generates the SKILL.md from the run</li>
+                    <li>Open the Skill Library, rename to kebab-case, review the description</li>
+                    <li>In a fresh chat, trigger the skill with <code>/your-skill-name</code> and run it on new inputs</li>
                 </ul>
-                <p>Install it. Run it on a real task from your week. Send: <strong>screenshot</strong> + <strong>2&ndash;3 sentences</strong> on what worked, what didn't, and what you'd change.</p>
+                <p>Send: <strong>screenshot</strong> of the skill activated via slash command in a new chat + <strong>2&ndash;3 sentences</strong> on what surprised you about the auto-package experience.</p>
                 <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>Why this matters:</strong> Studying skills won't make you a skill-user. Installing one and running it on something real, will.</p>
+                    <p><strong>Why we ask this:</strong> The first time Manus packages your real workflow into a one-click slash command &mdash; you understand the model. Reading about it doesn't compare.</p>
                 </div>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Write a great description</strong>
-                <p>Take the skill from task #1 and rewrite its description applying all four rules from Part 6. Send the description (under 1024 characters) plus <strong>one sentence per rule</strong> explaining how your description applies it:</p>
+                <strong>Write a great description for your Skill</strong>
+                <p>Open the skill from task #2 in Manus's Skill Library. Rewrite its description applying all four rules from Part 6. Send the description (under 1024 chars) plus <strong>one sentence per rule</strong> explaining how your description applies it:</p>
                 <ul>
                     <li>Rule 1: WHAT + WHEN + trigger phrases</li>
                     <li>Rule 2: matchable phrases in the first ~250 chars</li>
@@ -1833,28 +1959,35 @@ Metrics (if available)
                     <li>Rule 4: describe WHEN, not HOW</li>
                 </ul>
                 <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>Self-test:</strong> in a fresh chat, ask Claude &laquo;When would you use the [your-skill] skill?&raquo; If Claude's answer matches your intent &mdash; the description works.</p>
+                    <p><strong>Self-test:</strong> in a fresh Manus chat, ask <em>&laquo;When would you use the [your-skill] skill?&raquo;</em> If the answer matches your intent &mdash; the description works.</p>
                 </div>
             </li>
         </ol>
 
         <div class="info-box blue" style="margin-top: 24px;">
-            <p><strong>Note:</strong> Skill creation requires a Claude Pro / Max / Team / Enterprise plan. If you don't have one, ask Ivan in Slack.</p>
+            <p><strong>Note:</strong> Tasks #2 and #3 use Manus, which most of the GTM team already has access to. If you'd rather use Claude Desktop's <code>skill-creator</code> instead, that's fine &mdash; the format is identical (open standard). Either works. If you don't have access to either, ask Ivan in Slack.</p>
         </div>
 
         <h3 style="margin-top: 24px;">Advanced (optional):</h3>
         <ol>
             <li>
-                <strong>Compose two skills</strong>
-                <p>Design and verify a scenario where Claude automatically uses two skills together. Easiest example: ask Claude to &laquo;create a 1-pager pitch on brand for [topic]&raquo; with both <code>brand-guidelines</code> and <code>pdf</code> (or <code>pptx</code>) skills enabled. Send the output and <strong>name both skills</strong> Claude composed.</p>
+                <strong>Compose a Manus Project + Skill</strong>
+                <p>Create a Manus Project for your role (e.g. <em>&laquo;Fohlio Sales&raquo;</em>):</p>
+                <ul>
+                    <li>Write a Master Instruction with your role + ICP + brand voice basics</li>
+                    <li>Upload 2&ndash;3 knowledge files (battlecards, ICP doc, brand guidelines, sales playbook)</li>
+                    <li>Trigger your skill from task #2 inside that Project</li>
+                </ul>
+                <p>Send the output and answer: <strong>how is it different from the same skill running outside the Project?</strong> One paragraph.</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Quiz: Skills, MCP, Subagents (active recall)</strong>
+                <strong>Quiz: Skills, MCP, Subagents, Manus (active recall)</strong>
                 <p>Answer <strong>without looking back at the lesson</strong>. After answering, check yourself and note what you got wrong:</p>
                 <ul>
                     <li>What is progressive disclosure? Name the three levels.</li>
                     <li>What are the four rules for writing a description?</li>
                     <li>If a workflow needs live HubSpot data, do you need a Skill, an MCP server, or both? Why?</li>
+                    <li>What's the difference between a Manus Skill and a Manus Project? When would you use which?</li>
                     <li>Pick one analogy other than the restaurant or USB. Use it to explain Skills vs MCP vs Subagents in three sentences.</li>
                 </ul>
                 <div class="info-box orange" style="margin-top: 8px;">
@@ -1862,8 +1995,8 @@ Metrics (if available)
                 </div>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Pitch a custom skill for your team</strong>
-                <p>Write a 5-sentence pitch for a custom skill that would help your team specifically:</p>
+                <strong>Pitch a custom Skill for your team</strong>
+                <p>Write a 5-sentence pitch for a custom Manus Skill that would help your team specifically:</p>
                 <ul>
                     <li>What's the workflow it captures?</li>
                     <li>Who would use it (which role)?</li>
@@ -1871,11 +2004,11 @@ Metrics (if available)
                     <li>How much time per week would it save (estimate)?</li>
                     <li>Who else on the team should help build / test it?</li>
                 </ul>
-                <p>Bonus: actually build it via Path A or Path B, share with the team, and ship it as a shared org skill.</p>
+                <p>Bonus: actually build it via Path A, push it to the Team Skill Library, and announce it in <code>#tech-course</code>.</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Find and pitch a new skill</strong>
-                <p>Browse <code>github.com/anthropics/skills</code>, <code>awesome-skills.com</code>, or <code>skillsmp.com</code>. Find a skill nobody on our team uses yet. Write a 3-sentence pitch: what it does, what problem it solves, who on the team should try it first.</p>
+                <strong>Find and pitch a new Playbook or community Skill</strong>
+                <p>Browse <code>manus.im/playbook</code>, <code>github.com/anthropics/skills</code>, or <code>awesome-skills.com</code>. Find one nobody on our team uses yet. Write a 3-sentence pitch: what it does, what problem it solves, who on the team should try it first.</p>
             </li>
         </ol>
     </div>
