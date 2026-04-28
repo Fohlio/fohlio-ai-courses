@@ -1,4 +1,5 @@
 import type { SubmissionContent } from "@/lib/types";
+import { ScreenshotImage } from "./ScreenshotImage";
 
 interface SubmissionViewerProps {
   content: SubmissionContent;
@@ -20,29 +21,10 @@ export function SubmissionViewer({ content }: SubmissionViewerProps) {
 
     case "screenshot":
       return (
-        <div className="flex flex-col gap-2">
-          <a
-            href={content.fileUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="block overflow-hidden rounded-lg border border-gray-200 bg-gray-50"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={content.fileUrl}
-              alt={content.fileName || "screenshot"}
-              className="max-h-96 w-full object-contain"
-            />
-          </a>
-          <a
-            href={content.fileUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="break-all text-xs text-gray-500 hover:underline"
-          >
-            {content.fileName || content.fileUrl}
-          </a>
-        </div>
+        <ScreenshotImage
+          fileUrl={content.fileUrl}
+          fileName={content.fileName || ""}
+        />
       );
 
     case "text":
