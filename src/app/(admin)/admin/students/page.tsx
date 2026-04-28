@@ -44,6 +44,11 @@ export default async function AdminStudentsPage() {
                     {student.user.displayName && (
                       <span className="ml-2 text-gray-500">({student.user.displayName})</span>
                     )}
+                    {student.user.role === "admin" && (
+                      <span className="ml-2 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">
+                        admin
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
