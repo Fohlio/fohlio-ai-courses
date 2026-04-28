@@ -17,19 +17,6 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
     throw new Error("Cannot backfill legacy course before the admin user exists.");
   }
 
-  const existingCourse = await prisma.course.findUnique({
-    where: { id: LEGACY_COURSE_ID },
-    select: { id: true },
-  });
-
-  if (existingCourse) {
-    await prisma.taskSubmission.updateMany({
-      where: { courseId: null },
-      data: { courseId: LEGACY_COURSE_ID },
-    });
-    return;
-  }
-
   const lessonData = await Promise.all(
     LESSONS.map(async (lesson) => {
       let rawHtml = "";
@@ -77,8 +64,18 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
   );
 
   await prisma.$transaction(async (tx) => {
-    await tx.course.create({
-      data: {
+    await tx.course.upsert({
+      where: { id: LEGACY_COURSE_ID },
+      update: {
+        slug: LEGACY_COURSE_SLUG,
+        title: "Fohlio Tech Course",
+        subtitle: "Legacy migrated course",
+        description:
+          "The original Fohlio internal course, migrated from static lesson files into the multi-course platform.",
+        status: "published",
+        ownerId: admin.id,
+      },
+      create: {
         id: LEGACY_COURSE_ID,
         slug: LEGACY_COURSE_SLUG,
         title: "Fohlio Tech Course",
@@ -88,28 +85,72 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
         status: "published",
         ownerId: admin.id,
         publishedAt: new Date(),
-        lessons: {
-          create: lessonData.map((lesson) => ({
-            id: lesson.id,
-            slug: lesson.slug,
-            order: lesson.order,
-            title: lesson.title,
-            subtitle: lesson.subtitle,
-            description: lesson.description,
-            learningGoals: lesson.learningGoals,
-            contentType: lesson.contentType,
-            contentHtml: lesson.contentHtml,
-            pdfUrl: lesson.pdfUrl,
-            videoUrl: lesson.videoUrl,
-            isPublished: lesson.isPublished,
-            unresolvedMediaSources: lesson.unresolvedMediaSources,
-            tasks: {
-              create: lesson.tasks,
-            },
-          })),
-        },
       },
     });
+
+    for (const lesson of lessonData) {
+      await tx.lesson.upsert({
+        where: { id: lesson.id },
+        update: {
+          courseId: LEGACY_COURSE_ID,
+          slug: lesson.slug,
+          order: lesson.order,
+          title: lesson.title,
+          subtitle: lesson.subtitle,
+          description: lesson.description,
+          learningGoals: lesson.learningGoals,
+          contentType: lesson.contentType,
+          contentHtml: lesson.contentHtml,
+          pdfUrl: lesson.pdfUrl,
+          videoUrl: lesson.videoUrl,
+          isPublished: lesson.isPublished,
+          unresolvedMediaSources: lesson.unresolvedMediaSources,
+        },
+        create: {
+          id: lesson.id,
+          courseId: LEGACY_COURSE_ID,
+          slug: lesson.slug,
+          order: lesson.order,
+          title: lesson.title,
+          subtitle: lesson.subtitle,
+          description: lesson.description,
+          learningGoals: lesson.learningGoals,
+          contentType: lesson.contentType,
+          contentHtml: lesson.contentHtml,
+          pdfUrl: lesson.pdfUrl,
+          videoUrl: lesson.videoUrl,
+          isPublished: lesson.isPublished,
+          unresolvedMediaSources: lesson.unresolvedMediaSources,
+        },
+      });
+
+      for (const task of lesson.tasks) {
+        await tx.homeworkTask.upsert({
+          where: { id: task.id },
+          update: {
+            lessonId: lesson.id,
+            title: task.title,
+            description: task.description,
+            category: task.category,
+            submissionType: task.submissionType,
+            order: task.order,
+            quizQuestions: task.quizQuestions,
+            checklistItems: task.checklistItems,
+          },
+          create: {
+            id: task.id,
+            lessonId: lesson.id,
+            title: task.title,
+            description: task.description,
+            category: task.category,
+            submissionType: task.submissionType,
+            order: task.order,
+            quizQuestions: task.quizQuestions,
+            checklistItems: task.checklistItems,
+          },
+        });
+      }
+    }
 
     await tx.taskSubmission.updateMany({
       where: { courseId: null },
