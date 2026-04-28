@@ -17,6 +17,9 @@ import type {
   OwnerCourseDashboard,
   OwnerCourseStudentSummary,
   OwnerSubmissionSummary,
+  SubmissionContent,
+  SubmissionStatus,
+  SubmissionType,
   TaskSubmission,
   UserRole,
 } from "./types";
@@ -377,6 +380,95 @@ export async function getAdminStudentSummaries(): Promise<AdminStudentSummary[]>
       submissions.filter((submission) => submission.userId === student.id),
     ),
   }));
+}
+
+export interface AdminStudentSubmissionEntry {
+  submissionId: string;
+  taskId: string;
+  taskTitle: string;
+  taskCategory: "required" | "advanced";
+  submissionType: SubmissionType;
+  lessonId: string;
+  lessonNumber: number;
+  lessonTitle: string;
+  courseId: string;
+  courseTitle: string;
+  status: SubmissionStatus;
+  submittedAt: Date;
+  content: SubmissionContent;
+}
+
+export async function getAdminStudentSubmissionsByNickname(
+  githubNickname: string,
+): Promise<AdminStudentSubmissionEntry[]> {
+  const user = await prisma.user.findUnique({
+    where: { githubNickname },
+    select: { id: true },
+  });
+  if (!user) return [];
+
+  const submissions = await prisma.taskSubmission.findMany({
+    where: { userId: user.id },
+    orderBy: { updatedAt: "desc" },
+  });
+
+  const courses = (await getCourseRecords()).map((record) =>
+    mapCourseDetailRecord(record, null),
+  );
+
+  const taskMetaById = new Map<
+    string,
+    {
+      taskTitle: string;
+      taskCategory: "required" | "advanced";
+      submissionType: SubmissionType;
+      lessonId: string;
+      lessonNumber: number;
+      lessonTitle: string;
+      courseId: string;
+      courseTitle: string;
+    }
+  >();
+  for (const course of courses) {
+    for (const lesson of course.lessons) {
+      for (const section of lesson.homework) {
+        for (const task of section.tasks) {
+          taskMetaById.set(task.id, {
+            taskTitle: task.title,
+            taskCategory: task.category,
+            submissionType: task.submissionType,
+            lessonId: lesson.id,
+            lessonNumber: lesson.number,
+            lessonTitle: lesson.title,
+            courseId: course.id,
+            courseTitle: course.title,
+          });
+        }
+      }
+    }
+  }
+
+  return submissions
+    .map((submission) => {
+      const meta = taskMetaById.get(submission.taskId);
+      if (!meta) return null;
+      return {
+        submissionId: submission.id,
+        taskId: submission.taskId,
+        taskTitle: meta.taskTitle,
+        taskCategory: meta.taskCategory,
+        submissionType: meta.submissionType,
+        lessonId: meta.lessonId,
+        lessonNumber: meta.lessonNumber,
+        lessonTitle: meta.lessonTitle,
+        courseId: meta.courseId,
+        courseTitle: meta.courseTitle,
+        status: submission.status,
+        submittedAt: submission.updatedAt,
+        content: toSubmissionContent(submission.content),
+      };
+    })
+    .filter((entry): entry is AdminStudentSubmissionEntry => entry !== null);
 }
 
 export async function getAdminCourseSummaries(viewer: Viewer): Promise<AdminCourseSummary[]> {
