@@ -356,30 +356,35 @@ export async function getOverallStudentProgress(viewer: Viewer): Promise<Overall
 }
 
 export async function getAdminStudentSummaries(): Promise<AdminStudentSummary[]> {
-  const students = await prisma.user.findMany({
-    where: { role: "student" },
+  const users = await prisma.user.findMany({
     orderBy: { githubNickname: "asc" },
     select: {
       id: true,
       githubNickname: true,
       displayName: true,
+      role: true,
     },
   });
   const publishedCourses = (await getCourseRecords())
     .filter((course) => course.status === "published")
     .map((course) => mapCourseDetailRecord(course, null));
   const submissions = (await prisma.taskSubmission.findMany({
-    where: { userId: { in: students.map((student) => student.id) } },
+    where: { userId: { in: users.map((user) => user.id) } },
     orderBy: { updatedAt: "desc" },
   })).map(mapSubmission);
 
-  return students.map((student) => ({
-    user: student,
-    progress: calculateOverallProgress(
-      publishedCourses,
-      submissions.filter((submission) => submission.userId === student.id),
-    ),
-  }));
+  return users
+    .map((user) => {
+      const userSubmissions = submissions.filter(
+        (submission) => submission.userId === user.id,
+      );
+      return {
+        user,
+        progress: calculateOverallProgress(publishedCourses, userSubmissions),
+        hasSubmissions: userSubmissions.length > 0,
+      };
+    })
+    .filter((entry) => entry.user.role === "student" || entry.hasSubmissions);
 }
 
 export interface AdminStudentSubmissionEntry {
