@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fohlio Tech Course - Lesson 6</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 140px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .recap-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 16px 20px;
+        }
+        .recap-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--blue);
+        }
+        .recap-item span {
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        .flow-arrow {
+            text-align: center;
+            font-size: 24px;
+            color: var(--gray-300);
+            margin: 8px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge.ai { background: #EDE9FE; color: #7C3AED; }
+        .badge.tool { background: #D1FAE5; color: #059669; }
+        .badge.concept { background: #FEF3C7; color: #D97706; }
+
+        .tool-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+            transition: box-shadow 0.2s;
+        }
+        .tool-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .tool-card .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .tool-card .tool-icon {
+            font-size: 28px;
+            width: 40px;
+            text-align: center;
+        }
+        .tool-card .tool-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--gray-900);
+        }
+        .tool-card .tool-category {
+            margin-left: auto;
+        }
+        .tool-card .tool-desc {
+            font-size: 14px;
+            color: var(--gray-500);
+            margin-bottom: 8px;
+        }
+        .tool-card .tool-examples {
+            font-size: 13px;
+            color: var(--gray-700);
+            background: var(--gray-50);
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+        .tool-card .tool-examples code {
+            font-size: 12px;
+        }
+
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        @media print {
+            .container { padding: 20px; }
+            .part-header { margin-top: 32px; }
+            pre { font-size: 12px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 20px 16px; }
+            .header h1 { font-size: 32px; }
+            .concept-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 6 of 10</div>
+        <h1>Fohlio Tech Course</h1>
+        <div class="subtitle">Skills: Teaching AI How You Work</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand what a Claude Skill is and how it differs from a prompt or an MCP connector</li>
+            <li>Know the canonical mental model: <strong>MCP = the Hands, Skills = the Brain, Subagents = the Workers</strong></li>
+            <li>Be able to use Anthropic's built-in document skills (pptx, xlsx, docx, pdf, brand-guidelines)</li>
+            <li>Build your first custom skill in under 10 minutes &mdash; without writing code</li>
+            <li>Know how to write a description that actually triggers (the make-or-break field)</li>
+            <li>Have a curated GTM skill stack tailored to your role: Sales, Marketing, CS, Content, RevOps</li>
+        </ul>
+    </div>
+
+    <div class="lesson-content">
+
+    <!-- ============================================ -->
+    <!-- RECAP -->
+    <!-- ============================================ -->
+
+    <h3>Quick Recap: Lessons 1&ndash;5</h3>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Lessons 1&ndash;3</strong>
+            <span>Git, architecture, frontend setup &mdash; the engineering foundation</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 4</strong>
+            <span>What an LLM is, context window, chatbot vs agent, MCP &amp; skills as concepts</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 5</strong>
+            <span>MCP in practice &mdash; we connected Notion, Jira, GitHub, Slack to Claude</span>
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 6 (today)</strong>
+            <span>Skills &mdash; teaching Claude <em>how</em> to do your work, not just <em>what</em> tools to reach</span>
+        </div>
+    </div>
+
+    <p>Last lesson we plugged Claude into your tools. Today we teach Claude how to <em>use</em> them like you do &mdash; in your tone, with your frameworks, in your team's format. The leap from &laquo;Claude can read my Notion&raquo; to &laquo;Claude writes a QBR exactly the way I would.&raquo;</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: THE LAST 80% PROBLEM -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Last 80% Problem</h2>
+
+    <p>Now that Claude is connected to Notion, Jira, HubSpot, and GitHub, you've probably noticed something annoying. Claude <em>can</em> pull the data &mdash; but the output is still generic. The follow-up email doesn't sound like you. The QBR deck has the wrong tone. The sales brief follows some textbook framework instead of your team's actual playbook.</p>
+
+    <p>That's not a Claude problem. That's a <strong>knowledge transfer</strong> problem.</p>
+
+    <h3>The Restaurant Analogy (continued)</h3>
+
+    <div class="story-box">
+        <p>Remember our restaurant. In Lesson 5 we hired a kitchen full of waiters who can fetch ingredients from any pantry: Notion, Jira, HubSpot, GitHub. The brilliant LLM consultant now has access to everything.</p>
+        <p>But here's the catch: the consultant doesn't know <em>your restaurant's recipes</em>. They can chop vegetables and operate the stove, but every time you order &laquo;the house pasta,&raquo; you have to re-explain: how al dente, how much salt, what kind of cheese, plate it on the white bowl, never the blue one. Every single time.</p>
+        <p>That's life with MCP only. Tools connected, but no procedural memory. Each conversation starts from scratch.</p>
+        <p><strong>A Skill</strong> is a recipe card the consultant can read before cooking. &laquo;House pasta: 8 minutes, 1 tsp salt, parmesan only, white bowl, parsley garnish.&raquo; Claude reads it, follows it, and produces the same dish every time &mdash; without you re-explaining.</p>
+        <div class="tech-note">
+            <strong>In one line:</strong> MCP is <em>access to the pantry</em>. Skills are <em>the recipes you actually cook</em>. You need both.
+        </div>
+    </div>
+
+    <h3>What &laquo;the last 80%&raquo; actually means</h3>
+
+    <p>For most GTM workflows, the data-gathering part is 20% of the work. The other 80% is <strong>how you turn data into output</strong>: the framework, the tone, the format, the unwritten team conventions. That's exactly the part you keep re-explaining to Claude in every chat.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F501;</div>
+            <div class="card-title" style="color: var(--red);">Re-explaining loop</div>
+            <div class="card-desc">Every chat: paste brand voice rules, paste team's QBR template, paste discovery framework. Claude forgets next conversation.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4D6;</div>
+            <div class="card-title" style="color: var(--green);">Skill</div>
+            <div class="card-desc">Write the rules once in a file. Claude reads them automatically every time the topic comes up. No re-pasting.</div>
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Quick recall &mdash; before reading on</div>
+        <div class="recall-question">Think about the last 5 prompts you wrote to Claude. How many of them included &laquo;use this template,&raquo; &laquo;in our brand voice,&raquo; &laquo;follow the X framework,&raquo; or any kind of repeated context-setting? <strong>Each one of those is a skill waiting to be born.</strong></div>
+        <div class="recall-hint">If you said &laquo;all of them&raquo; &mdash; welcome. You'll feel the value of skills the moment you build the first one.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: WHAT IS A SKILL TECHNICALLY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: What Is a Skill (technically)</h2>
+
+    <p>A Skill is just a folder. Inside it, one mandatory file called <code>SKILL.md</code>, plus optional supporting files. That's the entire architecture.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F516;</div>
+            <div class="card-title" style="color: var(--blue);">Frontmatter</div>
+            <div class="card-subtitle" style="color: var(--blue);">Always loaded</div>
+            <div class="card-desc"><code>name</code> + <code>description</code> in YAML at the top of SKILL.md. ~30 tokens. Claude scans these at startup to decide which skill matches a task.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F9E0;</div>
+            <div class="card-title" style="color: var(--purple);">Body</div>
+            <div class="card-subtitle" style="color: var(--purple);">Loaded on match</div>
+            <div class="card-desc">Markdown instructions. Workflow steps, output format, gotchas. Loaded into context only when Claude decides the skill applies.</div>
+        </div>
+    </div>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4C1;</div>
+            <div class="card-title" style="color: var(--green);">scripts/</div>
+            <div class="card-subtitle" style="color: var(--green);">Optional</div>
+            <div class="card-desc">Python or JS code Claude can <em>run</em> without loading into context. Good for deterministic operations: CSV parsing, PDF stamping, score calculations.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4CE;</div>
+            <div class="card-title" style="color: var(--orange);">references/ &amp; assets/</div>
+            <div class="card-subtitle" style="color: var(--orange);">Optional</div>
+            <div class="card-desc">Long reference docs and templates / fonts / icons / brand images. Loaded on demand, not at startup.</div>
+        </div>
+    </div>
+
+    <h3>Progressive disclosure (the secret sauce)</h3>
+
+    <p>Skills use a clever loading strategy called <strong>progressive disclosure</strong>. Three levels:</p>
+
+    <table>
+        <tr>
+            <th>Level</th>
+            <th>What loads</th>
+            <th>When</th>
+            <th>Token cost</th>
+        </tr>
+        <tr>
+            <td><strong>1. Metadata</strong></td>
+            <td>Just <code>name</code> + <code>description</code></td>
+            <td>Always (session start)</td>
+            <td>~30&ndash;50 per skill</td>
+        </tr>
+        <tr>
+            <td><strong>2. Body</strong></td>
+            <td>Full SKILL.md instructions</td>
+            <td>When Claude matches the task</td>
+            <td>~500&ndash;5000</td>
+        </tr>
+        <tr>
+            <td><strong>3. Resources</strong></td>
+            <td>Referenced files / scripts</td>
+            <td>As needed during execution</td>
+            <td>Effectively unbounded</td>
+        </tr>
+    </table>
+
+    <div class="info-box green">
+        <p><strong>Why this matters:</strong> You can have 50 skills installed and Claude pays only ~1500 tokens at idle (50 &times; 30). The 5000-token body of any specific skill loads <em>only</em> when its description matches your request. This is why skills scale where stuffing everything into the system prompt does not.</p>
+    </div>
+
+    <h3>A real SKILL.md frontmatter (Anthropic's pptx skill)</h3>
+
+    <p>Here's the actual frontmatter from Anthropic's official PowerPoint skill at <code>github.com/anthropics/skills</code>. Notice how <em>aggressive</em> the description is &mdash; that's intentional:</p>
+
+    <pre><code><span class="comment">---</span>
+<span class="keyword">name:</span> <span class="string">pptx</span>
+<span class="keyword">description:</span> <span class="string">Use this skill any time a .pptx file is involved in any way &mdash;
+  as input, output, or both. This includes: creating slide decks, pitch
+  decks, or presentations; reading, parsing, or extracting text from any
+  .pptx file; editing, modifying, or updating existing presentations;
+  combining or splitting slide files; working with templates, layouts,
+  speaker notes, or comments. Trigger whenever the user mentions "deck,"
+  "slides," "presentation," or references a .pptx filename, regardless
+  of what they plan to do with the content afterward.</span>
+<span class="keyword">license:</span> <span class="string">Proprietary. LICENSE.txt has complete terms</span>
+<span class="comment">---</span></code></pre>
+
+    <p>Look at that description carefully. It lists every possible scenario, every keyword the user might say, and even includes &laquo;regardless of what they plan to do.&raquo; That's not paranoia &mdash; that's good skill engineering. We'll come back to why in Part 6.</p>
+
+    <h3>How Skills are activated (model-invoked, not user-invoked)</h3>
+
+    <p>This is the part that confuses everyone the first time. <strong>You don't &laquo;run&raquo; a skill.</strong> Claude decides which skill to load based on what you said.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="320" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">How Claude Picks a Skill</text>
+
+            <!-- User message -->
+            <rect x="280" y="50" width="200" height="40" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="380" y="75" text-anchor="middle" font-family="Inter" font-size="12" fill="#3451B2">User: "draft the QBR for Acme"</text>
+
+            <line x1="380" y1="90" x2="380" y2="115" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+            <!-- LLM reasoning -->
+            <rect x="240" y="120" width="280" height="50" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+            <text x="380" y="142" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">Claude reads ALL skill descriptions</text>
+            <text x="380" y="160" text-anchor="middle" font-family="Inter" font-size="11" fill="#7C3AED">~30 tokens each, semantic match</text>
+
+            <line x1="380" y1="170" x2="380" y2="195" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+            <!-- Skill catalog -->
+            <text x="380" y="190" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">scans installed skills:</text>
+
+            <rect x="60" y="200" width="160" height="50" rx="8" fill="#FEE2E2" stroke="#DC2626"/>
+            <text x="140" y="220" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">brand-voice</text>
+            <text x="140" y="238" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">no match</text>
+
+            <rect x="240" y="200" width="160" height="50" rx="8" fill="#D1FAE5" stroke="#059669" stroke-width="2"/>
+            <text x="320" y="220" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#059669">qbr-generator</text>
+            <text x="320" y="238" text-anchor="middle" font-family="Inter" font-size="10" fill="#059669">MATCH! load body</text>
+
+            <rect x="420" y="200" width="160" height="50" rx="8" fill="#D1FAE5" stroke="#059669" stroke-width="2"/>
+            <text x="500" y="220" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#059669">brand-guidelines</text>
+            <text x="500" y="238" text-anchor="middle" font-family="Inter" font-size="10" fill="#059669">MATCH! load body</text>
+
+            <rect x="600" y="200" width="140" height="50" rx="8" fill="#FEE2E2" stroke="#DC2626"/>
+            <text x="670" y="220" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">git-helper</text>
+            <text x="670" y="238" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">no match</text>
+
+            <line x1="320" y1="250" x2="380" y2="278" stroke="#059669" stroke-width="1.5"/>
+            <line x1="500" y1="250" x2="380" y2="278" stroke="#059669" stroke-width="1.5"/>
+
+            <rect x="280" y="280" width="200" height="30" rx="6" fill="#1A8F5C"/>
+            <text x="380" y="300" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="white">Output: on-brand QBR deck</text>
+
+            <defs>
+                <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                    <polygon points="0 0, 10 3, 0 6" fill="#6B7280"/>
+                </marker>
+            </defs>
+        </svg>
+        <div class="diagram-caption">Claude reads all skill descriptions, picks the matching ones, loads their bodies. Multiple skills can match and compose.</div>
+    </div>
+
+    <h3>Where skills work</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4BB;</div>
+            <div class="layer-name" style="color: var(--blue);">Claude Desktop / Claude.ai</div>
+            <div class="layer-desc">Pro / Max / Team / Enterprise plans. Upload skill ZIP via Settings.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F5C2;</div>
+            <div class="layer-name" style="color: var(--purple);">Claude Code</div>
+            <div class="layer-desc">Filesystem-based: <code>~/.claude/skills/</code> or <code>.claude/skills/</code></div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--green);">Claude API &amp; Agent SDK</div>
+            <div class="layer-desc">For developers building products on top of Claude</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F30D;</div>
+            <div class="layer-name" style="color: var(--orange);">Other AI tools</div>
+            <div class="layer-desc">Cursor, Copilot, ChatGPT, Gemini CLI &mdash; the format became an open standard in Dec 2025</div>
+        </div>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>The big context:</strong> On December 18, 2025 Anthropic published Skills as an open standard at <code>agentskills.io</code>. Within weeks, 26+ tools adopted it &mdash; including OpenAI's ChatGPT and Codex CLI. The Anthropic skills GitHub repo crossed <strong>20,000 stars</strong>, with tens of thousands of community-built skills in circulation. Skills are not a Claude-only thing anymore.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Recall check</div>
+        <div class="recall-question">Without scrolling: what are the <strong>three levels</strong> of progressive disclosure, and which one always loads at session start?</div>
+        <div class="recall-hint">Hint: think about cost. Why would Anthropic design it so most of a skill stays unloaded by default? &mdash; because you might have 50 skills, but you only need 2 in any given conversation.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: SKILLS VS MCP VS SUBAGENTS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Skills vs MCP vs Subagents &mdash; the big confusion</h2>
+
+    <p>If you've been reading AI Twitter recently, you've seen people argue that Skills replace MCP. Or that Skills are just system prompts. Or that Subagents make Skills obsolete. None of that is right. They are <strong>three different primitives that compose</strong>.</p>
+
+    <div class="story-box">
+        <p>Back to the restaurant one more time. Imagine you're running a kitchen and trying to scale.</p>
+        <p><strong>MCP</strong> is the <em>delivery system</em> &mdash; trucks, suppliers, the door that lets ingredients in. Without MCP, the kitchen can't reach the outside world.</p>
+        <p><strong>Skills</strong> are the <em>recipe book</em> &mdash; instructions on how to combine those ingredients into your house dishes. Without skills, every chef cooks a slightly different pasta.</p>
+        <p><strong>Subagents</strong> are <em>specialist chefs</em> &mdash; a pastry chef who works in their own corner with their own tools, returning only the finished dessert. Without subagents, your head chef has to do everything in one room and gets overwhelmed.</p>
+        <div class="tech-note">
+            <strong>The Anthropic quote</strong> (from <em>claude.com/blog/skills-explained</em>): &laquo;MCP connects Claude to external services and data sources. Skills provide procedural knowledge &mdash; instructions for how to complete specific tasks or workflows. You can use both together: MCP connections give Claude access to tools, while Skills teach Claude how to use those tools effectively.&raquo;
+        </div>
+    </div>
+
+    <h3>The comparison table</h3>
+
+    <table>
+        <tr>
+            <th>Aspect</th>
+            <th>MCP server</th>
+            <th>Skill</th>
+            <th>Subagent</th>
+        </tr>
+        <tr>
+            <td><strong>What it is</strong></td>
+            <td>A connector to a tool or data source</td>
+            <td>A recipe / playbook for a workflow</td>
+            <td>A specialist Claude with its own context</td>
+        </tr>
+        <tr>
+            <td><strong>Best metaphor</strong></td>
+            <td>The Hands</td>
+            <td>The Brain</td>
+            <td>The Workers</td>
+        </tr>
+        <tr>
+            <td><strong>Use when</strong></td>
+            <td>You need live data: CRM, Slack, Notion, GitHub</td>
+            <td>You repeat the same workflow with the same conventions</td>
+            <td>A task is heavy and would clutter the main chat</td>
+        </tr>
+        <tr>
+            <td><strong>Cost model</strong></td>
+            <td>Eager &mdash; loads tool list at startup</td>
+            <td>Lazy &mdash; loads body only on match</td>
+            <td>Separate context per agent</td>
+        </tr>
+        <tr>
+            <td><strong>Who creates it</strong></td>
+            <td>Vendors / engineers</td>
+            <td><strong>Anyone</strong> &mdash; just Markdown</td>
+            <td>Mostly developers</td>
+        </tr>
+        <tr>
+            <td><strong>Released</strong></td>
+            <td>Nov 2024</td>
+            <td>Oct 2025</td>
+            <td>2025 (Claude Code)</td>
+        </tr>
+    </table>
+
+    <h3>The layered architecture</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="340" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">The Five-Layer Stack</text>
+
+            <!-- Layer 1: Agent -->
+            <rect x="180" y="55" width="400" height="40" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="380" y="80" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">Layer 1: Agent (Claude itself &mdash; the decision loop)</text>
+
+            <line x1="380" y1="95" x2="380" y2="110" stroke="#6B7280" stroke-width="1.5"/>
+
+            <!-- Layer 2: Skills -->
+            <rect x="180" y="115" width="400" height="40" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="380" y="140" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Layer 2: Skills (knowledge / playbooks &mdash; the BRAIN)</text>
+
+            <line x1="380" y1="155" x2="380" y2="170" stroke="#6B7280" stroke-width="1.5"/>
+
+            <!-- Layer 3: Subagents -->
+            <rect x="180" y="175" width="400" height="40" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="380" y="200" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">Layer 3: Subagents (delegated workers &mdash; isolated context)</text>
+
+            <line x1="380" y1="215" x2="380" y2="230" stroke="#6B7280" stroke-width="1.5"/>
+
+            <!-- Layer 4: MCP -->
+            <rect x="180" y="235" width="400" height="40" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="380" y="260" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#059669">Layer 4: MCP (tools &amp; data &mdash; the HANDS)</text>
+
+            <line x1="380" y1="275" x2="380" y2="290" stroke="#6B7280" stroke-width="1.5"/>
+
+            <!-- Layer 5: External tools -->
+            <rect x="100" y="295" width="100" height="35" rx="6" fill="white" stroke="#3451B2"/>
+            <text x="150" y="317" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">Notion</text>
+
+            <rect x="220" y="295" width="100" height="35" rx="6" fill="white" stroke="#3451B2"/>
+            <text x="270" y="317" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">HubSpot</text>
+
+            <rect x="340" y="295" width="100" height="35" rx="6" fill="white" stroke="#3451B2"/>
+            <text x="390" y="317" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">Jira</text>
+
+            <rect x="460" y="295" width="100" height="35" rx="6" fill="white" stroke="#3451B2"/>
+            <text x="510" y="317" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">Slack</text>
+
+            <rect x="580" y="295" width="100" height="35" rx="6" fill="white" stroke="#3451B2"/>
+            <text x="630" y="317" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">GitHub</text>
+        </svg>
+        <div class="diagram-caption">Skills sit between the agent and its tools. They tell Claude <em>how</em> to use the data MCP brings in.</div>
+    </div>
+
+    <h3>Yes, they compose</h3>
+
+    <p>The most common &laquo;aha&raquo; moment: a skill can call MCP tools, and a subagent can use skills. From Anthropic's official docs:</p>
+
+    <ul style="margin: 16px 0 16px 24px; color: var(--gray-700);">
+        <li><strong>Skill + MCP:</strong> A &laquo;weekly pipeline review&raquo; skill instructs Claude to query HubSpot via MCP, apply the team's deal-scoring rules, and post a digest.</li>
+        <li><strong>Skill + Subagent:</strong> A &laquo;research brief&raquo; subagent can load the &laquo;competitive analysis&raquo; skill so its output follows your team's competitor-template.</li>
+        <li><strong>Skill + Skill:</strong> &laquo;Make a Q1 deck on brand&raquo; chains <code>brand-guidelines</code> + <code>xlsx</code> (charts) + <code>pptx</code> (final deck) automatically.</li>
+    </ul>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        Common mistakes people make:<br><br>
+        &laquo;Skills replace MCP&raquo; &rarr; No. Skills <em>use</em> MCP.<br>
+        &laquo;Use a Skill to fetch live Salesforce data&raquo; &rarr; Skills can't reach external APIs alone &mdash; they need MCP for that.<br>
+        &laquo;A Subagent is a Skill with more steps&raquo; &rarr; Wrong axis. Skills are <em>what Claude knows</em>; subagents are <em>who is doing the work</em>.<br>
+        &laquo;More MCP servers = smarter Claude&raquo; &rarr; More servers = more wasted tokens at startup. MCP is for <em>reach</em>, not intelligence.<br>
+        <em>Mental model: Skills are knowledge. Subagents are workers. MCP is connectivity. They compose.</em>
+    </div>
+
+    <h3>For a GTM person specifically</h3>
+
+    <div class="info-box blue">
+        <p><strong>Reality check:</strong> 80% of skill value for GTM teams comes from Skills themselves. The other 20% comes from MCP connectors your IT team has already wired up (Salesforce, HubSpot, Notion). Subagents are mostly an engineer concern unless you're using Claude Code for technical-adjacent work. <strong>Focus on Skills first &mdash; they're the highest-leverage thing a non-engineer can build.</strong></p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Feynman test</div>
+        <div class="recall-question">Pretend you're explaining the difference to a non-technical colleague over coffee. <strong>Use one analogy</strong> that is not the restaurant or USB. Try: a kitchen, a workshop, a sports team, a hospital, a film set. <em>Pick the one that fits your job</em> and write three sentences in your head: what's MCP in your analogy, what's a Skill, what's a Subagent.</div>
+        <div class="recall-hint">If the analogy holds for all three primitives without strain &mdash; you've got it. If it strains on one, you've found the part of the concept you don't fully own yet.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: ANTHROPIC DOCUMENT SKILLS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: The Anthropic Document Skills (free win)</h2>
+
+    <p>Before you build your own skill, you should know that Anthropic ships <strong>five skills out of the box</strong>. They're already on if you have a Pro / Max / Team / Enterprise plan. Most people never realize they're using them.</p>
+
+    <h3>The official five</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--orange);">pptx</div>
+            <div class="layer-desc">PowerPoint creation, editing, layout, speaker notes, OOXML manipulation</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4D1;</div>
+            <div class="layer-name" style="color: var(--green);">xlsx</div>
+            <div class="layer-desc">Spreadsheets, formulas, charts, multi-sheet financial models</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--blue);">docx</div>
+            <div class="layer-desc">Word documents with TOC, headings, page numbers, tracked changes</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4C4;</div>
+            <div class="layer-name" style="color: var(--red);">pdf</div>
+            <div class="layer-desc">Read, extract, merge, split, watermark, OCR, fill PDF form fields</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F3A8;</div>
+            <div class="layer-name" style="color: var(--purple);">brand-guidelines</div>
+            <div class="layer-desc">Applies brand fonts, colors, accents. <em>Composes</em> with all the above.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>The composition trick:</strong> Ask Claude for &laquo;a Q1 customer review deck on brand, with charts from this CSV.&raquo; Claude automatically pulls in <code>brand-guidelines</code> + <code>xlsx</code> (for the data tables) + <code>pptx</code> (for the deck). Three skills, one prompt, no manual orchestration.</p>
+    </div>
+
+    <h3>How to enable / verify them</h3>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Open Settings</span>
+        <div class="step-desc">In Claude Desktop or claude.ai, click your profile picture &rarr; <strong>Settings</strong>.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Find the Skills / Capabilities tab</span>
+        <div class="step-desc">Depending on your version, it's labeled <strong>Skills</strong>, <strong>Capabilities</strong>, or <strong>Features</strong>. You'll see toggles for built-in skills.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Toggle on the document skills</span>
+        <div class="step-desc">Enable <code>pptx</code>, <code>xlsx</code>, <code>docx</code>, <code>pdf</code>. Most plans have them on by default.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Test with a real prompt</span>
+        <div class="step-desc">Try: &laquo;Create a 5-slide pitch deck for a new feature called X. Include speaker notes.&raquo; Claude will generate a real <code>.pptx</code> file you can download and open in PowerPoint or Keynote.</div>
+    </div>
+
+    <h3>Real GTM moments where these skills shine</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--green);">&#x1F4BC;</span>
+        <span class="step-title">Customer-facing QBR (Customer Success)</span>
+        <div class="step-desc">
+            <strong>Prompt:</strong> &laquo;Generate a Q1 review deck for Acme Corp using their HubSpot data and our Notion success plan. On brand, in our standard 10-slide template.&raquo;<br><br>
+            <strong>What runs:</strong> HubSpot MCP fetches deal/contact data &rarr; Notion MCP pulls success plan &rarr; <code>xlsx</code> formats data into chart-ready tables &rarr; <code>brand-guidelines</code> applies Fohlio fonts/colors &rarr; <code>pptx</code> assembles the final deck.<br><br>
+            <strong>Time:</strong> 4 hours &rarr; 8 minutes.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--blue);">&#x1F4DD;</span>
+        <span class="step-title">Competitive battlecard (Marketing)</span>
+        <div class="step-desc">
+            <strong>Prompt:</strong> &laquo;Build a 1-page battlecard PDF comparing us to Competitor X. Sections: positioning, pricing, where we win, where they win, objection rebuttals.&raquo;<br><br>
+            <strong>What runs:</strong> Web search pulls competitor data &rarr; <code>brand-guidelines</code> applies Fohlio styling &rarr; <code>pdf</code> generates the final 1-pager.<br><br>
+            <strong>Time:</strong> 1.5 hours &rarr; 6 minutes.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--orange);">&#x1F4CA;</span>
+        <span class="step-title">Pipeline forecast (RevOps)</span>
+        <div class="step-desc">
+            <strong>Prompt:</strong> &laquo;Pull all open deals from HubSpot, build a forecast spreadsheet by stage and segment, and flag any deal without a next step.&raquo;<br><br>
+            <strong>What runs:</strong> HubSpot MCP &rarr; <code>xlsx</code> builds multi-sheet model with conditional formatting on stale deals.<br><br>
+            <strong>Time:</strong> 2 hours &rarr; 4 minutes.
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4F0;</div>
+        Old way to make a customer-facing QBR deck:<br>
+        Open PowerPoint. Stare at template. Find data in HubSpot. Copy-paste into table. Numbers don't line up. Recopy. Apply brand template. Brand template version is 3 weeks out of date. Export to PDF. Realize one number is wrong. Repeat.<br><br>
+        New way:<br>
+        &laquo;Make the QBR deck for Acme. On brand. From HubSpot.&raquo;<br><br>
+        <em>Same deck. 90 minutes you'll never miss.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Try it now</div>
+        <div class="recall-question">Open Claude.ai and ask: <strong>&laquo;Create a 4-slide deck explaining what Skills are. Use simple language. Add speaker notes for each slide.&raquo;</strong> Watch Claude pick the <code>pptx</code> skill automatically. Download the file. That's the entire workflow.</div>
+        <div class="recall-hint">If you never used pptx skill before &mdash; this single prompt will save you 30 minutes the next time someone asks for a deck.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: BUILD YOUR FIRST SKILL -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Build Your First Skill in 10 Minutes (no code)</h2>
+
+    <p>This is the part of the lesson that earns its keep. You'll build a real skill, today, in under 10 minutes, without writing code or opening a terminal.</p>
+
+    <h3>Three paths &mdash; pick yours</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F198;</div>
+            <div class="card-title" style="color: var(--green);">Path A: Skill Creator</div>
+            <div class="card-subtitle" style="color: var(--green);">Recommended &mdash; no code</div>
+            <div class="card-desc">Use Anthropic's built-in <code>skill-creator</code> meta-skill. Claude asks you questions, generates the skill for you.</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4D1;</div>
+            <div class="card-title" style="color: var(--blue);">Path B: Reverse engineer</div>
+            <div class="card-subtitle" style="color: var(--blue);">Best for voice / tone skills</div>
+            <div class="card-desc">Paste 5 examples of your best work, ask Claude to extract the rules into a skill.</div>
+        </div>
+    </div>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4DD;</div>
+            <div class="card-title" style="color: var(--orange);">Path C: Hand-written</div>
+            <div class="card-subtitle" style="color: var(--orange);">For Claude Code users</div>
+            <div class="card-desc">Write SKILL.md by hand at <code>~/.claude/skills/&lt;name&gt;/</code>. Most flexible, takes 15 min the first time.</div>
+        </div>
+    </div>
+
+    <h3>Path A: The Skill Creator (10 minutes)</h3>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Open a new chat at claude.ai</span>
+        <div class="step-desc">Make sure you're on a Pro / Max / Team / Enterprise plan. Free plans don't support custom skill creation.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Type the magic prompt</span>
+        <div class="step-desc">
+            <strong>&laquo;Use the skill-creator skill to help me build a skill for [your use case].&raquo;</strong><br><br>
+            Examples: &laquo;...build a skill for writing weekly status updates in our team format.&raquo; &laquo;...build a skill for prepping discovery calls with MEDDIC.&raquo; &laquo;...build a skill for repurposing blog posts into LinkedIn carousels.&raquo;
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Answer Claude's questions</span>
+        <div class="step-desc">
+            Skill Creator will ask you structured questions:
+            <ul style="margin-top: 8px; margin-left: 20px;">
+                <li>What triggers should activate this skill? (phrases users say)</li>
+                <li>What's the input? What's the output?</li>
+                <li>What are edge cases or gotchas?</li>
+                <li>Any examples of good output?</li>
+            </ul>
+            Be specific. Vague answers produce vague skills.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Get your skill ZIP</span>
+        <div class="step-desc">Claude generates a properly formatted SKILL.md (with optional supporting files) and packages it as a downloadable ZIP. Download it.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">5</span>
+        <span class="step-title">Upload it</span>
+        <div class="step-desc">Settings &rarr; Capabilities &rarr; Skills &rarr; <strong>Upload skill</strong>. Pick the ZIP. Toggle the skill on.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">6</span>
+        <span class="step-title">Test it &mdash; start a NEW chat</span>
+        <div class="step-desc">Open a fresh conversation. Use a phrase that should match your description. Claude should pick up the skill automatically. If it doesn't &mdash; the description is the problem (more on this in Part 6).</div>
+    </div>
+
+    <h3>Path B: Reverse engineer your own voice</h3>
+
+    <p>This is the most underrated path for marketing and content people. You already have great work in your sent folder. Let Claude turn it into a skill.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Gather 5&ndash;10 examples</span>
+        <div class="step-desc">Pick the best emails, posts, briefs, or threads you've written. Variety matters &mdash; pick different scenarios (cold email, follow-up, internal update, customer apology). Quality matters more than quantity.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Drop them into Claude</span>
+        <div class="step-desc">Start a chat. Paste all examples. Then say:<br><br>
+        <strong>&laquo;Reverse-engineer these into a Claude Skill that captures my structure, tone, vocabulary, and quirks. Output a SKILL.md with a strong description, a workflow section, output format rules, and a Gotchas section.&raquo;</strong></div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Review and refine</span>
+        <div class="step-desc">Claude will produce a SKILL.md. Read it. Are the rules accurate? Edit anything wrong. Save it as a ZIP and upload via Settings.</div>
+    </div>
+
+    <h3>A real skill: the Weekly Status Update</h3>
+
+    <p>Here's a complete, working SKILL.md you can use as a template. It's the skill that turns &laquo;here's what I did this week&raquo; into a polished team update in your standard format:</p>
+
+    <pre><code><span class="comment">---</span>
+<span class="keyword">name:</span> <span class="string">weekly-status-update</span>
+<span class="keyword">description:</span> <span class="string">Generates a weekly status update in our team's standard
+  format. Use when the user asks to "write my weekly update", "draft a
+  status report", "summarize this week", "weekly recap", or pastes a list
+  of completed tasks and wants them formatted for a team-wide email. Even
+  if the user doesn't say "weekly update" explicitly, trigger when they
+  paste a bullet list of work items and ask for a summary email.</span>
+<span class="comment">---</span>
+
+<span class="comment"># Weekly Status Update Writer</span>
+
+Generate a status update following the team's standard format.
+
+<span class="comment">## Workflow</span>
+
+1. Read the user's input: list of completed work, blockers, plans.
+2. If a section is missing, ask one targeted question. Do not invent.
+3. Produce the update in the format below. Under 200 words total.
+
+<span class="comment">## Output format</span>
+
+Subject: Weekly update &mdash; [Team] &mdash; Week of [Monday date]
+
+Shipped this week
+- [Item, one line, outcome-focused. "Launched X, 50 users onboarded"
+  not "worked on X".]
+
+In progress / blockers
+- [Item &mdash; current state &mdash; blocker if any, with the unblocker]
+
+Next week
+- [Item &mdash; expected outcome]
+
+Metrics (if available)
+- [Metric: value, change vs last week]
+
+<span class="comment">## Style rules</span>
+
+- Past tense for shipped, present for in-progress.
+- Lead each bullet with the user-visible outcome, not internal task.
+- No "successfully", "awesome", "great". Plain factual reporting.
+- Cut filler ("I am pleased to announce", "As always").
+
+<span class="comment">## Gotchas</span>
+
+- If user pastes raw Slack, strip @mentions and emoji first.
+- If a metric has no comparison week, omit the parenthetical.
+- Never fabricate metrics. If absent, omit the Metrics section.</code></pre>
+
+    <div class="info-box blue">
+        <p><strong>Anatomy notes:</strong> The frontmatter is 6 lines and triggers on multiple phrasings. The body has <strong>5 sections</strong> &mdash; Workflow, Output format, Style rules, Gotchas, Example. Claude follows them in order. The whole skill is under 100 lines &mdash; fast to load, easy to maintain.</p>
+    </div>
+
+    <h3>The 15-minute starter list (pick one for your homework)</h3>
+
+    <p>Skills that real GTM people built in under 15 minutes:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x270D;</div>
+            <div class="layer-name" style="color: var(--blue);">Email Reply</div>
+            <div class="layer-desc">Tone + signature + structure for short follow-ups</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4DE;</div>
+            <div class="layer-name" style="color: var(--green);">Discovery Call Brief</div>
+            <div class="layer-desc">Account name &rarr; public info + suggested talking points + opening</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--orange);">UTM Standardizer</div>
+            <div class="layer-desc">Enforces team UTM naming conventions on any link</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4C8;</div>
+            <div class="layer-name" style="color: var(--purple);">LinkedIn Teaser</div>
+            <div class="layer-desc">Long-form URL &rarr; teaser post in your voice</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F465;</div>
+            <div class="layer-name" style="color: var(--red);">ICP Persona</div>
+            <div class="layer-desc">4 detailed personas with language patterns Claude references when writing copy</div>
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Pick your skill</div>
+        <div class="recall-question">Pick <strong>one</strong> task you do at least once a week, that you find yourself re-explaining to Claude every time. <em>That's your skill.</em> Don't pick something heroic on the first try &mdash; small and useful beats big and unfinished.</div>
+        <div class="recall-hint">If you can't pick one in 60 seconds, default to: a recap email, a meeting prep, or a follow-up template. Everyone has one of those.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: DESCRIPTION-WRITING RULES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Description-Writing Rules (the make-or-break field)</h2>
+
+    <p>Out of all the things you'll write in a skill, the <strong>description</strong> matters more than every other line combined. Here's why:</p>
+
+    <div class="info-box red">
+        <p><strong>The hard truth:</strong> If your description doesn't trigger, your skill doesn't exist. Claude will quietly ignore it, you'll think the skill is broken, and you'll blame the body. <em>It's almost always the description.</em> One audit of 214 community skills found that 73% scored below 60/100 on triggering &mdash; almost all due to weak descriptions.</p>
+    </div>
+
+    <h3>The four rules</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--blue);">1</span>
+        <span class="step-title">Structure: WHAT + WHEN + trigger phrases</span>
+        <div class="step-desc">
+            Every description has three parts:<br>
+            &bull; <strong>WHAT</strong> the skill does (one sentence)<br>
+            &bull; <strong>WHEN</strong> to use it (the situation)<br>
+            &bull; <strong>Trigger phrases</strong> users actually say (literal words)<br><br>
+            Skip any of those three and you lose triggering reliability.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--green);">2</span>
+        <span class="step-title">Front-load matchable phrases in the first ~250 chars</span>
+        <div class="step-desc">
+            Some interfaces (Claude.ai web) truncate the description preview at 200 characters. The first 250 characters do the most matching work. Put the verbs and trigger phrases up front, license/version notes at the end.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--orange);">3</span>
+        <span class="step-title">Be pushy</span>
+        <div class="step-desc">
+            Claude undertriggers by default &mdash; it errs on the side of <em>not</em> using a skill if uncertain. Counteract this with explicit, expansive language: <em>&laquo;Use this any time...&raquo;, &laquo;Trigger whenever the user mentions...&raquo;, &laquo;Even if they don't explicitly say X, use this when...&raquo;</em>. Look at how the official <code>pptx</code> description above uses this pattern.
+        </div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--purple);">4</span>
+        <span class="step-title">Describe WHEN, not HOW</span>
+        <div class="step-desc">
+            <strong>The most subtle mistake:</strong> if your description summarizes the workflow itself, Claude may follow the summary and skip reading the body. Keep the description about <em>triggering conditions</em>; put the <em>workflow</em> in the body.<br><br>
+            Bad: &laquo;Generates QBRs by pulling HubSpot data, formatting it into 10 slides...&raquo;<br>
+            Good: &laquo;Generates QBR decks. Use when the user mentions QBR, quarterly review, customer success summary...&raquo;
+        </div>
+    </div>
+
+    <h3>Anti-patterns table</h3>
+
+    <table>
+        <tr>
+            <th>Bad description</th>
+            <th>Why it fails</th>
+            <th>Fix</th>
+        </tr>
+        <tr>
+            <td>&laquo;Helps with documents&raquo;</td>
+            <td>Vague, no triggers, no specifics</td>
+            <td>Specify document type + actions + trigger phrases</td>
+        </tr>
+        <tr>
+            <td>&laquo;Processes data&raquo;</td>
+            <td>Could mean anything; never matches</td>
+            <td>Name the data type (CSV, HubSpot deals) and verbs</td>
+        </tr>
+        <tr>
+            <td>&laquo;Step 1: read input. Step 2: ...&raquo;</td>
+            <td>Workflow leaked into description &mdash; Claude reads, follows, skips body</td>
+            <td>Move steps to body. Description = triggering only.</td>
+        </tr>
+        <tr>
+            <td>2-line description</td>
+            <td>Not enough surface area for Claude to match against varied user phrasings</td>
+            <td>Add 3&ndash;5 trigger phrases users actually say</td>
+        </tr>
+        <tr>
+            <td>Two skills with similar descriptions</td>
+            <td>Claude picks one randomly; behavior diverges</td>
+            <td>Make one description more specific, other more general</td>
+        </tr>
+    </table>
+
+    <h3>Good vs bad &mdash; same skill, two descriptions</h3>
+
+    <div class="info-box red">
+        <p><strong>Bad:</strong> <em>&laquo;Customer success skill. Helps with QBRs and renewals.&raquo;</em></p>
+        <p style="margin-top: 8px;">No trigger phrases. No verbs. Two separate use cases jammed together. Claude will load this maybe 30% of the time it's actually relevant.</p>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Good:</strong> <em>&laquo;Generates customer-facing QBR decks and internal QBR prep notes for Customer Success. Use this skill when the user mentions QBR, quarterly business review, customer review deck, success plan summary, or pastes data from HubSpot/Gainsight and asks to summarize it for a customer meeting. Trigger even if the user just says &lsquo;prep me for the Acme review&rsquo; without using the word QBR.&raquo;</em></p>
+        <p style="margin-top: 8px;">Triggers, synonyms, real phrasings, push to over-trigger rather than under-trigger.</p>
+    </div>
+
+    <h3>How to test if your description works</h3>
+
+    <p>Single best test: in a new chat, ask Claude:</p>
+
+    <pre><code><span class="string">"When would you use the [your-skill-name] skill?"</span></code></pre>
+
+    <p>Claude will quote your description back. Read its answer:</p>
+    <ul style="margin: 8px 0 16px 24px; color: var(--gray-700);">
+        <li>Does it correctly explain when to use the skill?</li>
+        <li>Does it list trigger phrases?</li>
+        <li>Does it sound like it would actually fire on your real prompts?</li>
+    </ul>
+    <p>If &laquo;no&raquo; to any of those &mdash; rewrite the description, not the body.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; 60-second exercise</div>
+        <div class="recall-question">Write a description for a skill that <strong>preps you for a discovery call</strong>. Apply all four rules: WHAT + WHEN + trigger phrases + pushy language. Aim for ~3 sentences, ~400 characters.</div>
+        <div class="recall-hint">If you wrote &laquo;Helps with discovery calls&raquo; &mdash; that's three of the four rules failed. Try again. List actual phrases your team uses (&laquo;prep me for...&raquo;, &laquo;research this account...&raquo;, &laquo;intro call brief...&raquo;).</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: THE GTM SKILL STACK -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: The GTM Skill Stack (your role &times; proven skills)</h2>
+
+    <p>You don't have to start from scratch. The community has published thousands of working skills, many specifically for GTM roles. Here's a curated stack by role &mdash; everything below is real, public, and battle-tested.</p>
+
+    <h3>Sales</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4DE;</div>
+            <div class="tool-name">/call-prep</div>
+            <div class="tool-category"><span class="badge ai">Anthropic Sales Plugin</span></div>
+        </div>
+        <div class="tool-desc">Discovery framework (BANT/MEDDIC) + ICP doc + meeting brief. Pulls CRM stage, stakeholder notes, and recent news automatically via HubSpot/Salesforce/Clay MCPs.</div>
+        <div class="tool-examples">
+            <strong>Old way:</strong> 45 min &mdash; Salesforce + Google + LinkedIn + manual brief.<br>
+            <strong>New way:</strong> &laquo;Prep me for the Acme call.&raquo; &rarr; one-page brief in 90 seconds.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4C8;</div>
+            <div class="tool-name">Summit53 Sales Skills (open source)</div>
+            <div class="tool-category"><span class="badge tool">7 skills</span></div>
+        </div>
+        <div class="tool-desc">Bundle: <code>/deal-review-prep</code>, <code>/rep-coaching-report</code>, <code>/qbr-generator</code>, <code>/revenue-monitor</code> (writes alerts INTO the CRM deal), <code>/weekly-action-plan</code>, <code>/deal-action-engine</code>, <code>/reengage-stalled</code>.</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> <code>summit53.com/blog/claude-code-skills-sales-intelligence</code><br>
+            <strong>Killer feature:</strong> <code>/revenue-monitor</code> takes a snapshot of every deal's health weekly, compares to 4 weeks prior, posts alerts back to Salesforce when something slips.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F517;</div>
+            <div class="tool-name">GTM Playbook Skill (Hans Dekker)</div>
+            <div class="tool-category"><span class="badge tool">community</span></div>
+        </div>
+        <div class="tool-desc">Input a website URL, output ICP doc + value props per persona + pain points + objection handling + messaging angles. The cold-email starter pack.</div>
+        <div class="tool-examples">
+            <strong>Use case:</strong> Your AE is starting on a new vertical. Skill builds the playbook in 3 minutes instead of 3 days.
+        </div>
+    </div>
+
+    <h3>Marketing</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F3A8;</div>
+            <div class="tool-name">Brand Voice Skill</div>
+            <div class="tool-category"><span class="badge tool">community</span></div>
+        </div>
+        <div class="tool-desc">Triggers on &laquo;how should we sound?&raquo;, &laquo;brand guidelines&raquo;, &laquo;voice and tone&raquo;. Produces a tone matrix, vocabulary do/don't, sentence-structure rules, and per-channel tone presets (apology vs onboarding vs sales).</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> <code>insightfulpipe.com/marketing-claude-skills/brand-voice</code><br>
+            <strong>Why it matters:</strong> New hires reference one SKILL.md instead of a 40-page Notion brand doc.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x267B;</div>
+            <div class="tool-name">Content Repurposing Skill</div>
+            <div class="tool-category"><span class="badge ai">MindStudio pattern</span></div>
+        </div>
+        <div class="tool-desc">Folder: <code>SKILL.md + brand-voice.md + platform-formats.md + examples/</code>. YouTube transcript or blog draft &rarr; LinkedIn post + X thread + newsletter draft, all on brand, in 90 seconds.</div>
+        <div class="tool-examples">
+            <strong>Old way:</strong> 5 hours rewriting one piece for 3 platforms.<br>
+            <strong>New way:</strong> 30 minutes including review.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F50D;</div>
+            <div class="tool-name">OpenClaudia (34 marketing skills)</div>
+            <div class="tool-category"><span class="badge tool">open source</span></div>
+        </div>
+        <div class="tool-desc">MIT-licensed bundle: <code>keyword-research</code>, <code>semrush-research</code>, <code>backlink-audit</code>, <code>competitor-analysis</code>, <code>serp-analyzer</code>, <code>brand-monitor</code>, <code>write-blog</code>, <code>social-content</code>, <code>hubspot</code>, <code>apollo-outreach</code>.</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> <code>github.com/OpenClaudia/openclaudia-skills</code> &mdash; pick 3, install today.
+        </div>
+    </div>
+
+    <h3>Customer Success</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x2764;</div>
+            <div class="tool-name">customer-success-manager</div>
+            <div class="tool-category"><span class="badge tool">open source</span></div>
+        </div>
+        <div class="tool-desc">Three Python CLI tools bundled in the skill: <code>health_score_calculator.py</code> (multi-dimensional: usage, engagement, support, relationship, with previous-period trend), <code>churn_risk_analyzer.py</code> (rule-based tiers), <code>expansion_opportunity_scorer.py</code> (segment-aware: Enterprise / MM / SMB). Includes a QBR template.</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> <code>github.com/alirezarezvani/claude-skills</code><br>
+            <strong>Win:</strong> Deterministic, no external APIs, no ML &mdash; runs offline on standard library.
+        </div>
+    </div>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4CA;</div>
+            <div class="tool-name">FunnelStory CSM Skills</div>
+            <div class="tool-category"><span class="badge ai">15 slash commands</span></div>
+        </div>
+        <div class="tool-desc">Full CSM toolbox: <code>/account-brief</code>, <code>/book-of-business</code>, <code>/health-score-breakdown</code>, <code>/meeting-prep</code>, <code>/churn-risk-report</code>, <code>/renewal-dashboard</code>, <code>/qbr-internal</code>, <code>/qbr-external</code>, <code>/success-plan</code> (30/60/90 with milestones &amp; risks), <code>/value-email</code>, <code>/case-study</code>.</div>
+        <div class="tool-examples">
+            <strong>Source:</strong> <code>docs.funnelstory.ai/guides/claude-skills-for-csm</code><br>
+            <strong>Old way:</strong> Monday morning manually reviewing 30 accounts in 3 tools, 6&ndash;8 hours per QBR cycle.<br>
+            <strong>New way:</strong> <code>/book-of-business</code> + <code>/qbr-external</code> &rarr; minutes.
+        </div>
+    </div>
+
+    <h3>Content</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x270D;</div>
+            <div class="tool-name">Voice DNA Skill</div>
+            <div class="tool-category"><span class="badge tool">community</span></div>
+        </div>
+        <div class="tool-desc">Analyzes 10&ndash;20 of your past articles, extracts cadence, transitions, sentence-length variance, and idiosyncratic phrasing into a reusable skill. Different SKILL.md per format: <code>article-voice</code>, <code>email-voice</code>, <code>linkedin-voice</code>.</div>
+        <div class="tool-examples">
+            <strong>Why it works:</strong> The part most generic prompts fail at &mdash; making AI output sound like the human writer's actual cadence &mdash; lives in the SKILL.md, not in re-prompted hints.
+        </div>
+    </div>
+
+    <h3>RevOps</h3>
+
+    <div class="tool-card">
+        <div class="tool-header">
+            <div class="tool-icon">&#x1F4E1;</div>
+            <div class="tool-name">/revenue-monitor (Summit53)</div>
+            <div class="tool-category"><span class="badge tool">automation</span></div>
+        </div>
+        <div class="tool-desc">Weekly pipeline surveillance. Snapshots every deal's health, framework completion, stage, forecast category, activity recency. Compares to 4-weeks-prior. On threshold breach: writes alert INTO the CRM deal AND emits a digest. <strong>This is a surveillance system, not just a report.</strong></div>
+        <div class="tool-examples">
+            <strong>Old way:</strong> RevOps analyst spends 2 hours/week on pipeline hygiene, finding stale deals.<br>
+            <strong>New way:</strong> The skill runs daily, posts notes back to deals, sends the CRO a digest of material changes.
+        </div>
+    </div>
+
+    <h3>Time savings summary</h3>
+
+    <table>
+        <tr>
+            <th>Role</th>
+            <th>Workflow</th>
+            <th>Old</th>
+            <th>With Skill</th>
+            <th>Saved</th>
+        </tr>
+        <tr>
+            <td>Sales</td>
+            <td>Discovery call prep</td>
+            <td>45 min</td>
+            <td>2 min</td>
+            <td>~95%</td>
+        </tr>
+        <tr>
+            <td>Sales</td>
+            <td>Account plan from CRM + Apollo + LinkedIn</td>
+            <td>2 days</td>
+            <td>15 min</td>
+            <td>~95%</td>
+        </tr>
+        <tr>
+            <td>Marketing</td>
+            <td>Content repurposing (1 piece, 3 platforms)</td>
+            <td>5 hrs</td>
+            <td>30 min</td>
+            <td>~90%</td>
+        </tr>
+        <tr>
+            <td>Marketing</td>
+            <td>Competitive battlecard</td>
+            <td>1.5 hrs</td>
+            <td>6 min</td>
+            <td>~93%</td>
+        </tr>
+        <tr>
+            <td>CS</td>
+            <td>QBR deck (customer-facing)</td>
+            <td>4 hrs</td>
+            <td>25 min</td>
+            <td>~90%</td>
+        </tr>
+        <tr>
+            <td>CS</td>
+            <td>Churn risk scan (30 accounts)</td>
+            <td>1 hr</td>
+            <td>2 min</td>
+            <td>~97%</td>
+        </tr>
+        <tr>
+            <td>RevOps</td>
+            <td>Weekly pipeline hygiene</td>
+            <td>2 hrs</td>
+            <td>10 min</td>
+            <td>~92%</td>
+        </tr>
+    </table>
+
+    <div class="info-box green">
+        <p><strong>The math:</strong> If a GTM team of 10 people each saves 45 minutes per day across these workflows, that's <strong>~75 hours per week</strong> &mdash; nearly two full-time employees of capacity, recovered. And the output quality is more consistent because the playbook lives in a file, not in someone's head.</p>
+    </div>
+
+    <h3>Industry numbers (2026)</h3>
+
+    <div class="info-box purple">
+        <p><strong>From the latest reports:</strong></p>
+        <p style="margin-top: 8px;">&bull; <strong>87%</strong> of sales teams use AI; <strong>54%</strong> have deployed AI agents across the sales cycle <em>(Salesforce State of Sales 2026)</em></p>
+        <p>&bull; AI agents save sales reps an average of <strong>34%</strong> on prospecting research and <strong>36%</strong> on content creation <em>(same report)</em></p>
+        <p>&bull; Marketing teams using AI save <strong>11 hours/week</strong> and report <strong>+44%</strong> productivity <em>(ZoomInfo)</em></p>
+        <p>&bull; Top-performing sales teams are <strong>1.7&times;</strong> more likely to use prospecting AI agents than underperformers</p>
+        <p>&bull; <strong>40%</strong> of enterprise apps will embed task-specific AI agents by end of 2026, up from &lt;5% in 2025 (8&times; jump) <em>(Gartner)</em></p>
+        <p>&bull; Anthropic's Skills GitHub repo crossed <strong>20,000 stars</strong>; tens of thousands of community skills</p>
+    </div>
+
+    <h3>Real companies using Skills in production</h3>
+
+    <table>
+        <tr>
+            <th>Company</th>
+            <th>What they do with Skills</th>
+        </tr>
+        <tr>
+            <td><strong>Box</strong></td>
+            <td>Box AI uses Skills to convert unstructured Box content into formatted PowerPoint, Excel, Word, and PDF in one prompt &mdash; multi-file, folder-level, with brand-guidelines composition</td>
+        </tr>
+        <tr>
+            <td><strong>Canva</strong></td>
+            <td>Direct Claude integration. Generate fully editable Canva designs from text prompts, brand kits respected. 250M+ users/month, 27B+ AI uses</td>
+        </tr>
+        <tr>
+            <td><strong>Rakuten</strong></td>
+            <td>Multi-business-unit deployment across 70+ subsidiaries &mdash; Anthropic's largest-scale skills test case</td>
+        </tr>
+        <tr>
+            <td><strong>TELUS</strong></td>
+            <td>13,000+ custom AI solutions on Claude, 500,000+ hours saved, average 40 min per AI interaction</td>
+        </tr>
+        <tr>
+            <td><strong>Atlassian / Figma / Stripe / Zapier / Notion / Asana</strong></td>
+            <td>Partner Skills Directory at <code>claude.com/connectors</code> &mdash; the &laquo;connective tissue&raquo; layer between Claude and the SaaS apps GTM teams already use</td>
+        </tr>
+        <tr>
+            <td><strong>Spotify</strong></td>
+            <td>Up to 90% reduction in engineering time for code migrations; 650+ AI changes shipped/month</td>
+        </tr>
+    </table>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Pick yours</div>
+        <div class="recall-question">From the catalog above, pick <strong>one community skill</strong> that fits your role and could be installed in your homework. Note its name and source URL. <em>Don't try to install five at once</em> &mdash; one good skill that you actually use beats five sitting unused.</div>
+        <div class="recall-hint">Default suggestion by role &mdash; Sales: Summit53. Marketing: Brand Voice or OpenClaudia. CS: customer-success-manager or FunnelStory. Content: Voice DNA. RevOps: /revenue-monitor.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 8: WHEN NOT TO USE A SKILL -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 8: When NOT to Use a Skill</h2>
+
+    <p>Skills are not magic. They're a hammer, not the only tool in the box. Knowing when <em>not</em> to reach for one separates novice users from people who actually compound time savings.</p>
+
+    <h3>Four cases where a skill is the wrong choice</h3>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--red);">&#x1F6AB;</span>
+        <span class="step-title">One-off tasks</span>
+        <div class="step-desc">If you'll do this exactly once, just write a prompt. Building a skill takes 10&ndash;30 minutes; if the task takes 20 and won't repeat, the math doesn't work. Skills earn their keep on <strong>repetition</strong>.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--red);">&#x1F6AB;</span>
+        <span class="step-title">Tasks that need live external data</span>
+        <div class="step-desc">A skill on its own can't call an API. If the workflow is &laquo;fetch current Salesforce deals,&raquo; you need an MCP server. The skill describes <em>how to use</em> that data; the MCP server <em>retrieves</em> it. Both, not either.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--red);">&#x1F6AB;</span>
+        <span class="step-title">Heavy multi-step research that pollutes context</span>
+        <div class="step-desc">If a task needs to read 30 files and run 8 tools, putting it in a skill clutters the main chat. That's a <strong>subagent</strong> case &mdash; spawn an isolated worker that returns only the summary. Most non-engineers won't hit this; mostly relevant for engineers using Claude Code.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number" style="background: var(--red);">&#x1F6AB;</span>
+        <span class="step-title">Tasks that need true creativity</span>
+        <div class="step-desc">Skills enforce consistency. That's the point. But if you're writing the launch tagline or naming a new product, you <em>want</em> divergence, not your usual house style. Turn the skill off (or just don't trigger it) for genuinely creative bursts.</div>
+    </div>
+
+    <h3>The decision tree</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="380" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Skill / MCP / Subagent / Just Prompt &mdash; which one?</text>
+
+            <!-- Top: question -->
+            <rect x="280" y="50" width="200" height="40" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="380" y="75" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">Will I do this repeatedly?</text>
+
+            <line x1="200" y1="100" x2="200" y2="115" stroke="#6B7280" stroke-width="1.5"/>
+            <text x="180" y="113" text-anchor="end" font-family="Inter" font-size="11" fill="#6B7280">No</text>
+            <line x1="380" y1="90" x2="380" y2="115" stroke="#6B7280" stroke-width="1.5"/>
+            <line x1="560" y1="100" x2="560" y2="115" stroke="#6B7280" stroke-width="1.5"/>
+            <text x="540" y="113" text-anchor="end" font-family="Inter" font-size="11" fill="#6B7280">Yes</text>
+
+            <!-- Just prompt -->
+            <rect x="100" y="115" width="200" height="40" rx="8" fill="#FEE2E2" stroke="#DC2626"/>
+            <text x="200" y="140" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">Just write a prompt</text>
+
+            <!-- Need live data? -->
+            <rect x="460" y="115" width="200" height="40" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="560" y="140" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">Need live external data?</text>
+
+            <line x1="460" y1="155" x2="380" y2="195" stroke="#6B7280" stroke-width="1.5"/>
+            <text x="400" y="180" font-family="Inter" font-size="11" fill="#6B7280">Yes</text>
+
+            <line x1="660" y1="155" x2="660" y2="195" stroke="#6B7280" stroke-width="1.5"/>
+            <text x="640" y="180" text-anchor="end" font-family="Inter" font-size="11" fill="#6B7280">No</text>
+
+            <!-- MCP needed -->
+            <rect x="280" y="195" width="200" height="40" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="380" y="220" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#059669">MCP + Skill (compose)</text>
+
+            <!-- Heavy research? -->
+            <rect x="560" y="195" width="200" height="40" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="660" y="220" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">Heavy / context-polluting?</text>
+
+            <line x1="560" y1="235" x2="480" y2="280" stroke="#6B7280" stroke-width="1.5"/>
+            <text x="500" y="265" font-family="Inter" font-size="11" fill="#6B7280">Yes</text>
+
+            <line x1="760" y1="235" x2="760" y2="280" stroke="#6B7280" stroke-width="1.5"/>
+            <text x="740" y="265" text-anchor="end" font-family="Inter" font-size="11" fill="#6B7280">No</text>
+
+            <!-- Subagent -->
+            <rect x="380" y="280" width="200" height="40" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="480" y="305" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">Subagent + Skill</text>
+
+            <!-- Just skill -->
+            <rect x="660" y="280" width="100" height="40" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="710" y="305" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">Skill</text>
+
+            <!-- Footer -->
+            <text x="380" y="355" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280" font-style="italic">Most GTM workflows live at: Skill, or MCP+Skill. Subagent &amp; just-prompt are edge cases.</text>
+        </svg>
+        <div class="diagram-caption">Decision tree: when to reach for which primitive.</div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F92F;</div>
+        Mistakes I've watched people make:<br><br>
+        Built a skill to summarize a single PDF for a one-time meeting. (Should have just prompted.)<br>
+        Built a skill to fetch current HubSpot deal data. (Skills can't call APIs &mdash; needs MCP.)<br>
+        Installed 12 skills, never tested if they trigger. (Of course nothing happened.)<br>
+        Wrote a description with the workflow inside it. (Claude followed the summary, never read the body.)<br><br>
+        <em>Skills earn their keep on repetition + good descriptions. Both, not either.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Let's recap the key concepts from this lesson:</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Skill</strong>
+            <span>A folder with SKILL.md (frontmatter + Markdown body). Procedural knowledge Claude loads when the description matches.</span>
+        </div>
+        <div class="recap-item">
+            <strong>SKILL.md</strong>
+            <span>YAML frontmatter (name + description) at the top, instructions in the body. Optional scripts/, references/, assets/.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Description</strong>
+            <span>The make-or-break field. WHAT + WHEN + trigger phrases + pushy language. Describe when to fire, not how to work.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Progressive disclosure</strong>
+            <span>Three levels: metadata always loaded, body on match, resources on demand. Why 50 skills can coexist cheaply.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Skills vs MCP vs Subagents</strong>
+            <span>Skills = brain (knowledge). MCP = hands (tools). Subagents = workers (isolated context). They compose.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Document Skills</strong>
+            <span>Anthropic ships pptx, xlsx, docx, pdf, brand-guidelines &mdash; on by default on Pro/Max/Team. Compose for on-brand decks.</span>
+        </div>
+        <div class="recap-item">
+            <strong>Skill Creator</strong>
+            <span>Anthropic's built-in meta-skill that builds skills for you. The no-code path. Try: &laquo;Use the skill-creator skill to help me build...&raquo;</span>
+        </div>
+        <div class="recap-item">
+            <strong>The GTM stack</strong>
+            <span>Sales: /call-prep, Summit53. Marketing: Brand Voice, OpenClaudia. CS: customer-success-manager, FunnelStory. RevOps: /revenue-monitor.</span>
+        </div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>The big picture:</strong> Lesson 5 was about giving Claude <em>access</em> to your tools. Lesson 6 is about giving Claude <em>knowledge</em> of how to use them. Together, that's the difference between a smart text box and a colleague who knows your team's playbook.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F52E;</div>
+        <strong>The trajectory:</strong><br><br>
+        2023: &laquo;Claude is a fancy autocomplete.&raquo;<br>
+        2024: &laquo;Claude can write code, but doesn't know my work.&raquo;<br>
+        2025: &laquo;Claude can read my Notion, but the output isn't on brand.&raquo;<br>
+        2026: &laquo;Claude follows my team's playbook, in our voice, with our format. <em>Like a senior teammate.</em>&raquo;<br><br>
+        <em>The job didn't disappear. The setup did.</em>
+    </div>
+
+    </div><!-- end lesson-content -->
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Build your first skill via Skill Creator</strong>
+                <p>Pick one repeated task from your work (a recap email, a meeting prep, a status update, a follow-up template &mdash; something you do at least once a week). Build a skill for it using <strong>Path A from Part 5</strong>:</p>
+                <ul>
+                    <li>Open a new chat at <code>claude.ai</code></li>
+                    <li>Type: &laquo;Use the skill-creator skill to help me build a skill for [your use case].&raquo;</li>
+                    <li>Answer the structured questions Claude asks</li>
+                    <li>Download the ZIP and upload via Settings &rarr; Capabilities &rarr; Skills</li>
+                    <li>Test it in a fresh chat with a real prompt</li>
+                </ul>
+                <p>Send: <strong>screenshot</strong> of the skill activated in a new chat + <strong>2&ndash;3 sentences</strong> on what surprised you about the experience.</p>
+                <div class="info-box orange" style="margin-top: 8px;">
+                    <p><strong>Why we ask this:</strong> Building one skill teaches you more than reading ten posts. The first time Claude picks up your skill automatically &mdash; you understand the model.</p>
+                </div>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Install one community skill from the GTM stack</strong>
+                <p>Pick <strong>one</strong> skill from Part 7 that fits your role:</p>
+                <ul>
+                    <li>Sales: Summit53 sales bundle, or one of OstraconAI's six skills</li>
+                    <li>Marketing: Brand Voice skill, or one OpenClaudia skill</li>
+                    <li>CS: <code>customer-success-manager</code> (alirezarezvani), or one FunnelStory slash command</li>
+                    <li>Content: Voice DNA Skill</li>
+                    <li>RevOps: Summit53 <code>/revenue-monitor</code></li>
+                </ul>
+                <p>Install it. Run it on a real task from your week. Send: <strong>screenshot</strong> + <strong>2&ndash;3 sentences</strong> on what worked, what didn't, and what you'd change.</p>
+                <div class="info-box orange" style="margin-top: 8px;">
+                    <p><strong>Why this matters:</strong> Studying skills won't make you a skill-user. Installing one and running it on something real, will.</p>
+                </div>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Write a great description</strong>
+                <p>Take the skill from task #1 and rewrite its description applying all four rules from Part 6. Send the description (under 1024 characters) plus <strong>one sentence per rule</strong> explaining how your description applies it:</p>
+                <ul>
+                    <li>Rule 1: WHAT + WHEN + trigger phrases</li>
+                    <li>Rule 2: matchable phrases in the first ~250 chars</li>
+                    <li>Rule 3: pushy language</li>
+                    <li>Rule 4: describe WHEN, not HOW</li>
+                </ul>
+                <div class="info-box orange" style="margin-top: 8px;">
+                    <p><strong>Self-test:</strong> in a fresh chat, ask Claude &laquo;When would you use the [your-skill] skill?&raquo; If Claude's answer matches your intent &mdash; the description works.</p>
+                </div>
+            </li>
+        </ol>
+
+        <div class="info-box blue" style="margin-top: 24px;">
+            <p><strong>Note:</strong> Skill creation requires a Claude Pro / Max / Team / Enterprise plan. If you don't have one, ask Ivan in Slack.</p>
+        </div>
+
+        <h3 style="margin-top: 24px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Compose two skills</strong>
+                <p>Design and verify a scenario where Claude automatically uses two skills together. Easiest example: ask Claude to &laquo;create a 1-pager pitch on brand for [topic]&raquo; with both <code>brand-guidelines</code> and <code>pdf</code> (or <code>pptx</code>) skills enabled. Send the output and <strong>name both skills</strong> Claude composed.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Quiz: Skills, MCP, Subagents (active recall)</strong>
+                <p>Answer <strong>without looking back at the lesson</strong>. After answering, check yourself and note what you got wrong:</p>
+                <ul>
+                    <li>What is progressive disclosure? Name the three levels.</li>
+                    <li>What are the four rules for writing a description?</li>
+                    <li>If a workflow needs live HubSpot data, do you need a Skill, an MCP server, or both? Why?</li>
+                    <li>Pick one analogy other than the restaurant or USB. Use it to explain Skills vs MCP vs Subagents in three sentences.</li>
+                </ul>
+                <div class="info-box orange" style="margin-top: 8px;">
+                    <p><strong>This is Active Recall:</strong> noticing what you couldn't remember is exactly when learning happens. The gaps are the lesson.</p>
+                </div>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Pitch a custom skill for your team</strong>
+                <p>Write a 5-sentence pitch for a custom skill that would help your team specifically:</p>
+                <ul>
+                    <li>What's the workflow it captures?</li>
+                    <li>Who would use it (which role)?</li>
+                    <li>What 3&ndash;5 example outputs would you collect to seed it?</li>
+                    <li>How much time per week would it save (estimate)?</li>
+                    <li>Who else on the team should help build / test it?</li>
+                </ul>
+                <p>Bonus: actually build it via Path A or Path B, share with the team, and ship it as a shared org skill.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Find and pitch a new skill</strong>
+                <p>Browse <code>github.com/anthropics/skills</code>, <code>awesome-skills.com</code>, or <code>skillsmp.com</code>. Find a skill nobody on our team uses yet. Write a 3-sentence pitch: what it does, what problem it solves, who on the team should try it first.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio Tech Course &mdash; Lesson 6 of 10</p>
+        <p>Questions? Ask in the <code>#tech-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Prompting Techniques &mdash; Getting the Best Results from AI</p>
+    </div>
+
+</div>
+
+</body>
+</html>
