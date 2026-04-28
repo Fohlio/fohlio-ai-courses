@@ -524,16 +524,16 @@ export const LESSONS: LegacyLesson[] = [
     slug: "skills-for-gtm",
     number: 6,
     title: "Skills: Teaching AI How You Work",
-    subtitle: "Claude Skills, the GTM skill stack, and building your first skill in 10 minutes",
+    subtitle: "Agent Skills in Manus & Claude, the GTM skill stack, and building your first skill in 10 minutes",
     description:
       "Understand what Claude Skills are and how they differ from prompts and MCP. Learn the canonical mental model (Skills = Brain, MCP = Hands, Subagents = Workers), use Anthropic's built-in document skills, build your first custom skill via Skill Creator, and install proven skills tailored to your GTM role.",
     learningGoals: [
-      "Understand what a Claude Skill is and how it differs from a prompt or MCP connector",
+      "Understand what an Agent Skill is and how it differs from a prompt or MCP connector",
       "Know the canonical mental model: MCP = Hands, Skills = Brain, Subagents = Workers",
       "Be able to use Anthropic's built-in document skills (pptx, xlsx, docx, pdf, brand-guidelines)",
-      "Build your first custom skill in under 10 minutes via Skill Creator (no code)",
+      "Build your first custom Skill in Manus via auto-package (no code, no YAML editing)",
       "Know how to write a description that actually triggers (the make-or-break field)",
-      "Have a curated GTM skill stack tailored to your role",
+      "Have a curated GTM skill stack — Manus Playbooks + community Claude skills tailored to your role",
     ],
     contentType: "html",
     contentFile: "lesson6-skills-for-gtm.html",
@@ -593,6 +593,22 @@ export const LESSONS: LegacyLesson[] = [
         title: "Skills Marketplace (skillsmp.com)",
         url: "https://skillsmp.com/",
       },
+      {
+        title: "Manus AI Embraces Open Standards: Integrating Agent Skills",
+        url: "https://manus.im/blog/manus-skills",
+      },
+      {
+        title: "Manus Agent Skills — feature page",
+        url: "https://manus.im/features/agent-skills",
+      },
+      {
+        title: "Manus Playbook — ready-to-run GTM templates",
+        url: "https://manus.im/playbook",
+      },
+      {
+        title: "Manus Projects — persistent context + knowledge base",
+        url: "https://manus.im/docs/features/projects",
+      },
     ],
     homework: [
       {
@@ -602,9 +618,9 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-1",
             lessonId: "lesson-6",
-            title: "Build your first skill via Skill Creator",
+            title: "Run a Manus Playbook for your role",
             description:
-              "Pick a repeated task from your work (recap email, meeting prep, status update, follow-up template). At claude.ai, type 'Use the skill-creator skill to help me build a skill for [your use case].' Answer the structured questions, download the ZIP, upload via Settings → Capabilities → Skills, and test it in a fresh chat. Send a screenshot of the skill activated plus 2-3 sentences on what surprised you.",
+              "Open manus.im/playbook. Pick one playbook for your role (Sales: B2B Software Sales Deck Generator / Sales Funnel Builder / AI Sales Quote Generator; Marketing: YouTube Influencer Finder / Reddit Sentiment Analyzer / Marketing Presentation Maker; CS: Account Health Analyzer; RevOps: Sales Territory Mapping / Commission Calculator; PMM: PRD Templates / Launch Checklists). Run it against a real task from your week. Send a screenshot of the result + 2-3 sentences on what worked, what felt off, and how long it would have taken without Manus.",
             category: "required",
             submissionType: "screenshot",
             order: 1,
@@ -612,9 +628,9 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-2",
             lessonId: "lesson-6",
-            title: "Install one community skill from the GTM stack",
+            title: "Build your first Skill in Manus via auto-package",
             description:
-              "Pick one skill from Part 7 that fits your role (Sales: Summit53 / OstraconAI; Marketing: Brand Voice / OpenClaudia; CS: customer-success-manager / FunnelStory; Content: Voice DNA; RevOps: /revenue-monitor). Install it, run it on a real task from your week. Send a screenshot and 2-3 sentences on what worked, what didn't, what you'd change.",
+              "Pick a repeated weekly task. Run it in Manus end-to-end. In the same conversation type 'Package this workflow into a Skill.' Manus auto-generates the SKILL.md from your run. Open the Skill Library, rename to kebab-case, review the description. In a fresh chat trigger it with /your-skill-name on new inputs. Send a screenshot of the skill activated via slash command + 2-3 sentences on what surprised you. (Alternative: Claude Desktop's skill-creator if you prefer — same format.)",
             category: "required",
             submissionType: "screenshot",
             order: 2,
@@ -622,9 +638,9 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-3",
             lessonId: "lesson-6",
-            title: "Write a great description",
+            title: "Write a great description for your Skill",
             description:
-              "Take the skill from task #1 and rewrite its description applying all four rules from Part 6 (WHAT+WHEN+trigger phrases, front-loaded matchable phrases, pushy language, describe WHEN not HOW). Send the description (under 1024 chars) plus one sentence per rule explaining how your description applies it.",
+              "Open the skill from task #2 in Manus's Skill Library. Rewrite its description applying all four rules from Part 6 (WHAT+WHEN+trigger phrases, front-loaded matchable phrases, pushy language, describe WHEN not HOW). Send the description (under 1024 chars) plus one sentence per rule explaining how your description applies it. Self-test: ask Manus 'When would you use the [your-skill] skill?' — answer should match your intent.",
             category: "required",
             submissionType: "text",
             order: 3,
@@ -638,9 +654,9 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-4",
             lessonId: "lesson-6",
-            title: "Compose two skills",
+            title: "Compose a Manus Project + Skill",
             description:
-              "Design and verify a scenario where Claude automatically uses two skills together (e.g. brand-guidelines + pptx for an on-brand deck). Send the output and name both skills Claude composed.",
+              "Create a Manus Project for your role (e.g. 'Fohlio Sales'). Write a Master Instruction with role + ICP + brand voice basics. Upload 2-3 knowledge files (battlecards, ICP doc, brand guidelines, sales playbook). Trigger your skill from task #2 inside that Project. Send the output and answer: how is it different from the same skill running outside the Project? One paragraph.",
             category: "advanced",
             submissionType: "screenshot",
             order: 1,
@@ -648,7 +664,7 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-5",
             lessonId: "lesson-6",
-            title: "Quiz: Skills, MCP, Subagents (active recall)",
+            title: "Quiz: Skills, MCP, Subagents, Manus (active recall)",
             description: "Answer without looking back at the lesson. Then check yourself and note what you got wrong:",
             category: "advanced",
             submissionType: "quiz",
@@ -657,15 +673,16 @@ export const LESSONS: LegacyLesson[] = [
               "What is progressive disclosure? Name the three levels.",
               "What are the four rules for writing a description?",
               "If a workflow needs live HubSpot data, do you need a Skill, an MCP server, or both? Why?",
+              "What's the difference between a Manus Skill and a Manus Project? When would you use which?",
               "Pick one analogy other than the restaurant or USB. Use it to explain Skills vs MCP vs Subagents in three sentences.",
             ],
           },
           {
             id: "task-6-6",
             lessonId: "lesson-6",
-            title: "Pitch a custom skill for your team",
+            title: "Pitch a custom Skill for your team",
             description:
-              "Write a 5-sentence pitch for a custom skill that would help your team. What workflow does it capture? Who would use it? What 3-5 example outputs would seed it? How much time/week would it save? Who else should help build/test it? Bonus: actually build it and ship it.",
+              "Write a 5-sentence pitch for a custom Manus Skill that would help your team. What workflow does it capture? Who would use it? What 3-5 example outputs would seed it? How much time/week would it save? Who else should help build/test it? Bonus: actually build it via Path A, push to the Team Skill Library, and announce in #tech-course.",
             category: "advanced",
             submissionType: "text",
             order: 3,
@@ -673,9 +690,9 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-7",
             lessonId: "lesson-6",
-            title: "Find and pitch a new skill",
+            title: "Find and pitch a new Playbook or Skill",
             description:
-              "Browse github.com/anthropics/skills, awesome-skills.com, or skillsmp.com. Find a skill nobody on the team uses yet. Write a 3-sentence pitch: what it does, what problem it solves, who should try it first.",
+              "Browse manus.im/playbook, github.com/anthropics/skills, or awesome-skills.com. Find a Playbook or Skill nobody on the team uses yet. Write a 3-sentence pitch: what it does, what problem it solves, who on the team should try it first.",
             category: "advanced",
             submissionType: "text",
             order: 4,
