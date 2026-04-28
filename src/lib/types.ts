@@ -241,7 +241,7 @@ export interface AuthSession {
 // ============================================================
 
 export interface AdminStudentSummary {
-  user: Pick<User, "id" | "githubNickname" | "displayName" | "role">;
+  user: Pick<User, "id" | "githubNickname" | "displayName" | "role" | "createdAt">;
   progress: OverallProgressSummary;
   hasSubmissions: boolean;
 }
