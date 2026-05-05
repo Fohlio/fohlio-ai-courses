@@ -699,6 +699,8 @@ const LESSONS: LessonSeed[] = [
       "Implement universal soft-delete with lifecycle hooks",
       "Use cursor-based pagination for unbounded collections",
       "Know when to reach for Kysely alongside MikroORM",
+      "Apply the 'no util files' rule: every dependency through the constructor",
+      "Write Suites (Automock) unit tests in seconds, not minutes",
     ],
     contentFile: "nestjs-11-fohlio-architecture.html",
     isPublished: true,
@@ -732,6 +734,15 @@ const LESSONS: LessonSeed[] = [
       },
       {
         id: "nestjs-task-11-4",
+        title: "Refactor a util into an injected service",
+        description:
+          "In your nestjs-course-yourname repo, find or create a service that calls a `*.util.ts` function which touches a repository, the clock, or any mockable side-effect. Promote that util to an @Injectable() class, inject it through the constructor, update the module's providers. Push and submit the commit/PR URL.",
+        category: "required",
+        submissionType: "pr_link",
+        order: 4,
+      },
+      {
+        id: "nestjs-task-11-5",
         title: "Read architecture.md and surface the rules",
         description:
           "Read asuncion/architecture.md in full. List 3 MUST rules and 3 NEVER rules with line numbers. Bonus paragraph: pick the rule you find most surprising and explain why.",
@@ -740,13 +751,22 @@ const LESSONS: LessonSeed[] = [
         order: 1,
       },
       {
-        id: "nestjs-task-11-5",
+        id: "nestjs-task-11-6",
         title: "Edge cases of the soft-delete lifecycle",
         description:
           "Read the soft-delete sections in architecture.md and trace workspace.entity.ts. Write 4-6 sentences on edge cases a naive `where: { deletedAt: null }` filter wouldn't handle (partial unique indexes, raw-SQL leak risk, restore-over-recreate, cascading deletes).",
         category: "advanced",
         submissionType: "text",
         order: 2,
+      },
+      {
+        id: "nestjs-task-11-7",
+        title: "Write a Suites/Automock unit test",
+        description:
+          "Install @suites/unit and @suites/doubles in your nestjs-course-yourname repo. Pick a service with 2+ injected deps (ideally the one you refactored in task #4). Write a unit test using TestBed.solitary(YourService).compile(). Override one mock with mockResolvedValue, assert the behavior. Screenshot the green test run. Bonus: compare line count vs Test.createTestingModule + manual mocks.",
+        category: "advanced",
+        submissionType: "screenshot",
+        order: 3,
       },
     ],
   },

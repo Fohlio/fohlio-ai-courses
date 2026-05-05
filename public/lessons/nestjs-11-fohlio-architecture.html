@@ -472,6 +472,8 @@
             <li>Know how universal soft-delete works and where it bites</li>
             <li>Read and write cursor-based pagination at production scale</li>
             <li>Know when to reach past MikroORM into Kysely &mdash; and how</li>
+            <li>Apply the &laquo;no util files&raquo; rule: every dependency goes through the constructor, always</li>
+            <li>Use Suites (Automock) to write Fohlio-style unit tests in seconds, not minutes</li>
         </ul>
     </div>
 
@@ -1388,12 +1390,178 @@ project.deletedAt = <span class="keyword">new</span> Date();   <span class="comm
 
 
     <!-- ============================================ -->
+    <!-- PART 7: NO UTIL FILES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: No Util Files &mdash; Explicit Dependencies, Always</h2>
+
+    <p>This rule comes straight from the team and it has zero exceptions. <strong>Every dependency a service needs must arrive through the constructor.</strong> No <code>import { doThing } from '../somewhere/thing.util.js'</code> followed by calling <code>doThing(...)</code> inside a method. None.</p>
+
+    <p>The reason isn't aesthetic. It's two principles colliding with reality at once: <strong>IoC</strong> (Inversion of Control) and <strong>DI</strong> (Dependency Injection). When a service reaches into another file by import and calls a function, the service is in control of where that function comes from. That's the opposite of IoC. And when a test tries to swap that function for a mock, it can't &mdash; the import is hardwired. That's the opposite of DI.</p>
+
+    <h3>The bad shape (what NOT to do)</h3>
+
+    <div class="story-box">
+        <p>Picture a gate agent at the airport who needs to verify that a passenger's checked bag belongs to their flight. The agent could pick up a phone and dial the baggage room directly &mdash; <em>"Hey Steve, is bag 47 on flight DL112?"</em> &mdash; bypassing the dispatch system entirely.</p>
+        <p>It works. It's fast. But now: who's tracking the call? What if Steve goes on vacation? What happens during a fire drill when you need to simulate the call without actually contacting the baggage room?</p>
+        <p>That direct phone call is what an <strong>imported util function</strong> is. Convenient. Untraceable. Unmockable.</p>
+        <div class="tech-note">
+            <strong>The shorthand:</strong> if your service has an <code>import { x } from '...util'</code> and calls <code>x(...)</code> inside a method, you have an implicit dependency. That's a bug, even if the code passes review.
+        </div>
+    </div>
+
+    <p>Here's the canonical anti-example shared by the team. Look at <code>verifyFamilyWorkspace</code>:</p>
+
+    <pre><code><span class="comment">// src/modules/catalog/items/catalog-items.service.ts</span>
+
+<span class="keyword">import</span> { verifyFamilyWorkspace } <span class="keyword">from</span> <span class="string">'../families/verify-family-workspace.util.js'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> CatalogItemsService {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private readonly</span> itemRepository: CatalogItemRepository,
+    <span class="keyword">private readonly</span> familyRepository: CatalogFamilyRepository,
+    <span class="keyword">private readonly</span> columnsAttributesValidator: ColumnsAttributesValidator,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">findAllByFamilyId</span>(
+    familyId: <span class="type">string</span>,
+    workspaceId: <span class="type">string</span>,
+  ): <span class="type">Promise&lt;CatalogItem[]&gt;</span> {
+    <span class="comment">// The line below is an implicit dependency.</span>
+    <span class="comment">// It cannot be mocked in unit tests without monkey-patching the import.</span>
+    <span class="keyword">await</span> <span class="function">verifyFamilyWorkspace</span>(familyId, workspaceId, <span class="keyword">this</span>.familyRepository);
+
+    <span class="keyword">return</span> <span class="keyword">this</span>.itemRepository.<span class="function">findAllByFamilyId</span>(familyId);
+  }
+}</code></pre>
+
+    <div class="info-box red">
+        <p><strong>Why this is broken:</strong> <code>verifyFamilyWorkspace</code> is now part of the service's behavior, but it doesn't appear in the constructor. Tests can't inject a fake. Static analysis can't see the dependency graph. New engineers can't tell from <code>CatalogItemsService.constructor</code> what this class actually depends on. The util's logic is silently coupled to the service in a way DI was specifically invented to avoid.</p>
+    </div>
+
+    <h3>The good shape</h3>
+
+    <p>Promote the util to a class. Inject it. Done.</p>
+
+    <pre><code><span class="comment">// src/modules/catalog/families/family-workspace-verifier.ts</span>
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FamilyWorkspaceVerifier {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> familyRepository: CatalogFamilyRepository) {}
+
+  <span class="keyword">async</span> <span class="function">verify</span>(familyId: <span class="type">string</span>, workspaceId: <span class="type">string</span>): <span class="type">Promise&lt;void&gt;</span> {
+    <span class="comment">// ...verification logic that used to live in the .util file</span>
+  }
+}
+
+<span class="comment">// src/modules/catalog/items/catalog-items.service.ts</span>
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> CatalogItemsService {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private readonly</span> itemRepository: CatalogItemRepository,
+    <span class="keyword">private readonly</span> familyWorkspaceVerifier: FamilyWorkspaceVerifier, <span class="comment">// ← explicit</span>
+    <span class="keyword">private readonly</span> columnsAttributesValidator: ColumnsAttributesValidator,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">findAllByFamilyId</span>(familyId: <span class="type">string</span>, workspaceId: <span class="type">string</span>) {
+    <span class="keyword">await</span> <span class="keyword">this</span>.familyWorkspaceVerifier.<span class="function">verify</span>(familyId, workspaceId);
+    <span class="keyword">return</span> <span class="keyword">this</span>.itemRepository.<span class="function">findAllByFamilyId</span>(familyId);
+  }
+}</code></pre>
+
+    <p>Notice: the constructor now reads like a contract. Anyone glancing at the class knows exactly which collaborators it relies on. A unit test instantiates the service, passes mocks for those three constructor params, and runs in milliseconds with zero filesystem touches.</p>
+
+    <div class="info-box blue">
+        <p><strong>Key idea:</strong> The constructor is the documentation. If a behavior isn't in the constructor, it isn't part of this service's job &mdash; or it's a hidden dependency that needs to be made explicit.</p>
+    </div>
+
+    <h3>The two questions to ask before adding any util file</h3>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Is it pure (no I/O, no state, no side effects)?</span>
+        <div class="step-desc">A function like <code>formatDate(d: Date): string</code> or <code>slugify(s: string): string</code> takes inputs and returns outputs. No DB, no clock, no fetch. These are fine as plain exports &mdash; they don't need DI. Tests pass real values, get real outputs.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Does it touch a repository, the clock, the filesystem, an external API, or anything else mockable?</span>
+        <div class="step-desc">Then it's a service. Wrap it in <code>@Injectable()</code> and inject it through the constructor. <strong>No exceptions.</strong> If you find yourself writing a <code>.util.ts</code> file that imports a repository, stop &mdash; that's a class waiting to happen.</div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Quick recall &mdash; predict, don't peek</div>
+        <div class="recall-question">A teammate writes <code>generateInvoiceNumber(workspaceId, invoiceRepository)</code> as a util function. <strong>Is that allowed under the rule?</strong> What about <code>maskEmail(email: string): string</code>?</div>
+        <div class="recall-hint">First one is broken (touches a repository &mdash; should be a service). Second is fine (pure function, no I/O). The test: can you call it with hand-typed values in a test, no setup? If yes, util. If no, service.</div>
+    </div>
+
+    <h3>Suites (Automock) &mdash; making explicit dependencies cheap to test</h3>
+
+    <p>The team is adopting <a href="https://suites.dev/" rel="noopener noreferrer" target="_blank"><strong>Suites</strong></a> (formerly Automock) for unit tests. The point of Suites is simple: when every dependency is in the constructor, a test framework can <strong>auto-generate mocks for all of them</strong>, and you only override the ones that matter for the case you're testing.</p>
+
+    <pre><code><span class="comment">// catalog-items.service.spec.ts &mdash; Vitest + Suites</span>
+
+<span class="keyword">import</span> { TestBed } <span class="keyword">from</span> <span class="string">'@suites/unit'</span>;
+<span class="keyword">import</span> <span class="keyword">type</span> { Mocked } <span class="keyword">from</span> <span class="string">'@suites/doubles'</span>;
+<span class="keyword">import</span> { CatalogItemsService } <span class="keyword">from</span> <span class="string">'./catalog-items.service'</span>;
+<span class="keyword">import</span> { CatalogItemRepository } <span class="keyword">from</span> <span class="string">'./catalog-item.repository'</span>;
+
+<span class="function">describe</span>(<span class="string">'CatalogItemsService'</span>, () =&gt; {
+  <span class="keyword">let</span> service: CatalogItemsService;
+  <span class="keyword">let</span> itemRepository: <span class="type">Mocked&lt;CatalogItemRepository&gt;</span>;
+
+  <span class="function">beforeEach</span>(<span class="keyword">async</span> () =&gt; {
+    <span class="comment">// One line. All constructor deps are auto-mocked.</span>
+    <span class="keyword">const</span> { unit, unitRef } = <span class="keyword">await</span> TestBed.<span class="function">solitary</span>(CatalogItemsService).<span class="function">compile</span>();
+
+    service = unit;
+    itemRepository = unitRef.<span class="function">get</span>(CatalogItemRepository);
+  });
+
+  <span class="function">it</span>(<span class="string">'returns items for a family'</span>, <span class="keyword">async</span> () =&gt; {
+    itemRepository.findAllByFamilyId.<span class="function">mockResolvedValue</span>([<span class="comment">/* fixture */</span>]);
+
+    <span class="keyword">const</span> result = <span class="keyword">await</span> service.<span class="function">findAllByFamilyId</span>(<span class="string">'fam-1'</span>, <span class="string">'ws-1'</span>);
+
+    <span class="function">expect</span>(itemRepository.findAllByFamilyId).<span class="function">toHaveBeenCalledWith</span>(<span class="string">'fam-1'</span>);
+  });
+});</code></pre>
+
+    <p>No <code>providers: [...]</code> array with manual mocks. No <code>useValue: { findAllByFamilyId: vi.fn() }</code> ceremony. <code>TestBed.solitary(Service)</code> reads the constructor, generates a mock for every parameter, and hands them to you via <code>unitRef</code>. You override only what your test cares about.</p>
+
+    <div class="info-box green">
+        <p><strong>Real-world payoff:</strong> a service with 6 constructor dependencies used to need ~30 lines of test setup. With Suites it's 2 lines. The reference PR is <code>github.com/Fohlio/fohlio-spechub-backend/pull/60</code>; the quickstart is at <code>suites.dev/docs/get-started/quickstart</code>.</p>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Why the rule and the tool fit together:</strong> Suites only works if dependencies are in the constructor. The moment someone slips in <code>verifyFamilyWorkspace(...)</code> from a util import, Suites can't help &mdash; that call is invisible to TestBed. The "no util files" rule isn't just about clean code. It's the precondition that makes auto-mocking possible at all.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F9EA;</div>
+        Reviewer: &ldquo;Where's the test for the workspace check?&rdquo;<br>
+        Engineer: &ldquo;I imported the util in the test and stubbed it with <code>vi.mock()</code>.&rdquo;<br>
+        Reviewer: &ldquo;What happens to the test when the util moves to a different file?&rdquo;<br>
+        Engineer: &ldquo;...the test silently passes because the mock path no longer matches anything.&rdquo;<br>
+        <em>Mocking by import path is the cousin of testing nothing at all.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test &mdash; before moving to Summary</div>
+        <div class="recall-question">Without scrolling up, answer: (1) why is <code>import { doThing } from './x.util'</code> + calling it in a service method considered a bug? (2) what's the rule for deciding util vs service? (3) what does <code>TestBed.solitary(MyService).compile()</code> save you from writing?</div>
+        <div class="recall-hint">3/3: you're ready for Lesson 12. 1-2/3: re-read Parts 7's anti-example and the Suites code block. 0/3: the principle is "constructor = contract" &mdash; everything else flows from that.</div>
+    </div>
+
+
+    <!-- ============================================ -->
     <!-- SUMMARY -->
     <!-- ============================================ -->
 
     <h2 class="part-header">Summary</h2>
 
-    <p>The textbook taught you NestJS the framework. This lesson taught you NestJS as Fohlio writes it. Six takeaways:</p>
+    <p>The textbook taught you NestJS the framework. This lesson taught you NestJS as Fohlio writes it. Seven takeaways:</p>
 
     <div class="layer-stack">
         <div class="layer-item" style="background: var(--blue-light);">
@@ -1425,6 +1593,11 @@ project.deletedAt = <span class="keyword">new</span> Date();   <span class="comm
             <div class="layer-icon">&#x1F393;</div>
             <div class="layer-name" style="color: var(--green);">Kysely for the hard 10%</div>
             <div class="layer-desc">Inside repositories, transaction-aware via <code>getKysely(em)</code>. Always explicit <code>deleted_at IS NULL</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--red);">No util files</div>
+            <div class="layer-desc">Every dependency through the constructor. Suites/Automock makes the unit tests cheap.</div>
         </div>
     </div>
 
@@ -1472,6 +1645,15 @@ project.deletedAt = <span class="keyword">new</span> Date();   <span class="comm
                     <li>Submit as text</li>
                 </ul>
             </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Refactor a util into an injected service</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In your <code>nestjs-course-yourname</code> repo, find (or create) a service that calls a <code>*.util.ts</code> function which touches a repository, the clock, or any other mockable side-effect</li>
+                    <li>Promote that util to an <code>@Injectable()</code> class. Inject it through the constructor. Update <code>providers</code> in the module</li>
+                    <li>Push and submit the commit/PR URL</li>
+                </ul>
+            </li>
         </ol>
 
         <h3 style="margin-top: 28px;">Advanced (optional):</h3>
@@ -1483,6 +1665,11 @@ project.deletedAt = <span class="keyword">new</span> Date();   <span class="comm
             <li style="margin-top: 16px;">
                 <strong>Edge cases of the soft-delete lifecycle</strong>
                 <p style="margin: 8px 0 4px; font-size: 14px;">Read the soft-delete sections in <code>asuncion/architecture.md</code> (lines ~1275&ndash;1335) and trace at least one entity that uses <code>@Filter('softDelete')</code> (try <code>workspace.entity.ts</code>). Then write a 4&ndash;6 sentence note: what edge cases does the implementation handle that a naive <code>where: { deletedAt: null }</code> filter wouldn't? Touch on partial unique indexes, raw-SQL leak risk, restore-over-recreate, and cascading deletes.</p>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Write a Suites/Automock unit test</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Install <code>@suites/unit</code> and <code>@suites/doubles</code> in your <code>nestjs-course-yourname</code> repo. Pick the service you refactored in Required #4 (or any service with 2+ injected deps). Write a unit test using <code>TestBed.solitary(YourService).compile()</code>. Override one mock with <code>mockResolvedValue</code>, assert the service's behavior. Submit a screenshot of the green test run. <strong>Bonus:</strong> compare the line count of the Suites test vs the same test written with NestJS's stock <code>Test.createTestingModule</code> + manual mocks.</p>
             </li>
         </ol>
     </div>
