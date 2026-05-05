@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong {
+            color: var(--blue);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 3 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">The Request Pipeline &mdash; Middleware, Guards, Interceptors, Pipes, Filters</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Know the exact order in which a request flows through Nest's pipeline</li>
+            <li>Pick the right tool: Middleware vs Guard vs Interceptor vs Pipe vs Exception Filter</li>
+            <li>Write a logging middleware, an auth guard, a timing interceptor, a custom pipe, and a global exception filter</li>
+            <li>Globally format every error response into a consistent JSON shape</li>
+            <li>Read the &ldquo;mental movie&rdquo; that plays for every HTTP request your app handles</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <h2 class="part-header">Quick Recap</h2>
+
+    <p>Two lessons in. Here's where we stand:</p>
+
+    <div class="recap-grid">
+        <div class="recap-item"><strong>Lesson 1:</strong> Scaffolded <code>airport-api</code>, learned the airport analogy (Modules = Terminals, Controllers = Gate Agents, Services = Ground Crew).</div>
+        <div class="recap-item"><strong>Lesson 2:</strong> Built <code>FlightsModule</code> end-to-end with full CRUD on <code>/flights</code>, and pinned down what <code>imports / controllers / providers / exports</code> each do.</div>
+        <div class="recap-item"><strong>Lesson 2 cliffhanger:</strong> Today we discover everything that happens <em>around</em> your route handler &mdash; before it runs, after it runs, and when it explodes.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: A REQUEST'S JOURNEY THROUGH THE AIRPORT -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: A Request's Journey Through the Airport</h2>
+
+    <p>So far we've treated the controller as if requests just &mdash; appear in it. They don't. Between the network and your <code>findAll()</code> method, NestJS runs a fixed sequence of stages. Each stage has a job, a clear contract, and the ability to short-circuit the whole thing.</p>
+
+    <h3>The airport analogy &mdash; one more time, with feeling</h3>
+
+    <div class="story-box">
+        <p>You walk into the airport. Before you board a plane, you pass through a fixed sequence:</p>
+        <p><strong>1. Curbside / Entrance.</strong> A friendly-but-bored agent maybe checks your boarding pass exists. Logs that you entered. (Middleware.)</p>
+        <p><strong>2. Security checkpoint.</strong> The hard yes/no: do you have a valid ticket and ID for this flight, or are you turned away? (Guard.)</p>
+        <p><strong>3. Flight recorder starts.</strong> An invisible system starts a stopwatch the moment you enter the gate area. It will stop when you board, recording how long the journey took. (Interceptor &mdash; before phase.)</p>
+        <p><strong>4. Baggage X-ray.</strong> Your bags get scanned and tagged. Anything malformed gets rejected before it reaches the plane. (Pipe.)</p>
+        <p><strong>5. The gate agent does the actual work</strong> &mdash; scans your pass, points to the seat. (Controller / handler.)</p>
+        <p><strong>6. Flight recorder stops.</strong> Stopwatch closes. Maybe the system tags every checked bag with the flight number. (Interceptor &mdash; after phase.)</p>
+        <p><strong>7. Lost &amp; Found Desk.</strong> If anything went wrong &mdash; missing bag, denied boarding &mdash; passengers go here, where the chaos is converted into a polite official answer. (Exception Filter.)</p>
+        <div class="tech-note">
+            <strong>The same flow in code terms:</strong> Middleware &rarr; Guards &rarr; Interceptors (before) &rarr; Pipes &rarr; Handler &rarr; Interceptors (after) &rarr; Response. If any stage throws, the request is yanked out of the pipeline and handed to an Exception Filter.
+        </div>
+    </div>
+
+    <h3>Why so many stages?</h3>
+
+    <p>Because each one answers a <em>different</em> question:</p>
+
+    <table>
+        <tr>
+            <th>Stage</th>
+            <th>The question it answers</th>
+            <th>Returns</th>
+        </tr>
+        <tr><td><strong>Middleware</strong></td><td>&ldquo;Want to do something raw at the request level?&rdquo;</td><td><code>void</code> + calls <code>next()</code></td></tr>
+        <tr><td><strong>Guard</strong></td><td>&ldquo;Should this request be allowed in?&rdquo;</td><td><code>boolean</code></td></tr>
+        <tr><td><strong>Interceptor (before)</strong></td><td>&ldquo;Want to wrap or observe the call?&rdquo;</td><td>passes control onward</td></tr>
+        <tr><td><strong>Pipe</strong></td><td>&ldquo;Is the input the right shape?&rdquo;</td><td>transformed value (or throws)</td></tr>
+        <tr><td><strong>Handler</strong></td><td>&ldquo;What's the answer?&rdquo;</td><td>the response value</td></tr>
+        <tr><td><strong>Interceptor (after)</strong></td><td>&ldquo;Want to massage the response?&rdquo;</td><td>final response</td></tr>
+        <tr><td><strong>Exception Filter</strong></td><td>&ldquo;Something exploded &mdash; how do we tell the client?&rdquo;</td><td>error response</td></tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>Key idea:</strong> Each pipeline stage is the <em>right answer</em> to a different design question. Most bugs in NestJS apps come from picking the wrong stage. Validate input in a Guard? Will work, but you've conflated &ldquo;allowed?&rdquo; with &ldquo;well-formed?&rdquo;. Format errors in an Interceptor? Will work for happy paths, miss most error cases. The art is matching the question to the stage.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: MIDDLEWARE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Middleware</h2>
+
+    <p>Middleware is the oldest concept in the pipeline &mdash; it predates NestJS by a decade. Express middleware. Connect middleware. Same idea, same signature: <code>(req, res, next) =&gt; ...</code>. NestJS happily accepts both function-style and class-style middleware.</p>
+
+    <h3>The signature</h3>
+
+    <pre><code><span class="comment">// function form</span>
+<span class="keyword">function</span> <span class="function">simpleLogger</span>(req, res, next) {
+  console.<span class="function">log</span>(<span class="string">`<span class="keyword">${</span>req.method<span class="keyword">}</span> <span class="keyword">${</span>req.url<span class="keyword">}</span>`</span>);
+  <span class="function">next</span>();
+}</code></pre>
+
+    <p>Three things are true about middleware:</p>
+
+    <ol style="margin: 8px 0 16px 24px; color: var(--gray-700);">
+        <li>It runs <em>first</em>, before anything Nest-specific.</li>
+        <li>It must call <code>next()</code> or the request hangs forever.</li>
+        <li>It works at the raw HTTP level &mdash; you don't yet know which controller will handle this request.</li>
+    </ol>
+
+    <h3>Class-form middleware (the NestJS-y way)</h3>
+
+    <p>The class form supports DI &mdash; you can inject a logger or a config service into your middleware. Here's a logging middleware that times the response:</p>
+
+    <pre><code><span class="comment">// src/common/middleware/logger.middleware.ts</span>
+<span class="keyword">import</span> { Injectable, NestMiddleware, Logger } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Request, Response, NextFunction } <span class="keyword">from</span> <span class="string">'express'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> LoggerMiddleware <span class="keyword">implements</span> NestMiddleware {
+  <span class="keyword">private readonly</span> log = <span class="keyword">new</span> <span class="function">Logger</span>(<span class="string">'HTTP'</span>);
+
+  <span class="function">use</span>(req: Request, res: Response, next: NextFunction) {
+    <span class="keyword">const</span> start = Date.<span class="function">now</span>();
+    res.<span class="function">on</span>(<span class="string">'finish'</span>, () =&gt; {
+      <span class="keyword">const</span> ms = Date.<span class="function">now</span>() - start;
+      <span class="keyword">this</span>.log.<span class="function">log</span>(<span class="string">`<span class="keyword">${</span>req.method<span class="keyword">}</span> <span class="keyword">${</span>req.originalUrl<span class="keyword">}</span> <span class="keyword">${</span>res.statusCode<span class="keyword">}</span> &mdash; <span class="keyword">${</span>ms<span class="keyword">}</span>ms`</span>);
+    });
+    <span class="function">next</span>();
+  }
+}</code></pre>
+
+    <h3>Wiring middleware into the app</h3>
+
+    <p>Middleware doesn't go in the <code>@Module</code> decorator &mdash; it gets registered via the <code>configure()</code> method. The module class implements <code>NestModule</code>:</p>
+
+    <pre><code><span class="comment">// app.module.ts</span>
+<span class="keyword">import</span> { Module, NestModule, MiddlewareConsumer } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { LoggerMiddleware } <span class="keyword">from</span> <span class="string">'./common/middleware/logger.middleware'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [FlightsModule, UsersModule],
+})
+<span class="keyword">export class</span> AppModule <span class="keyword">implements</span> NestModule {
+  <span class="function">configure</span>(consumer: MiddlewareConsumer) {
+    consumer
+      .<span class="function">apply</span>(LoggerMiddleware)
+      .<span class="function">forRoutes</span>(<span class="string">'*'</span>); <span class="comment">// every route, every method</span>
+  }
+}</code></pre>
+
+    <p>You can be more selective with <code>.forRoutes('flights')</code>, <code>.forRoutes({ path: 'flights', method: RequestMethod.GET })</code>, or <code>.exclude(...)</code>. For request logging, <code>'*'</code> is the right call.</p>
+
+    <div class="info-box orange">
+        <p><strong>Aha:</strong> Middleware is the only pipeline stage where you write to <code>res</code> directly via the Express object. Every other stage works through Nest's abstractions. That's because middleware <em>is</em> Express &mdash; Nest just hands you the raw request and trusts you.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DC;</div>
+        Express dev: &ldquo;Middleware is everything! Auth? Middleware. Validation? Middleware. Response shaping? Middleware. CORS? Middleware.&rdquo;<br>
+        NestJS dev: &ldquo;...you have five different tools. Use them.&rdquo;<br>
+        Express dev: &ldquo;But middleware <em>works</em>.&rdquo;<br>
+        NestJS dev: &ldquo;A hammer also works on screws.&rdquo;<br>
+        <em>Just because you can stuff everything into middleware doesn't mean you should.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: GUARDS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Guards</h2>
+
+    <p>A guard answers exactly one question: <em>&ldquo;Is this request allowed to proceed?&rdquo;</em> It returns <code>true</code> (let it through), <code>false</code> (deny with 403), or throws an exception (deny with whatever the exception says, e.g. 401).</p>
+
+    <h3>The interface</h3>
+
+    <pre><code><span class="keyword">interface</span> CanActivate {
+  <span class="function">canActivate</span>(context: ExecutionContext): <span class="type">boolean</span> | Promise&lt;<span class="type">boolean</span>&gt; | Observable&lt;<span class="type">boolean</span>&gt;;
+}</code></pre>
+
+    <p>That's it. One method. Returns a boolean (sync or async). Nest hands you an <code>ExecutionContext</code> &mdash; a bundle of metadata about the request, the handler being invoked, the controller class, and any custom metadata you've attached.</p>
+
+    <h3>A real-world guard: API key check</h3>
+
+    <pre><code><span class="comment">// src/common/guards/api-key.guard.ts</span>
+<span class="keyword">import</span> {
+  Injectable, CanActivate, ExecutionContext, UnauthorizedException,
+} <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> ApiKeyGuard <span class="keyword">implements</span> CanActivate {
+  <span class="function">canActivate</span>(context: ExecutionContext): <span class="type">boolean</span> {
+    <span class="keyword">const</span> req = context.<span class="function">switchToHttp</span>().<span class="function">getRequest</span>();
+    <span class="keyword">const</span> key = req.headers[<span class="string">'x-api-key'</span>];
+
+    <span class="keyword">if</span> (!key) {
+      <span class="keyword">throw new</span> <span class="function">UnauthorizedException</span>(<span class="string">'Missing X-Api-Key header'</span>);
+    }
+    <span class="keyword">if</span> (key !== process.env.API_KEY) {
+      <span class="keyword">throw new</span> <span class="function">UnauthorizedException</span>(<span class="string">'Invalid API key'</span>);
+    }
+    <span class="keyword">return true</span>;
+  }
+}</code></pre>
+
+    <h3>Applying a guard</h3>
+
+    <p>Three scopes, smallest to largest:</p>
+
+    <pre><code><span class="comment">// 1. on a single method</span>
+<span class="decorator">@Get</span>(<span class="string">'admin'</span>)
+<span class="decorator">@UseGuards</span>(ApiKeyGuard)
+<span class="function">adminOnly</span>() { ... }
+
+<span class="comment">// 2. on a whole controller</span>
+<span class="decorator">@UseGuards</span>(ApiKeyGuard)
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="keyword">export class</span> FlightsController { ... }
+
+<span class="comment">// 3. globally, in main.ts</span>
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+  app.<span class="function">useGlobalGuards</span>(<span class="keyword">new</span> <span class="function">ApiKeyGuard</span>());
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);
+}</code></pre>
+
+    <div class="info-box red">
+        <p><strong>Gotcha:</strong> If you instantiate a guard with <code>new ApiKeyGuard()</code> in <code>useGlobalGuards</code>, it lives outside the DI container &mdash; it can't inject anything. To register a global guard <em>with</em> DI, use the <code>APP_GUARD</code> token in your providers (we'll show this pattern in Lesson 5 with auth).</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6C2;</div>
+        Passenger: &ldquo;I lost my boarding pass.&rdquo;<br>
+        TSA agent: &ldquo;You can't go through security.&rdquo;<br>
+        Passenger: &ldquo;But the gate is right there!&rdquo;<br>
+        TSA agent: &ldquo;Yes. And you'll never see it.&rdquo;<br>
+        <em>Guards don't argue. They return false and the request goes home.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before reading on</div>
+        <div class="recall-question">A user hits <code>POST /flights</code> with a body <code>{ destination: 42 }</code> (number, not string) and a <em>missing</em> <code>X-Api-Key</code> header. Which fails first &mdash; the type check on the body, or the missing API key? <strong>Why?</strong></div>
+        <div class="recall-hint">Hint: re-read the pipeline order from Part 1. Guards run before Pipes.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: INTERCEPTORS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Interceptors</h2>
+
+    <p>Interceptors are the most powerful and the most over-engineered stage in the pipeline. They wrap the handler &mdash; you get a hook <em>before</em> the handler runs and a hook <em>after</em> it returns. Both halves use RxJS observables, which trips up almost everyone the first time.</p>
+
+    <h3>The interface</h3>
+
+    <pre><code><span class="keyword">interface</span> NestInterceptor {
+  <span class="function">intercept</span>(
+    context: ExecutionContext,
+    next: CallHandler,
+  ): Observable&lt;<span class="type">any</span>&gt; | Promise&lt;Observable&lt;<span class="type">any</span>&gt;&gt;;
+}</code></pre>
+
+    <p>Don't be scared by &ldquo;Observable.&rdquo; You can think of <code>next.handle()</code> as &ldquo;the rest of the pipeline as a thing I can pipe through.&rdquo; You return an observable that &mdash; eventually &mdash; emits the response value.</p>
+
+    <h3>Example 1: a timing interceptor</h3>
+
+    <pre><code><span class="comment">// src/common/interceptors/timing.interceptor.ts</span>
+<span class="keyword">import</span> {
+  Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger,
+} <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Observable } <span class="keyword">from</span> <span class="string">'rxjs'</span>;
+<span class="keyword">import</span> { tap } <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> TimingInterceptor <span class="keyword">implements</span> NestInterceptor {
+  <span class="keyword">private readonly</span> log = <span class="keyword">new</span> <span class="function">Logger</span>(<span class="string">'Timing'</span>);
+
+  <span class="function">intercept</span>(ctx: ExecutionContext, next: CallHandler): Observable&lt;<span class="type">any</span>&gt; {
+    <span class="keyword">const</span> handler = ctx.<span class="function">getHandler</span>().name;
+    <span class="keyword">const</span> start = Date.<span class="function">now</span>();
+    <span class="keyword">return</span> next
+      .<span class="function">handle</span>()
+      .<span class="function">pipe</span>(
+        <span class="function">tap</span>(() =&gt; <span class="keyword">this</span>.log.<span class="function">log</span>(<span class="string">`<span class="keyword">${</span>handler<span class="keyword">}</span> took <span class="keyword">${</span>Date.<span class="function">now</span>() - start<span class="keyword">}</span>ms`</span>)),
+      );
+  }
+}</code></pre>
+
+    <p>Read the code top to bottom: capture <code>start</code> &rarr; call <code>next.handle()</code> (this runs the handler) &rarr; <code>.pipe(tap(...))</code> says &ldquo;when the handler emits its result, run this side-effect.&rdquo; The <code>tap</code> operator doesn't change the value &mdash; it just observes.</p>
+
+    <h3>Example 2: response wrapper</h3>
+
+    <p>A common pattern: every API response should be wrapped in <code>{ data: ... }</code>. Instead of doing this in every controller, an interceptor does it once.</p>
+
+    <pre><code><span class="keyword">import</span> {
+  Injectable, NestInterceptor, ExecutionContext, CallHandler,
+} <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Observable } <span class="keyword">from</span> <span class="string">'rxjs'</span>;
+<span class="keyword">import</span> { map } <span class="keyword">from</span> <span class="string">'rxjs/operators'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> WrapResponseInterceptor <span class="keyword">implements</span> NestInterceptor {
+  <span class="function">intercept</span>(ctx: ExecutionContext, next: CallHandler): Observable&lt;<span class="type">any</span>&gt; {
+    <span class="keyword">return</span> next.<span class="function">handle</span>().<span class="function">pipe</span>(<span class="function">map</span>((data) =&gt; ({ data })));
+  }
+}</code></pre>
+
+    <p>Now <code>GET /flights</code> &mdash; which used to return <code>[{...}, {...}]</code> &mdash; returns <code>{ data: [{...}, {...}] }</code>. Apply globally with <code>app.useGlobalInterceptors(new WrapResponseInterceptor())</code> and your entire API gets a consistent shape for free.</p>
+
+    <div class="info-box green">
+        <p><strong>Real example:</strong> Every Stripe API response has <code>{ object: 'list', data: [...], has_more: bool }</code>. They didn't write that wrapper in every endpoint &mdash; they wrote it once in something like an interceptor and applied it everywhere. That's the kind of consistency interceptors give you for two dozen lines of code.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: PIPES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Pipes</h2>
+
+    <p>A pipe transforms or validates an input value. Two outcomes: it returns the (possibly transformed) value, or it throws. If it returns, the value Nest passes to your handler is whatever the pipe returned. If it throws, the request never reaches the handler.</p>
+
+    <h3>Built-in pipes</h3>
+
+    <table>
+        <tr><th>Pipe</th><th>What it does</th><th>Throws if</th></tr>
+        <tr><td><code>ParseIntPipe</code></td><td>Converts to <code>number</code></td><td>not a valid integer</td></tr>
+        <tr><td><code>ParseFloatPipe</code></td><td>Converts to <code>number</code></td><td>not a valid float</td></tr>
+        <tr><td><code>ParseBoolPipe</code></td><td>Converts to <code>boolean</code></td><td>not <code>'true'</code> / <code>'false'</code></td></tr>
+        <tr><td><code>ParseUUIDPipe</code></td><td>Validates UUID string</td><td>not a valid UUID</td></tr>
+        <tr><td><code>ParseEnumPipe</code></td><td>Validates against enum</td><td>not a valid enum member</td></tr>
+        <tr><td><code>ParseArrayPipe</code></td><td>Splits a CSV string</td><td>not parseable</td></tr>
+        <tr><td><code>DefaultValuePipe</code></td><td>Supplies fallback if undefined</td><td>never</td></tr>
+        <tr><td><code>ValidationPipe</code></td><td>Validates DTOs via class-validator</td><td>any field fails its rules &mdash; we'll dive in Lesson 6</td></tr>
+    </table>
+
+    <h3>Using a built-in pipe</h3>
+
+    <p>You already saw this in Lesson 2:</p>
+
+    <pre><code><span class="decorator">@Get</span>(<span class="string">':id'</span>)
+<span class="function">findOne</span>(<span class="decorator">@Param</span>(<span class="string">'id'</span>, ParseIntPipe) id: <span class="type">number</span>) {
+  <span class="keyword">return this</span>.flights.<span class="function">findOne</span>(id);
+}</code></pre>
+
+    <p><code>:id</code> in the URL is always a string &mdash; that's just how URLs work. <code>ParseIntPipe</code> intercepts it, converts to a number, and either passes the number to your handler or throws a 400 Bad Request if it can't. Without the pipe, you'd be doing <code>parseInt(id)</code> in every controller method, manually checking <code>NaN</code>, manually throwing.</p>
+
+    <h3>Writing a custom pipe</h3>
+
+    <p>The interface is one method:</p>
+
+    <pre><code><span class="keyword">interface</span> PipeTransform {
+  <span class="function">transform</span>(value: <span class="type">any</span>, metadata: ArgumentMetadata): <span class="type">any</span>;
+}</code></pre>
+
+    <p>Here's a pipe that trims and lower-cases query string values &mdash; useful for things like <code>?destination=NYC</code> being treated the same as <code>?destination=nyc</code>:</p>
+
+    <pre><code><span class="comment">// src/common/pipes/lowercase.pipe.ts</span>
+<span class="keyword">import</span> { Injectable, PipeTransform } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> LowercasePipe <span class="keyword">implements</span> PipeTransform&lt;<span class="type">string</span>, <span class="type">string</span>&gt; {
+  <span class="function">transform</span>(value: <span class="type">string</span>): <span class="type">string</span> {
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> value !== <span class="string">'string'</span>) <span class="keyword">return</span> value;
+    <span class="keyword">return</span> value.<span class="function">trim</span>().<span class="function">toLowerCase</span>();
+  }
+}</code></pre>
+
+    <pre><code><span class="decorator">@Get</span>()
+<span class="function">findAll</span>(<span class="decorator">@Query</span>(<span class="string">'destination'</span>, LowercasePipe) destination?: <span class="type">string</span>) {
+  <span class="keyword">return this</span>.flights.<span class="function">findAll</span>({ destination });
+}</code></pre>
+
+    <p>The handler now receives a clean, normalized string. The transformation is invisible to the controller's logic, which is exactly the point.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F9F3;</div>
+        Controller: &ldquo;Give me an integer.&rdquo;<br>
+        URL: &ldquo;Here's <code>'42'</code>.&rdquo;<br>
+        Controller: &ldquo;That's a string.&rdquo;<br>
+        URL: &ldquo;That's all URLs have. Strings.&rdquo;<br>
+        Pipe: &ldquo;Step aside, I got this. <code>parseInt</code>... <code>42</code>. You're welcome.&rdquo;<br>
+        <em>The reason every controller in the codebase doesn't have its own <code>parseInt</code> dance.</em>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Why pipes deserve their own stage:</strong> validation logic is the leakiest abstraction in any backend. If you put it in the controller, every controller has it. If you put it in middleware, you don't have access to handler metadata. Pipes are the right place &mdash; they run after Guards (so you don't validate requests you'd reject anyway) but before the handler (so the handler can trust its inputs). The whole pipeline order makes more sense once you stare at this for a minute.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: EXCEPTION FILTERS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Exception Filters</h2>
+
+    <p>Things break. Pipes throw, services blow up, the database is down. NestJS catches every uncaught error and runs it through an <em>exception filter</em>, which decides what HTTP response to send back. There's a default filter that's perfectly fine, but most production apps want a custom one for consistent error formatting.</p>
+
+    <h3>Throwing exceptions</h3>
+
+    <p>Anywhere in your code path &mdash; controller, service, guard, pipe &mdash; you can throw a built-in HTTP exception:</p>
+
+    <pre><code><span class="keyword">import</span> {
+  NotFoundException, BadRequestException, ForbiddenException,
+  UnauthorizedException, ConflictException, InternalServerErrorException,
+} <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="keyword">throw new</span> <span class="function">NotFoundException</span>(<span class="string">'Flight 42 not found'</span>);     <span class="comment">// 404</span>
+<span class="keyword">throw new</span> <span class="function">BadRequestException</span>(<span class="string">'destination is required'</span>);  <span class="comment">// 400</span>
+<span class="keyword">throw new</span> <span class="function">UnauthorizedException</span>();                          <span class="comment">// 401</span>
+<span class="keyword">throw new</span> <span class="function">ForbiddenException</span>();                             <span class="comment">// 403</span>
+<span class="keyword">throw new</span> <span class="function">ConflictException</span>(<span class="string">'Flight number already taken'</span>);  <span class="comment">// 409</span></code></pre>
+
+    <p>Each maps to the right status code automatically. The default filter serializes them as <code>{ statusCode, message }</code>.</p>
+
+    <h3>The base class: HttpException</h3>
+
+    <p>For one-off cases:</p>
+
+    <pre><code><span class="keyword">throw new</span> <span class="function">HttpException</span>(
+  { code: <span class="string">'GATE_LOCKED'</span>, message: <span class="string">'Gate is locked'</span> },
+  HttpStatus.LOCKED,
+);</code></pre>
+
+    <h3>A custom global exception filter</h3>
+
+    <p>Most APIs want errors to look like <code>{ error: { message, code, timestamp } }</code> instead of Nest's default <code>{ statusCode, message }</code>. Here's how:</p>
+
+    <pre><code><span class="comment">// src/common/filters/all-exceptions.filter.ts</span>
+<span class="keyword">import</span> {
+  ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus, Logger,
+} <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Request, Response } <span class="keyword">from</span> <span class="string">'express'</span>;
+
+<span class="decorator">@Catch</span>()
+<span class="keyword">export class</span> AllExceptionsFilter <span class="keyword">implements</span> ExceptionFilter {
+  <span class="keyword">private readonly</span> log = <span class="keyword">new</span> <span class="function">Logger</span>(<span class="string">'Exceptions'</span>);
+
+  <span class="function">catch</span>(exception: <span class="type">unknown</span>, host: ArgumentsHost) {
+    <span class="keyword">const</span> ctx = host.<span class="function">switchToHttp</span>();
+    <span class="keyword">const</span> res = ctx.<span class="function">getResponse</span>&lt;Response&gt;();
+    <span class="keyword">const</span> req = ctx.<span class="function">getRequest</span>&lt;Request&gt;();
+
+    <span class="keyword">const</span> status = exception <span class="keyword">instanceof</span> HttpException
+      ? exception.<span class="function">getStatus</span>()
+      : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    <span class="keyword">const</span> message = exception <span class="keyword">instanceof</span> HttpException
+      ? exception.<span class="function">getResponse</span>()
+      : <span class="string">'Internal server error'</span>;
+
+    <span class="keyword">if</span> (status &gt;= <span class="string">500</span>) <span class="keyword">this</span>.log.<span class="function">error</span>(exception);
+
+    res.<span class="function">status</span>(status).<span class="function">json</span>({
+      error: {
+        code: status,
+        message: <span class="keyword">typeof</span> message === <span class="string">'string'</span> ? message : (message <span class="keyword">as any</span>).message,
+        path: req.url,
+        timestamp: <span class="keyword">new</span> <span class="function">Date</span>().<span class="function">toISOString</span>(),
+      },
+    });
+  }
+}</code></pre>
+
+    <p><code>@Catch()</code> with no argument means &ldquo;catch every exception type.&rdquo; You can narrow it: <code>@Catch(HttpException)</code> or <code>@Catch(NotFoundException, BadRequestException)</code>.</p>
+
+    <h3>Wiring the filter globally</h3>
+
+    <pre><code><span class="comment">// main.ts</span>
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+  app.<span class="function">useGlobalFilters</span>(<span class="keyword">new</span> <span class="function">AllExceptionsFilter</span>());
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);
+}</code></pre>
+
+    <p>Now every error &mdash; whether it's a <code>NotFoundException</code> you threw on purpose or an unexpected <code>TypeError: Cannot read properties of undefined</code> &mdash; comes back as a uniform JSON shape. Frontend developers will buy you coffee.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DE;</div>
+        Frontend dev: &ldquo;The error response is sometimes <code>{ message }</code>, sometimes <code>{ error }</code>, sometimes <code>{ statusCode, message }</code>. What format do you actually return?&rdquo;<br>
+        Backend dev: &ldquo;Yes.&rdquo;<br>
+        <em>The hour spent writing a global exception filter pays itself back the first sprint.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test &mdash; don't peek</div>
+        <div class="recall-question">A handler throws <code>NotFoundException('Flight 42')</code>. The request also passed through a <code>TimingInterceptor</code> earlier in the pipeline. <strong>Does the interceptor's <code>tap()</code> still log the duration?</strong> If yes, what value does it see?</div>
+        <div class="recall-hint">Hint: <code>tap()</code> only fires on success. RxJS observables have a separate &ldquo;error&rdquo; channel. To run code on errors too, you'd use <code>catchError</code> or <code>finalize</code>.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: THE ORDER (THE BIG SVG) -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: The Order &mdash; One Diagram to Rule Them All</h2>
+
+    <p>If you only memorize one thing from this lesson, memorize this diagram. Every NestJS request follows this exact path:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 720" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="720" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="32" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#111827">The NestJS Request Pipeline</text>
+            <text x="380" y="52" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">From the network to the response &mdash; in order</text>
+
+            <defs>
+                <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+                </marker>
+                <marker id="arrRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/>
+                </marker>
+                <marker id="arrGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <!-- Incoming request -->
+            <rect x="280" y="70" width="200" height="40" rx="8" fill="#3451B2"/>
+            <text x="380" y="94" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="white">Incoming HTTP request</text>
+            <line x1="380" y1="110" x2="380" y2="130" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Middleware -->
+            <rect x="120" y="134" width="520" height="56" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="135" y="156" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">1. Middleware</text>
+            <text x="135" y="176" font-family="Inter" font-size="12" fill="#6B7280">Curbside &mdash; raw req/res, runs first. Logs, parses cookies, sets request IDs.</text>
+            <text x="630" y="166" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#E8790C">@MiddlewareConsumer</text>
+            <line x1="380" y1="190" x2="380" y2="210" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Guards -->
+            <rect x="120" y="214" width="520" height="56" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="135" y="236" font-family="Inter" font-weight="700" font-size="13" fill="#DC2626">2. Guards</text>
+            <text x="135" y="256" font-family="Inter" font-size="12" fill="#6B7280">Security checkpoint &mdash; allowed in? Returns boolean. Throws on deny.</text>
+            <text x="630" y="246" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#DC2626">@UseGuards()</text>
+            <line x1="380" y1="270" x2="380" y2="290" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Interceptors before -->
+            <rect x="120" y="294" width="520" height="56" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="135" y="316" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">3. Interceptors (before)</text>
+            <text x="135" y="336" font-family="Inter" font-size="12" fill="#6B7280">Flight recorder &mdash; start stopwatch, attach metadata.</text>
+            <text x="630" y="326" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#7C3AED">@UseInterceptors()</text>
+            <line x1="380" y1="350" x2="380" y2="370" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Pipes -->
+            <rect x="120" y="374" width="520" height="56" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+            <text x="135" y="396" font-family="Inter" font-weight="700" font-size="13" fill="#D97706">4. Pipes</text>
+            <text x="135" y="416" font-family="Inter" font-size="12" fill="#6B7280">Baggage X-ray &mdash; transform &amp; validate inputs. Throws on bad shape.</text>
+            <text x="630" y="406" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#D97706">@UsePipes()</text>
+            <line x1="380" y1="430" x2="380" y2="450" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Handler -->
+            <rect x="120" y="454" width="520" height="56" rx="8" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="135" y="476" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">5. Route handler (Controller)</text>
+            <text x="135" y="496" font-family="Inter" font-size="12" fill="#6B7280">Gate agent &mdash; the actual work. Calls services. Returns a value.</text>
+            <text x="630" y="486" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#3451B2">@Get / @Post / ...</text>
+            <line x1="380" y1="510" x2="380" y2="530" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrGreen)"/>
+
+            <!-- Interceptors after -->
+            <rect x="120" y="534" width="520" height="56" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="135" y="556" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">6. Interceptors (after)</text>
+            <text x="135" y="576" font-family="Inter" font-size="12" fill="#6B7280">Stop the stopwatch &mdash; transform/wrap response, log metrics.</text>
+            <text x="630" y="566" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#7C3AED">.pipe(map / tap)</text>
+            <line x1="380" y1="590" x2="380" y2="610" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrGreen)"/>
+
+            <!-- Response -->
+            <rect x="280" y="614" width="200" height="40" rx="8" fill="#1A8F5C"/>
+            <text x="380" y="638" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="white">HTTP response</text>
+
+            <!-- Exception filter side path -->
+            <line x1="120" y1="240" x2="50" y2="240" stroke="#DC2626" stroke-width="2"/>
+            <line x1="50" y1="240" x2="50" y2="680" stroke="#DC2626" stroke-width="2" stroke-dasharray="4,4"/>
+            <line x1="120" y1="402" x2="50" y2="402" stroke="#DC2626" stroke-width="2" stroke-dasharray="4,4"/>
+            <line x1="120" y1="482" x2="50" y2="482" stroke="#DC2626" stroke-width="2" stroke-dasharray="4,4"/>
+            <line x1="50" y1="680" x2="280" y2="680" stroke="#DC2626" stroke-width="2" marker-end="url(#arrRed)"/>
+
+            <rect x="280" y="664" width="200" height="40" rx="8" fill="#DC2626"/>
+            <text x="380" y="688" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="white">7. Exception Filter</text>
+            <text x="380" y="715" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Lost &amp; Found &mdash; any throw lands here, gets formatted as a JSON error.</text>
+        </svg>
+        <div class="diagram-caption">Solid arrows = happy path. Dashed red = any thrown exception is yanked sideways into the filter.</div>
+    </div>
+
+    <h3>How to read it</h3>
+
+    <ol style="margin: 8px 0 16px 24px; color: var(--gray-700);">
+        <li><strong>Linear top-to-bottom on the happy path.</strong> Every stage runs in order. If a stage doesn't apply (no guards on this route, no custom interceptor), it's still &ldquo;there&rdquo; &mdash; just empty.</li>
+        <li><strong>Any throw = sideways into the filter.</strong> A guard returning <code>false</code>, a pipe throwing on bad input, the handler throwing, the service throwing &mdash; all roads lead to the exception filter.</li>
+        <li><strong>Interceptors are the only stage that runs twice.</strong> Once before the handler, once after. That's why &ldquo;before&rdquo; appears at step 3 and &ldquo;after&rdquo; at step 6.</li>
+    </ol>
+
+    <h3>Quick mental quiz</h3>
+
+    <table>
+        <tr><th>You want to...</th><th>Use a...</th></tr>
+        <tr><td>Log every incoming URL</td><td>Middleware (works at the raw level, runs first)</td></tr>
+        <tr><td>Reject requests without a valid JWT</td><td>Guard</td></tr>
+        <tr><td>Wrap every response in <code>{ data: ... }</code></td><td>Interceptor (after)</td></tr>
+        <tr><td>Convert <code>:id</code> from string to number</td><td>Pipe (<code>ParseIntPipe</code>)</td></tr>
+        <tr><td>Validate that body matches a DTO schema</td><td>Pipe (<code>ValidationPipe</code>, Lesson 6)</td></tr>
+        <tr><td>Format every error as <code>{ error: { ... } }</code></td><td>Exception Filter</td></tr>
+        <tr><td>Time how long each handler takes</td><td>Interceptor (wraps both halves)</td></tr>
+        <tr><td>Set a CORS header on every response</td><td>Middleware (or Nest's built-in <code>app.enableCors()</code>)</td></tr>
+    </table>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>You now have five new tools in the toolbox:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F6AA;</div>
+            <div class="layer-name" style="color: var(--orange);">Middleware</div>
+            <div class="layer-desc">Express-style; runs first; raw <code>req/res/next</code>; great for logging and request IDs.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6E1;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--red);">Guards</div>
+            <div class="layer-desc">Boolean &ldquo;allowed?&rdquo; checks; auth, roles, tenant boundaries.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F3A6;</div>
+            <div class="layer-name" style="color: var(--purple);">Interceptors</div>
+            <div class="layer-desc">Wrap before/after; timing, response transforms, caching.</div>
+        </div>
+        <div class="layer-item" style="background: #FEF3C7;">
+            <div class="layer-icon">&#x1F9F3;</div>
+            <div class="layer-name" style="color: #D97706;">Pipes</div>
+            <div class="layer-desc">Validate &amp; transform inputs; <code>ParseIntPipe</code>, <code>ParseUUIDPipe</code>, <code>ValidationPipe</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6A8;</div>
+            <div class="layer-name" style="color: var(--red);">Exception Filters</div>
+            <div class="layer-desc">Catch any throw; format errors uniformly; the last line of defense.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 4:</strong> the Data Layer. Time to retire the in-memory array and put a real database behind <code>FlightsService</code>. We'll set up Prisma, generate a typed client, run migrations, and rewrite the service so the controller doesn't notice. We'll also briefly compare TypeORM and discuss when each is the right pick.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Add a global LoggingMiddleware</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Create a <code>LoggerMiddleware</code> (class form, with <code>@Injectable</code>) that logs every request as <code>${method} ${url} - ${responseTime}ms</code></li>
+                    <li>Wire it via <code>configure()</code> in <code>AppModule</code> with <code>.forRoutes('*')</code></li>
+                    <li>Hit a few endpoints (<code>GET /flights</code>, <code>POST /users</code>, etc.)</li>
+                    <li>Take a <strong>screenshot</strong> of your terminal showing 3+ requests logged with timing</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Push the pipeline additions</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Push to your existing <code>nestjs-course-yourname</code> repo: at minimum the LoggerMiddleware, an <code>ApiKeyGuard</code> applied to one route, and a <code>TimingInterceptor</code></li>
+                    <li>Submit the link to the commit (or PR)</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Quick answer: Guard vs Pipe</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In your own words, 2&ndash;4 sentences: what's the difference between a Guard and a Pipe? When would you use each?</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>RolesGuard</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add a <code>RolesGuard</code> that reads <code>X-User-Role</code> from the request header (we'll wire real auth in Lesson 5 &mdash; for now just trust the header). Apply it to one admin-only route (e.g. <code>DELETE /flights/:id</code>) so it returns 403 unless the role is <code>admin</code>. Take a <strong>screenshot</strong> of two requests &mdash; one with <code>X-User-Role: admin</code> succeeding, one with <code>X-User-Role: user</code> getting a 403.</p>
+                <p style="font-size: 14px; color: var(--gray-500);">Hint: same shape as <code>ApiKeyGuard</code>, but read a different header and check a different value.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>UpperCaseInterceptor</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Build a custom <code>UpperCaseInterceptor</code> that walks the response object and uppercases every string value. Apply it to one endpoint (e.g. <code>GET /flights</code>) using <code>@UseInterceptors()</code>. Take a <strong>screenshot</strong> showing the same endpoint with and without the interceptor &mdash; before/after.</p>
+                <p style="font-size: 14px; color: var(--gray-500);">Hint: use <code>map(data =&gt; ...)</code> from RxJS. Recursive walk: if value is a string, uppercase; if object, recurse; if array, map.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 3 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: The Data Layer &mdash; Prisma &amp; TypeORM</p>
+    </div>
+
+</div>
+
+</body>
+</html>

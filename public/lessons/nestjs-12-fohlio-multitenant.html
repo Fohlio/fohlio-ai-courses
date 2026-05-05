@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 12</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .recap-card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 13px;
+        }
+        .recap-card.current {
+            background: var(--green-light);
+            border-color: var(--green);
+        }
+        .recap-card .recap-num {
+            font-weight: 700;
+            color: var(--blue);
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+        .recap-card.current .recap-num {
+            color: var(--green);
+        }
+        .recap-card .recap-desc {
+            color: var(--gray-700);
+            margin-top: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 12 of 12</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Workspace isolation, stateful JWT, Socket.IO at scale, and the worker process</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand multi-tenancy at Fohlio &mdash; one app, many workspaces, zero leaks</li>
+            <li>Read the real <code>@CurrentUser()</code> decorator and use it in your own controllers</li>
+            <li>Know why pure JWT is unsafe at scale and what stateful Redis sessions add</li>
+            <li>Configure <code>RedisIoAdapter</code> so Socket.IO survives horizontal scaling</li>
+            <li>Split your app into a separate API process and a worker process</li>
+            <li>See how Sentry, Helmet, ValidationPipe, and Swagger are wired in production</li>
+            <li>Finish the course &mdash; the airport is yours</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUICK RECAP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Quick Recap &mdash; Twelve Lessons in One Glance</h2>
+
+    <p>You've shipped eleven lessons of structure, request pipeline, data, auth, validation, REST, async, real-time, and production polish. Lesson 11 toured Fohlio's static skeleton &mdash; the file tree, the modules, the repositories, the ORM. Lesson 12 covers the <strong>runtime</strong>: how Fohlio handles many tenants on a single app, how JWT becomes safe at scale, and why the worker runs as a separate Node process.</p>
+
+    <div class="recap-grid">
+        <div class="recap-card"><div class="recap-num">L1</div><div class="recap-desc">Why NestJS &mdash; the airport mental model</div></div>
+        <div class="recap-card"><div class="recap-num">L2</div><div class="recap-desc">Modules, controllers, providers</div></div>
+        <div class="recap-card"><div class="recap-num">L3</div><div class="recap-desc">Pipeline: middleware, guards, pipes, filters</div></div>
+        <div class="recap-card"><div class="recap-num">L4</div><div class="recap-desc">Data layer, repositories, migrations</div></div>
+        <div class="recap-card"><div class="recap-num">L5</div><div class="recap-desc">Auth, JWT, RBAC, hardening</div></div>
+        <div class="recap-card"><div class="recap-num">L6</div><div class="recap-desc">Validation, DTOs, serialization</div></div>
+        <div class="recap-card"><div class="recap-num">L7</div><div class="recap-desc">REST, Swagger, GraphQL at scale</div></div>
+        <div class="recap-card"><div class="recap-num">L8</div><div class="recap-desc">BullMQ, EventEmitter, cache, cron</div></div>
+        <div class="recap-card"><div class="recap-num">L9</div><div class="recap-desc">Microservices, WebSockets, SSE, hybrid</div></div>
+        <div class="recap-card"><div class="recap-num">L10</div><div class="recap-desc">Production-ready capstone</div></div>
+        <div class="recap-card"><div class="recap-num">L11</div><div class="recap-desc">Fohlio in the wild &mdash; the file skeleton</div></div>
+        <div class="recap-card current"><div class="recap-num">L12 (today)</div><div class="recap-desc">Multi-tenancy, stateful JWT + Redis, Socket.IO at scale, worker process, Sentry</div></div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Where this lesson lives in the analogy:</strong> the airport now serves <em>multiple airlines</em> (workspaces). The same gates, same security, same baggage system &mdash; but Delta passengers never see United's manifest. We're going to look at exactly how Fohlio enforces that.</p>
+    </div>
+
+    <p>Here's the airline mapping at a glance, before we dive in:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x2708;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Workspace</div>
+            <div class="layer-desc">An airline at the airport. Same gates, separate manifest.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F516;</div>
+            <div class="layer-name" style="color: var(--blue);">workspaceId</div>
+            <div class="layer-desc">The airline-code stamp on every record.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F477;</div>
+            <div class="layer-name" style="color: var(--green);">@CurrentUser()</div>
+            <div class="layer-desc">The gate agent reading the boarding pass &mdash; instantly knows airline + passenger.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--orange);">JWT + AuthStateService</div>
+            <div class="layer-desc">Boarding pass + live do-not-fly list. One has signature; the other can revoke.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4E2;</div>
+            <div class="layer-name" style="color: var(--blue);">RedisIoAdapter</div>
+            <div class="layer-desc">Airport-wide PA: one announcement reaches every terminal.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--red);">Worker process</div>
+            <div class="layer-desc">Maintenance hangar across the runway. Separate building, same airport.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4FB;</div>
+            <div class="layer-name" style="color: var(--purple);">Sentry-first import</div>
+            <div class="layer-desc">Incident response radios on before the airport opens for business.</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: MULTI-TENANCY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Multi-tenancy &mdash; One Airport, Many Airlines</h2>
+
+    <p>Fohlio is a multi-tenant SaaS. A single deployed instance serves dozens of customer companies (we call them <strong>workspaces</strong>). Their data shares the same Postgres, the same Redis, the same Node processes &mdash; but it must <strong>never</strong> cross. A Delta gate agent can never accidentally hand a United passenger's boarding pass to someone else.</p>
+
+    <div class="story-box">
+        <p>Picture LAX. One airport. Same TSA, same baggage carousels, same air traffic control. But each airline has its own counters, its own manifest, its own cargo hold. A Delta agent at gate 12 can see <em>every</em> Delta passenger today &mdash; because that's their job &mdash; but they can't see anyone flying United, even though United departs from gate 14 right next door.</p>
+        <p>That's Fohlio. A workspace is an airline. Every passenger (user), every flight (project), every piece of cargo (project item) carries an airline-code stamp &mdash; the <strong>workspaceId</strong>. Every query at every layer filters by that stamp. Always.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Workspace = Airline. <code>workspaceId</code> = the airline-code stamp on every record. <code>@CurrentUser()</code> = the gate agent who reads your boarding pass and instantly knows which airline you're with.
+        </div>
+    </div>
+
+    <h3>The cardinal rule</h3>
+
+    <p>Every entity that can belong to a customer has a <code>workspaceId</code> (or a <code>workspace</code> relation). Every <code>SELECT</code>, every <code>UPDATE</code>, every <code>DELETE</code> includes <code>workspace_id = $1</code> in the <code>WHERE</code> clause. Forgetting this on a single query is not a bug &mdash; it is a <em>data leak</em>. There is no second chance.</p>
+
+    <p>The architectural rule is documented in <code>asuncion/architecture.md</code> as a non-negotiable: <em>&ldquo;Every workspace-scoped query MUST include the workspace filter. This is a security requirement &mdash; a missing filter leaks data across tenants. The <code>workspaceId</code> comes from the URL param (nested routes) or <code>@CurrentUser().workspaceId</code> from the JWT. Controllers pass it to services; services pass it to repositories.&rdquo;</em></p>
+
+    <p>Note the chain: <strong>controller &rarr; service &rarr; repository</strong>, with <code>workspaceId</code> threading through every step. No hidden context, no implicit lookups. The argument is in every signature.</p>
+
+    <h3>Real code, three layers</h3>
+
+    <p>Here's a real Fohlio repository method &mdash; <code>InvitationRepository.findAllByWorkspaceId</code> from <code>src/modules/invitations/repositories/invitation.repository.ts</code>:</p>
+
+    <pre><code><span class="keyword">async</span> <span class="function">findAllByWorkspaceId</span>(
+  workspaceId: <span class="type">string</span>,
+  cursor?: <span class="type">string</span>,
+  limit: <span class="type">number</span> = <span class="string">20</span>,
+): <span class="type">Promise</span>&lt;<span class="type">InvitationPage</span>&gt; {
+  <span class="keyword">const</span> take = limit + <span class="string">1</span>;
+
+  <span class="keyword">const</span> where: <span class="type">Record</span>&lt;<span class="type">string</span>, <span class="type">unknown</span>&gt; = { workspace: workspaceId };
+  <span class="comment">// ...cursor pagination, but the workspace filter is non-negotiable</span>
+}</code></pre>
+
+    <p>And a real controller method &mdash; <code>ProjectsController.findAll</code> from <code>src/modules/projects/projects.controller.ts</code>:</p>
+
+    <pre><code><span class="decorator">@Get</span>()
+<span class="decorator">@Permissions</span>(<span class="string">'projects_view'</span>)
+<span class="keyword">async</span> <span class="function">findAll</span>(
+  <span class="decorator">@Param</span>(<span class="string">'workspaceId'</span>) workspaceId: <span class="type">string</span>,
+  <span class="decorator">@Query</span>() query: <span class="type">ListProjectsQueryDto</span>,
+  <span class="decorator">@CurrentUser</span>() user: <span class="type">CurrentUserPayload</span>,
+) {
+  <span class="keyword">return</span> <span class="keyword">this</span>.projectsService.<span class="function">listPageForUser</span>({
+    workspaceId,
+    userId: user.userId,
+    filter: query.filter,
+    cursor: query.cursor,
+    limit: query.limit,
+  });
+}</code></pre>
+
+    <p>Two important details. First, <code>workspaceId</code> comes from the URL (<code>POST /workspaces/:workspaceId/projects</code>) &mdash; it's a <strong>nested route</strong>. Second, the <code>WorkspaceScopeGuard</code> (see <code>src/modules/auth/guards/workspace-scope.guard.ts</code>) compares the URL's <code>workspaceId</code> against the JWT's <code>wsId</code>. If they differ, you get a 403. The user can't reach into a workspace they're not in, even if they edit the URL.</p>
+
+    <p>The route nesting is set up at the module level &mdash; from <code>architecture.md</code>:</p>
+
+    <pre><code><span class="function">RouterModule</span>.<span class="function">register</span>([
+  {
+    path: <span class="string">'workspaces'</span>,
+    module: WorkspacesModule,
+    children: [{ path: <span class="string">'/:workspaceId/users'</span>, module: UsersModule }],
+  },
+]);</code></pre>
+
+    <p>Every users-related URL becomes <code>/workspaces/:workspaceId/users/...</code>. The <code>:workspaceId</code> param is structurally part of the route &mdash; you cannot accidentally hit <code>/users</code> without specifying which workspace. The shape of the URL itself enforces the multi-tenant contract.</p>
+
+    <div class="info-box red">
+        <p><strong>Cardinal sin:</strong> forgetting <code>workspaceId</code> on one <code>SELECT</code> leaks data across companies. Forgetting it on one <code>DELETE</code> destroys someone else's data. There is no recovery for either of these in production. This is why Fohlio has a layered defense: a guard at the controller, the <code>workspaceId</code> threaded through every service argument, and explicit filters in every repository method.</p>
+    </div>
+
+    <h3>Two architectural patterns to make this safe</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F6E1;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--blue);">Cut at the controller</div>
+            <div class="card-subtitle" style="color: var(--blue);">URL param + Guard</div>
+            <div class="card-desc">Workspace is a URL param (<code>:workspaceId</code>). A guard validates it matches the JWT. Services receive it as a typed argument. This is what Fohlio uses today.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F50D;</div>
+            <div class="card-title" style="color: var(--purple);">Auto-inject via base repo</div>
+            <div class="card-subtitle" style="color: var(--purple);">CLS-context filter</div>
+            <div class="card-desc">A base repository reads <code>workspaceId</code> from request-scoped context (<code>nestjs-cls</code>) and injects it into every query. Less boilerplate, harder to debug.</div>
+        </div>
+    </div>
+
+    <p>Fohlio uses the explicit pattern. Yes, you write <code>workspaceId</code> in every service argument. Yes, it's verbose. The trade-off is intentional: <strong>data isolation should be visible in code, not implicit in middleware</strong>. When a senior engineer reads a service method, they should see the workspace filter at a glance.</p>
+
+    <h3>The WorkspaceScopeGuard &mdash; the second line of defense</h3>
+
+    <p>Even with explicit filters, mistakes happen. That's why Fohlio adds a guard layer that runs <em>before</em> the controller body. From <code>src/modules/auth/guards/workspace-scope.guard.ts</code>:</p>
+
+    <pre><code><span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> WorkspaceScopeGuard <span class="keyword">implements</span> CanActivate {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> reflector: <span class="type">Reflector</span>) {}
+
+  <span class="function">canActivate</span>(context: <span class="type">ExecutionContext</span>): <span class="type">boolean</span> {
+    <span class="keyword">const</span> request = context.<span class="function">switchToHttp</span>().<span class="function">getRequest</span>&lt;{
+      user: <span class="type">JwtAccessPayload</span>;
+      params: <span class="type">Record</span>&lt;<span class="type">string</span>, <span class="type">string</span>&gt;;
+    }&gt;();
+
+    <span class="keyword">const</span> workspaceId = request.params[<span class="string">'workspaceId'</span>];
+    <span class="keyword">if</span> (!workspaceId) {
+      <span class="keyword">return</span> <span class="keyword">true</span>;        <span class="comment">// not a workspace-scoped route</span>
+    }
+
+    <span class="keyword">const</span> { wsId } = request.user;
+    <span class="keyword">if</span> (!wsId || wsId !== workspaceId) {
+      <span class="keyword">throw new</span> <span class="function">ForbiddenException</span>();
+    }
+    <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+}</code></pre>
+
+    <p>This guard runs on every request to a route under <code>/workspaces/:workspaceId/...</code>. It compares the URL's <code>workspaceId</code> param to the JWT's <code>wsId</code>. Mismatch &rarr; 403 instantly. The user can craft any URL they want; if the JWT says they belong to <code>ws_001</code> and they ask for <code>ws_002</code>'s projects, the guard kills the request before the controller method even runs. <strong>Defense in depth:</strong> URL guards + repository filters + assemblers stripping internal fields. Three layers, because one layer always eventually has a bug.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6A8;</div>
+        Junior dev: &ldquo;I removed the <code>workspace</code> filter &mdash; the query was simpler that way.&rdquo;<br>
+        Reviewer: &ldquo;Did the test pass?&rdquo;<br>
+        Junior dev: &ldquo;Yes, all green.&rdquo;<br>
+        Reviewer: &ldquo;Did you test with two workspaces?&rdquo;<br>
+        Junior dev: &ldquo;...there was only one in the seed.&rdquo;<br>
+        <em>Multi-tenancy bugs hide in single-tenant test data. Always seed two.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Stop and think before reading on</div>
+        <div class="recall-question">Two scenarios. Predict the worst-case impact:<br><br>
+        1. A new <code>GET /reports</code> endpoint forgets the <code>workspace</code> filter on its <code>SELECT</code>. Customer A logs in. What do they see?<br>
+        2. A migration script runs <code>DELETE FROM projects WHERE archived = true</code> &mdash; no <code>workspace_id</code> condition. What's the blast radius?</div>
+        <div class="recall-hint">If you flinched at #2, good. That's the right reflex. The fix in both cases is the same: every query carries the workspace stamp.</div>
+    </div>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="360" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">One App, Many Workspaces &mdash; the workspaceId stamp on every record</text>
+
+            <!-- Three workspace lanes -->
+            <rect x="30" y="60" width="220" height="240" rx="12" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="140" y="84" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Workspace: Delta</text>
+            <text x="140" y="102" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">wsId = "ws_001"</text>
+            <rect x="50" y="120" width="180" height="28" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="60" y="138" font-family="JetBrains Mono" font-size="11" fill="#374151">project A &mdash; ws_001</text>
+            <rect x="50" y="156" width="180" height="28" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="60" y="174" font-family="JetBrains Mono" font-size="11" fill="#374151">project B &mdash; ws_001</text>
+            <rect x="50" y="192" width="180" height="28" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="60" y="210" font-family="JetBrains Mono" font-size="11" fill="#374151">user X &mdash; ws_001</text>
+            <rect x="50" y="228" width="180" height="28" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="60" y="246" font-family="JetBrains Mono" font-size="11" fill="#374151">item P1 &mdash; ws_001</text>
+
+            <rect x="270" y="60" width="220" height="240" rx="12" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="380" y="84" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#DC2626">Workspace: United</text>
+            <text x="380" y="102" text-anchor="middle" font-family="Inter" font-size="11" fill="#DC2626">wsId = "ws_002"</text>
+            <rect x="290" y="120" width="180" height="28" rx="6" fill="white" stroke="#FCA5A5"/>
+            <text x="300" y="138" font-family="JetBrains Mono" font-size="11" fill="#374151">project C &mdash; ws_002</text>
+            <rect x="290" y="156" width="180" height="28" rx="6" fill="white" stroke="#FCA5A5"/>
+            <text x="300" y="174" font-family="JetBrains Mono" font-size="11" fill="#374151">user Y &mdash; ws_002</text>
+            <rect x="290" y="192" width="180" height="28" rx="6" fill="white" stroke="#FCA5A5"/>
+            <text x="300" y="210" font-family="JetBrains Mono" font-size="11" fill="#374151">item Q1 &mdash; ws_002</text>
+            <rect x="290" y="228" width="180" height="28" rx="6" fill="white" stroke="#FCA5A5"/>
+            <text x="300" y="246" font-family="JetBrains Mono" font-size="11" fill="#374151">item Q2 &mdash; ws_002</text>
+
+            <rect x="510" y="60" width="220" height="240" rx="12" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="620" y="84" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">Workspace: Lufthansa</text>
+            <text x="620" y="102" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C">wsId = "ws_003"</text>
+            <rect x="530" y="120" width="180" height="28" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="540" y="138" font-family="JetBrains Mono" font-size="11" fill="#374151">project D &mdash; ws_003</text>
+            <rect x="530" y="156" width="180" height="28" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="540" y="174" font-family="JetBrains Mono" font-size="11" fill="#374151">user Z &mdash; ws_003</text>
+
+            <text x="380" y="335" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280" font-style="italic">One Postgres database. One Redis. One Node process. Three airlines that must never see each other.</text>
+        </svg>
+        <div class="diagram-caption">Same airport, three airlines &mdash; isolation enforced by the workspaceId stamp on every row</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: @CurrentUser DECORATOR -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: The @CurrentUser Decorator &mdash; Typed Identity, One Argument</h2>
+
+    <p>The gate agent reads the boarding pass. They know your seat, your flight, your airline &mdash; instantly, every time, without you spelling it out. <code>@CurrentUser()</code> is that gate agent for every Fohlio controller method.</p>
+
+    <p>Here is the actual file &mdash; <code>src/common/decorators/current-user.decorator.ts</code>, every line of it:</p>
+
+    <pre><code><span class="keyword">import</span> { createParamDecorator, <span class="keyword">type</span> ExecutionContext } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import type</span> {
+  JwtAccessPayload,
+  CurrentUserPayload,
+} <span class="keyword">from</span> <span class="string">'../../modules/auth/types/jwt-payload.types.js'</span>;
+
+<span class="keyword">export const</span> CurrentUser = <span class="function">createParamDecorator</span>(
+  (_data: <span class="type">unknown</span>, ctx: <span class="type">ExecutionContext</span>): <span class="type">CurrentUserPayload</span> =&gt; {
+    <span class="keyword">const</span> request = ctx.<span class="function">switchToHttp</span>().<span class="function">getRequest</span>&lt;{ user: <span class="type">JwtAccessPayload</span> }&gt;();
+    <span class="keyword">return</span> {
+      userId: request.user.sub,
+      workspaceId: request.user.wsId,
+    };
+  },
+);</code></pre>
+
+    <p>Sixteen lines. That's the whole thing. Note what it does and what it doesn't do:</p>
+
+    <ul style="margin: 0 0 16px 24px; color: var(--gray-700);">
+        <li>It does <strong>not</strong> verify the JWT. The <code>JwtAuthGuard</code> already did that &mdash; see <code>src/modules/auth/guards/jwt-auth.guard.ts</code> &mdash; and stuck the decoded payload onto <code>request.user</code>.</li>
+        <li>It does <strong>not</strong> hit the database. Identity comes from the signed token, not from a query.</li>
+        <li>It <em>does</em> reshape the raw JWT payload (<code>{ sub, wsId, type, ... }</code>) into a domain-friendly object (<code>{ userId, workspaceId }</code>).</li>
+    </ul>
+
+    <p>And here's the typed payload it returns &mdash; from <code>src/modules/auth/types/jwt-payload.types.ts</code>:</p>
+
+    <pre><code><span class="keyword">export interface</span> JwtAccessPayload {
+  sub: <span class="type">string</span>;            <span class="comment">// userId (BigInt as string)</span>
+  wsId?: <span class="type">string</span>;          <span class="comment">// workspaceId, optional until switch-workspace</span>
+  type: <span class="string">'access'</span>;
+  impersonatedBy?: <span class="type">string</span>;
+  iat?: <span class="type">number</span>;
+  exp?: <span class="type">number</span>;
+}
+
+<span class="keyword">export interface</span> CurrentUserPayload {
+  userId: <span class="type">string</span>;
+  workspaceId?: <span class="type">string</span>;
+}</code></pre>
+
+    <h3>Using it</h3>
+
+    <p>Once it exists, <em>every</em> controller method that needs identity gets it as a typed parameter:</p>
+
+    <pre><code><span class="decorator">@Get</span>(<span class="string">'me'</span>)
+<span class="function">getMe</span>(<span class="decorator">@CurrentUser</span>() user: <span class="type">CurrentUserPayload</span>) {
+  <span class="keyword">return</span> {
+    userId: user.userId,
+    workspaceId: user.workspaceId,
+  };
+}
+
+<span class="decorator">@Post</span>(<span class="string">'projects'</span>)
+<span class="function">create</span>(
+  <span class="decorator">@Body</span>() dto: <span class="type">CreateProjectDto</span>,
+  <span class="decorator">@CurrentUser</span>() user: <span class="type">CurrentUserPayload</span>,
+) {
+  <span class="keyword">return</span> <span class="keyword">this</span>.projectsService.<span class="function">create</span>({
+    actorId: user.userId,
+    workspaceId: user.workspaceId!,
+    ...dto,
+  });
+}</code></pre>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        New dev: &ldquo;Where do I get the userId? Should the frontend send it in the body?&rdquo;<br>
+        Senior dev: &ldquo;Never trust the client for identity. Read it from <code>req.user</code>.&rdquo;<br>
+        New dev: &ldquo;Like <code>req.user.sub</code>?&rdquo;<br>
+        Senior dev: &ldquo;Use <code>@CurrentUser()</code>. It's typed.&rdquo;<br>
+        New dev: &ldquo;Wait &mdash; so the boarding pass <em>is</em> the userId?&rdquo;<br>
+        <em>The decorator is the gate agent. Stop drilling into <code>req</code>.</em>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Why this matters:</strong> Fohlio has hundreds of endpoints. Each one needs <code>userId</code> and <code>workspaceId</code>. Without the decorator: every controller imports types, drills into <code>req.user</code>, casts to the right shape, handles missing fields. With it: one parameter, one type, zero ceremony. This is the highest-leverage 16 lines in the codebase.</p>
+    </div>
+
+    <h3>How <code>request.user</code> got there in the first place</h3>
+
+    <p>The decorator reads <code>request.user</code>. Who set it? The <code>JwtAuthGuard</code>, applied globally. From <code>src/modules/auth/guards/jwt-auth.guard.ts</code> (excerpted):</p>
+
+    <pre><code><span class="function">canActivate</span>(context: <span class="type">ExecutionContext</span>): <span class="type">boolean</span> {
+  <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="function">isPublic</span>(context)) <span class="keyword">return</span> <span class="keyword">true</span>;
+
+  <span class="keyword">const</span> token = <span class="keyword">this</span>.<span class="function">extractRawToken</span>(context);
+  <span class="keyword">if</span> (!token) {
+    <span class="keyword">this</span>.<span class="function">throwException</span>(<span class="string">'Unauthorized'</span>, context);
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  }
+
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> payload = <span class="keyword">this</span>.jwtService.<span class="function">verify</span>(token, {
+      secret: <span class="keyword">this</span>.configService.<span class="function">get</span>(<span class="string">'JWT_ACCESS_SECRET'</span>),
+    });
+    <span class="keyword">if</span> (payload.type === <span class="string">'refresh'</span>) {
+      <span class="keyword">this</span>.<span class="function">throwException</span>(<span class="string">'Unauthorized'</span>, context);
+      <span class="keyword">return</span> <span class="keyword">false</span>;
+    }
+    <span class="keyword">this</span>.<span class="function">updateContext</span>(payload, context);  <span class="comment">// → request.user = payload</span>
+  } <span class="keyword">catch</span> {
+    <span class="keyword">this</span>.<span class="function">throwException</span>(<span class="string">'Unauthorized'</span>, context);
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+  }
+
+  <span class="keyword">return</span> <span class="keyword">true</span>;
+}</code></pre>
+
+    <p>Three details worth flagging. First, the guard handles <strong>both</strong> HTTP and WebSocket contexts &mdash; a Fohlio peculiarity, since one auth flow has to cover both REST and Socket.IO. Second, it explicitly rejects refresh tokens (<code>type === 'refresh'</code>) on access endpoints &mdash; a refresh token must <em>only</em> be used at the refresh endpoint. Third, <code>@Public()</code>-decorated routes opt out, which is how the login endpoint can be reached without a token in the first place.</p>
+
+    <p>This is the contract: the guard verifies the token and stuffs the payload onto the request. The decorator reads it back, typed. Together they replace what would otherwise be a tangle of <code>req.headers.authorization</code> parsing in every controller.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: STATEFUL JWT + REDIS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Stateful JWT + Redis &mdash; The "Do Not Fly" List</h2>
+
+    <p>Lesson 5 introduced JWT. JWT is great. JWT is also, by default, <em>stateless</em> &mdash; and that's the problem.</p>
+
+    <h3>The pure-JWT problem</h3>
+
+    <p>A signed JWT is a printed boarding pass. Once issued, it is <strong>valid until expiry</strong>. The server never asked Redis &ldquo;is this token still good?&rdquo; &mdash; it just verified the signature and the timestamp. Whoever holds the pass walks through.</p>
+
+    <p>Now imagine: 9:00 AM, an employee is fired. 9:01 AM, IT disables their account. 9:02 AM, that employee &mdash; with the JWT they got at 8:45 &mdash; downloads the entire customer list. The signature is still valid. The expiry hasn't hit. Pure JWT cannot stop them.</p>
+
+    <div class="story-box">
+        <p>The fix is the airport's <strong>do-not-fly list</strong>. The boarding pass is still printed and still valid-looking. But security has a live list at the desk that they check against, every single time. Boarding pass + matching name on the live list = you fly. Boarding pass alone = not enough.</p>
+        <p>That's stateful JWT. The signature proves the token is authentic. Redis answers &ldquo;is this user's session still active?&rdquo; on every request. If the answer is no, you're out &mdash; even though your token would happily verify in a vacuum.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> JWT alone = printed boarding pass. Redis lookup (AuthStateService) = the live do-not-fly list checked at the security desk. Every request checks both.
+        </div>
+    </div>
+
+    <h3>The real Fohlio AuthStateService</h3>
+
+    <p>From <code>src/modules/auth/auth-state.service.ts</code> &mdash; key methods, paraphrased to fit:</p>
+
+    <pre><code><span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> AuthStateService {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> redisService: <span class="type">RedisService</span>) {}
+
+  <span class="comment">// Active refresh session, keyed by userId. Logout = del. </span>
+  <span class="keyword">async</span> <span class="function">storeRefreshSession</span>(
+    userId: <span class="type">string</span>,
+    sessionId: <span class="type">string</span>,
+    ttlSeconds: <span class="type">number</span>,
+  ): <span class="type">Promise</span>&lt;<span class="type">void</span>&gt; {
+    <span class="keyword">await</span> <span class="keyword">this</span>.redisService.cacheClient.<span class="function">set</span>(
+      <span class="string">`refresh_session:</span>${userId}<span class="string">`</span>,
+      sessionId,
+      <span class="string">'EX'</span>,
+      ttlSeconds,
+    );
+  }
+
+  <span class="keyword">async</span> <span class="function">hasRefreshSession</span>(userId: <span class="type">string</span>, sessionId: <span class="type">string</span>): <span class="type">Promise</span>&lt;<span class="type">boolean</span>&gt; {
+    <span class="keyword">const</span> active = <span class="keyword">await</span> <span class="keyword">this</span>.redisService.cacheClient.<span class="function">get</span>(<span class="string">`refresh_session:</span>${userId}<span class="string">`</span>);
+    <span class="keyword">return</span> active === sessionId;
+  }
+
+  <span class="comment">// Brute-force defense: lock account after N failed logins.</span>
+  <span class="keyword">async</span> <span class="function">recordFailedLoginAttempt</span>(email: <span class="type">string</span>, lockoutSec: <span class="type">number</span>, max: <span class="type">number</span>) { <span class="comment">/* INCR + EX */</span> }
+  <span class="keyword">async</span> <span class="function">getLockoutTtlSeconds</span>(email: <span class="type">string</span>): <span class="type">Promise</span>&lt;<span class="type">number</span>&gt; { <span class="comment">/* TTL */</span> }
+
+  <span class="comment">// One-shot password reset tokens.</span>
+  <span class="keyword">async</span> <span class="function">storePasswordResetToken</span>(email: <span class="type">string</span>, hash: <span class="type">string</span>, ttl: <span class="type">number</span>) { <span class="comment">/* SET EX */</span> }
+  <span class="keyword">async</span> <span class="function">consumePasswordResetToken</span>(hash: <span class="type">string</span>): <span class="type">Promise</span>&lt;<span class="type">string</span> | <span class="keyword">null</span>&gt; { <span class="comment">/* GET + DEL */</span> }
+}</code></pre>
+
+    <p>Three live state machines live in Redis: <strong>active refresh sessions</strong>, <strong>account lockouts</strong>, and <strong>one-shot reset tokens</strong>. Each of them is something a stateless JWT cannot do.</p>
+
+    <h3>Pure JWT vs stateful JWT, side by side</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="380" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="26" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Pure JWT vs Stateful JWT &mdash; the Redis check is the difference</text>
+
+            <!-- LEFT: pure JWT -->
+            <rect x="20" y="50" width="350" height="310" rx="12" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="195" y="76" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#DC2626">Pure JWT (stateless)</text>
+
+            <rect x="40" y="92" width="310" height="34" rx="6" fill="white" stroke="#FCA5A5"/>
+            <text x="50" y="113" font-family="Inter" font-size="12" fill="#374151">1. Client sends Bearer &lt;jwt&gt;</text>
+
+            <rect x="40" y="132" width="310" height="34" rx="6" fill="white" stroke="#FCA5A5"/>
+            <text x="50" y="153" font-family="Inter" font-size="12" fill="#374151">2. Server verifies signature + expiry</text>
+
+            <rect x="40" y="172" width="310" height="34" rx="6" fill="white" stroke="#FCA5A5"/>
+            <text x="50" y="193" font-family="Inter" font-size="12" fill="#374151">3. Allow request</text>
+
+            <rect x="40" y="230" width="310" height="110" rx="6" fill="#FECACA"/>
+            <text x="50" y="252" font-family="Inter" font-weight="700" font-size="12" fill="#7F1D1D">Problem:</text>
+            <text x="50" y="272" font-family="Inter" font-size="11" fill="#7F1D1D">User fired? Token still valid until exp.</text>
+            <text x="50" y="290" font-family="Inter" font-size="11" fill="#7F1D1D">Password reset? Old tokens still valid.</text>
+            <text x="50" y="308" font-family="Inter" font-size="11" fill="#7F1D1D">Plan downgraded? Cached scopes still valid.</text>
+            <text x="50" y="326" font-family="Inter" font-size="11" fill="#7F1D1D">There is no off switch.</text>
+
+            <!-- RIGHT: stateful JWT -->
+            <rect x="390" y="50" width="350" height="310" rx="12" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="565" y="76" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">Stateful JWT (Fohlio)</text>
+
+            <rect x="410" y="92" width="310" height="34" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="420" y="113" font-family="Inter" font-size="12" fill="#374151">1. Client sends Bearer &lt;jwt&gt;</text>
+
+            <rect x="410" y="132" width="310" height="34" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="420" y="153" font-family="Inter" font-size="12" fill="#374151">2. Server verifies signature + expiry</text>
+
+            <rect x="410" y="172" width="310" height="34" rx="6" fill="#FFFBEB" stroke="#FCD34D" stroke-width="2"/>
+            <text x="420" y="193" font-family="Inter" font-weight="600" font-size="12" fill="#D97706">3. Redis: hasRefreshSession(userId, sid)?</text>
+
+            <rect x="410" y="212" width="310" height="34" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="420" y="233" font-family="Inter" font-size="12" fill="#374151">4. Match? Allow. No match? 401 instantly.</text>
+
+            <rect x="410" y="270" width="310" height="80" rx="6" fill="#A7F3D0"/>
+            <text x="420" y="290" font-family="Inter" font-weight="700" font-size="12" fill="#065F46">Benefit:</text>
+            <text x="420" y="308" font-family="Inter" font-size="11" fill="#065F46">User fired &rarr; del refresh_session &rarr; out.</text>
+            <text x="420" y="326" font-family="Inter" font-size="11" fill="#065F46">Password reset &rarr; rotate sid &rarr; everyone re-logs in.</text>
+            <text x="420" y="344" font-family="Inter" font-size="11" fill="#065F46">Plan downgrade &rarr; clear &rarr; immediate effect.</text>
+        </svg>
+        <div class="diagram-caption">One extra Redis hit per request. In exchange: an off switch you can pull at any time.</div>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Real-world scenarios this enables:</strong> employee fired (delete the refresh session, all their tokens stop working on next request); password changed (rotate the session id, every device must re-login); suspicious activity detected (set a lockout key, block logins for N minutes); plan downgraded (clear cached permissions); brute-force protection (count failed logins in Redis with a TTL). None of these are possible with pure JWT.</p>
+    </div>
+
+    <p><strong>The cost:</strong> one extra Redis round-trip per authenticated request. Redis is sub-millisecond on the same machine, ~1ms across a VPC. That is a price we cheerfully pay.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">Pure JWT, no Redis. An employee is fired at 9:00 AM. Their access token expires after 15 minutes; their refresh token after 7 days. <em>How long can the fired employee keep accessing the system?</em></div>
+        <div class="recall-hint">15 minutes minimum (the access token still works). Up to 7 days if they keep refreshing. With stateful JWT and a single Redis <code>DEL</code>: zero seconds.</div>
+    </div>
+
+    <h3>How AuthModule wires it together</h3>
+
+    <p>From <code>src/modules/auth/auth.module.ts</code>:</p>
+
+    <pre><code><span class="decorator">@Module</span>({
+  imports: [
+    UsersModule,
+    MailModule,
+    <span class="function">forwardRef</span>(() =&gt; WorkspacesModule),
+    RedisModule,
+    JwtModule.<span class="function">registerAsync</span>({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: <span class="type">ConfigService</span>) =&gt; ({
+        secret: configService.<span class="function">get</span>&lt;<span class="type">string</span>&gt;(<span class="string">'JWT_ACCESS_SECRET'</span>),
+      }),
+    }),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, AuthStateService, GoogleAuthProvider, JwtService],
+  exports: [AuthService, AuthStateService, JwtService, GoogleAuthProvider],
+})
+<span class="keyword">export class</span> AuthModule {}</code></pre>
+
+    <p>Three things to notice. <code>JwtModule.registerAsync</code> reads the secret from <code>ConfigService</code> &mdash; not a hardcoded constant, not <code>process.env</code> directly. <code>RedisModule</code> is imported because <code>AuthStateService</code> depends on it. And <code>AuthStateService</code> is exported, which is how guards in other modules can check session state. This is the airport's security operations center: one module owns the gate, the radios, and the do-not-fly list.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: SOCKET.IO AT SCALE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Socket.IO at Scale &mdash; the RedisIoAdapter</h2>
+
+    <p>Lesson 9 introduced WebSocket gateways. They work great &mdash; on one Node process. The moment you scale to N instances behind a load balancer, the in-memory connection map fragments. Instance A knows about its sockets. Instance B knows about its sockets. Neither knows about the other's.</p>
+
+    <p>Result: a notification emitted from instance A reaches half your users. The other half are connected to instance B and see nothing. &ldquo;It works on my laptop&rdquo; &mdash; because on your laptop there's only one instance.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4BB;</div>
+        Dev: &ldquo;The realtime feature works perfectly!&rdquo;<br>
+        QA: &ldquo;On staging, half the messages don't arrive.&rdquo;<br>
+        Dev: &ldquo;Strange, works on my machine.&rdquo;<br>
+        DevOps: &ldquo;Staging has 3 replicas. Your machine has 1.&rdquo;<br>
+        Dev: &ldquo;...&rdquo;<br>
+        <em>Single-process Socket.IO is a lie that scales right up to your first replica.</em>
+    </div>
+
+    <h3>The fix: airport-wide PA system</h3>
+
+    <p>The airport doesn't have separate announcements for each terminal &mdash; that would be chaos. There's one PA system, one signal, broadcast everywhere. <strong>RedisIoAdapter</strong> is that PA system for Socket.IO. Every <code>emit</code> goes to Redis pub/sub. Every instance subscribes. Every instance receives. Every connected client hears the announcement, no matter which instance they're on.</p>
+
+    <p>Here's Fohlio's adapter &mdash; <code>src/common/adapters/redis-io.adapter.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> { <span class="keyword">type</span> INestApplication } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { IoAdapter } <span class="keyword">from</span> <span class="string">'@nestjs/platform-socket.io'</span>;
+<span class="keyword">import</span> { <span class="keyword">type</span> Server, <span class="keyword">type</span> ServerOptions } <span class="keyword">from</span> <span class="string">'socket.io'</span>;
+<span class="keyword">import</span> { createAdapter } <span class="keyword">from</span> <span class="string">'@socket.io/redis-adapter'</span>;
+<span class="keyword">import</span> { RedisService } <span class="keyword">from</span> <span class="string">'../../modules/redis/redis.service.js'</span>;
+
+<span class="keyword">export class</span> RedisIoAdapter <span class="keyword">extends</span> IoAdapter {
+  <span class="keyword">private</span> adapterConstructor: <span class="type">ReturnType</span>&lt;<span class="keyword">typeof</span> createAdapter&gt;;
+  <span class="keyword">private readonly</span> redisService: <span class="type">RedisService</span>;
+
+  <span class="keyword">constructor</span>(app: <span class="type">INestApplication</span>) {
+    <span class="keyword">super</span>(app);
+    <span class="keyword">this</span>.redisService = app.<span class="function">get</span>(RedisService);
+  }
+
+  <span class="function">connectToRedis</span>() {
+    <span class="keyword">this</span>.adapterConstructor = <span class="function">createAdapter</span>(
+      <span class="keyword">this</span>.redisService.publisherClient,
+      <span class="keyword">this</span>.redisService.subscriberClient,
+    );
+  }
+
+  <span class="function">createIOServer</span>(port: <span class="type">number</span>, options?: <span class="type">ServerOptions</span>): <span class="type">Server</span> {
+    <span class="keyword">const</span> server = <span class="keyword">super</span>.<span class="function">createIOServer</span>(port, options) <span class="keyword">as</span> <span class="type">Server</span>;
+    server.<span class="function">adapter</span>(<span class="keyword">this</span>.adapterConstructor);
+    <span class="keyword">return</span> server;
+  }
+}</code></pre>
+
+    <p>Two Redis clients: a <code>publisherClient</code> (publishes events) and a <code>subscriberClient</code> (listens for events from other instances). The Socket.IO Redis adapter wires them into the Socket.IO server. Done. The wiring in <code>main.ts</code>:</p>
+
+    <pre><code><span class="keyword">function</span> <span class="function">bootstrapRedisAdapter</span>(app: <span class="type">INestApplication</span>) {
+  <span class="keyword">const</span> adapter = <span class="keyword">new</span> <span class="function">RedisIoAdapter</span>(app);
+  adapter.<span class="function">connectToRedis</span>();
+  app.<span class="function">useWebSocketAdapter</span>(adapter);
+}</code></pre>
+
+    <h3>Topology</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="400" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Three Node instances. One Redis. Every message reaches every client.</text>
+
+            <defs>
+                <marker id="arrPub" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#7C3AED"/>
+                </marker>
+                <marker id="arrSub" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <!-- Redis in middle -->
+            <rect x="320" y="160" width="120" height="70" rx="12" fill="#DC2626"/>
+            <text x="380" y="190" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="white">Redis</text>
+            <text x="380" y="210" text-anchor="middle" font-family="Inter" font-size="11" fill="white">pub/sub channel</text>
+
+            <!-- Instance A -->
+            <rect x="30" y="60" width="180" height="80" rx="10" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="120" y="85" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Node Instance A</text>
+            <text x="120" y="105" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">port 3000</text>
+            <text x="120" y="125" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3451B2">socket: client_1</text>
+
+            <!-- Instance B -->
+            <rect x="290" y="60" width="180" height="80" rx="10" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="380" y="85" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Node Instance B</text>
+            <text x="380" y="105" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">port 3001</text>
+            <text x="380" y="125" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3451B2">socket: client_2</text>
+
+            <!-- Instance C -->
+            <rect x="550" y="60" width="180" height="80" rx="10" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="640" y="85" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Node Instance C</text>
+            <text x="640" y="105" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">port 3002</text>
+            <text x="640" y="125" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3451B2">socket: client_3</text>
+
+            <!-- A publishes -->
+            <line x1="120" y1="140" x2="340" y2="170" stroke="#7C3AED" stroke-width="2" marker-end="url(#arrPub)"/>
+            <text x="170" y="158" font-family="Inter" font-size="10" fill="#7C3AED">publish</text>
+
+            <!-- B and C subscribe -->
+            <line x1="420" y1="170" x2="380" y2="140" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrSub)"/>
+            <line x1="430" y1="180" x2="560" y2="140" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrSub)"/>
+            <text x="490" y="158" font-family="Inter" font-size="10" fill="#1A8F5C">deliver</text>
+            <line x1="320" y1="180" x2="220" y2="140" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrSub)"/>
+
+            <!-- Clients below -->
+            <rect x="60" y="280" width="120" height="40" rx="8" fill="white" stroke="#3451B2"/>
+            <text x="120" y="305" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Client 1 (browser)</text>
+            <line x1="120" y1="140" x2="120" y2="280" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3,3"/>
+
+            <rect x="320" y="280" width="120" height="40" rx="8" fill="white" stroke="#3451B2"/>
+            <text x="380" y="305" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Client 2 (browser)</text>
+            <line x1="380" y1="140" x2="380" y2="280" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3,3"/>
+
+            <rect x="580" y="280" width="120" height="40" rx="8" fill="white" stroke="#3451B2"/>
+            <text x="640" y="305" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Client 3 (browser)</text>
+            <line x1="640" y1="140" x2="640" y2="280" stroke="#D1D5DB" stroke-width="1" stroke-dasharray="3,3"/>
+
+            <text x="380" y="365" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280" font-style="italic">Client 1 sends a chat message. Instance A publishes to Redis. B and C deliver to their clients.</text>
+        </svg>
+        <div class="diagram-caption">The Redis adapter turns N independent Socket.IO servers into one logical server</div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Real-world example:</strong> Fohlio's collaborative project items. Two users editing the same project from different browsers may land on different Node instances behind the load balancer. When user A saves a change, the WebSocket gateway emits <code>item.updated</code>. Without the Redis adapter, only users on instance A see the update. With it, every connected user sees it within milliseconds &mdash; collaborative editing, live notifications, presence indicators all become possible.</p>
+    </div>
+
+    <h3>Authentication on the WebSocket side</h3>
+
+    <p>One subtle thing about Fohlio's setup: the same <code>JwtAuthGuard</code> handles both HTTP and WebSocket auth. The guard sniffs the context type:</p>
+
+    <pre><code><span class="keyword">private</span> <span class="function">extractRawToken</span>(context: <span class="type">ExecutionContext</span>): <span class="type">string</span> | <span class="keyword">null</span> {
+  <span class="keyword">switch</span> (context.<span class="function">getType</span>()) {
+    <span class="keyword">case</span> <span class="string">'http'</span>:
+      <span class="keyword">return</span> <span class="keyword">this</span>.<span class="function">handleHttpRequest</span>(context.<span class="function">switchToHttp</span>().<span class="function">getRequest</span>());
+    <span class="keyword">case</span> <span class="string">'ws'</span>:
+      <span class="keyword">return</span> <span class="keyword">this</span>.<span class="function">handleWsRequest</span>(context.<span class="function">switchToWs</span>().<span class="function">getClient</span>());
+    <span class="keyword">case</span> <span class="string">'rpc'</span>:
+      <span class="keyword">return</span> <span class="keyword">null</span>;
+  }
+}
+
+<span class="keyword">private</span> <span class="function">handleWsRequest</span>(socket: <span class="type">Socket</span>): <span class="type">string</span> | <span class="keyword">null</span> {
+  <span class="keyword">return</span> socket.handshake?.auth?.token <span class="keyword">as</span> <span class="type">string</span> | <span class="keyword">null</span>;
+}</code></pre>
+
+    <p>HTTP grabs the token from <code>Authorization: Bearer ...</code>. WebSocket grabs it from the handshake's <code>auth.token</code>. Same identity flow, two transports. The decoded payload then lands either on <code>request.user</code> (HTTP) or <code>client.data.user</code> (WS), and the same <code>@CurrentUser()</code> decorator gives gateway methods their typed user payload.</p>
+
+    <div class="info-box purple">
+        <p><strong>Production gotcha:</strong> Socket.IO with <code>RedisIoAdapter</code> changes one critical assumption. With a single instance, the socket connection state is local memory &mdash; you can store user-to-socket mappings in a <code>Map</code> in the gateway. With Redis adapter, those maps fragment across instances. To target a specific user, use Socket.IO <em>rooms</em> (<code>socket.join(\`user:\${userId}\`)</code>) and emit to the room (<code>server.to(\`user:\${userId}\`).emit(...)</code>) &mdash; the adapter routes to whichever instance holds that user.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: THE WORKER PROCESS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: The Worker &mdash; A Separate Building Across the Runway</h2>
+
+    <p>In Lesson 8 we taught BullMQ. The natural question: where do those queue consumers actually run? Same Node process as the API? Same module? Some teams do exactly that. Fohlio doesn't &mdash; and the reason is architectural, not aesthetic.</p>
+
+    <div class="story-box">
+        <p>The maintenance hangar at a major airport is a <em>different building</em>. It's across the runway. It has its own electricity, its own fire suppression, its own staff schedule. Why? Because you don't want a tire repair to take down the passenger terminal. And a maintenance crew needs different equipment, different shifts, different scaling than gate agents.</p>
+        <p>Same airport, same flights served, but a separate building. That's the worker process at Fohlio. The API process is the terminal &mdash; it serves passenger requests fast, scales by traffic. The worker process is the hangar &mdash; it processes background jobs, scales by queue depth, can be restarted independently without dropping a single HTTP request.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Worker process (<code>src/worker/</code>) = the maintenance hangar across the runway. Same airport, same data, but its own building, its own crash domain, its own scaling profile.
+        </div>
+    </div>
+
+    <h3>Two entrypoints, one codebase</h3>
+
+    <p>Fohlio's repo has <em>two</em> Node entrypoints. Look at <code>package.json</code> &mdash; the scripts give it away:</p>
+
+    <pre><code><span class="comment">// from asuncion/package.json</span>
+<span class="string">"start"</span>: <span class="string">"nest start"</span>,
+<span class="string">"start:dev"</span>: <span class="string">"nest start --watch"</span>,
+<span class="string">"start:prod"</span>: <span class="string">"node dist/main"</span>,
+<span class="string">"start:worker:dev"</span>: <span class="string">"nest start --watch --entryFile worker/worker"</span>,
+<span class="string">"start:worker:debug"</span>: <span class="string">"nest start --debug --watch --entryFile worker/worker"</span>,
+<span class="string">"start:worker:prod"</span>: <span class="string">"node dist/worker/worker"</span>,</code></pre>
+
+    <p>Two binaries, same repo, same dependencies. Each spins up its own NestJS application. The worker entrypoint, in full &mdash; <code>src/worker/worker.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { WorkerModule } <span class="keyword">from</span> <span class="string">'./worker.module.js'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> worker = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(WorkerModule);
+  <span class="keyword">await</span> worker.<span class="function">listen</span>(process.env.WORKER_PORT ?? <span class="string">3001</span>);
+}
+
+<span class="keyword">await</span> <span class="function">bootstrap</span>();</code></pre>
+
+    <p>Nine lines. Different root module (<code>WorkerModule</code> instead of <code>AppModule</code>), different port, no Swagger, no global guards for HTTP routes &mdash; because there are no HTTP routes. From <code>src/worker/worker.module.ts</code>:</p>
+
+    <pre><code><span class="decorator">@Module</span>({
+  imports: [
+    AppModule,
+    MailModule,
+    ProjectItemsModule,
+    ProjectItemsDataModule,
+    CatalogDataModule,
+    CatalogSourcesModule,
+    CatalogConfigModule,
+  ],
+  providers: [MailConsumer, SyncCacheFanoutConsumer],
+})
+<span class="keyword">export class</span> WorkerModule {}</code></pre>
+
+    <p>The worker imports only what its consumers need. <code>MailConsumer</code> and <code>SyncCacheFanoutConsumer</code> live in <code>src/worker/consumers/</code> &mdash; they're regular BullMQ <code>@Processor</code> classes (Lesson 8 material), just registered in this separate module instead of in <code>AppModule</code>.</p>
+
+    <h3>Same process vs separate process</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F37D;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--red);">Same process</div>
+            <div class="card-subtitle" style="color: var(--red);">Easy in dev. Painful in prod.</div>
+            <div class="card-desc">One <code>npm start</code>. Easier to debug. But: a slow PDF job blocks event loop &rarr; HTTP latency spikes. A worker memory leak crashes the API. You scale workers by buying more API instances.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F3ED;</div>
+            <div class="card-title" style="color: var(--green);">Separate process</div>
+            <div class="card-subtitle" style="color: var(--green);">Two binaries. Two scaling axes.</div>
+            <div class="card-desc">Independent crash domain. Scale by queue depth, not API traffic. Different memory limits. Restart workers anytime &mdash; not a single HTTP request dropped. Two entrypoints to maintain; worth it.</div>
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Insight:</strong> this is the practical 80% of &ldquo;microservices&rdquo; without any of the cost. Same repo, same deploy pipeline, same team owns both binaries. You get independent scaling and crash isolation &mdash; the actual benefits of microservices &mdash; without service discovery, gRPC contracts, distributed tracing complexity, or duplicate boilerplate. Most teams who think they need microservices actually need this.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test</div>
+        <div class="recall-question">A long-running PDF generation job is stuck for 30 seconds. What happens to a user trying to <code>GET /projects</code> at the same time, in each setup?<br><br>
+        <strong>(a)</strong> Single-process API + workers. <strong>(b)</strong> Separate API process and worker process.</div>
+        <div class="recall-hint">(a) The HTTP request waits behind the blocked event loop &mdash; or fails the load balancer's health check. (b) The HTTP request returns in 50ms, oblivious to the worker's struggles.</div>
+    </div>
+
+    <h3>What lives in <code>src/worker/consumers/</code></h3>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        Eng A: &ldquo;Why don't we just run the worker as a setTimeout in the API process?&rdquo;<br>
+        Eng B: &ldquo;Let me know when you've shipped that to prod.&rdquo;<br>
+        Eng A: &ldquo;Done. It worked.&rdquo;<br>
+        Eng B: &ldquo;...for how long?&rdquo;<br>
+        Eng A (3 days later): &ldquo;The PDF job ate all the memory and crashed the API.&rdquo;<br>
+        <em>Co-located workers fail silently in dev and loudly in prod. Always.</em>
+    </div>
+
+    <p>Two consumers, both BullMQ <code>@Processor</code> classes:</p>
+
+    <div class="file-tree">src/worker/
+&#x251C;&#x2500;&#x2500; <span class="highlight">worker.ts</span>            <span class="comment">&larr; entrypoint, NestFactory.create(WorkerModule)</span>
+&#x251C;&#x2500;&#x2500; <span class="highlight">worker.module.ts</span>     <span class="comment">&larr; only the modules consumers need</span>
+&#x2514;&#x2500;&#x2500; <span class="dir">consumers/</span>
+    &#x251C;&#x2500;&#x2500; <span class="file">mail.consumer.ts</span>             <span class="comment">&larr; sends transactional emails via Postmark</span>
+    &#x2514;&#x2500;&#x2500; <span class="file">sync-cache-fanout.consumer.ts</span> <span class="comment">&larr; recomputes catalog cache when items change</span>
+    </div>
+
+    <p>The API process enqueues a job (<code>queue.add('mail.invitation', {...})</code>). The job sits in Redis. Whichever worker instance is free picks it up, runs the consumer, marks the job done. The API never knew. The worker can be restarted, deployed, scaled, debugged, OOM-killed and replaced &mdash; the API keeps serving 200s the entire time.</p>
+
+    <div class="info-box blue">
+        <p><strong>Operational reality:</strong> in production, Fohlio runs the API and the worker as separate Kubernetes deployments. The API has tighter memory limits but more replicas (HTTP traffic is bursty). The worker has higher memory limits but fewer replicas (jobs are CPU/RAM-heavy but throughput is steadier). They share the same Redis, the same Postgres, the same secrets &mdash; but they are scheduled, monitored, and scaled independently. <em>That's the architectural payoff for the extra <code>main.ts</code>.</em></p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: PRODUCTION HARDENING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Sentry Before Bootstrap, Helmet, Swagger, ValidationPipe</h2>
+
+    <p>The last piece is the order of operations in <code>main.ts</code>. It's deceptively important. Get the order wrong and the airport opens before the radios turn on.</p>
+
+    <h3>Sentry first &mdash; before <em>everything</em></h3>
+
+    <p>Look at the very first line of <code>src/main.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> <span class="string">'./instruments.js'</span>;
+
+<span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="comment">// ...everything else</span></code></pre>
+
+    <p>That side-effect import comes from <code>src/instruments.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> * <span class="keyword">as</span> Sentry <span class="keyword">from</span> <span class="string">'@sentry/nestjs'</span>;
+<span class="keyword">import</span> { config } <span class="keyword">from</span> <span class="string">'dotenv'</span>;
+
+<span class="function">config</span>();
+
+<span class="keyword">if</span> (process.env.SENTRY_DSN) {
+  Sentry.<span class="function">init</span>(<span class="function">{</span>
+    dsn: process.env.SENTRY_DSN,
+    sendDefaultPii: <span class="keyword">true</span>,
+  });
+}</code></pre>
+
+    <p>Sentry has to initialize <em>before</em> the modules it instruments are loaded. If you initialize Sentry on line 50, and NestFactory imports a module on line 30, the modules on line 30 won't have any of Sentry's hooks &mdash; their errors will silently disappear.</p>
+
+    <div class="story-box">
+        <p>The incident response team turns on its radios <em>before</em> the airport opens for business, not after the first crash. If a plane lands and there's a problem at 6:00 AM but radios don't come on until 6:05, those five minutes of incidents are invisible. Same with Sentry &mdash; the import order is the on-switch for the radios.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> <code>import './instruments.js'</code> as the first line of <code>main.ts</code> = the incident response team turning on radios before opening the airport.
+        </div>
+    </div>
+
+    <h3>The full bootstrap order</h3>
+
+    <p>From <code>src/main.ts</code> &mdash; what runs and in what order:</p>
+
+    <pre><code><span class="keyword">import</span> <span class="string">'./instruments.js'</span>;                    <span class="comment">// 0. Sentry FIRST</span>
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+  <span class="keyword">const</span> configService = app.<span class="function">get</span>(ConfigService);
+
+  <span class="function">bootstrapSecurity</span>(app, configService);          <span class="comment">// 1. Helmet</span>
+  <span class="function">bootstrapCors</span>(app, configService);              <span class="comment">// 2. CORS allowlist</span>
+
+  app.<span class="function">use</span>(<span class="function">json</span>({ limit: bodyLimit }));            <span class="comment">// 3. Body limit</span>
+  app.<span class="function">use</span>(<span class="function">urlencoded</span>({ extended: <span class="keyword">true</span>, limit: bodyLimit }));
+
+  app.<span class="function">enableVersioning</span>({ type: VersioningType.URI }); <span class="comment">// 4. /v1/...</span>
+
+  app.<span class="function">useGlobalPipes</span>(<span class="keyword">new</span> <span class="function">ValidationPipe</span>({         <span class="comment">// 5. Validation</span>
+    transform: <span class="keyword">true</span>,
+    whitelist: <span class="keyword">true</span>,
+    forbidNonWhitelisted: <span class="keyword">true</span>,
+  }));
+
+  <span class="keyword">if</span> (configService.<span class="function">get</span>(<span class="string">'SWAGGER_ENABLED'</span>) === <span class="string">'true'</span>) {
+    <span class="keyword">await</span> <span class="function">bootstrapSwagger</span>(app);                  <span class="comment">// 6. /docs (optional)</span>
+  }
+
+  <span class="function">bootstrapRedisAdapter</span>(app);                       <span class="comment">// 7. Socket.IO + Redis</span>
+
+  <span class="keyword">await</span> app.<span class="function">listen</span>(configService.<span class="function">get</span>(<span class="string">'PRIMARY_PORT'</span>) ?? <span class="string">3000</span>);
+}
+
+<span class="keyword">await</span> <span class="function">bootstrap</span>();</code></pre>
+
+    <h3>What each piece does</h3>
+
+    <h4>Helmet &mdash; with one important caveat</h4>
+
+    <pre><code><span class="comment">// from main.ts bootstrapSecurity()</span>
+app.<span class="function">use</span>(<span class="function">helmet</span>({
+  contentSecurityPolicy:
+    configService.<span class="function">get</span>(<span class="string">'SWAGGER_ENABLED'</span>) === <span class="string">'true'</span>
+      ? <span class="keyword">false</span>                <span class="comment">// CSP off when Swagger is mounted</span>
+      : { directives: cspDirectives },
+  crossOriginEmbedderPolicy: <span class="keyword">false</span>,
+}));</code></pre>
+
+    <p>Helmet sets a battery of security headers (<code>X-Content-Type-Options</code>, <code>Strict-Transport-Security</code>, etc.). The Swagger UI uses inline scripts &mdash; CSP would block them and the docs page would render broken. Solution: turn CSP off only when Swagger is enabled (typically dev/staging). In production, Swagger is off and CSP is on.</p>
+
+    <h4>ValidationPipe &mdash; the three flags that matter</h4>
+
+    <pre><code><span class="keyword">new</span> <span class="function">ValidationPipe</span>({
+  transform: <span class="keyword">true</span>,             <span class="comment">// raw plain objects → typed DTO instances</span>
+  whitelist: <span class="keyword">true</span>,             <span class="comment">// strip fields not in DTO</span>
+  forbidNonWhitelisted: <span class="keyword">true</span>,  <span class="comment">// 400 if extra fields are sent</span>
+})</code></pre>
+
+    <p>Three flags. <code>transform</code> means <code>@Body()</code> arrives as an actual <code>CreateProjectDto</code> instance, not a plain object. <code>whitelist</code> drops anything not declared in the DTO. <code>forbidNonWhitelisted</code> goes further: if the client sends an extra field, <em>reject</em> the request with a 400. This is Lesson 6 in production form.</p>
+
+    <h4>Swagger &mdash; with the @ApiBearerAuth dance</h4>
+
+    <pre><code><span class="comment">// from main.ts bootstrapSwagger()</span>
+<span class="keyword">const</span> options = <span class="keyword">new</span> <span class="function">DocumentBuilder</span>()
+  .<span class="function">setTitle</span>(<span class="string">'SpecHub API'</span>)
+  .<span class="function">setVersion</span>(<span class="string">'0.1.0'</span>)
+  .<span class="function">addBearerAuth</span>()
+  .<span class="function">build</span>();
+<span class="keyword">await</span> SwaggerModule.<span class="function">loadPluginMetadata</span>(metadata);
+<span class="keyword">const</span> document = SwaggerModule.<span class="function">createDocument</span>(app, options, {
+  deepScanRoutes: <span class="keyword">true</span>,
+});
+SwaggerModule.<span class="function">setup</span>(<span class="string">'docs'</span>, app, document);</code></pre>
+
+    <p><code>addBearerAuth()</code> tells Swagger UI to show the &ldquo;Authorize&rdquo; button. Endpoints decorated with <code>@ApiBearerAuth()</code> automatically have the lock icon and use the entered token. <code>loadPluginMetadata</code> + <code>deepScanRoutes</code> picks up DTO types from the SWC plugin's metadata file &mdash; without this you get tons of <code>any</code> in the generated schema.</p>
+
+    <div class="info-box red">
+        <p><strong>The order is non-trivial.</strong> Sentry must come before <code>NestFactory.create</code> &mdash; otherwise instrumentation hooks miss the modules being loaded. Helmet must come before route handlers &mdash; otherwise some headers don't make it onto the responses. ValidationPipe must be installed before <code>app.listen</code> &mdash; otherwise the first second of traffic skips validation. Most of these are silent failures: nothing crashes, things just don't work as intended. Verify by reading the boot logs and checking response headers.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4F8;</div>
+        Eng: &ldquo;Sentry isn't catching anything in prod.&rdquo;<br>
+        Senior: &ldquo;Where did you put <code>Sentry.init()</code>?&rdquo;<br>
+        Eng: &ldquo;After <code>NestFactory.create</code>. Felt natural.&rdquo;<br>
+        Senior: &ldquo;Move it to the top of <code>main.ts</code>. Top means top.&rdquo;<br>
+        Eng (next day): &ldquo;...we have 3,000 errors from the last week.&rdquo;<br>
+        <em>Instrumentation must wake up before the things it instruments.</em>
+    </div>
+
+    <h3>CORS, body limits, and URL versioning</h3>
+
+    <p>Three smaller pieces from the same <code>main.ts</code> that show how production hardening composes:</p>
+
+    <pre><code><span class="comment">// CORS allowlist from a comma-separated env var.</span>
+<span class="comment">// Bearer auth = no cookies = credentials:false (no preflight surprises).</span>
+<span class="keyword">const</span> frontendUrls = (configService.<span class="function">get</span>(<span class="string">'FRONTEND_URL'</span>) ?? <span class="string">''</span>)
+  .<span class="function">split</span>(<span class="string">','</span>)
+  .<span class="function">map</span>((s) =&gt; s.<span class="function">trim</span>())
+  .<span class="function">filter</span>(<span class="type">Boolean</span>);
+app.<span class="function">enableCors</span>({
+  origin: frontendUrls.length &gt; <span class="string">0</span> ? frontendUrls : <span class="keyword">false</span>,
+  credentials: <span class="keyword">false</span>,
+  methods: [<span class="string">'GET'</span>, <span class="string">'POST'</span>, <span class="string">'PATCH'</span>, <span class="string">'PUT'</span>, <span class="string">'DELETE'</span>, <span class="string">'OPTIONS'</span>],
+});
+
+<span class="comment">// Uploads go direct to S3 via presigned URLs &mdash; API bodies stay small.</span>
+<span class="keyword">const</span> bodyLimit = configService.<span class="function">get</span>(<span class="string">'BODY_SIZE_LIMIT'</span>) ?? <span class="string">'1mb'</span>;
+app.<span class="function">use</span>(<span class="function">json</span>({ limit: bodyLimit }));
+app.<span class="function">use</span>(<span class="function">urlencoded</span>({ extended: <span class="keyword">true</span>, limit: bodyLimit }));
+
+<span class="comment">// All routes are versioned: /v1/workspaces/...</span>
+app.<span class="function">enableVersioning</span>({ type: VersioningType.URI });</code></pre>
+
+    <p>Three production lessons embedded in twelve lines. <strong>(1)</strong> CORS is an explicit allowlist read from config; never <code>origin: '*'</code> in production. <strong>(2)</strong> Body limit is small (1mb default) because file uploads bypass the API entirely &mdash; the frontend gets a presigned S3 URL and uploads directly. The API never carries multi-megabyte bodies. <strong>(3)</strong> URL versioning (<code>/v1/...</code>) is on from day one, so when the inevitable v2 redesign comes, you can run both versions side-by-side without breaking existing clients.</p>
+
+    <h3>The Express 5 quirk Fohlio hit</h3>
+
+    <pre><code><span class="comment">// Express 5 defaults query parser to 'simple' (flat keys only).</span>
+<span class="comment">// We rely on bracket-nested query params (e.g. filter[slug][value]=X) — use 'extended' (qs).</span>
+(app.<span class="function">getHttpAdapter</span>().<span class="function">getInstance</span>() <span class="keyword">as</span> <span class="type">Express</span>).<span class="function">set</span>(
+  <span class="string">'query parser'</span>,
+  <span class="string">'extended'</span>,
+);</code></pre>
+
+    <p>This is the kind of one-liner that doesn't appear in any tutorial but matters in production. Express 5 changed its default query parser to a stricter, simpler one. Fohlio's filter DSL uses bracket-nested keys (think <code>?filter[status][eq]=active</code>). Without this single <code>set('query parser', 'extended')</code>, every filtered list endpoint silently breaks. The kind of bug that only surfaces in the third bug-bash session before launch.</p>
+
+    <div class="info-box orange">
+        <p><strong>Pattern to internalize:</strong> production-grade <code>main.ts</code> files are <em>boring</em> &mdash; ten or fifteen utility calls in a precise order, each fixing a specific operational concern. There's no clever code here. There's just experience compressed into bootstrap order. When you read a Fohlio-style <code>main.ts</code>, every line is a postmortem.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: Putting It All Together &mdash; A Request's Journey</h2>
+
+    <p>Let's trace one real Fohlio request from the moment it leaves a browser to the moment the response comes back. This is the synthesis &mdash; every concept in this lesson and the previous eleven, in one trip through the airport.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 540" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="540" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="26" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">A request to GET /v1/workspaces/ws_001/projects</text>
+
+            <defs>
+                <marker id="arrJ" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#3451B2"/>
+                </marker>
+            </defs>
+
+            <g font-family="Inter" font-size="11">
+                <rect x="40" y="50" width="680" height="36" rx="8" fill="#DBEAFE" stroke="#3451B2"/>
+                <text x="60" y="73" font-weight="600" fill="#3451B2">1.</text>
+                <text x="90" y="73" fill="#374151">Load balancer routes to one of N Node instances. CORS preflight passes (origin in allowlist).</text>
+
+                <rect x="40" y="92" width="680" height="36" rx="8" fill="#FEE2E2" stroke="#DC2626"/>
+                <text x="60" y="115" font-weight="600" fill="#DC2626">2.</text>
+                <text x="90" y="115" fill="#374151">Helmet adds security headers. Body parser sees ~0 bytes. Express 5 'extended' query parser.</text>
+
+                <rect x="40" y="134" width="680" height="36" rx="8" fill="#EDE9FE" stroke="#7C3AED"/>
+                <text x="60" y="157" font-weight="600" fill="#7C3AED">3.</text>
+                <text x="90" y="157" fill="#374151">JwtAuthGuard verifies Bearer token. Decoded payload &rarr; request.user = { sub, wsId }.</text>
+
+                <rect x="40" y="176" width="680" height="36" rx="8" fill="#FFF3E5" stroke="#E8790C"/>
+                <text x="60" y="199" font-weight="600" fill="#E8790C">4.</text>
+                <text x="90" y="199" fill="#374151">WorkspaceScopeGuard: URL says ws_001, JWT says ws_001. Match. Continue.</text>
+
+                <rect x="40" y="218" width="680" height="36" rx="8" fill="#FFFBEB" stroke="#FCD34D"/>
+                <text x="60" y="241" font-weight="600" fill="#D97706">5.</text>
+                <text x="90" y="241" fill="#374151">PermissionsGuard checks projects_view. Roles cached in Redis. 0.5ms.</text>
+
+                <rect x="40" y="260" width="680" height="36" rx="8" fill="#D1FAE5" stroke="#1A8F5C"/>
+                <text x="60" y="283" font-weight="600" fill="#1A8F5C">6.</text>
+                <text x="90" y="283" fill="#374151">ValidationPipe transforms ?cursor=...&amp;limit=20 query into typed ListProjectsQueryDto.</text>
+
+                <rect x="40" y="302" width="680" height="36" rx="8" fill="#DBEAFE" stroke="#3451B2"/>
+                <text x="60" y="325" font-weight="600" fill="#3451B2">7.</text>
+                <text x="90" y="325" fill="#374151">Controller fires. @CurrentUser() injects { userId, workspaceId }. Calls service.</text>
+
+                <rect x="40" y="344" width="680" height="36" rx="8" fill="#FEE2E2" stroke="#DC2626"/>
+                <text x="60" y="367" font-weight="600" fill="#DC2626">8.</text>
+                <text x="90" y="367" fill="#374151">ProjectsService delegates to ProjectsRepository. Postgres query: WHERE workspace_id = $1.</text>
+
+                <rect x="40" y="386" width="680" height="36" rx="8" fill="#EDE9FE" stroke="#7C3AED"/>
+                <text x="60" y="409" font-weight="600" fill="#7C3AED">9.</text>
+                <text x="90" y="409" fill="#374151">Assembler maps entities &rarr; ProjectResponseDto. Internal fields stripped.</text>
+
+                <rect x="40" y="428" width="680" height="36" rx="8" fill="#FFF3E5" stroke="#E8790C"/>
+                <text x="60" y="451" font-weight="600" fill="#E8790C">10.</text>
+                <text x="90" y="451" fill="#374151">If a project changed, gateway emits item.updated. RedisIoAdapter fans out to all instances.</text>
+
+                <rect x="40" y="470" width="680" height="36" rx="8" fill="#1A8F5C"/>
+                <text x="380" y="492" text-anchor="middle" font-weight="600" fill="white">11. JSON response. Total: ~30ms. Sentry watches every step.</text>
+            </g>
+        </svg>
+        <div class="diagram-caption">Eleven steps. Every one of them is a concept from this course. Every one of them runs in milliseconds.</div>
+    </div>
+
+    <p>You can read this diagram in your sleep now. Lesson 1 gave you the airport. Lesson 3 gave you the request pipeline. Lessons 4 and 11 gave you repositories. Lesson 5 gave you the guard layer. Lesson 6 gave you DTOs and validation. Lesson 8 gave you the queue infrastructure that runs alongside this request. Lessons 9 and 12 gave you the realtime fan-out. Lesson 10 gave you the production hardening. Today's lesson is the glue: multi-tenancy, stateful auth, scaled WebSockets, and the worker process that turns it all from a single-tenant demo into a multi-customer SaaS.</p>
+
+    <h3>The full airport mapping &mdash; one last time</h3>
+
+    <table>
+        <tr>
+            <th>Airport (today's additions)</th>
+            <th>Fohlio / NestJS</th>
+            <th>Why it matters</th>
+        </tr>
+        <tr>
+            <td>&#x2708;&#xFE0F; Airline</td>
+            <td><strong>Workspace</strong></td>
+            <td>One airport (deployment), many airlines (tenants), strict separation.</td>
+        </tr>
+        <tr>
+            <td>&#x1F516; Airline-code stamp</td>
+            <td><strong>workspaceId</strong></td>
+            <td>On every record, in every query. The mark of which airline it belongs to.</td>
+        </tr>
+        <tr>
+            <td>&#x1F477; Gate agent reading the pass</td>
+            <td><strong>@CurrentUser()</strong></td>
+            <td>Decoded JWT &rarr; typed identity. One decorator, every endpoint.</td>
+        </tr>
+        <tr>
+            <td>&#x1F4DC; Printed boarding pass</td>
+            <td><strong>JWT alone</strong></td>
+            <td>Verifiable. But: no off switch.</td>
+        </tr>
+        <tr>
+            <td>&#x1F6AB; Live do-not-fly list</td>
+            <td><strong>JWT + AuthStateService (Redis)</strong></td>
+            <td>Boarding pass + live state check = revocable identity.</td>
+        </tr>
+        <tr>
+            <td>&#x1F4E2; Airport-wide PA system</td>
+            <td><strong>Socket.IO + RedisIoAdapter</strong></td>
+            <td>One announcement, every terminal hears it.</td>
+        </tr>
+        <tr>
+            <td>&#x1F3ED; Maintenance hangar</td>
+            <td><strong>Worker process (src/worker/)</strong></td>
+            <td>Separate building, separate scaling, same airport.</td>
+        </tr>
+        <tr>
+            <td>&#x1F4FB; Radios on before opening</td>
+            <td><strong>import './instruments.js' first</strong></td>
+            <td>Sentry initialized before NestFactory. Capture from second one.</td>
+        </tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>Learning to look at <code>main.ts</code>:</strong> when you join a new NestJS codebase &mdash; any team, any company &mdash; open <code>main.ts</code> first. Read it top to bottom. The order tells you what the team has been bitten by. Sentry on line 1? Someone lost three days of errors once. Helmet with custom CSP? Someone fought with Swagger. Body limits in env vars? Someone got memory-pressured in prod. Every line in a mature <code>main.ts</code> is a scar.</p>
+    </div>
+
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Lesson 12, the runtime layer of Fohlio:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F6EB;</div>
+            <div class="layer-name" style="color: var(--blue);">Multi-tenancy</div>
+            <div class="layer-desc">workspaceId on every record. Every query filters. The airline-code stamp.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F3AB;</div>
+            <div class="layer-name" style="color: var(--green);">@CurrentUser()</div>
+            <div class="layer-desc">Typed identity in one decorator. The gate agent reading the boarding pass.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--purple);">Stateful JWT</div>
+            <div class="layer-desc">JWT + Redis. Boarding pass + live do-not-fly list. Instant revocation.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E1;</div>
+            <div class="layer-name" style="color: var(--orange);">RedisIoAdapter</div>
+            <div class="layer-desc">Socket.IO across N instances. The airport-wide PA system.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--blue);">Worker process</div>
+            <div class="layer-desc">Separate Node entrypoint. The maintenance hangar across the runway.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4E1;</div>
+            <div class="layer-name" style="color: var(--red);">Sentry first</div>
+            <div class="layer-desc">Imported before everything. Radios on before the airport opens.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>The full mental model, one airport:</strong> Terminals (Modules) handle Delta, United, and Lufthansa &mdash; same gates, same security, separate manifests (multi-tenancy). Gate agents (Controllers) read every boarding pass via the same <code>@CurrentUser()</code> decorator. Security checks the printed pass <em>and</em> the live do-not-fly list (stateful JWT + Redis). Announcements go out over a single PA system reaching every terminal (Socket.IO + RedisIoAdapter). The maintenance hangar across the runway runs its own crew (the worker process). And the incident-response radios were on before the airport opened (Sentry-before-bootstrap).</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- FINAL WORDS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Final Words</h2>
+
+    <p>Twelve lessons ago we walked into an empty hangar and asked: why do we need a framework at all? You learned the answer through your hands &mdash; modules, controllers, services, pipes, guards, interceptors, repositories, JWT, validation, OpenAPI, BullMQ, WebSockets, multi-tenancy, the worker. You went from <code>nest new</code> to a structure that mirrors what Fohlio actually runs in production for paying customers.</p>
+
+    <p>Read this carefully: knowing the framework is the easy part. The hard part is the <em>judgment</em> &mdash; when to add a guard versus a pipe, when a feature deserves its own module, when a worker should be a separate process, when stateful sessions are worth the Redis hop. You now have enough scaffolding to make those calls. You'll get them wrong sometimes. That's how the calluses form.</p>
+
+    <p>The airport metaphor was never about cuteness. It was about giving you a stable mental shape to hang every new concept on, so when you encounter your sixteenth NestJS feature in some other codebase, you can drop it into a slot you already understand. Modules are still terminals. Decorators still document intent. Errors still surface at startup, not at 2am.</p>
+
+    <p>One last piece of advice: ship something. Take the airport-api you built across these lessons, point it at a real database, deploy it somewhere, give two friends a token. Even a tiny working app that nobody else uses teaches more than another lesson would. The rest is iteration.</p>
+
+    <p>One final reflection. The very first lesson opened with a joke about a new hire trying to find the password reset logic in an Express codebase. Bob had moved on, the file was nowhere, the convention was gone with him. Twelve lessons later, you've spent enough time inside Fohlio's structure to know exactly where the password reset logic lives: <code>src/modules/auth/auth.service.ts</code>, with the token state in <code>auth-state.service.ts</code>, validated by <code>jwt-auth.guard.ts</code>, exposed by <code>auth.controller.ts</code>, and emailed by <code>mail.consumer.ts</code> running in the worker process. You didn't memorize that &mdash; the framework <em>told</em> you. That is the entire pitch. You've now lived it.</p>
+
+    <p>If a friend asks you next month why your team picked NestJS, you don't need to recite features. Just point at any folder in the codebase and tell them: I knew where to look without asking. That's it. That's the whole answer.</p>
+
+    <p>Thank you for sticking it out. Now go build.</p>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Multi-tenancy on the Flight entity</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add a <code>workspaceId: string</code> field to your <code>Flight</code> entity.</li>
+                    <li>Update <code>FlightsRepository</code> so every query (find, findOne, update, delete) filters by <code>workspaceId</code>.</li>
+                    <li>Add an <code>@CurrentUser()</code>-style decorator. Simplification: read <code>X-Workspace-Id</code> from the request headers and return <code>{ workspaceId }</code>.</li>
+                    <li>Push to <code>nestjs-course-yourname</code> and submit the commit URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>The /me endpoint</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add <code>GET /me</code> that uses the <code>@CurrentUser()</code> decorator from task 1.</li>
+                    <li>Make a request with the <code>X-Workspace-Id</code> header (or a real JWT if you wired one).</li>
+                    <li><strong>Screenshot</strong> the typed user object in the response (Postman/Insomnia/curl, your call).</li>
+                    <li>Submit the screenshot.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why pure JWT isn't enough</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Read <code>asuncion/src/modules/auth/auth-state.service.ts</code>.</li>
+                    <li>In 4&ndash;6 sentences, explain in your own words: why pure JWT is insufficient for Fohlio's use case, and what tradeoff Redis adds.</li>
+                    <li>Cover at least: the firing scenario, the brute-force lockout, and the per-request cost.</li>
+                    <li>Submit as text on the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>RedisIoAdapter cross-instance broadcast</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Wire <code>RedisIoAdapter</code> into your project on a small WebSocket gateway (any event &mdash; <code>flight.delayed</code> works). Spin up TWO instances of your app on different ports (3000 and 3001), both connected to the same Redis. Connect a client to instance A, <em>emit from instance B</em>, confirm the client on A receives it. <strong>Screenshot</strong> both terminals showing the cross-instance broadcast.</p>
+                <p style="font-size: 14px; color: var(--gray-500);">Hint: <code>@socket.io/redis-adapter</code>, two ioredis clients (publisher + subscriber).</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Split into two Node entrypoints</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Restructure your project into two entrypoints: <code>apps/api/main.ts</code> and <code>apps/worker/main.ts</code>. The worker should boot its own <code>NestApplication</code> from a <code>WorkerModule</code> with only BullMQ consumers &mdash; no HTTP routes. Add a <code>start:worker</code> script in <code>package.json</code> that points to the worker entry. Push to <code>nestjs-course-yourname</code> and submit the commit URL.</p>
+                <p style="font-size: 14px; color: var(--gray-500);">Bonus: enqueue a job from the API and watch it process in the worker logs.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 12 of 12</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 13px; color: var(--blue); font-weight: 600;">&#x1F6EB; Course complete. Twelve terminals built, the runway is yours.</p>
+    </div>
+
+</div>
+
+</body>
+</html>

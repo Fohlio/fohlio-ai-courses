@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 6</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 6 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Validation, Serialization &amp; DTOs Done Right</div>
+        <div style="margin-top: 12px; font-size: 14px; color: var(--gray-500);">class-validator, class-transformer, mapped types, versioning</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand why DTOs are separate from your database models</li>
+            <li>Use <code>class-validator</code> decorators to lock down request bodies</li>
+            <li>Wire a global <code>ValidationPipe</code> with the right options for production</li>
+            <li>Serialize responses safely with <code>class-transformer</code> &mdash; never leak <code>passwordHash</code> again</li>
+            <li>Use mapped types (<code>PartialType</code>, <code>PickType</code>, <code>OmitType</code>, <code>IntersectionType</code>) to stop copy-pasting DTOs</li>
+            <li>Add API versioning so v1 clients keep working when you ship v2</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <h2 class="part-header">Quick Recap: Lessons 1&ndash;5</h2>
+
+    <p>Five lessons in. Before we add another layer to the airport, let's take a quick walk back through the terminal.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F6EB;</div>
+            <div class="card-title" style="color: var(--blue);">L1 &mdash; Why Nest</div>
+            <div class="card-desc">Express freedom = spaghetti at scale. Modules, controllers, services, DI. Airport mental model.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F3DB;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--green);">L2 &mdash; Holy Trinity</div>
+            <div class="card-desc">Modules group code. Controllers handle HTTP. Providers do the work. <code>@Body</code>, <code>@Query</code>, <code>@Param</code>.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F6E1;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--orange);">L3 &mdash; Pipeline</div>
+            <div class="card-desc">Middleware &rarr; Guards &rarr; Interceptors &rarr; Pipes &rarr; Handler &rarr; Interceptors &rarr; Exception Filters.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F5C4;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--purple);">L4 &mdash; Data layer</div>
+            <div class="card-desc">Prisma/TypeORM, repositories, transactions. The ground crew that talks to the database.</div>
+        </div>
+    </div>
+
+    <div class="info-box blue" style="margin-top: 16px;">
+        <p><strong>Lesson 5 (auth):</strong> Guards check the boarding pass. JWTs, Passport strategies, role-based access. Today we look one step earlier in the pipeline &mdash; the X-ray scanner that checks the <em>shape</em> of what passengers carry, not their identity.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: GARBAGE IN, GARBAGE OUT -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Garbage In, Garbage Out</h2>
+
+    <p>Here's a true story. A team I worked with had a flights API. The <code>price</code> column in Postgres was <code>NUMERIC(10, 2)</code>. The handler looked roughly like this:</p>
+
+    <pre><code><span class="decorator">@Post</span>()
+<span class="keyword">async</span> <span class="function">create</span>(<span class="decorator">@Body</span>() body: <span class="type">any</span>) {
+  <span class="keyword">return this</span>.flights.<span class="function">create</span>(body);
+}</code></pre>
+
+    <p>Notice the <code>any</code>. Classic. Then one day the mobile app shipped a regression and started sending:</p>
+
+    <pre><code>{
+  <span class="string">"code"</span>: <span class="string">"FH-204"</span>,
+  <span class="string">"capacity"</span>: <span class="string">"180"</span>,           <span class="comment">// string, not number</span>
+  <span class="string">"price"</span>: <span class="string">"ten dollars"</span>,      <span class="comment">// uhh</span>
+  <span class="string">"isInternational"</span>: <span class="string">"yes"</span>,    <span class="comment">// not a boolean either</span>
+  <span class="string">"adminOverride"</span>: <span class="keyword">true</span>           <span class="comment">// what's THIS field doing here?</span>
+}</code></pre>
+
+    <p>Postgres rejected the price write &mdash; good. But not before three other things happened: <code>capacity</code> was stored as a string in a JSON column elsewhere, <code>isInternational: "yes"</code> evaluated truthy in every business check, and <code>adminOverride: true</code> &mdash; a field that wasn't supposed to exist on this endpoint &mdash; quietly flipped a privileged flag because someone had once written <code>Object.assign(flight, body)</code> in the service.</p>
+
+    <p>The fix wasn't &ldquo;train the mobile team.&rdquo; The fix was: <strong>never trust the client.</strong> Validate the shape, the type, and the allowed fields at the door. That's what this lesson is about.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6C2;</div>
+        Backend dev: &ldquo;The mobile team sent us garbage data and broke prod.&rdquo;<br>
+        Mobile dev: &ldquo;Your API accepted it.&rdquo;<br>
+        Backend dev: &ldquo;We trusted you.&rdquo;<br>
+        Mobile dev: &ldquo;That was your first mistake.&rdquo;<br>
+        <em>Trust is for friends. Validators are for APIs.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before reading</div>
+        <div class="recall-question">If a request comes in with an extra field that your endpoint doesn't expect &mdash; say, <code>adminOverride: true</code> &mdash; what should NestJS do by default? (a) Pass it through silently. (b) Reject the request with 400. (c) Strip the unknown field and continue. Pick one before reading on.</div>
+        <div class="recall-hint">The answer is uncomfortable. Default Nest behavior is (a). You'll meet the option that flips it to (b) or (c) in Part 4.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: DTOs -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: DTOs &mdash; Boarding Pass for Your API</h2>
+
+    <p>A <strong>DTO</strong> (Data Transfer Object) is a class that describes the shape of data flowing across the boundary of your API. One DTO per direction: <code>CreateFlightDto</code> for what the client sends in, <code>FlightResponseDto</code> for what you send back.</p>
+
+    <p>A common mistake: reusing your database entity (the Prisma model, the TypeORM <code>@Entity</code> class) as both the input <em>and</em> the output <em>and</em> the internal representation. It feels DRY. It's actually a coupling disaster.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F5C4;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--purple);">DB Model</div>
+            <div class="card-subtitle" style="color: var(--purple);">Internal &mdash; everything</div>
+            <div class="card-desc">Has <code>id</code>, <code>createdAt</code>, <code>updatedAt</code>, <code>passwordHash</code>, <code>deletedAt</code>, internal flags, foreign keys. The full picture for the database. Lives in Prisma schema or TypeORM entity.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F39F;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--green);">DTO</div>
+            <div class="card-subtitle" style="color: var(--green);">External contract &mdash; safe surface</div>
+            <div class="card-desc">Only what the client should send (CreateFlightDto) or receive (FlightResponseDto). No <code>passwordHash</code>. No internal flags. The narrow, deliberate, validated surface.</div>
+        </div>
+    </div>
+
+    <div class="story-box">
+        <p>At the airport, your <strong>passport</strong> contains your full identity: your address, parents' names, biometric data, every visa you've ever held. You don't hand the passport to the gate agent at every checkpoint. You hand them a <strong>boarding pass</strong> &mdash; a printed slip that has only what's relevant for this flight: name, seat, gate, time.</p>
+        <p>Your DB model is the passport. Your DTO is the boarding pass. The boarding pass goes through the X-ray (<code>ValidationPipe</code>). It's standardized: every airline knows the shape. If you handed the gate agent a hand-drawn napkin instead, the X-ray would reject it.</p>
+        <div class="tech-note">
+            <strong>Practical mapping:</strong> <code>CreateFlightDto</code> = the form the passenger fills in to book. <code>UpdateFlightDto</code> = the same form, all fields optional, for changing details after the fact. <code>FlightResponseDto</code> = the printed itinerary handed back. Three different forms, one underlying flight record.
+        </div>
+    </div>
+
+    <h3>Where DTOs live</h3>
+
+    <p>Convention: a <code>dto/</code> subfolder inside each feature module. The CLI even has a generator for this:</p>
+
+    <pre><code><span class="function">nest</span> generate class flights/dto/create-flight.dto --no-spec
+<span class="function">nest</span> generate class flights/dto/update-flight.dto --no-spec
+<span class="function">nest</span> generate class flights/dto/flight-response.dto --no-spec</code></pre>
+
+    <div class="file-tree">
+src/
+├── <span class="dir">flights/</span>
+│   ├── <span class="dir">dto/</span>
+│   │   ├── <span class="highlight">create-flight.dto.ts</span>   <span class="comment">← input contract for POST</span>
+│   │   ├── <span class="highlight">update-flight.dto.ts</span>   <span class="comment">← input contract for PATCH</span>
+│   │   └── <span class="highlight">flight-response.dto.ts</span> <span class="comment">← output contract for GET</span>
+│   ├── <span class="file">flights.controller.ts</span>
+│   ├── <span class="file">flights.service.ts</span>
+│   └── <span class="file">flights.module.ts</span>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: class-validator -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: class-validator &mdash; Decorate the Boarding Pass</h2>
+
+    <p>NestJS doesn't ship its own validation library. It integrates with the excellent <code>class-validator</code> + <code>class-transformer</code> pair. Install them:</p>
+
+    <pre><code><span class="function">npm</span> i class-validator class-transformer</code></pre>
+
+    <p>Now write a real DTO. Each property gets one or more decorators that describe what valid values look like:</p>
+
+    <pre><code><span class="comment">// src/flights/dto/create-flight.dto.ts</span>
+<span class="keyword">import</span> {
+  IsString, IsInt, IsBoolean, IsEmail, IsEnum, IsOptional,
+  IsArray, ArrayNotEmpty, ValidateNested, Min, Max, Length,
+  IsISO8601,
+} <span class="keyword">from</span> <span class="string">'class-validator'</span>;
+<span class="keyword">import</span> { Type } <span class="keyword">from</span> <span class="string">'class-transformer'</span>;
+
+<span class="keyword">export enum</span> FlightClass {
+  ECONOMY = <span class="string">'ECONOMY'</span>,
+  BUSINESS = <span class="string">'BUSINESS'</span>,
+  FIRST = <span class="string">'FIRST'</span>,
+}
+
+<span class="keyword">class</span> PassengerDto {
+  <span class="decorator">@IsString</span>()
+  <span class="decorator">@Length</span>(<span class="string">1</span>, <span class="string">100</span>)
+  fullName: <span class="type">string</span>;
+
+  <span class="decorator">@IsEmail</span>()
+  email: <span class="type">string</span>;
+}
+
+<span class="keyword">export class</span> CreateFlightDto {
+  <span class="decorator">@IsString</span>()
+  <span class="decorator">@Length</span>(<span class="string">3</span>, <span class="string">10</span>)
+  code: <span class="type">string</span>;                <span class="comment">// e.g. "FH-204"</span>
+
+  <span class="decorator">@IsInt</span>()
+  <span class="decorator">@Min</span>(<span class="string">1</span>)
+  <span class="decorator">@Max</span>(<span class="string">850</span>)
+  capacity: <span class="type">number</span>;
+
+  <span class="decorator">@IsISO8601</span>()
+  departsAt: <span class="type">string</span>;          <span class="comment">// "2026-05-01T08:30:00Z"</span>
+
+  <span class="decorator">@IsBoolean</span>()
+  isInternational: <span class="type">boolean</span>;
+
+  <span class="decorator">@IsEnum</span>(FlightClass)
+  flightClass: <span class="type">FlightClass</span>;
+
+  <span class="decorator">@IsOptional</span>()
+  <span class="decorator">@IsString</span>()
+  <span class="decorator">@Length</span>(<span class="string">0</span>, <span class="string">500</span>)
+  notes?: <span class="type">string</span>;
+
+  <span class="decorator">@IsArray</span>()
+  <span class="decorator">@ArrayNotEmpty</span>()
+  <span class="decorator">@ValidateNested</span>({ each: <span class="keyword">true</span> })
+  <span class="decorator">@Type</span>(() =&gt; PassengerDto)
+  passengers: <span class="type">PassengerDto</span>[];
+}</code></pre>
+
+    <p>Each decorator answers one specific question. <code>@IsInt</code> &mdash; is it an integer? <code>@Min(1)</code> &mdash; at least 1? <code>@IsEmail</code> &mdash; does it parse as an email? Compose them and you get a precise contract.</p>
+
+    <h3>The decorators you'll reach for 95% of the time</h3>
+
+    <table>
+        <tr>
+            <th>Decorator</th>
+            <th>Checks</th>
+            <th>Typical use</th>
+        </tr>
+        <tr>
+            <td><code>@IsString()</code></td>
+            <td>Value is a string</td>
+            <td>Names, codes, free-form text</td>
+        </tr>
+        <tr>
+            <td><code>@IsInt()</code> / <code>@IsNumber()</code></td>
+            <td>Integer / any number</td>
+            <td>Counts, prices, IDs</td>
+        </tr>
+        <tr>
+            <td><code>@Min(n)</code> / <code>@Max(n)</code></td>
+            <td>Numeric bounds</td>
+            <td>Capacity 1&ndash;850, age 0&ndash;120</td>
+        </tr>
+        <tr>
+            <td><code>@Length(min, max)</code></td>
+            <td>String length bounds</td>
+            <td>Codes, descriptions, slugs</td>
+        </tr>
+        <tr>
+            <td><code>@IsBoolean()</code></td>
+            <td>Strict <code>true</code> / <code>false</code></td>
+            <td>Feature flags, toggles</td>
+        </tr>
+        <tr>
+            <td><code>@IsEmail()</code></td>
+            <td>RFC-ish email shape</td>
+            <td>User registration</td>
+        </tr>
+        <tr>
+            <td><code>@IsEnum(MyEnum)</code></td>
+            <td>One of an enum's values</td>
+            <td>Status, role, class of service</td>
+        </tr>
+        <tr>
+            <td><code>@IsISO8601()</code></td>
+            <td>Valid ISO date string</td>
+            <td>Departure times, deadlines</td>
+        </tr>
+        <tr>
+            <td><code>@IsUUID()</code></td>
+            <td>Valid UUID string</td>
+            <td>Resource IDs</td>
+        </tr>
+        <tr>
+            <td><code>@IsOptional()</code></td>
+            <td>Skip all other validators if missing</td>
+            <td>Optional fields</td>
+        </tr>
+        <tr>
+            <td><code>@IsArray()</code> + <code>@ArrayNotEmpty()</code></td>
+            <td>Array, with at least one item</td>
+            <td>Passenger lists, tags</td>
+        </tr>
+        <tr>
+            <td><code>@ValidateNested()</code> + <code>@Type()</code></td>
+            <td>Recursively validate sub-objects</td>
+            <td>Nested DTOs (passengers, addresses)</td>
+        </tr>
+    </table>
+
+    <div class="info-box orange">
+        <p><strong>Insight:</strong> <code>@IsOptional()</code> goes <em>first</em> on the property, before any other validator. It tells <code>class-validator</code>: &ldquo;if this field is <code>undefined</code> or <code>null</code>, skip the rest of the rules.&rdquo; Without it, an optional field still has to satisfy <code>@IsString</code> et al when missing &mdash; which it can't, so the request fails.</p>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Nested validation gotcha:</strong> When a DTO has another DTO inside it (like <code>passengers: PassengerDto[]</code>), <code>class-validator</code> won't recurse on its own. You must add <strong>both</strong> <code>@ValidateNested({ each: true })</code> <strong>and</strong> <code>@Type(() =&gt; PassengerDto)</code> from <code>class-transformer</code>. The <code>@Type</code> tells the transformer what class to instantiate; without it, the items stay as plain objects and the validators never fire.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        Junior dev: &ldquo;Why isn't my nested validation working? I added <code>@ValidateNested</code>!&rdquo;<br>
+        Senior dev: &ldquo;Did you add <code>@Type</code>?&rdquo;<br>
+        Junior dev: &ldquo;Why do I need both?&rdquo;<br>
+        Senior dev: &ldquo;Because JavaScript doesn't carry generic types at runtime, and the validator can't read your mind.&rdquo;<br>
+        Junior dev: &ldquo;...fair.&rdquo;<br>
+        <em>The two-decorator tax for nested objects. Pay it once, never debug it again.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: GLOBAL VALIDATIONPIPE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: The Global ValidationPipe</h2>
+
+    <p>Decorating the DTO does nothing on its own. You need a <strong>pipe</strong> that intercepts incoming requests, parses the body, instantiates the DTO class, and runs the validators. NestJS ships <code>ValidationPipe</code> for exactly this.</p>
+
+    <p>Wire it once, globally, in <code>main.ts</code>:</p>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { ValidationPipe } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'./app.module'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+
+  app.<span class="function">useGlobalPipes</span>(
+    <span class="keyword">new</span> <span class="function">ValidationPipe</span>({
+      whitelist: <span class="keyword">true</span>,
+      forbidNonWhitelisted: <span class="keyword">true</span>,
+      transform: <span class="keyword">true</span>,
+      transformOptions: { enableImplicitConversion: <span class="keyword">true</span> },
+    }),
+  );
+
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);
+}
+<span class="function">bootstrap</span>();</code></pre>
+
+    <p>Four options. Each one matters. Here's what they do and what attack/bug they prevent:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F9F9;</div>
+            <div class="layer-name" style="color: var(--blue);">whitelist: true</div>
+            <div class="layer-desc">Strip any field that's not in the DTO. Unknown fields silently disappear.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6AB;</div>
+            <div class="layer-name" style="color: var(--red);">forbidNonWhitelisted: true</div>
+            <div class="layer-desc">If unknown fields are present, reject the request with 400 instead of stripping. Pairs with whitelist.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F504;</div>
+            <div class="layer-name" style="color: var(--green);">transform: true</div>
+            <div class="layer-desc">Turn the plain JSON body into an actual instance of your DTO class. Now <code>body instanceof CreateFlightDto</code> is true.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F522;</div>
+            <div class="layer-name" style="color: var(--orange);">enableImplicitConversion: true</div>
+            <div class="layer-desc">Convert <code>"42"</code> to <code>42</code> when the type is <code>number</code>. Critical for <code>@Param</code> and <code>@Query</code>, which arrive as strings.</div>
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F575;&#xFE0F;</div>
+        Attacker: <code>POST /users { "email": "x@y.com", "password": "...", "isAdmin": true }</code><br>
+        Default Nest: &ldquo;Sure, I'll pass that whole body to the service.&rdquo;<br>
+        Service: <code>prisma.user.create({ data: body })</code><br>
+        Database: &ldquo;New admin created!&rdquo;<br>
+        <em>Three lines of vulnerable code, ten years of CVEs across every framework. <code>whitelist: true</code> is not optional.</em>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>Critical for production:</strong> <code>whitelist: true</code> is <em>not</em> the default. Out of the box, NestJS will pass unknown fields through to your handler. Combined with sloppy code like <code>Object.assign(user, body)</code> or Prisma's spread <code>{ ...body }</code>, that's a <strong>mass assignment vulnerability</strong> &mdash; the exact class of bug that lets an attacker send <code>{ isAdmin: true }</code> and become an admin. <strong>Always set <code>whitelist: true</code> and <code>forbidNonWhitelisted: true</code> in production.</strong></p>
+    </div>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="320" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Request flow with the global ValidationPipe</text>
+
+            <defs>
+                <marker id="ar6" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+                </marker>
+                <marker id="ar6r" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/>
+                </marker>
+            </defs>
+
+            <!-- Client -->
+            <rect x="30" y="56" width="120" height="50" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="90" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">Client</text>
+            <text x="90" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">POST /flights</text>
+
+            <line x1="150" y1="81" x2="200" y2="81" stroke="#9CA3AF" stroke-width="2" marker-end="url(#ar6)"/>
+
+            <!-- ValidationPipe -->
+            <rect x="200" y="56" width="180" height="50" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="290" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">X-ray scanner</text>
+            <text x="290" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">ValidationPipe</text>
+
+            <!-- Decision branches -->
+            <line x1="380" y1="81" x2="430" y2="81" stroke="#9CA3AF" stroke-width="2" marker-end="url(#ar6)"/>
+
+            <!-- DTO instance -->
+            <rect x="430" y="56" width="180" height="50" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="520" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">Valid DTO instance</text>
+            <text x="520" y="96" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">CreateFlightDto</text>
+
+            <line x1="610" y1="81" x2="660" y2="81" stroke="#9CA3AF" stroke-width="2" marker-end="url(#ar6)"/>
+
+            <!-- Handler -->
+            <rect x="660" y="56" width="80" height="50" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="700" y="80" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">Handler</text>
+
+            <!-- failure branch -->
+            <line x1="290" y1="106" x2="290" y2="160" stroke="#DC2626" stroke-width="2" marker-end="url(#ar6r)"/>
+
+            <rect x="180" y="160" width="220" height="50" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="290" y="184" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">400 Bad Request</text>
+            <text x="290" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">field-by-field errors</text>
+
+            <!-- Legend -->
+            <rect x="30" y="240" width="700" height="60" rx="8" fill="#fff" stroke="#E5E7EB"/>
+            <text x="50" y="262" font-family="Inter" font-weight="600" font-size="12" fill="#374151">What the X-ray checks (in order):</text>
+            <text x="50" y="282" font-family="Inter" font-size="11" fill="#6B7280">1. Strip unknown fields (whitelist)  &mdash;  2. Reject if any unknown remained (forbidNonWhitelisted)</text>
+            <text x="50" y="296" font-family="Inter" font-size="11" fill="#6B7280">3. Coerce types (transform)  &mdash;  4. Run every @IsString / @Min / @IsEnum etc.</text>
+        </svg>
+        <div class="diagram-caption">Garbage never reaches the handler &mdash; the X-ray runs before the gate agent</div>
+    </div>
+
+    <h3>What a 400 response actually looks like</h3>
+
+    <p>POST <code>/flights</code> with body <code>{ "code": "X", "capacity": "lots" }</code>. With the global pipe wired, you get back:</p>
+
+    <pre><code>HTTP/1.1 <span class="string">400 Bad Request</span>
+Content-Type: application/json
+
+{
+  <span class="string">"statusCode"</span>: <span class="string">400</span>,
+  <span class="string">"message"</span>: [
+    <span class="string">"code must be longer than or equal to 3 characters"</span>,
+    <span class="string">"capacity must not be less than 1"</span>,
+    <span class="string">"capacity must be an integer number"</span>,
+    <span class="string">"departsAt must be a valid ISO 8601 date string"</span>,
+    <span class="string">"isInternational must be a boolean value"</span>,
+    <span class="string">"flightClass must be one of the following values: ECONOMY, BUSINESS, FIRST"</span>,
+    <span class="string">"passengers must contain at least 1 elements"</span>
+  ],
+  <span class="string">"error"</span>: <span class="string">"Bad Request"</span>
+}</code></pre>
+
+    <p>Field-by-field. No code in your handler. Frontend gets a precise list to render under each input. This single config is worth the price of admission to NestJS by itself.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test</div>
+        <div class="recall-question">Without scrolling up: which two ValidationPipe options work together to <strong>reject</strong> a request that contains an unknown field? And what attack class do they prevent?</div>
+        <div class="recall-hint">Hint: one strips, one rejects. The pair stops a CVE that's been re-discovered in dozens of frameworks since 2012.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: SERIALIZATION -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Serialization &mdash; Don't Leak the Hash</h2>
+
+    <p>Validation handles <em>incoming</em> data. Serialization handles <em>outgoing</em> data. The classic bug: someone hits <code>GET /users/me</code>, and the response includes <code>passwordHash</code> because the handler did <code>return user;</code> on the raw entity.</p>
+
+    <p>NestJS solves this with <code>class-transformer</code> + <code>ClassSerializerInterceptor</code>. Two steps.</p>
+
+    <h3>Step 1: mark sensitive fields with @Exclude</h3>
+
+    <pre><code><span class="comment">// src/users/entities/user.entity.ts</span>
+<span class="keyword">import</span> { Exclude, Expose } <span class="keyword">from</span> <span class="string">'class-transformer'</span>;
+
+<span class="keyword">export class</span> User {
+  id: <span class="type">string</span>;
+  email: <span class="type">string</span>;
+  fullName: <span class="type">string</span>;
+
+  <span class="decorator">@Exclude</span>()
+  passwordHash: <span class="type">string</span>;
+
+  <span class="decorator">@Exclude</span>()
+  twoFactorSecret?: <span class="type">string</span>;
+
+  createdAt: <span class="type">Date</span>;
+
+  <span class="keyword">constructor</span>(<span class="keyword">partial</span>: <span class="type">Partial</span>&lt;<span class="type">User</span>&gt;) {
+    Object.<span class="function">assign</span>(<span class="keyword">this</span>, partial);
+  }
+}</code></pre>
+
+    <h3>Step 2: turn on the interceptor</h3>
+
+    <p>You can apply <code>ClassSerializerInterceptor</code> globally, per-controller, or per-route. Globally is the safest default:</p>
+
+    <pre><code><span class="comment">// src/main.ts (additions)</span>
+<span class="keyword">import</span> { ClassSerializerInterceptor } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Reflector } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+
+app.<span class="function">useGlobalInterceptors</span>(
+  <span class="keyword">new</span> <span class="function">ClassSerializerInterceptor</span>(app.<span class="function">get</span>(Reflector)),
+);</code></pre>
+
+    <p>Now in your service, return an actual <code>User</code> instance (not a plain object) and the interceptor will strip <code>@Exclude</code>'d fields automatically:</p>
+
+    <pre><code><span class="decorator">@Get</span>(<span class="string">'me'</span>)
+<span class="keyword">async</span> <span class="function">me</span>(<span class="decorator">@Req</span>() req): <span class="type">Promise</span>&lt;<span class="type">User</span>&gt; {
+  <span class="keyword">const</span> raw = <span class="keyword">await this</span>.users.<span class="function">findById</span>(req.user.id);
+  <span class="keyword">return new</span> <span class="function">User</span>(raw);  <span class="comment">// instance, not POJO — interceptor needs this</span>
+}</code></pre>
+
+    <p>Response: no <code>passwordHash</code>. No <code>twoFactorSecret</code>. Even if someone in two years adds <code>internalNotes</code> to the entity and forgets, you can default-deny by inverting the pattern with <code>@Expose()</code> and <code>excludeAll</code>.</p>
+
+    <div class="info-box green">
+        <p><strong>Real example:</strong> A 2023 audit at a fintech I consulted with found 14 endpoints leaking <code>passwordHash</code>, <code>refreshToken</code>, or <code>stripeSecretKey</code>. Not because anyone was malicious &mdash; because they returned the raw Prisma object. Two-line fix per entity (<code>@Exclude</code> on the sensitive field), one-line global wire-up, problem class extinct.</p>
+    </div>
+
+    <h3>The default-deny variant: @Expose only</h3>
+
+    <pre><code><span class="keyword">import</span> { Expose, Exclude } <span class="keyword">from</span> <span class="string">'class-transformer'</span>;
+
+<span class="decorator">@Exclude</span>()  <span class="comment">// hide everything by default</span>
+<span class="keyword">export class</span> UserResponseDto {
+  <span class="decorator">@Expose</span>() id: <span class="type">string</span>;
+  <span class="decorator">@Expose</span>() email: <span class="type">string</span>;
+  <span class="decorator">@Expose</span>() fullName: <span class="type">string</span>;
+  <span class="comment">// new fields added later are NOT exposed unless you opt in</span>
+}</code></pre>
+
+    <p>Pair this with <code>plainToInstance(UserResponseDto, user, { excludeExtraneousValues: true })</code> and you have a <strong>response DTO</strong>: a separate, deliberate class that says &ldquo;these are exactly the fields I'm sending out.&rdquo; Future-proof against accidental leaks.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F50D;</div>
+        Frontend dev: &ldquo;Hey, why is <code>passwordHash</code> in the <code>/me</code> response?&rdquo;<br>
+        Backend dev: &ldquo;...&rdquo;<br>
+        Backend dev: &ldquo;Don't tell anyone.&rdquo;<br>
+        Frontend dev: &ldquo;The whole React Query devtools panel just told the entire office.&rdquo;<br>
+        <em>Serialization is not optional. It's the difference between &ldquo;works on my machine&rdquo; and &ldquo;works without leaking secrets.&rdquo;</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: MAPPED TYPES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Mapped Types &mdash; Stop Copy-Pasting DTOs</h2>
+
+    <p>You've written <code>CreateFlightDto</code> with 8 validated fields. Now you need <code>UpdateFlightDto</code> for <code>PATCH /flights/:id</code> &mdash; same fields, but all optional. The wrong move: copy-paste the file, sprinkle <code>@IsOptional()</code> everywhere, drift over time. The right move: <strong>mapped types</strong>.</p>
+
+    <p>Install the helper:</p>
+
+    <pre><code><span class="function">npm</span> i @nestjs/mapped-types</code></pre>
+
+    <p>Now compose:</p>
+
+    <pre><code><span class="comment">// src/flights/dto/update-flight.dto.ts</span>
+<span class="keyword">import</span> { PartialType } <span class="keyword">from</span> <span class="string">'@nestjs/mapped-types'</span>;
+<span class="keyword">import</span> { CreateFlightDto } <span class="keyword">from</span> <span class="string">'./create-flight.dto'</span>;
+
+<span class="keyword">export class</span> UpdateFlightDto <span class="keyword">extends</span> <span class="function">PartialType</span>(CreateFlightDto) {}</code></pre>
+
+    <p>That's it. <code>UpdateFlightDto</code> has every field from <code>CreateFlightDto</code>, every validator, but every field is now optional. Add a field to <code>CreateFlightDto</code> tomorrow &mdash; it shows up here too. No drift.</p>
+
+    <h3>The four mapped types</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4DD;</div>
+            <div class="card-title" style="color: var(--blue);">PartialType(X)</div>
+            <div class="card-subtitle" style="color: var(--blue);">All fields optional</div>
+            <div class="card-desc">Use for PATCH endpoints. <code>UpdateFlightDto extends PartialType(CreateFlightDto)</code>.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F3AF;</div>
+            <div class="card-title" style="color: var(--green);">PickType(X, [...])</div>
+            <div class="card-subtitle" style="color: var(--green);">Only the listed fields</div>
+            <div class="card-desc">Use for narrow inputs. <code>LoginDto extends PickType(UserDto, ['email', 'password'])</code>.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x2702;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--orange);">OmitType(X, [...])</div>
+            <div class="card-subtitle" style="color: var(--orange);">All fields except the listed</div>
+            <div class="card-desc">The opposite of Pick. <code>CreateUserDto extends OmitType(UserDto, ['id', 'createdAt'])</code>.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x2795;</div>
+            <div class="card-title" style="color: var(--purple);">IntersectionType(A, B)</div>
+            <div class="card-subtitle" style="color: var(--purple);">Combine two DTOs</div>
+            <div class="card-desc">Merge fields from both. <code>FullDto extends IntersectionType(BaseDto, ExtraDto)</code>.</div>
+        </div>
+    </div>
+
+    <h3>A real composition</h3>
+
+    <pre><code><span class="comment">// CreateFlightDto: code, capacity, departsAt, isInternational, flightClass, notes, passengers</span>
+
+<span class="comment">// UpdateFlightDto: same fields, all optional</span>
+<span class="keyword">export class</span> UpdateFlightDto <span class="keyword">extends</span> <span class="function">PartialType</span>(CreateFlightDto) {}
+
+<span class="comment">// QuickCreateDto: only the bare minimum required to draft a flight</span>
+<span class="keyword">export class</span> QuickCreateDto <span class="keyword">extends</span> <span class="function">PickType</span>(CreateFlightDto, [
+  <span class="string">'code'</span>, <span class="string">'capacity'</span>, <span class="string">'departsAt'</span>,
+] <span class="keyword">as const</span>) {}
+
+<span class="comment">// PublicFlightDto: everything except internal fields (if there were any)</span>
+<span class="keyword">export class</span> PublicFlightDto <span class="keyword">extends</span> <span class="function">OmitType</span>(CreateFlightDto, [<span class="string">'notes'</span>] <span class="keyword">as const</span>) {}
+
+<span class="comment">// AuditedDto: combines a base with an audit trail</span>
+<span class="keyword">class</span> AuditFields {
+  <span class="decorator">@IsString</span>() updatedBy: <span class="type">string</span>;
+  <span class="decorator">@IsISO8601</span>() updatedAt: <span class="type">string</span>;
+}
+<span class="keyword">export class</span> AuditedFlightDto <span class="keyword">extends</span> <span class="function">IntersectionType</span>(CreateFlightDto, AuditFields) {}</code></pre>
+
+    <p>The wiring in the controller is unchanged &mdash; just point <code>@Body()</code> at the new DTO type:</p>
+
+    <pre><code><span class="decorator">@Patch</span>(<span class="string">':id'</span>)
+<span class="function">update</span>(
+  <span class="decorator">@Param</span>(<span class="string">'id'</span>) id: <span class="type">string</span>,
+  <span class="decorator">@Body</span>() dto: <span class="type">UpdateFlightDto</span>,
+) {
+  <span class="keyword">return this</span>.flights.<span class="function">update</span>(id, dto);
+}</code></pre>
+
+    <div class="info-box orange">
+        <p><strong>Story-box callback:</strong> in airport terms, <code>CreateFlightDto</code> is the full boarding pass form. <code>UpdateFlightDto</code> (PartialType) is the &ldquo;change my seat&rdquo; form &mdash; same template, only the field you're updating needs to be filled in. <code>PickType</code> is the &ldquo;just confirm your name and seat&rdquo; quick form. The airport doesn't print four totally different forms; they print one and use templates.</p>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Two flavors of mapped-types:</strong> <code>@nestjs/mapped-types</code> is the plain version. If you also use Swagger, install <code>@nestjs/swagger</code> instead and import <code>PartialType</code> from there &mdash; that one carries OpenAPI metadata along with the validators. We'll meet that in Lesson 7. Don't import from both packages in the same file.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: VERSIONING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: API Versioning &mdash; Don't Break v1 Clients</h2>
+
+    <p>Eventually you'll need to ship a breaking change. The response shape needs to change. A field gets renamed. A required field becomes optional. You can't just deploy &mdash; you'll break every mobile app that hasn't been force-updated.</p>
+
+    <p>NestJS has first-class versioning. Three styles ship out of the box.</p>
+
+    <h3>1. URI versioning (recommended for public APIs)</h3>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> { VersioningType } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+app.<span class="function">enableVersioning</span>({
+  type: VersioningType.URI,
+  defaultVersion: <span class="string">'1'</span>,
+});</code></pre>
+
+    <pre><code><span class="comment">// src/flights/flights.controller.ts</span>
+<span class="decorator">@Controller</span>({ path: <span class="string">'flights'</span>, version: <span class="string">'1'</span> })
+<span class="keyword">export class</span> FlightsControllerV1 {
+  <span class="decorator">@Get</span>()
+  <span class="function">list</span>() { <span class="keyword">return</span> [{ id: <span class="string">1</span>, code: <span class="string">'FH-100'</span> }]; }
+}
+
+<span class="decorator">@Controller</span>({ path: <span class="string">'flights'</span>, version: <span class="string">'2'</span> })
+<span class="keyword">export class</span> FlightsControllerV2 {
+  <span class="decorator">@Get</span>()
+  <span class="function">list</span>() {
+    <span class="keyword">return</span> [{
+      id: <span class="string">1</span>, code: <span class="string">'FH-100'</span>,
+      formattedDate: <span class="string">'May 1, 2026 at 8:30 AM'</span>,
+    }];
+  }
+}</code></pre>
+
+    <p>Result: <code>GET /v1/flights</code> hits the v1 controller, <code>GET /v2/flights</code> hits v2. Two clean implementations, no <code>if (version === 2)</code> spaghetti inside one handler.</p>
+
+    <h3>2. Header versioning</h3>
+
+    <pre><code>app.<span class="function">enableVersioning</span>({
+  type: VersioningType.HEADER,
+  header: <span class="string">'X-API-Version'</span>,
+});</code></pre>
+
+    <p>Client sends <code>X-API-Version: 2</code>. Same controller decorators (<code>@Controller({ path, version })</code>). Cleaner URLs but harder to share/curl.</p>
+
+    <h3>3. Media-type versioning</h3>
+
+    <pre><code>app.<span class="function">enableVersioning</span>({
+  type: VersioningType.MEDIA_TYPE,
+  key: <span class="string">'v='</span>,
+});
+<span class="comment">// client sends: Accept: application/json;v=2</span></code></pre>
+
+    <p>The most &ldquo;RESTful by the book&rdquo; option. Almost nobody uses it in practice.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4F1;</div>
+        Mobile dev: &ldquo;You renamed <code>fullName</code> to <code>name</code>? My app is dead in the App Store.&rdquo;<br>
+        Backend dev: &ldquo;It was just one field!&rdquo;<br>
+        Mobile dev: &ldquo;The App Store review takes a week. The plane just took off.&rdquo;<br>
+        Backend dev: &ldquo;...should I have made <code>/v2</code>?&rdquo;<br>
+        Mobile dev: &ldquo;You should have made <code>/v2</code>.&rdquo;<br>
+        <em>Versioning is cheap. Force-updating millions of users mid-flight is not.</em>
+    </div>
+
+    <h3>When to introduce v2</h3>
+
+    <table>
+        <tr>
+            <th>Change</th>
+            <th>Breaking?</th>
+            <th>Bump version?</th>
+        </tr>
+        <tr>
+            <td>Adding a new optional field to response</td>
+            <td>No</td>
+            <td>No &mdash; clients ignore unknown fields</td>
+        </tr>
+        <tr>
+            <td>Adding a new endpoint</td>
+            <td>No</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>Renaming a response field</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Removing a field</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Changing a field's type</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Making a previously optional request field required</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Tightening validation (e.g. stricter regex)</td>
+            <td>Often yes</td>
+            <td>Usually yes</td>
+        </tr>
+    </table>
+
+    <div class="info-box green">
+        <p><strong>Pragmatic rule:</strong> ship v2 only when you actually need to break v1 clients. Most APIs in the wild stay on v1 for years. When you do bump, run v1 and v2 side by side for at least one full release cycle of your largest client. Sunset v1 with telemetry: log every v1 request, monitor the count, deprecate when it falls under a threshold.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>What you locked down in Lesson 6:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F39F;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--blue);">DTOs</div>
+            <div class="layer-desc">Boarding-pass form for the API. Separate input contracts from DB models. Always.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2705;</div>
+            <div class="layer-name" style="color: var(--green);">class-validator</div>
+            <div class="layer-desc">Decorate every DTO field. <code>@IsString</code>, <code>@IsInt</code>, <code>@Min</code>, <code>@IsEmail</code>, <code>@IsEnum</code>, <code>@IsOptional</code>, <code>@ValidateNested</code>+<code>@Type</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6A8;</div>
+            <div class="layer-name" style="color: var(--red);">Global ValidationPipe</div>
+            <div class="layer-desc"><code>whitelist + forbidNonWhitelisted + transform</code>. The line between you and a mass-assignment CVE.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--purple);">Serialization</div>
+            <div class="layer-desc"><code>@Exclude</code> + <code>ClassSerializerInterceptor</code>. <code>passwordHash</code> stays in the database where it belongs.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--orange);">Mapped types</div>
+            <div class="layer-desc">PartialType, PickType, OmitType, IntersectionType. Stop copy-pasting DTOs.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F39F;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Versioning</div>
+            <div class="layer-desc">URI / Header / Media Type. Default to URI. Bump only when you genuinely break v1.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 7:</strong> APIs at scale. Auto-generated docs with Swagger/OpenAPI &mdash; the airport directory map at the entrance. Then GraphQL: the &ldquo;tell me what you want&rdquo; concierge desk. We'll wire both into the same flights API.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Wire validation into your flights API</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Create <code>CreateFlightDto</code> in <code>src/flights/dto/</code> with at minimum: <code>@IsString()</code> on <code>code</code>, <code>@IsInt() @Min(0)</code> on <code>capacity</code>, plus one more validated field of your choice</li>
+                    <li>Wire the global <code>ValidationPipe</code> in <code>main.ts</code> with <code>whitelist: true, forbidNonWhitelisted: true, transform: true</code></li>
+                    <li>POST a body that's missing a required field (or has a wrong type) using Postman / Insomnia / curl</li>
+                    <li>Take a <strong>screenshot</strong> of the 400 response showing the field-by-field error messages</li>
+                    <li>Submit the screenshot</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Add UpdateFlightDto with PartialType</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Create <code>UpdateFlightDto extends PartialType(CreateFlightDto)</code></li>
+                    <li>Replace your <code>PATCH /flights/:id</code> handler to use it as <code>@Body() dto: UpdateFlightDto</code></li>
+                    <li>Push the commit to your <code>nestjs-course-yourname</code> repo</li>
+                    <li>Submit the commit URL (<code>github.com/&lt;you&gt;/nestjs-course-yourname/commit/&lt;sha&gt;</code>)</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why whitelist + forbidNonWhitelisted matter</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 2&ndash;3 sentences: explain why <code>whitelist: true</code> and <code>forbidNonWhitelisted: true</code> are critical for production</li>
+                    <li>Name the attack class they prevent</li>
+                    <li>Submit as text in the platform</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Strip a sensitive field from your responses</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add a <code>passwordHash</code> field to a <code>User</code> class (or whatever sensitive field exists in your model). Decorate it with <code>@Exclude()</code>. Wire <code>ClassSerializerInterceptor</code> globally. <code>GET /users/:id</code> must <em>not</em> return <code>passwordHash</code> &mdash; screenshot the response.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Implement URI versioning</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Enable URI versioning. Build <code>/v1/flights</code> and <code>/v2/flights</code> where v2 returns a richer response (e.g. adds <code>formattedDate</code>). Screenshot both responses side by side.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 6 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: APIs at Scale &mdash; REST, Swagger &amp; GraphQL</p>
+    </div>
+
+</div>
+
+</body>
+</html>

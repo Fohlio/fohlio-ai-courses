@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 8</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+        }
+        .recap-item strong {
+            color: var(--blue);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 8 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Async Power &mdash; BullMQ, EventEmitter, cache-manager, scheduled tasks</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Know when to move work off the request path &mdash; and how</li>
+            <li>Cache GET endpoints with <code>@nestjs/cache-manager</code> (in-memory and Redis)</li>
+            <li>Run background jobs with BullMQ: producers, processors, retries</li>
+            <li>Use <code>EventEmitter2</code> to decouple modules with in-process pub/sub</li>
+            <li>Schedule recurring tasks with <code>@nestjs/schedule</code> (Cron, Interval, Timeout)</li>
+            <li>Pick the right logger: built-in <code>Logger</code>, Pino, or Winston</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <h2 class="part-header">Quick Recap (Lessons 1&ndash;7)</h2>
+
+    <p>Before we get into the asynchronous machinery, let's pin the airport map back on the wall:</p>
+
+    <div class="recap-grid">
+        <div class="recap-item"><strong>L1 &mdash; The Airport</strong>Modules = Terminals. Controllers = Gate Agents. Services = Ground Crew. DI = Ops Dispatch.</div>
+        <div class="recap-item"><strong>L2 &mdash; The Holy Trinity</strong><code>@Module</code>, <code>@Controller</code>, <code>@Injectable</code>. Wiring is declarative.</div>
+        <div class="recap-item"><strong>L3 &mdash; Validation &amp; Pipes</strong><code>ValidationPipe</code> + DTOs = X-ray scans every bag before the gate.</div>
+        <div class="recap-item"><strong>L4 &mdash; Guards &amp; Auth</strong>Security checkpoint. JWT, roles, <code>@UseGuards</code>.</div>
+        <div class="recap-item"><strong>L5 &mdash; Interceptors &amp; Filters</strong>Flight Recorder + Lost &amp; Found. Cross-cutting concerns.</div>
+        <div class="recap-item"><strong>L6 &mdash; Database (Prisma)</strong>Repositories, transactions, migrations.</div>
+        <div class="recap-item"><strong>L7 &mdash; Config &amp; Env</strong><code>@nestjs/config</code>, validation with Joi/Zod, multi-env.</div>
+        <div class="recap-item"><strong>Today &mdash; L8</strong>Everything that should <em>not</em> happen during the request.</div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Mental shift for this lesson:</strong> up until now, every concept lived inside the request/response cycle. Today's tools all break that cycle. The request finishes; the work continues. That's the whole theme.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: MOVE SLOW WORK OFF THE REQUEST PATH -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Move Slow Work Off the Request Path</h2>
+
+    <p>Picture the controller you wrote in Lesson 6. <code>POST /flights</code> creates a flight. Easy. Now product comes back with three more requirements:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E7;</div>
+            <div class="layer-name" style="color: var(--orange);">Send email</div>
+            <div class="layer-desc">Confirm to the passenger that the flight is booked. SMTP call: ~800ms.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--orange);">Recompute analytics</div>
+            <div class="layer-desc">Refresh the dashboard rollup for the day. ~300ms of DB aggregation.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--orange);">Sync to partner system</div>
+            <div class="layer-desc">POST to a partner airline's API. Sometimes 200ms, sometimes 6 seconds, sometimes 502.</div>
+        </div>
+    </div>
+
+    <p>If you cram all of that into the controller, your <code>POST /flights</code> just went from 80ms to ~7 seconds in the worst case &mdash; and one timeout in any of those calls breaks the entire flight creation. That's not a backend, that's a hostage situation.</p>
+
+    <div class="story-box">
+        <p>The gate agent at JFK doesn't load your suitcase onto the plane themselves. They print a tag, slap it on the bag, drop it on the conveyor belt, and tell you: <em>&ldquo;You're good to go.&rdquo;</em></p>
+        <p>The bag ride to the cargo hold takes minutes. The agent doesn't wait. They've already moved on to the next passenger. <strong>The conveyor belt &mdash; that's a queue.</strong> Bags get processed when a baggage handler is free. If a handler is sick, the belt buffers. If a bag falls off, the system retries. The passenger never knows.</p>
+        <p>Meanwhile, the airport's PA system announces: <em>&ldquo;Ground crew, gate B14, flight 738 closing.&rdquo;</em> Anyone listening on that channel reacts &mdash; the fueler, the catering crew, the pushback driver. The agent doesn't call each one. <strong>That broadcast &mdash; that's an event.</strong></p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Queue (BullMQ) = the conveyor belt. Events (EventEmitter2) = the airport PA system. Cron jobs = the nightly cleaning crew that runs whether anyone asked or not. Caching = the express check-in lane for frequent flyers. All four exist so the gate agent can hand off and keep moving.
+        </div>
+    </div>
+
+    <h3>The two big tools, in one sentence each</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4E6;</div>
+            <div class="card-title" style="color: var(--blue);">BullMQ Queue</div>
+            <div class="card-subtitle" style="color: var(--blue);">Durable, retryable, observable</div>
+            <div class="card-desc">Use when the work <em>must</em> happen, even if it takes a while or fails the first time. Email sending. Partner sync. Webhook delivery. Backed by Redis.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4E2;</div>
+            <div class="card-title" style="color: var(--green);">EventEmitter2</div>
+            <div class="card-subtitle" style="color: var(--green);">Fast, in-process, fire-and-forget</div>
+            <div class="card-desc">Use when one module needs to tell others &ldquo;something happened&rdquo; without knowing who's listening. Cache invalidation. Audit log. Dashboard refresh.</div>
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Rule of thumb:</strong> if losing the work would cause user-visible damage (missed email, missed payment), use a queue. If it's a soft signal that other parts of the app react to, use an event. We'll come back to this exact decision in the homework.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before reading</div>
+        <div class="recall-question">If you crash the Node process <em>right after</em> emitting an event with EventEmitter2, what happens to the event? Now: same scenario, but you added a job to a BullMQ queue. What happens to the job?</div>
+        <div class="recall-hint">The answer is exactly why one tool fits one job and not the other. We'll confirm in Parts 3 and 4.</div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F525;</div>
+        Junior: &ldquo;The <code>POST /flights</code> endpoint takes 7 seconds.&rdquo;<br>
+        Senior: &ldquo;What's it doing?&rdquo;<br>
+        Junior: &ldquo;Creating the flight, sending an email, syncing to three partner APIs, recomputing the daily report, and warming the cache.&rdquo;<br>
+        Senior: &ldquo;...how many of those does the user actually need to wait for?&rdquo;<br>
+        Junior: &ldquo;...one.&rdquo;<br>
+        <em>The other six are conveyor-belt work. Drop them off, walk away.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: CACHING WITH cache-manager -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Caching with cache-manager</h2>
+
+    <p>Caching is the cheapest performance win you'll ever get. If a GET endpoint returns the same answer for the same input for the next 60 seconds, why hit the database every single time?</p>
+
+    <div class="story-box">
+        <p>Frequent flyers at the airport get to use the express check-in counter. They scan a card, the system already knows them, they breeze through in 8 seconds instead of 4 minutes. <strong>That's caching.</strong> The slow path (full check-in: ID verification, baggage weighing, seat assignment) still exists for everyone else &mdash; but the system answers the easy questions instantly for the regulars.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Cache hit = express lane. Cache miss = full check-in. TTL = how long the airline trusts that your details haven't changed before they re-verify.
+        </div>
+    </div>
+
+    <h3>Install</h3>
+
+    <pre><code><span class="function">npm</span> install @nestjs/cache-manager cache-manager</code></pre>
+
+    <h3>Wire the module</h3>
+
+    <pre><code><span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { CacheModule } <span class="keyword">from</span> <span class="string">'@nestjs/cache-manager'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    CacheModule.<span class="function">register</span>({
+      ttl: <span class="string">60_000</span>,    <span class="comment">// 60 seconds, in ms</span>
+      max: <span class="string">100</span>,       <span class="comment">// max items in memory before LRU eviction</span>
+      isGlobal: <span class="keyword">true</span>, <span class="comment">// available everywhere without re-importing</span>
+    }),
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <p>Out of the box, this is in-process memory. Restart the server, the cache is gone. That's fine for development. Production wants Redis &mdash; we'll get there in two pages.</p>
+
+    <h3>Cache a GET endpoint declaratively</h3>
+
+    <pre><code><span class="keyword">import</span> { Controller, Get, UseInterceptors } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { CacheInterceptor, CacheTTL } <span class="keyword">from</span> <span class="string">'@nestjs/cache-manager'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="decorator">@UseInterceptors</span>(CacheInterceptor)
+<span class="keyword">export class</span> FlightsController {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> flightsService: FlightsService) {}
+
+  <span class="decorator">@Get</span>()
+  <span class="decorator">@CacheTTL</span>(<span class="string">30_000</span>) <span class="comment">// override module default for this route</span>
+  <span class="function">findAll</span>() {
+    <span class="keyword">return</span> <span class="keyword">this</span>.flightsService.<span class="function">findAll</span>();
+  }
+}</code></pre>
+
+    <p>That's it. The first request hits the service. Every request to the same URL within 30 seconds returns the cached body without ever calling <code>findAll</code>. The cache key is derived from the request URL.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Cache hit vs. cache miss</text>
+
+            <defs>
+                <marker id="arrCacheGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+                <marker id="arrCacheRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/>
+                </marker>
+            </defs>
+
+            <!-- Request -->
+            <rect x="20" y="110" width="120" height="60" rx="8" fill="#3451B2"/>
+            <text x="80" y="138" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="white">Request</text>
+            <text x="80" y="156" text-anchor="middle" font-family="Inter" font-size="11" fill="#C5D0F6">GET /flights</text>
+
+            <!-- Cache check -->
+            <rect x="200" y="110" width="140" height="60" rx="8" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="270" y="138" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">Cache check</text>
+            <text x="270" y="156" text-anchor="middle" font-family="Inter" font-size="11" fill="#92400E">key = URL</text>
+
+            <line x1="140" y1="140" x2="195" y2="140" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrCacheGreen)"/>
+
+            <!-- HIT path -->
+            <rect x="400" y="40" width="160" height="48" rx="8" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="480" y="62" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#1A8F5C">HIT &mdash; return cached</text>
+            <text x="480" y="78" text-anchor="middle" font-family="Inter" font-size="10" fill="#065F46">~2ms, no DB call</text>
+            <line x1="340" y1="125" x2="395" y2="68" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrCacheGreen)"/>
+
+            <!-- MISS path -->
+            <rect x="400" y="195" width="160" height="48" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="480" y="217" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#DC2626">MISS &mdash; call DB</text>
+            <text x="480" y="233" text-anchor="middle" font-family="Inter" font-size="10" fill="#991B1B">~80ms, store result</text>
+            <line x1="340" y1="155" x2="395" y2="215" stroke="#DC2626" stroke-width="2" marker-end="url(#arrCacheRed)"/>
+
+            <!-- DB -->
+            <rect x="610" y="195" width="120" height="48" rx="8" fill="#374151"/>
+            <text x="670" y="223" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="white">Database</text>
+            <line x1="560" y1="219" x2="605" y2="219" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arrCacheRed)"/>
+
+            <!-- Store back -->
+            <line x1="670" y1="195" x2="270" y2="170" stroke="#6B7280" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="470" y="188" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280" font-style="italic">store with TTL</text>
+        </svg>
+        <div class="diagram-caption">First request: miss, DB hit, populate cache. Next requests within TTL: hit, ~40&times; faster.</div>
+    </div>
+
+    <h3>Manual cache control (when the interceptor isn't enough)</h3>
+
+    <p>Sometimes you want to read or write the cache yourself &mdash; for example, invalidate it after a write.</p>
+
+    <pre><code><span class="keyword">import</span> { Inject, Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { CACHE_MANAGER } <span class="keyword">from</span> <span class="string">'@nestjs/cache-manager'</span>;
+<span class="keyword">import</span> { Cache } <span class="keyword">from</span> <span class="string">'cache-manager'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">constructor</span>(
+    <span class="decorator">@Inject</span>(CACHE_MANAGER) <span class="keyword">private readonly</span> cache: Cache,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">findAll</span>() {
+    <span class="keyword">const</span> cached = <span class="keyword">await this</span>.cache.<span class="function">get</span>&lt;<span class="type">Flight</span>[]&gt;(<span class="string">'flights:all'</span>);
+    <span class="keyword">if</span> (cached) <span class="keyword">return</span> cached;
+
+    <span class="keyword">const</span> fresh = <span class="keyword">await this</span>.prisma.flight.<span class="function">findMany</span>();
+    <span class="keyword">await this</span>.cache.<span class="function">set</span>(<span class="string">'flights:all'</span>, fresh, <span class="string">60_000</span>);
+    <span class="keyword">return</span> fresh;
+  }
+
+  <span class="keyword">async</span> <span class="function">create</span>(dto: CreateFlightDto) {
+    <span class="keyword">const</span> flight = <span class="keyword">await this</span>.prisma.flight.<span class="function">create</span>({ data: dto });
+    <span class="keyword">await this</span>.cache.<span class="function">del</span>(<span class="string">'flights:all'</span>); <span class="comment">// invalidate list cache</span>
+    <span class="keyword">return</span> flight;
+  }
+}</code></pre>
+
+    <h3>HTTP module &mdash; calling external APIs the Nest way</h3>
+
+    <p>Quick detour, because it shows up alongside caching all the time. <code>@nestjs/axios</code> wraps Axios so it plays nicely with DI, interceptors, and observability:</p>
+
+    <pre><code><span class="function">npm</span> install @nestjs/axios axios</code></pre>
+
+    <pre><code><span class="keyword">import</span> { HttpModule, HttpService } <span class="keyword">from</span> <span class="string">'@nestjs/axios'</span>;
+<span class="keyword">import</span> { firstValueFrom } <span class="keyword">from</span> <span class="string">'rxjs'</span>;
+
+<span class="decorator">@Module</span>({ imports: [HttpModule.<span class="function">register</span>({ timeout: <span class="string">5000</span> })] })
+<span class="keyword">export class</span> WeatherModule {}
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> WeatherService {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> http: HttpService) {}
+
+  <span class="keyword">async</span> <span class="function">forecast</span>(city: <span class="type">string</span>) {
+    <span class="keyword">const</span> { data } = <span class="keyword">await</span> <span class="function">firstValueFrom</span>(
+      <span class="keyword">this</span>.http.<span class="function">get</span>(<span class="string">`https://api.weather/<span class="keyword">${</span>city<span class="keyword">}</span>`</span>),
+    );
+    <span class="keyword">return</span> data;
+  }
+}</code></pre>
+
+    <p>The combo you'll want: <code>HttpService</code> for the call, <code>cache.set</code> for the result with a sensible TTL, <code>BullMQ</code> if the call is part of a longer workflow that needs retries.</p>
+
+    <h3>Switch to Redis for production</h3>
+
+    <p>In-memory caching dies on every deploy and doesn't share across instances. Production wants Redis. The current ecosystem standard is Keyv:</p>
+
+    <pre><code><span class="function">npm</span> install @keyv/redis cacheable</code></pre>
+
+    <pre><code><span class="keyword">import</span> { CacheModule } <span class="keyword">from</span> <span class="string">'@nestjs/cache-manager'</span>;
+<span class="keyword">import</span> { createKeyv } <span class="keyword">from</span> <span class="string">'@keyv/redis'</span>;
+
+CacheModule.<span class="function">registerAsync</span>({
+  isGlobal: <span class="keyword">true</span>,
+  <span class="function">useFactory</span>: <span class="keyword">async</span> () =&gt; ({
+    stores: [<span class="function">createKeyv</span>(<span class="string">'redis://localhost:6379'</span>)],
+    ttl: <span class="string">60_000</span>,
+  }),
+});</code></pre>
+
+    <p>Same API on your service side. The store changed; your code didn't. That's the whole point of <code>cache-manager</code>: pluggable backend.</p>
+
+    <div class="info-box green">
+        <p><strong>Real example from Fohlio land:</strong> the materials catalog endpoint returns ~3,000 items per project. Without caching, every dashboard load hits Postgres for the full list. With a 5-minute Redis cache and <code>@CacheTTL(300_000)</code>, that endpoint went from 240ms to 12ms p95 &mdash; and Postgres CPU dropped from 30% to 4% during peak hours.</p>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>Caching footgun:</strong> caching authenticated endpoints by URL alone is a data-leak factory. User A's request gets cached &mdash; user B with a different role gets A's data back. If you cache anything user-specific, include the user ID in the cache key (or use <code>trackBy</code> on the interceptor). When in doubt: don't cache it.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F9C0;</div>
+        Manager: &ldquo;The dashboard is slow.&rdquo;<br>
+        Dev: &ldquo;Let me add caching.&rdquo;<br>
+        *adds 60s cache*<br>
+        Manager: &ldquo;The dashboard is fast! ...wait, why does it still show old data after I edited the project?&rdquo;<br>
+        Dev: &ldquo;...let me add cache invalidation.&rdquo;<br>
+        <em>The two hard problems in computer science: cache invalidation, naming things, and off-by-one errors.</em>
+    </div>
+
+    <h3>Three cache key strategies you'll actually use</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F511;</div>
+            <div class="layer-name" style="color: var(--blue);">URL-based</div>
+            <div class="layer-desc">Default for <code>CacheInterceptor</code>. Fine for fully public lists. Dangerous for auth.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F464;</div>
+            <div class="layer-name" style="color: var(--orange);">URL + user ID</div>
+            <div class="layer-desc">Override <code>CacheInterceptor.trackBy()</code> to include the JWT subject. Per-user cache.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F3F7;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">Tagged keys</div>
+            <div class="layer-desc">Manual: <code>cache.set('flights:project:'+id, ...)</code>. On any flight write, <code>del</code> the matching tag pattern.</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: BACKGROUND JOBS WITH BULLMQ -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Background Jobs with BullMQ</h2>
+
+    <p>BullMQ is the de facto Node.js job queue. It runs on Redis. NestJS wraps it with <code>@nestjs/bullmq</code> so you get the same DI patterns you already know.</p>
+
+    <h3>The flow in one diagram</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 780 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="780" height="360" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="390" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">BullMQ: producer &rarr; queue &rarr; worker</text>
+
+            <defs>
+                <marker id="arrBull" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#3451B2"/>
+                </marker>
+            </defs>
+
+            <!-- HTTP request -->
+            <rect x="30" y="60" width="160" height="60" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="110" y="86" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">POST /flights</text>
+            <text x="110" y="104" text-anchor="middle" font-family="Inter" font-size="10" fill="#1E40AF">controller returns 201 fast</text>
+
+            <!-- Producer (service) -->
+            <rect x="30" y="160" width="160" height="60" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="110" y="186" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">FlightsService</text>
+            <text x="110" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#5B21B6">queue.add('send-email', ...)</text>
+
+            <line x1="110" y1="120" x2="110" y2="158" stroke="#3451B2" stroke-width="2" marker-end="url(#arrBull)"/>
+
+            <!-- Queue (Redis) -->
+            <rect x="280" y="120" width="220" height="100" rx="12" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="390" y="148" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#D97706">Redis Queue: 'emails'</text>
+            <rect x="300" y="160" width="50" height="20" rx="3" fill="#FBBF24"/>
+            <text x="325" y="174" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="white">job 41</text>
+            <rect x="360" y="160" width="50" height="20" rx="3" fill="#FBBF24"/>
+            <text x="385" y="174" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="white">job 42</text>
+            <rect x="420" y="160" width="50" height="20" rx="3" fill="#FBBF24"/>
+            <text x="445" y="174" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="white">job 43</text>
+            <text x="390" y="208" text-anchor="middle" font-family="Inter" font-size="10" fill="#92400E">durable, retryable, observable</text>
+
+            <line x1="190" y1="190" x2="275" y2="170" stroke="#3451B2" stroke-width="2" marker-end="url(#arrBull)"/>
+
+            <!-- Worker -->
+            <rect x="580" y="160" width="160" height="60" rx="8" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="660" y="186" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#1A8F5C">EmailProcessor</text>
+            <text x="660" y="204" text-anchor="middle" font-family="Inter" font-size="10" fill="#065F46">@Processor('emails')</text>
+
+            <line x1="500" y1="190" x2="575" y2="190" stroke="#3451B2" stroke-width="2" marker-end="url(#arrBull)"/>
+
+            <!-- SMTP -->
+            <rect x="580" y="260" width="160" height="50" rx="8" fill="#374151"/>
+            <text x="660" y="290" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="white">SMTP / SendGrid</text>
+            <line x1="660" y1="220" x2="660" y2="258" stroke="#3451B2" stroke-width="2" marker-end="url(#arrBull)"/>
+
+            <!-- Caption -->
+            <text x="390" y="338" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280" font-style="italic">if SMTP fails, BullMQ retries with exponential backoff &mdash; the original request already returned</text>
+        </svg>
+        <div class="diagram-caption">The producer adds; the worker consumes. They never block each other.</div>
+    </div>
+
+    <h3>Install &amp; wire</h3>
+
+    <pre><code><span class="function">npm</span> install @nestjs/bullmq bullmq</code></pre>
+
+    <pre><code><span class="comment">// app.module.ts</span>
+<span class="keyword">import</span> { BullModule } <span class="keyword">from</span> <span class="string">'@nestjs/bullmq'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    BullModule.<span class="function">forRoot</span>({
+      connection: { host: <span class="string">'localhost'</span>, port: <span class="string">6379</span> },
+    }),
+    BullModule.<span class="function">registerQueue</span>({ name: <span class="string">'emails'</span> }),
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <h3>The producer (your existing service)</h3>
+
+    <pre><code><span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { InjectQueue } <span class="keyword">from</span> <span class="string">'@nestjs/bullmq'</span>;
+<span class="keyword">import</span> { Queue } <span class="keyword">from</span> <span class="string">'bullmq'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private readonly</span> prisma: PrismaService,
+    <span class="decorator">@InjectQueue</span>(<span class="string">'emails'</span>) <span class="keyword">private readonly</span> emailsQueue: Queue,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">create</span>(dto: CreateFlightDto) {
+    <span class="keyword">const</span> flight = <span class="keyword">await this</span>.prisma.flight.<span class="function">create</span>({ data: dto });
+
+    <span class="keyword">await this</span>.emailsQueue.<span class="function">add</span>(
+      <span class="string">'send-confirmation'</span>,        <span class="comment">// job name (within the queue)</span>
+      { flightId: flight.id },     <span class="comment">// job payload</span>
+      {
+        attempts: <span class="string">5</span>,
+        backoff: { type: <span class="string">'exponential'</span>, delay: <span class="string">1000</span> },
+        removeOnComplete: <span class="keyword">true</span>,
+        removeOnFail: <span class="string">100</span>, <span class="comment">// keep last 100 failures for debugging</span>
+      },
+    );
+
+    <span class="keyword">return</span> flight; <span class="comment">// HTTP response goes out NOW. Email happens later.</span>
+  }
+}</code></pre>
+
+    <h3>The processor (a separate class, runs in the worker)</h3>
+
+    <pre><code><span class="keyword">import</span> { Processor, WorkerHost } <span class="keyword">from</span> <span class="string">'@nestjs/bullmq'</span>;
+<span class="keyword">import</span> { Job } <span class="keyword">from</span> <span class="string">'bullmq'</span>;
+<span class="keyword">import</span> { Logger } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Processor</span>(<span class="string">'emails'</span>)
+<span class="keyword">export class</span> EmailProcessor <span class="keyword">extends</span> WorkerHost {
+  <span class="keyword">private readonly</span> logger = <span class="keyword">new</span> <span class="function">Logger</span>(EmailProcessor.name);
+
+  <span class="keyword">async</span> <span class="function">process</span>(job: <span class="type">Job</span>): <span class="type">Promise</span>&lt;<span class="type">void</span>&gt; {
+    <span class="keyword">switch</span> (job.name) {
+      <span class="keyword">case</span> <span class="string">'send-confirmation'</span>:
+        <span class="keyword">await this</span>.<span class="function">sendConfirmation</span>(job.data.flightId);
+        <span class="keyword">return</span>;
+      <span class="keyword">default</span>:
+        <span class="keyword">throw new</span> <span class="function">Error</span>(<span class="string">`Unknown job: <span class="keyword">${</span>job.name<span class="keyword">}</span>`</span>);
+    }
+  }
+
+  <span class="keyword">private async</span> <span class="function">sendConfirmation</span>(flightId: <span class="type">string</span>) {
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">`Sending confirmation for flight <span class="keyword">${</span>flightId<span class="keyword">}</span>`</span>);
+    <span class="comment">// pretend SMTP call here</span>
+    <span class="keyword">await new</span> <span class="function">Promise</span>(r =&gt; <span class="function">setTimeout</span>(r, <span class="string">800</span>));
+  }
+}</code></pre>
+
+    <p>Register the processor in the same module as the queue:</p>
+
+    <pre><code><span class="decorator">@Module</span>({
+  imports: [BullModule.<span class="function">registerQueue</span>({ name: <span class="string">'emails'</span> })],
+  providers: [EmailProcessor, FlightsService],
+})
+<span class="keyword">export class</span> FlightsModule {}</code></pre>
+
+    <h3>Delays, repeats, and priorities &mdash; one options object</h3>
+
+    <p>Most BullMQ power lives in the third argument to <code>queue.add</code>:</p>
+
+    <pre><code><span class="comment">// Run in 60 seconds</span>
+<span class="keyword">await</span> queue.<span class="function">add</span>(<span class="string">'reminder'</span>, payload, { delay: <span class="string">60_000</span> });
+
+<span class="comment">// Recurring &mdash; cron-style, lives in Redis (survives restarts)</span>
+<span class="keyword">await</span> queue.<span class="function">add</span>(<span class="string">'daily-summary'</span>, {}, {
+  repeat: { pattern: <span class="string">'0 9 * * *'</span>, tz: <span class="string">'UTC'</span> },
+});
+
+<span class="comment">// Priority: lower number = higher priority</span>
+<span class="keyword">await</span> queue.<span class="function">add</span>(<span class="string">'send-vip-email'</span>, payload, { priority: <span class="string">1</span> });
+<span class="keyword">await</span> queue.<span class="function">add</span>(<span class="string">'send-bulk-email'</span>, payload, { priority: <span class="string">10</span> });
+
+<span class="comment">// Idempotency &mdash; same job ID won't be added twice</span>
+<span class="keyword">await</span> queue.<span class="function">add</span>(<span class="string">'sync-partner'</span>, payload, { jobId: <span class="string">`flight-<span class="keyword">${</span>flight.id<span class="keyword">}</span>`</span> });</code></pre>
+
+    <p>That last pattern &mdash; <code>jobId</code> for idempotency &mdash; saves you when a webhook fires twice or a user double-clicks a button. The second add is a no-op while the first is still alive in the queue.</p>
+
+    <h3>What you get for free</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--green);">Retries</div>
+            <div class="layer-desc">5 attempts with exponential backoff (1s, 2s, 4s, 8s, 16s) &mdash; just from the options object.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4BE;</div>
+            <div class="layer-name" style="color: var(--green);">Durability</div>
+            <div class="layer-desc">Jobs live in Redis. Crash the Node process; restart it; the job is still there waiting.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x23F0;</div>
+            <div class="layer-name" style="color: var(--green);">Delays &amp; cron</div>
+            <div class="layer-desc"><code>delay: 60_000</code> for &ldquo;run in 1 min&rdquo;; <code>repeat: { pattern: '0 9 * * *' }</code> for daily at 9am.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F441;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">Observability</div>
+            <div class="layer-desc">Plug in Bull Board (a UI) to see queues, jobs, failures, and retry timers in real time.</div>
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4A5;</div>
+        Email service: *503 Bad Gateway*<br>
+        Express app: &ldquo;Whelp, the user's signup just failed. Tell them to try again in an hour.&rdquo;<br>
+        BullMQ: &ldquo;Cool, I'll try in 1 second. Then 2. Then 4. Then 8. Then 16. After 5 tries I'll log it and move on.&rdquo;<br>
+        <em>One of these is a feature; the other is a customer support ticket.</em>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Advanced &mdash; concurrency:</strong> by default, the processor handles one job at a time. Bump it: <code>@Processor('emails', { concurrency: 10 })</code>. Now ten jobs run in parallel within the same worker. Beware: rate limits on external APIs become your problem at this layer, not the queue's.</p>
+    </div>
+
+    <h3>Observability &mdash; Bull Board in 6 lines</h3>
+
+    <p>You will eventually have a question like &ldquo;why is the email queue at 4,000 jobs?&rdquo; The answer is a UI you mount inside your Nest app:</p>
+
+    <pre><code><span class="function">npm</span> install @bull-board/api @bull-board/express @bull-board/nestjs</code></pre>
+
+    <pre><code><span class="keyword">import</span> { BullBoardModule } <span class="keyword">from</span> <span class="string">'@bull-board/nestjs'</span>;
+<span class="keyword">import</span> { ExpressAdapter } <span class="keyword">from</span> <span class="string">'@bull-board/express'</span>;
+<span class="keyword">import</span> { BullMQAdapter } <span class="keyword">from</span> <span class="string">'@bull-board/api/bullMQAdapter'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    BullBoardModule.<span class="function">forRoot</span>({ route: <span class="string">'/queues'</span>, adapter: ExpressAdapter }),
+    BullBoardModule.<span class="function">forFeature</span>({ name: <span class="string">'emails'</span>, adapter: BullMQAdapter }),
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <p>Now <code>http://localhost:3000/queues</code> shows every queue, every job, every retry, every failure reason. Lock it behind an admin guard before shipping &mdash; it exposes job payloads.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: EVENTEMITTER2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: EventEmitter2 &mdash; The In-Process PA System</h2>
+
+    <p>Sometimes you don't need durability. You just need module A to tell module B (and C and D) that something happened &mdash; without A having to know B, C, and D exist.</p>
+
+    <div class="story-box">
+        <p>The radiology desk at the airport hospital doesn't call every paramedic personally when a patient comes in. They radio: <em>&ldquo;Code blue, gate 14.&rdquo;</em> Anyone on that frequency reacts. The desk doesn't know who's listening, doesn't wait for confirmation, doesn't care.</p>
+        <p>That's <code>EventEmitter2</code>. The producer emits. Listeners run. Producer keeps moving.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> EventEmitter2 = the airport-wide radio. <code>emit('flight.created', ...)</code> = key the mic and broadcast. <code>@OnEvent('flight.created')</code> = anyone tuned to that channel reacts. <strong>Same Node process</strong> &mdash; not durable, not cross-instance.
+        </div>
+    </div>
+
+    <h3>Install &amp; wire</h3>
+
+    <pre><code><span class="function">npm</span> install @nestjs/event-emitter</code></pre>
+
+    <pre><code><span class="comment">// app.module.ts</span>
+<span class="keyword">import</span> { EventEmitterModule } <span class="keyword">from</span> <span class="string">'@nestjs/event-emitter'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [EventEmitterModule.<span class="function">forRoot</span>()],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <h3>Emit</h3>
+
+    <pre><code><span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { EventEmitter2 } <span class="keyword">from</span> <span class="string">'@nestjs/event-emitter'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> events: EventEmitter2) {}
+
+  <span class="keyword">async</span> <span class="function">create</span>(dto: CreateFlightDto) {
+    <span class="keyword">const</span> flight = <span class="keyword">await this</span>.prisma.flight.<span class="function">create</span>({ data: dto });
+    <span class="keyword">this</span>.events.<span class="function">emit</span>(<span class="string">'flight.created'</span>, flight);
+    <span class="keyword">return</span> flight;
+  }
+}</code></pre>
+
+    <h3>Listen</h3>
+
+    <pre><code><span class="keyword">import</span> { Injectable, Logger } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { OnEvent } <span class="keyword">from</span> <span class="string">'@nestjs/event-emitter'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> AnalyticsListener {
+  <span class="keyword">private readonly</span> logger = <span class="keyword">new</span> <span class="function">Logger</span>(AnalyticsListener.name);
+
+  <span class="decorator">@OnEvent</span>(<span class="string">'flight.created'</span>)
+  <span class="function">handleFlightCreated</span>(flight: <span class="type">Flight</span>) {
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">`Recompute analytics for <span class="keyword">${</span>flight.id<span class="keyword">}</span>`</span>);
+    <span class="comment">// expensive, but happens off the request path</span>
+  }
+}</code></pre>
+
+    <p>Three modules &mdash; <code>analytics</code>, <code>audit</code>, <code>cache</code> &mdash; can each have their own listener for <code>flight.created</code>. <code>FlightsService</code> doesn't import any of them. That's the decoupling.</p>
+
+    <h3>A real Fohlio-shaped example</h3>
+
+    <p>Imagine the user updates a project's name. Several modules care:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">CacheModule</div>
+            <div class="layer-desc">Wants to <code>cache.del('projects:list')</code> so the next list request is fresh.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--purple);">AuditModule</div>
+            <div class="layer-desc">Wants to record &ldquo;User X renamed project Y at time Z.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--purple);">SearchIndexModule</div>
+            <div class="layer-desc">Wants to update the project's entry in the search index.</div>
+        </div>
+    </div>
+
+    <p>Without events, <code>ProjectsService.update</code> would import all three modules and call them in sequence. Tight coupling, hard tests. With events, it just does:</p>
+
+    <pre><code><span class="keyword">this</span>.events.<span class="function">emit</span>(<span class="string">'project.updated'</span>, project);</code></pre>
+
+    <p>Each of the three modules has its own <code>@OnEvent('project.updated')</code> listener. <code>ProjectsService</code> doesn't know they exist. Adding a fourth listener tomorrow is a one-file change.</p>
+
+    <h3>Sync vs async listeners</h3>
+
+    <p>By default, <code>emit()</code> calls listeners <em>synchronously</em>. If your listener is async and slow, the emit is slow too. Two ways out:</p>
+
+    <pre><code><span class="comment">// Option A: emit and don't await</span>
+<span class="keyword">this</span>.events.<span class="function">emit</span>(<span class="string">'flight.created'</span>, flight);
+<span class="comment">// listeners run on next tick; emit returns immediately</span>
+
+<span class="comment">// Option B: explicitly async</span>
+<span class="decorator">@OnEvent</span>(<span class="string">'flight.created'</span>, { async: <span class="keyword">true</span> })
+<span class="keyword">async</span> <span class="function">handle</span>(flight: <span class="type">Flight</span>) { <span class="comment">/* ... */</span> }</code></pre>
+
+    <div class="info-box red">
+        <p><strong>Limit you must respect:</strong> EventEmitter2 lives in <em>one Node process</em>. Two app instances behind a load balancer? Each has its own EventEmitter. An emit on instance A is invisible to listeners on instance B. The moment you scale horizontally, you need a queue or a real pub/sub broker (Redis, NATS &mdash; that's Lesson 9).</p>
+    </div>
+
+    <h3>Wildcards &amp; namespaces &mdash; a small superpower</h3>
+
+    <p>Turn on wildcards in the module config and your event names become a tiny query language:</p>
+
+    <pre><code>EventEmitterModule.<span class="function">forRoot</span>({
+  wildcard: <span class="keyword">true</span>,
+  delimiter: <span class="string">'.'</span>,
+  maxListeners: <span class="string">20</span>,
+})</code></pre>
+
+    <pre><code><span class="comment">// One listener catches every flight.* event</span>
+<span class="decorator">@OnEvent</span>(<span class="string">'flight.*'</span>)
+<span class="function">audit</span>(payload: <span class="keyword">any</span>) {
+  <span class="keyword">this</span>.audit.<span class="function">record</span>(payload);
+}
+
+<span class="comment">// emit: 'flight.created', 'flight.updated', 'flight.cancelled'</span>
+<span class="comment">// all three flow into the audit listener</span></code></pre>
+
+    <p>Useful for cross-cutting concerns &mdash; audit logs, analytics fan-out &mdash; without writing one listener per event name.</p>
+
+    <h3>Queue vs Event &mdash; the decision table</h3>
+
+    <table>
+        <tr>
+            <th>Question</th>
+            <th>BullMQ Queue</th>
+            <th>EventEmitter2</th>
+        </tr>
+        <tr>
+            <td>Survives crash?</td>
+            <td>Yes (Redis-backed)</td>
+            <td>No (in-memory)</td>
+        </tr>
+        <tr>
+            <td>Crosses process boundaries?</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>Retries on failure?</td>
+            <td>Yes, configurable</td>
+            <td>No (you handle it)</td>
+        </tr>
+        <tr>
+            <td>Latency</td>
+            <td>~1&ndash;10ms (Redis hop)</td>
+            <td>&lt;1ms (function call)</td>
+        </tr>
+        <tr>
+            <td>Best for</td>
+            <td>Email, sync, webhooks, anything that <em>must</em> happen</td>
+            <td>Cache invalidation, audit logs, fan-out signals</td>
+        </tr>
+    </table>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test</div>
+        <div class="recall-question">For each of these, pick BullMQ or EventEmitter2 (no peeking):<br><br>
+        1. Send password reset email after <code>POST /forgot-password</code>.<br>
+        2. Invalidate the in-memory <code>users:list</code> cache after a user is updated.<br>
+        3. Charge a credit card via Stripe after order placed.<br>
+        4. Update an in-memory online-users counter when someone logs in.</div>
+        <div class="recall-hint">1 &amp; 3 = BullMQ (must succeed, may retry). 2 &amp; 4 = EventEmitter2 (cheap signal, OK if a crash loses one). The pattern: would a lost event cause a refund or a complaint? &rarr; queue. Would it cause a stale dashboard for 30 seconds? &rarr; event.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: SCHEDULED TASKS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Scheduled Tasks &mdash; @nestjs/schedule</h2>
+
+    <p>Some work isn't triggered by a request &mdash; it's triggered by the clock. Nightly cleanup. Hourly stats. Every 30 seconds, prune expired tokens. That's what <code>@nestjs/schedule</code> is for.</p>
+
+    <div class="story-box">
+        <p>The airport's cleaning crew doesn't need anyone to call them. Every night at 2am, they sweep the terminals. Every Sunday they deep-clean. Every 15 minutes during the day, someone empties the trash near gate B14.</p>
+        <p>Nobody dispatches them. They're on a schedule. <strong>That's @Cron.</strong></p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> <code>@Cron('0 2 * * *')</code> = nightly sweep. <code>@Interval(900000)</code> = every 15 min (in ms). <code>@Timeout(5000)</code> = run once, 5 seconds after boot.
+        </div>
+    </div>
+
+    <h3>Install &amp; wire</h3>
+
+    <pre><code><span class="function">npm</span> install @nestjs/schedule</code></pre>
+
+    <pre><code><span class="keyword">import</span> { ScheduleModule } <span class="keyword">from</span> <span class="string">'@nestjs/schedule'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [ScheduleModule.<span class="function">forRoot</span>()],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <h3>The three decorators</h3>
+
+    <pre><code><span class="keyword">import</span> { Injectable, Logger } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Cron, Interval, Timeout } <span class="keyword">from</span> <span class="string">'@nestjs/schedule'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> CleanupService {
+  <span class="keyword">private readonly</span> logger = <span class="keyword">new</span> <span class="function">Logger</span>(CleanupService.name);
+
+  <span class="comment">// Every night at midnight (server time)</span>
+  <span class="decorator">@Cron</span>(<span class="string">'0 0 * * *'</span>, { name: <span class="string">'nightly-cleanup'</span>, timeZone: <span class="string">'UTC'</span> })
+  <span class="keyword">async</span> <span class="function">nightlyCleanup</span>() {
+    <span class="keyword">const</span> cutoff = <span class="keyword">new</span> <span class="function">Date</span>(<span class="function">Date</span>.<span class="function">now</span>() - <span class="string">30</span> * <span class="string">86_400_000</span>);
+    <span class="keyword">const</span> { count } = <span class="keyword">await this</span>.prisma.flight.<span class="function">deleteMany</span>({
+      where: { status: <span class="string">'cancelled'</span>, updatedAt: { lt: cutoff } },
+    });
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">`Pruned <span class="keyword">${</span>count<span class="keyword">}</span> stale cancelled flights`</span>);
+  }
+
+  <span class="comment">// Every 10 seconds</span>
+  <span class="decorator">@Interval</span>(<span class="string">10_000</span>)
+  <span class="function">heartbeat</span>() {
+    <span class="keyword">this</span>.logger.<span class="function">debug</span>(<span class="string">'tick'</span>);
+  }
+
+  <span class="comment">// Once, 5 seconds after the app boots</span>
+  <span class="decorator">@Timeout</span>(<span class="string">5_000</span>)
+  <span class="function">warmCache</span>() {
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">'Warming caches on startup'</span>);
+  }
+}</code></pre>
+
+    <h3>The Dynamic Schedule API &mdash; jobs you add at runtime</h3>
+
+    <p>Decorators are great for fixed schedules. But sometimes you want to schedule a job <em>per user</em> &mdash; e.g., a one-time reminder 24 hours after signup. That's where <code>SchedulerRegistry</code> comes in:</p>
+
+    <pre><code><span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { SchedulerRegistry } <span class="keyword">from</span> <span class="string">'@nestjs/schedule'</span>;
+<span class="keyword">import</span> { CronJob } <span class="keyword">from</span> <span class="string">'cron'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> ReminderService {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> scheduler: SchedulerRegistry) {}
+
+  <span class="function">scheduleReminder</span>(userId: <span class="type">string</span>, when: <span class="type">Date</span>) {
+    <span class="keyword">const</span> name = <span class="string">`reminder-<span class="keyword">${</span>userId<span class="keyword">}</span>`</span>;
+    <span class="keyword">const</span> job = <span class="keyword">new</span> <span class="function">CronJob</span>(when, () =&gt; {
+      <span class="function">console</span>.<span class="function">log</span>(<span class="string">`Reminder for <span class="keyword">${</span>userId<span class="keyword">}</span>`</span>);
+      <span class="keyword">this</span>.scheduler.<span class="function">deleteCronJob</span>(name);
+    });
+    <span class="keyword">this</span>.scheduler.<span class="function">addCronJob</span>(name, job);
+    job.<span class="function">start</span>();
+  }
+}</code></pre>
+
+    <div class="info-box orange">
+        <p><strong>But honestly:</strong> for one-shot delayed work that must survive a restart, BullMQ's <code>delay</code> option is nine times out of ten the right tool. The dynamic schedule API is fine for in-process timers; it's <em>not</em> durable. Server restart = jobs lost.</p>
+    </div>
+
+    <h3>Cron syntax in 30 seconds</h3>
+
+    <table>
+        <tr>
+            <th>Pattern</th>
+            <th>Meaning</th>
+        </tr>
+        <tr><td><code>* * * * *</code></td><td>Every minute</td></tr>
+        <tr><td><code>0 * * * *</code></td><td>Every hour, on the hour</td></tr>
+        <tr><td><code>0 0 * * *</code></td><td>Every day at midnight</td></tr>
+        <tr><td><code>*/5 * * * *</code></td><td>Every 5 minutes</td></tr>
+        <tr><td><code>0 9 * * MON-FRI</code></td><td>9am on weekdays</td></tr>
+        <tr><td><code>CronExpression.EVERY_DAY_AT_MIDNIGHT</code></td><td>Same as <code>0 0 * * *</code> (typed enum, harder to typo)</td></tr>
+    </table>
+
+    <div class="info-box orange">
+        <p><strong>Multi-instance gotcha:</strong> if you run the same Nest app on three pods, each pod runs the cron three times. For most cleanups that's fine (idempotent <code>deleteMany</code>). For things like &ldquo;send the daily summary email&rdquo; you do <em>not</em> want three copies. Two fixes: (a) put a row-lock advisory check at the top of the job, or (b) use a BullMQ repeatable job &mdash; only one worker grabs each occurrence.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F551;</div>
+        Cron at midnight: *fires job*<br>
+        Cron at 12:00:00.001: *fires job again, on the second pod*<br>
+        Cron at 12:00:00.002: *fires job again, on the third pod*<br>
+        Customer: &ldquo;Why did I get three copies of the same daily report?&rdquo;<br>
+        <em>Three pods, three crons, one inbox. Math doesn't lie.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: LOGGING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Logging &mdash; Pick One and Stick With It</h2>
+
+    <p>NestJS ships with a built-in <code>Logger</code>. It's fine for development. For production you almost always want structured JSON logs &mdash; that's where Pino or Winston come in.</p>
+
+    <h3>Built-in Logger</h3>
+
+    <pre><code><span class="keyword">import</span> { Injectable, Logger } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">private readonly</span> logger = <span class="keyword">new</span> <span class="function">Logger</span>(FlightsService.name);
+
+  <span class="function">create</span>(dto: CreateFlightDto) {
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">`Creating flight to <span class="keyword">${</span>dto.destination<span class="keyword">}</span>`</span>);
+    <span class="keyword">this</span>.logger.<span class="function">warn</span>(<span class="string">'Capacity above 90%'</span>);
+    <span class="keyword">this</span>.logger.<span class="function">error</span>(<span class="string">'Booking failed'</span>, error.stack);
+  }
+}</code></pre>
+
+    <p>Pretty colored output in dev, the class name as the context tag, five log levels (<code>verbose</code>, <code>debug</code>, <code>log</code>, <code>warn</code>, <code>error</code>). For 80% of apps this is enough.</p>
+
+    <h3>When you outgrow it &mdash; Pino</h3>
+
+    <p>Pino is the fastest Node logger. Structured JSON by default. Plays nicely with log aggregators (Datadog, Loki, CloudWatch).</p>
+
+    <pre><code><span class="function">npm</span> install nestjs-pino pino-http</code></pre>
+
+    <pre><code><span class="keyword">import</span> { LoggerModule } <span class="keyword">from</span> <span class="string">'nestjs-pino'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    LoggerModule.<span class="function">forRoot</span>({
+      pinoHttp: {
+        level: process.env.LOG_LEVEL ?? <span class="string">'info'</span>,
+        transport: process.env.NODE_ENV === <span class="string">'development'</span>
+          ? { target: <span class="string">'pino-pretty'</span> }
+          : <span class="keyword">undefined</span>,
+      },
+    }),
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <p>Now every HTTP request gets a request-id, timing, status code, and any logs you make inside the handler are tagged with that request-id. Searching logs in production becomes &ldquo;give me everything for req <code>abc123</code>&rdquo; instead of &ldquo;grep for the timestamp.&rdquo;</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Pick before reading</div>
+        <div class="recall-question">You're deploying a new NestJS service to production tomorrow. Which logger do you pick: built-in <code>Logger</code>, Pino, or Winston? Why?</div>
+        <div class="recall-hint">My answer: Pino, almost always. Winston is fine but slower and config-heavier. The built-in Logger is great until you need to query logs in Datadog/Loki by request-id &mdash; which is approximately day 3 of production.</div>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Advanced &mdash; correlate logs with queues:</strong> when you add a job to BullMQ, attach the current request-id to the job data. The processor pulls it back out and uses it as the log context. Now you can trace one user action across the HTTP layer <em>and</em> the worker layer in your log aggregator.</p>
+    </div>
+
+    <h3>Replacing the default Nest logger globally</h3>
+
+    <pre><code><span class="comment">// main.ts</span>
+<span class="keyword">import</span> { Logger } <span class="keyword">from</span> <span class="string">'nestjs-pino'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule, { bufferLogs: <span class="keyword">true</span> });
+  app.<span class="function">useLogger</span>(app.<span class="function">get</span>(Logger));
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);
+}</code></pre>
+
+    <p>Now <em>everything</em> &mdash; the framework's own bootstrap logs, your <code>this.logger.log(...)</code> calls, the request logs &mdash; all flow through Pino with structured JSON.</p>
+
+    <h3>The five log levels &mdash; when to use which</h3>
+
+    <table>
+        <tr>
+            <th>Level</th>
+            <th>Use for</th>
+            <th>Example</th>
+        </tr>
+        <tr><td><code>error</code></td><td>Something broke. A human should look.</td><td>Payment failed, DB connection lost.</td></tr>
+        <tr><td><code>warn</code></td><td>Unexpected but recoverable.</td><td>Fallback path triggered, deprecated API hit.</td></tr>
+        <tr><td><code>log</code> / <code>info</code></td><td>Normal operations worth recording.</td><td>User created, job processed.</td></tr>
+        <tr><td><code>debug</code></td><td>Detail to help during dev / a hard bug.</td><td>SQL queries, raw API responses.</td></tr>
+        <tr><td><code>verbose</code></td><td>Tracing-level. Off in prod.</td><td>Every iteration of a loop, every guard pass.</td></tr>
+    </table>
+
+    <div class="info-box orange">
+        <p><strong>Discipline:</strong> production logs at <code>info</code> by default. Crank to <code>debug</code> via env var only when investigating. <code>verbose</code> in prod = your log bill in 30 days will be a discussion topic.</p>
+    </div>
+
+
+    <h3>The full async airport &mdash; how the pieces fit</h3>
+
+    <p>Look at the airport map you've built across this lesson. A passenger taps &ldquo;Book&rdquo; (HTTP request). The gate agent (controller) calls the service. The service writes the booking, then drops three handoffs:</p>
+
+    <ol style="margin: 12px 0 16px 24px; color: var(--gray-700);">
+        <li>A bag tag on the conveyor belt &mdash; <code>queue.add('send-confirmation', ...)</code>. The email <em>will</em> happen, even if the SMTP server is down right now.</li>
+        <li>A PA announcement &mdash; <code>events.emit('flight.created', ...)</code>. Cache invalidates, audit logs, search index all react.</li>
+        <li>The passenger sees their boarding pass &mdash; the response goes back &mdash; in 80ms.</li>
+    </ol>
+
+    <p>Meanwhile, the cleaning crew (cron) sweeps cancelled flights at midnight. The express check-in lane (cache) keeps the next 50 list-requests at 2ms. And every step is logged with a request-id so you can trace one user's journey through all of it.</p>
+
+    <p>That's the toolkit. Use it as a system, not as four isolated tools.</p>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Five tools, one principle: <strong>only do in the request what the request actually needs.</strong></p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F680;</div>
+            <div class="layer-name" style="color: var(--blue);">Caching</div>
+            <div class="layer-desc"><code>@nestjs/cache-manager</code>. CacheInterceptor + @CacheTTL. In-memory in dev, Redis in prod.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--green);">Queues</div>
+            <div class="layer-desc"><code>@nestjs/bullmq</code>. Producer adds, processor consumes. Retries, delays, durability for free.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4E2;</div>
+            <div class="layer-name" style="color: var(--purple);">Events</div>
+            <div class="layer-desc"><code>@nestjs/event-emitter</code>. <code>emit</code> + <code>@OnEvent</code>. Same-process pub/sub. Decouples modules.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x23F0;</div>
+            <div class="layer-name" style="color: var(--orange);">Cron</div>
+            <div class="layer-desc"><code>@nestjs/schedule</code>. <code>@Cron</code>, <code>@Interval</code>, <code>@Timeout</code>. Watch out for multi-instance double-fire.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4DC;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Logging</div>
+            <div class="layer-desc">Built-in <code>Logger</code> for dev, Pino for prod, request-id everywhere.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 9:</strong> we go cross-process. WebSocket gateways for live updates, Server-Sent Events for one-way streams, and full microservices over TCP / Redis / NATS / RabbitMQ / Kafka / gRPC. Same NestJS patterns &mdash; just a different transport under the hood.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Cache <code>GET /flights</code></strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add <code>@nestjs/cache-manager</code> to your <code>airport-api</code> project</li>
+                    <li>Cache <code>GET /flights</code> with TTL 60s using <code>CacheInterceptor</code> + <code>@CacheTTL</code></li>
+                    <li>Hit the endpoint twice in a row. Take a <strong>screenshot</strong> showing both responses with timestamps &mdash; the second one should be visibly faster</li>
+                    <li>Submit the screenshot</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Add a BullMQ <code>notifications</code> queue</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Install <code>@nestjs/bullmq</code> and run Redis locally (<code>docker run -p 6379:6379 redis</code>)</li>
+                    <li>Register a queue named <code>notifications</code></li>
+                    <li>When a new flight is created in <code>POST /flights</code>, enqueue a <code>flight-created</code> job with the flight ID</li>
+                    <li>Add a processor that does <code>console.log('Notification for flight ' + id)</code></li>
+                    <li>Push to your <code>nestjs-course-yourname</code> repo and submit the commit link</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>EventEmitter2 vs BullMQ &mdash; one paragraph</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In one short paragraph (3&ndash;5 sentences): when would you reach for <code>EventEmitter2</code> and when for BullMQ? Use a concrete Fohlio-style example for each</li>
+                    <li>Submit as text in the platform</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Add a 5-minute <code>@Cron</code> job</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add <code>@nestjs/schedule</code>. Create a <code>CleanupService</code> with a <code>@Cron('*/5 * * * *')</code> method that logs <code>[CRON] Cleanup pass at &lt;ISO timestamp&gt;</code>. Run the app for at least 10 minutes. Take a <strong>screenshot</strong> of the log output showing 2&ndash;3 cron firings.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Swap the cache to Redis</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Replace the in-memory store with <code>@keyv/redis</code>. Hit <code>GET /flights</code> once to populate the cache. Restart the Node process. Hit <code>GET /flights</code> again &mdash; it should still return the cached value (because Redis survived the restart). Take a <strong>screenshot</strong> showing the timestamps and the cache surviving the restart.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 8 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Microservices &amp; Real-time</p>
+    </div>
+
+</div>
+
+</body>
+</html>

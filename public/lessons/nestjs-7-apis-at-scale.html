@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 7</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 7 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">APIs at Scale &mdash; REST, Swagger &amp; GraphQL</div>
+        <div style="margin-top: 12px; font-size: 14px; color: var(--gray-500);">OpenAPI auto-docs, versioning, GraphQL resolvers</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Auto-generate interactive API docs with <code>@nestjs/swagger</code></li>
+            <li>Decorate controllers with <code>@ApiTags</code>, <code>@ApiOperation</code>, <code>@ApiResponse</code>, <code>@ApiBearerAuth</code></li>
+            <li>Skip the busywork with the Swagger CLI plugin (no more <code>@ApiProperty</code> on every field)</li>
+            <li>Know when to reach for GraphQL over REST &mdash; and when not to</li>
+            <li>Build a code-first GraphQL resolver next to your REST controller</li>
+            <li>Glance at subscriptions, the live-update side of GraphQL</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <h2 class="part-header">Quick Recap: Lessons 1&ndash;6</h2>
+
+    <p>Six lessons in. The airport is fully built. Time to put up the directory map at the entrance so passengers can find their gates.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F6EB;</div>
+            <div class="card-title" style="color: var(--blue);">L1&ndash;2 &mdash; Foundations</div>
+            <div class="card-desc">Modules, controllers, services, DI. Holy Trinity. Airport mental model.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F6E1;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--green);">L3&ndash;4 &mdash; Plumbing</div>
+            <div class="card-desc">Pipeline (Guards, Pipes, Interceptors, Filters). Data layer with Prisma/TypeORM.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F511;</div>
+            <div class="card-title" style="color: var(--orange);">L5 &mdash; Auth</div>
+            <div class="card-desc">JWT, Passport, Guards, role-based access. The boarding pass identity check.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F39F;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--purple);">L6 &mdash; Validation</div>
+            <div class="card-desc">DTOs, class-validator, ValidationPipe, mapped types, versioning. The X-ray scanner.</div>
+        </div>
+    </div>
+
+    <div class="info-box blue" style="margin-top: 16px;">
+        <p><strong>Today:</strong> the airport gets its <em>directory map at the entrance</em> &mdash; Swagger/OpenAPI &mdash; and a <em>concierge desk</em> for picky travelers &mdash; GraphQL.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: DOCS AS A FEATURE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Documentation Is a Feature</h2>
+
+    <p>An API that nobody knows how to use is a broken API. The most beautifully designed endpoints in the world are useless if the frontend team has to ping you on Slack every time they want to know whether <code>capacity</code> is required or what statuses <code>flightClass</code> can take.</p>
+
+    <p>The traditional answers all suck:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--red);">README.md</div>
+            <div class="layer-desc">Out of date the moment someone merges. Nobody updates it. Nobody reads it.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4EE;</div>
+            <div class="layer-name" style="color: var(--red);">Postman collection</div>
+            <div class="layer-desc">Lives on one person's laptop. Is &ldquo;mostly current.&rdquo; Has six broken requests nobody wants to delete.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F914;</div>
+            <div class="layer-name" style="color: var(--red);">&ldquo;Just read the controller&rdquo;</div>
+            <div class="layer-desc">The frontend team is now your second tech support line. Your Slack DMs are an issue tracker.</div>
+        </div>
+    </div>
+
+    <p>The right answer: <strong>generate the docs from the code itself</strong>. Decorate once, and the docs update on every deploy. That's what OpenAPI (formerly Swagger) is for.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4EE;</div>
+        Frontend dev: &ldquo;What's the shape of the response from <code>POST /flights</code>?&rdquo;<br>
+        Backend dev: &ldquo;Check the Postman collection.&rdquo;<br>
+        Frontend dev: &ldquo;It says <code>200 OK</code> with body <code>tbd</code>.&rdquo;<br>
+        Backend dev: &ldquo;Oh that's old. Read the service file.&rdquo;<br>
+        Frontend dev: &ldquo;Which service?&rdquo;<br>
+        Backend dev: &ldquo;Yeah we should probably set up Swagger.&rdquo;<br>
+        <em>The conversation that finally gets the ticket created.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: SETTING UP SWAGGER -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Setting Up Swagger</h2>
+
+    <p>NestJS ships first-class OpenAPI integration. Two installs and seven lines of <code>main.ts</code> get you a fully interactive UI.</p>
+
+    <pre><code><span class="function">npm</span> i @nestjs/swagger swagger-ui-express</code></pre>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { DocumentBuilder, SwaggerModule } <span class="keyword">from</span> <span class="string">'@nestjs/swagger'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'./app.module'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+
+  <span class="keyword">const</span> config = <span class="keyword">new</span> <span class="function">DocumentBuilder</span>()
+    .<span class="function">setTitle</span>(<span class="string">'Airport API'</span>)
+    .<span class="function">setDescription</span>(<span class="string">'Internal API for flights, gates, passengers'</span>)
+    .<span class="function">setVersion</span>(<span class="string">'1.0'</span>)
+    .<span class="function">addBearerAuth</span>()
+    .<span class="function">build</span>();
+
+  <span class="keyword">const</span> document = SwaggerModule.<span class="function">createDocument</span>(app, config);
+  SwaggerModule.<span class="function">setup</span>(<span class="string">'api'</span>, app, document);
+
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);
+}
+<span class="function">bootstrap</span>();</code></pre>
+
+    <p>Run the app, open <code>http://localhost:3000/api</code>. You see an interactive UI listing every endpoint Nest has registered, grouped by controller. Each endpoint has an &ldquo;Try it out&rdquo; button that fires real requests.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="380" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">/api &mdash; Swagger UI (mockup)</text>
+
+            <!-- Browser chrome -->
+            <rect x="30" y="46" width="700" height="22" rx="4" fill="#E5E7EB"/>
+            <circle cx="46" cy="57" r="4" fill="#EF4444"/>
+            <circle cx="60" cy="57" r="4" fill="#F59E0B"/>
+            <circle cx="74" cy="57" r="4" fill="#10B981"/>
+            <text x="100" y="61" font-family="JetBrains Mono" font-size="11" fill="#6B7280">localhost:3000/api</text>
+
+            <!-- Title -->
+            <text x="50" y="100" font-family="Inter" font-weight="700" font-size="18" fill="#111827">Airport API</text>
+            <text x="50" y="118" font-family="Inter" font-size="12" fill="#6B7280">v1.0 — Internal API for flights, gates, passengers</text>
+
+            <!-- Tag: flights -->
+            <rect x="30" y="138" width="700" height="32" rx="4" fill="#E8EDFF"/>
+            <text x="50" y="158" font-family="Inter" font-weight="600" font-size="13" fill="#3451B2">flights</text>
+
+            <!-- GET /flights -->
+            <rect x="30" y="178" width="700" height="34" rx="4" fill="#fff" stroke="#D1D5DB"/>
+            <rect x="40" y="186" width="46" height="18" rx="3" fill="#1A8F5C"/>
+            <text x="63" y="199" text-anchor="middle" font-family="Inter" font-weight="700" font-size="11" fill="#fff">GET</text>
+            <text x="100" y="200" font-family="JetBrains Mono" font-size="12" fill="#111827">/flights</text>
+            <text x="200" y="200" font-family="Inter" font-size="11" fill="#6B7280">List all flights</text>
+
+            <!-- POST /flights -->
+            <rect x="30" y="220" width="700" height="34" rx="4" fill="#fff" stroke="#D1D5DB"/>
+            <rect x="40" y="228" width="46" height="18" rx="3" fill="#E8790C"/>
+            <text x="63" y="241" text-anchor="middle" font-family="Inter" font-weight="700" font-size="11" fill="#fff">POST</text>
+            <text x="100" y="242" font-family="JetBrains Mono" font-size="12" fill="#111827">/flights</text>
+            <text x="200" y="242" font-family="Inter" font-size="11" fill="#6B7280">Create a new flight</text>
+
+            <!-- PATCH /flights/:id -->
+            <rect x="30" y="262" width="700" height="34" rx="4" fill="#fff" stroke="#D1D5DB"/>
+            <rect x="40" y="270" width="46" height="18" rx="3" fill="#7C3AED"/>
+            <text x="63" y="283" text-anchor="middle" font-family="Inter" font-weight="700" font-size="11" fill="#fff">PATCH</text>
+            <text x="100" y="284" font-family="JetBrains Mono" font-size="12" fill="#111827">/flights/{id}</text>
+            <text x="220" y="284" font-family="Inter" font-size="11" fill="#6B7280">Update an existing flight</text>
+
+            <!-- DELETE /flights/:id -->
+            <rect x="30" y="304" width="700" height="34" rx="4" fill="#fff" stroke="#D1D5DB"/>
+            <rect x="40" y="312" width="46" height="18" rx="3" fill="#DC2626"/>
+            <text x="63" y="325" text-anchor="middle" font-family="Inter" font-weight="700" font-size="11" fill="#fff">DEL</text>
+            <text x="100" y="326" font-family="JetBrains Mono" font-size="12" fill="#111827">/flights/{id}</text>
+            <text x="220" y="326" font-family="Inter" font-size="11" fill="#6B7280">Cancel a flight</text>
+
+            <!-- Try it out hint -->
+            <rect x="540" y="346" width="180" height="22" rx="4" fill="#3451B2"/>
+            <text x="630" y="361" text-anchor="middle" font-family="Inter" font-weight="600" font-size="11" fill="#fff">Try it out &rarr; live request</text>
+        </svg>
+        <div class="diagram-caption">Swagger UI: every endpoint, grouped, runnable, no extra writing</div>
+    </div>
+
+    <div class="story-box">
+        <p>Think of Swagger as the <strong>directory map at the entrance of the airport</strong>. Every gate is listed. Every airline desk has its hours, location, services, and what languages staff speak. Passengers never have to ask &mdash; they walk in, glance at the map, and head to their gate.</p>
+        <p>Without it, every passenger asks the information desk the same five questions. With it, the desk handles only edge cases. The map is generated daily from the airport's actual operations &mdash; never out of date, because it <em>is</em> the schedule.</p>
+        <div class="tech-note">
+            <strong>That's exactly the OpenAPI promise:</strong> the docs aren't a separate document maintained by hand. They're projected from your real controllers and DTOs at build time. If you rename a field, the docs rename it too. Stale Postman collections are over.
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: DECORATING ENDPOINTS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Decorating Endpoints</h2>
+
+    <p>Out of the box, Swagger picks up your routes (<code>@Get</code>, <code>@Post</code>, etc.) and your DTO class names. To get nice descriptions, response shapes, examples, and auth indicators, you add a few <code>@Api*</code> decorators.</p>
+
+    <h3>Tag &amp; describe the controller</h3>
+
+    <pre><code><span class="comment">// src/flights/flights.controller.ts</span>
+<span class="keyword">import</span> {
+  Controller, Get, Post, Patch, Delete, Body, Param,
+} <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> {
+  ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam,
+} <span class="keyword">from</span> <span class="string">'@nestjs/swagger'</span>;
+<span class="keyword">import</span> { CreateFlightDto } <span class="keyword">from</span> <span class="string">'./dto/create-flight.dto'</span>;
+<span class="keyword">import</span> { UpdateFlightDto } <span class="keyword">from</span> <span class="string">'./dto/update-flight.dto'</span>;
+<span class="keyword">import</span> { FlightResponseDto } <span class="keyword">from</span> <span class="string">'./dto/flight-response.dto'</span>;
+<span class="keyword">import</span> { FlightsService } <span class="keyword">from</span> <span class="string">'./flights.service'</span>;
+
+<span class="decorator">@ApiTags</span>(<span class="string">'flights'</span>)
+<span class="decorator">@ApiBearerAuth</span>()
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="keyword">export class</span> FlightsController {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> flights: FlightsService) {}
+
+  <span class="decorator">@Get</span>()
+  <span class="decorator">@ApiOperation</span>({ summary: <span class="string">'List all flights'</span> })
+  <span class="decorator">@ApiResponse</span>({ status: <span class="string">200</span>, type: [FlightResponseDto] })
+  <span class="function">findAll</span>() {
+    <span class="keyword">return this</span>.flights.<span class="function">findAll</span>();
+  }
+
+  <span class="decorator">@Post</span>()
+  <span class="decorator">@ApiOperation</span>({ summary: <span class="string">'Create a new flight'</span> })
+  <span class="decorator">@ApiResponse</span>({ status: <span class="string">201</span>, type: FlightResponseDto })
+  <span class="decorator">@ApiResponse</span>({ status: <span class="string">400</span>, description: <span class="string">'Validation failed'</span> })
+  <span class="function">create</span>(<span class="decorator">@Body</span>() dto: <span class="type">CreateFlightDto</span>) {
+    <span class="keyword">return this</span>.flights.<span class="function">create</span>(dto);
+  }
+
+  <span class="decorator">@Patch</span>(<span class="string">':id'</span>)
+  <span class="decorator">@ApiOperation</span>({ summary: <span class="string">'Update an existing flight'</span> })
+  <span class="decorator">@ApiParam</span>({ name: <span class="string">'id'</span>, description: <span class="string">'Flight UUID'</span> })
+  <span class="decorator">@ApiResponse</span>({ status: <span class="string">200</span>, type: FlightResponseDto })
+  <span class="decorator">@ApiResponse</span>({ status: <span class="string">404</span>, description: <span class="string">'Flight not found'</span> })
+  <span class="function">update</span>(
+    <span class="decorator">@Param</span>(<span class="string">'id'</span>) id: <span class="type">string</span>,
+    <span class="decorator">@Body</span>() dto: <span class="type">UpdateFlightDto</span>,
+  ) {
+    <span class="keyword">return this</span>.flights.<span class="function">update</span>(id, dto);
+  }
+
+  <span class="decorator">@Delete</span>(<span class="string">':id'</span>)
+  <span class="decorator">@ApiOperation</span>({ summary: <span class="string">'Cancel a flight'</span> })
+  <span class="decorator">@ApiResponse</span>({ status: <span class="string">204</span> })
+  <span class="function">remove</span>(<span class="decorator">@Param</span>(<span class="string">'id'</span>) id: <span class="type">string</span>) {
+    <span class="keyword">return this</span>.flights.<span class="function">remove</span>(id);
+  }
+}</code></pre>
+
+    <h3>Decorate the DTOs</h3>
+
+    <p>The most important decorator on the DTO side is <code>@ApiProperty()</code>. It tells Swagger about each field's type, examples, constraints, and whether it's required.</p>
+
+    <pre><code><span class="comment">// src/flights/dto/create-flight.dto.ts (Swagger-aware)</span>
+<span class="keyword">import</span> { ApiProperty } <span class="keyword">from</span> <span class="string">'@nestjs/swagger'</span>;
+<span class="keyword">import</span> { IsString, IsInt, Min, Max, IsBoolean, Length } <span class="keyword">from</span> <span class="string">'class-validator'</span>;
+
+<span class="keyword">export class</span> CreateFlightDto {
+  <span class="decorator">@ApiProperty</span>({ example: <span class="string">'FH-204'</span>, description: <span class="string">'Internal flight code'</span> })
+  <span class="decorator">@IsString</span>()
+  <span class="decorator">@Length</span>(<span class="string">3</span>, <span class="string">10</span>)
+  code: <span class="type">string</span>;
+
+  <span class="decorator">@ApiProperty</span>({ example: <span class="string">180</span>, minimum: <span class="string">1</span>, maximum: <span class="string">850</span> })
+  <span class="decorator">@IsInt</span>()
+  <span class="decorator">@Min</span>(<span class="string">1</span>)
+  <span class="decorator">@Max</span>(<span class="string">850</span>)
+  capacity: <span class="type">number</span>;
+
+  <span class="decorator">@ApiProperty</span>({ example: <span class="keyword">true</span>, description: <span class="string">'Crosses an international border'</span> })
+  <span class="decorator">@IsBoolean</span>()
+  isInternational: <span class="type">boolean</span>;
+}</code></pre>
+
+    <h3>The @Api* decorators worth knowing</h3>
+
+    <table>
+        <tr>
+            <th>Decorator</th>
+            <th>Where</th>
+            <th>What it does</th>
+        </tr>
+        <tr>
+            <td><code>@ApiTags('group')</code></td>
+            <td>Controller</td>
+            <td>Groups endpoints in the UI sidebar</td>
+        </tr>
+        <tr>
+            <td><code>@ApiOperation({ summary })</code></td>
+            <td>Method</td>
+            <td>One-line description shown next to the route</td>
+        </tr>
+        <tr>
+            <td><code>@ApiResponse({ status, type })</code></td>
+            <td>Method</td>
+            <td>Documents one possible response. Stack multiple per method.</td>
+        </tr>
+        <tr>
+            <td><code>@ApiBearerAuth()</code></td>
+            <td>Controller / method</td>
+            <td>Marks the endpoint as requiring a Bearer token</td>
+        </tr>
+        <tr>
+            <td><code>@ApiParam({ name, description })</code></td>
+            <td>Method</td>
+            <td>Describes a path parameter</td>
+        </tr>
+        <tr>
+            <td><code>@ApiQuery({ name })</code></td>
+            <td>Method</td>
+            <td>Describes a query parameter</td>
+        </tr>
+        <tr>
+            <td><code>@ApiProperty({ example, ... })</code></td>
+            <td>DTO field</td>
+            <td>Documents a request/response field</td>
+        </tr>
+        <tr>
+            <td><code>@ApiPropertyOptional()</code></td>
+            <td>DTO field</td>
+            <td>Same as above, marks the field optional</td>
+        </tr>
+    </table>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before reading Part 4</div>
+        <div class="recall-question">Look at <code>CreateFlightDto</code> above. Every field has an <code>@ApiProperty()</code> decorator. The TypeScript already says <code>code: string</code>. Why can't Swagger just <em>read</em> the TypeScript and skip the decorators?</div>
+        <div class="recall-hint">Hint: types disappear when TypeScript compiles to JavaScript. Decorators don't. There's a clever fix coming next.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: SWAGGER CLI PLUGIN -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: The Swagger CLI Plugin</h2>
+
+    <p>Decorating every DTO field gets tedious fast. A 12-field DTO turns into 24 lines just for <code>@ApiProperty</code>. The <strong>Swagger CLI plugin</strong> solves this by reading your TypeScript types <em>at compile time</em> and generating <code>@ApiProperty</code> for you behind the scenes.</p>
+
+    <p>Turn it on in <code>nest-cli.json</code>:</p>
+
+    <pre><code>{
+  <span class="string">"$schema"</span>: <span class="string">"https://json.schemastore.org/nest-cli"</span>,
+  <span class="string">"collection"</span>: <span class="string">"@nestjs/schematics"</span>,
+  <span class="string">"sourceRoot"</span>: <span class="string">"src"</span>,
+  <span class="string">"compilerOptions"</span>: {
+    <span class="string">"plugins"</span>: [
+      {
+        <span class="string">"name"</span>: <span class="string">"@nestjs/swagger"</span>,
+        <span class="string">"options"</span>: {
+          <span class="string">"classValidatorShim"</span>: <span class="keyword">true</span>,
+          <span class="string">"introspectComments"</span>: <span class="keyword">true</span>
+        }
+      }
+    ]
+  }
+}</code></pre>
+
+    <p>Now your DTO can collapse back to:</p>
+
+    <pre><code><span class="keyword">import</span> { IsString, IsInt, Min, Max, IsBoolean, Length } <span class="keyword">from</span> <span class="string">'class-validator'</span>;
+
+<span class="keyword">export class</span> CreateFlightDto {
+  <span class="comment">/** Internal flight code, e.g. "FH-204" */</span>
+  <span class="decorator">@IsString</span>()
+  <span class="decorator">@Length</span>(<span class="string">3</span>, <span class="string">10</span>)
+  code: <span class="type">string</span>;
+
+  <span class="comment">/** Maximum number of passengers */</span>
+  <span class="decorator">@IsInt</span>()
+  <span class="decorator">@Min</span>(<span class="string">1</span>)
+  <span class="decorator">@Max</span>(<span class="string">850</span>)
+  capacity: <span class="type">number</span>;
+
+  <span class="comment">/** Crosses an international border */</span>
+  <span class="decorator">@IsBoolean</span>()
+  isInternational: <span class="type">boolean</span>;
+}</code></pre>
+
+    <p>The plugin reads:</p>
+
+    <ul style="margin: 8px 0 16px 24px; color: var(--gray-700);">
+        <li>The TypeScript type &rarr; sets <code>type</code> in the OpenAPI spec</li>
+        <li>The <code>?</code> on optional fields &rarr; sets <code>required: false</code></li>
+        <li>The JSDoc comment (with <code>introspectComments</code>) &rarr; sets <code>description</code></li>
+        <li>The <code>class-validator</code> decorators (with <code>classValidatorShim</code>) &rarr; mirrors them as <code>minLength</code>, <code>maximum</code>, etc.</li>
+    </ul>
+
+    <div class="info-box green">
+        <p><strong>The time savings are real:</strong> on a project with ~40 DTOs, switching to the CLI plugin removed roughly 600 lines of boilerplate <code>@ApiProperty</code> calls. The Swagger UI was bit-for-bit identical. The team stopped forgetting to update the docs because there was nothing to forget.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DD;</div>
+        Junior dev: &ldquo;I added <code>@ApiProperty</code> to all 47 fields in our DTOs.&rdquo;<br>
+        Senior dev: &ldquo;Did you turn on the CLI plugin?&rdquo;<br>
+        Junior dev: &ldquo;The what?&rdquo;<br>
+        Senior dev: &ldquo;...delete the 47 decorators. Add five lines to <code>nest-cli.json</code>. Same result.&rdquo;<br>
+        Junior dev: &ldquo;I just spent two hours on that.&rdquo;<br>
+        Senior dev: &ldquo;Welcome to the cult.&rdquo;<br>
+        <em>Five minutes reading docs &gt; two hours of decorator typing. Always.</em>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>When to override:</strong> the plugin handles 90% of cases. For the other 10% &mdash; custom examples, complex enums, polymorphic responses &mdash; add an explicit <code>@ApiProperty({ example: ..., enum: ... })</code> on just that field. The plugin won't fight you; it merges.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: REST vs GRAPHQL -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: REST vs GraphQL &mdash; When Each Fits</h2>
+
+    <p>REST is the default for good reasons: every developer knows it, every tool supports it, every CDN caches it. But REST has one structural pain point that grows with your client list: <strong>the server decides what's in each response.</strong></p>
+
+    <p>If <code>GET /flights/:id</code> returns 25 fields and the mobile app only needs 3, the mobile app pays for all 25. If the dashboard needs flights <em>plus their gates plus their passengers</em>, the dashboard makes 3 round trips &mdash; or you build a custom <code>GET /flights/:id/full</code> endpoint, and now you have 14 endpoints instead of 4.</p>
+
+    <p>GraphQL flips it: the <strong>client</strong> declares what it wants, the server fulfills exactly that.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="300" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">REST vs GraphQL &mdash; same data, different contract</text>
+
+            <!-- REST side -->
+            <text x="190" y="58" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">REST</text>
+            <rect x="40" y="68" width="300" height="32" rx="4" fill="#fff" stroke="#D1D5DB"/>
+            <text x="55" y="89" font-family="JetBrains Mono" font-size="11" fill="#1A8F5C">GET /flights/abc</text>
+            <text x="55" y="116" font-family="Inter" font-size="11" fill="#6B7280">&rarr; server returns ALL 25 fields</text>
+
+            <rect x="40" y="128" width="300" height="32" rx="4" fill="#fff" stroke="#D1D5DB"/>
+            <text x="55" y="149" font-family="JetBrains Mono" font-size="11" fill="#1A8F5C">GET /flights/abc/gates</text>
+            <text x="55" y="176" font-family="Inter" font-size="11" fill="#6B7280">&rarr; another round trip</text>
+
+            <rect x="40" y="188" width="300" height="32" rx="4" fill="#fff" stroke="#D1D5DB"/>
+            <text x="55" y="209" font-family="JetBrains Mono" font-size="11" fill="#1A8F5C">GET /flights/abc/passengers</text>
+            <text x="55" y="236" font-family="Inter" font-size="11" fill="#6B7280">&rarr; a third round trip</text>
+
+            <text x="190" y="270" text-anchor="middle" font-family="Inter" font-style="italic" font-size="11" fill="#DC2626">Over-fetch fields, under-fetch joins, 3 RTTs</text>
+
+            <!-- Divider -->
+            <line x1="380" y1="50" x2="380" y2="290" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="4 4"/>
+
+            <!-- GraphQL side -->
+            <text x="570" y="58" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">GraphQL</text>
+            <rect x="420" y="68" width="300" height="170" rx="4" fill="#fff" stroke="#D1D5DB"/>
+            <text x="435" y="88" font-family="JetBrains Mono" font-size="11" fill="#7C3AED">POST /graphql</text>
+            <text x="435" y="108" font-family="JetBrains Mono" font-size="10" fill="#374151">query {</text>
+            <text x="445" y="124" font-family="JetBrains Mono" font-size="10" fill="#374151">flight(id: "abc") {</text>
+            <text x="455" y="140" font-family="JetBrains Mono" font-size="10" fill="#374151">code</text>
+            <text x="455" y="156" font-family="JetBrains Mono" font-size="10" fill="#374151">capacity</text>
+            <text x="455" y="172" font-family="JetBrains Mono" font-size="10" fill="#374151">gates { number }</text>
+            <text x="455" y="188" font-family="JetBrains Mono" font-size="10" fill="#374151">passengers { fullName }</text>
+            <text x="445" y="204" font-family="JetBrains Mono" font-size="10" fill="#374151">}</text>
+            <text x="435" y="220" font-family="JetBrains Mono" font-size="10" fill="#374151">}</text>
+
+            <text x="570" y="270" text-anchor="middle" font-family="Inter" font-style="italic" font-size="11" fill="#1A8F5C">Exactly the fields asked for, 1 RTT</text>
+        </svg>
+        <div class="diagram-caption">REST: server-defined response. GraphQL: client-defined query.</div>
+    </div>
+
+    <h3>Comparison table</h3>
+
+    <table>
+        <tr>
+            <th>Dimension</th>
+            <th>REST</th>
+            <th>GraphQL</th>
+        </tr>
+        <tr>
+            <td>Response shape</td>
+            <td>Server decides</td>
+            <td>Client decides</td>
+        </tr>
+        <tr>
+            <td>Over-fetching</td>
+            <td>Common (extra fields)</td>
+            <td>Rare (only requested fields)</td>
+        </tr>
+        <tr>
+            <td>Under-fetching / N+1 RTTs</td>
+            <td>Common</td>
+            <td>Rare (one query, many fields)</td>
+        </tr>
+        <tr>
+            <td>Caching</td>
+            <td>HTTP-native (URL = cache key)</td>
+            <td>Harder (POST + body); needs Apollo / Relay</td>
+        </tr>
+        <tr>
+            <td>Tooling / debugging</td>
+            <td>curl, Postman, browser tab, every CDN</td>
+            <td>Apollo Studio, GraphiQL, Sandbox</td>
+        </tr>
+        <tr>
+            <td>Learning curve</td>
+            <td>Low</td>
+            <td>Medium &mdash; SDL, resolvers, N+1 awareness</td>
+        </tr>
+        <tr>
+            <td>Best for</td>
+            <td>Public APIs, server-to-server, simple CRUD</td>
+            <td>Rich clients, mobile apps, multi-team frontends</td>
+        </tr>
+    </table>
+
+    <div class="story-box">
+        <p>REST is a <strong>fixed buffet</strong>. The chef decides what's on the line today, you take a plate, you walk through, you take or skip each tray. Cheap, predictable, well-known.</p>
+        <p>GraphQL is a <strong>concierge desk</strong>. You walk up and tell them: &ldquo;I want the salmon, no skin, with the rice from station 4 and the dressing from station 7, on the side.&rdquo; The concierge runs around for you and brings back exactly that. More work for the kitchen, but you get exactly your meal in one trip.</p>
+        <div class="tech-note">
+            <strong>Pragmatic rule:</strong> internal services and public REST-y APIs &rarr; REST + Swagger. Multi-screen mobile/web apps with many shapes of the same data &rarr; GraphQL pays for itself. Lots of teams ship both.
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F37D;&#xFE0F;</div>
+        Frontend dev: &ldquo;The mobile screen needs flight code, gate, and passenger names. Nothing else.&rdquo;<br>
+        REST backend dev: &ldquo;OK we have <code>GET /flights/:id</code>, <code>/gates</code>, <code>/passengers</code>. Three calls. 4KB total.&rdquo;<br>
+        Frontend dev: &ldquo;...we're on a 3G connection on a plane.&rdquo;<br>
+        GraphQL backend dev, sliding in: &ldquo;Want me to write you a query?&rdquo;<br>
+        <em>The plane Wi-Fi is the great equalizer.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: GRAPHQL IN NESTJS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Code-First GraphQL in NestJS</h2>
+
+    <p>NestJS supports two styles: <strong>schema-first</strong> (you write a <code>.graphql</code> SDL file, classes generated from it) and <strong>code-first</strong> (you write TypeScript classes with decorators, the SDL is generated from them). Code-first is the path of least resistance in a NestJS shop &mdash; you stay in TypeScript, decorators tell the framework what's a query/mutation/field.</p>
+
+    <h3>Install</h3>
+
+    <pre><code><span class="function">npm</span> i @nestjs/graphql @nestjs/apollo @apollo/server graphql</code></pre>
+
+    <h3>Wire the GraphQL module</h3>
+
+    <pre><code><span class="comment">// src/app.module.ts</span>
+<span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { GraphQLModule } <span class="keyword">from</span> <span class="string">'@nestjs/graphql'</span>;
+<span class="keyword">import</span> { ApolloDriver, ApolloDriverConfig } <span class="keyword">from</span> <span class="string">'@nestjs/apollo'</span>;
+<span class="keyword">import</span> { join } <span class="keyword">from</span> <span class="string">'path'</span>;
+<span class="keyword">import</span> { FlightsModule } <span class="keyword">from</span> <span class="string">'./flights/flights.module'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    GraphQLModule.<span class="function">forRoot</span>&lt;<span class="type">ApolloDriverConfig</span>&gt;({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), <span class="string">'src/schema.gql'</span>),
+      playground: <span class="keyword">true</span>,
+      sortSchema: <span class="keyword">true</span>,
+    }),
+    FlightsModule,
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <p><code>autoSchemaFile</code> tells Nest to write the generated SDL to that path on startup &mdash; commit it, diff it on PRs, and you have a free schema review process.</p>
+
+    <h3>Define an Object Type</h3>
+
+    <pre><code><span class="comment">// src/flights/flight.model.ts</span>
+<span class="keyword">import</span> { ObjectType, Field, Int, ID } <span class="keyword">from</span> <span class="string">'@nestjs/graphql'</span>;
+
+<span class="decorator">@ObjectType</span>()
+<span class="keyword">export class</span> Flight {
+  <span class="decorator">@Field</span>(() =&gt; ID)
+  id: <span class="type">string</span>;
+
+  <span class="decorator">@Field</span>()
+  code: <span class="type">string</span>;
+
+  <span class="decorator">@Field</span>(() =&gt; Int)
+  capacity: <span class="type">number</span>;
+
+  <span class="decorator">@Field</span>()
+  isInternational: <span class="type">boolean</span>;
+
+  <span class="decorator">@Field</span>({ nullable: <span class="keyword">true</span> })
+  notes?: <span class="type">string</span>;
+}</code></pre>
+
+    <h3>Define an Input Type (DTO equivalent)</h3>
+
+    <pre><code><span class="comment">// src/flights/dto/create-flight.input.ts</span>
+<span class="keyword">import</span> { InputType, Field, Int } <span class="keyword">from</span> <span class="string">'@nestjs/graphql'</span>;
+<span class="keyword">import</span> { IsString, IsInt, Min, Max } <span class="keyword">from</span> <span class="string">'class-validator'</span>;
+
+<span class="decorator">@InputType</span>()
+<span class="keyword">export class</span> CreateFlightInput {
+  <span class="decorator">@Field</span>()
+  <span class="decorator">@IsString</span>()
+  code: <span class="type">string</span>;
+
+  <span class="decorator">@Field</span>(() =&gt; Int)
+  <span class="decorator">@IsInt</span>()
+  <span class="decorator">@Min</span>(<span class="string">1</span>) <span class="decorator">@Max</span>(<span class="string">850</span>)
+  capacity: <span class="type">number</span>;
+
+  <span class="decorator">@Field</span>()
+  isInternational: <span class="type">boolean</span>;
+}</code></pre>
+
+    <p>Notice the validators from Lesson 6 still work &mdash; the global <code>ValidationPipe</code> applies to GraphQL inputs too. You did not waste any of last week's effort.</p>
+
+    <h3>The Resolver &mdash; GraphQL's controller</h3>
+
+    <pre><code><span class="comment">// src/flights/flights.resolver.ts</span>
+<span class="keyword">import</span> { Resolver, Query, Mutation, Args, ID } <span class="keyword">from</span> <span class="string">'@nestjs/graphql'</span>;
+<span class="keyword">import</span> { Flight } <span class="keyword">from</span> <span class="string">'./flight.model'</span>;
+<span class="keyword">import</span> { CreateFlightInput } <span class="keyword">from</span> <span class="string">'./dto/create-flight.input'</span>;
+<span class="keyword">import</span> { FlightsService } <span class="keyword">from</span> <span class="string">'./flights.service'</span>;
+
+<span class="decorator">@Resolver</span>(() =&gt; Flight)
+<span class="keyword">export class</span> FlightsResolver {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> flights: FlightsService) {}
+
+  <span class="decorator">@Query</span>(() =&gt; [Flight], { name: <span class="string">'flights'</span> })
+  <span class="function">findAll</span>(): <span class="type">Promise</span>&lt;<span class="type">Flight</span>[]&gt; {
+    <span class="keyword">return this</span>.flights.<span class="function">findAll</span>();
+  }
+
+  <span class="decorator">@Query</span>(() =&gt; Flight, { name: <span class="string">'flight'</span>, nullable: <span class="keyword">true</span> })
+  <span class="function">findOne</span>(<span class="decorator">@Args</span>(<span class="string">'id'</span>, { type: () =&gt; ID }) id: <span class="type">string</span>) {
+    <span class="keyword">return this</span>.flights.<span class="function">findOne</span>(id);
+  }
+
+  <span class="decorator">@Mutation</span>(() =&gt; Flight)
+  <span class="function">createFlight</span>(<span class="decorator">@Args</span>(<span class="string">'input'</span>) input: <span class="type">CreateFlightInput</span>) {
+    <span class="keyword">return this</span>.flights.<span class="function">create</span>(input);
+  }
+}</code></pre>
+
+    <p>Register it in the module's <code>providers</code> array &mdash; same array as services. Resolvers are providers; the framework discovers them via the <code>@Resolver()</code> decorator.</p>
+
+    <pre><code><span class="comment">// src/flights/flights.module.ts</span>
+<span class="decorator">@Module</span>({
+  providers: [FlightsService, FlightsResolver],
+  controllers: [FlightsController], <span class="comment">// REST and GraphQL coexist happily</span>
+})
+<span class="keyword">export class</span> FlightsModule {}</code></pre>
+
+    <p>Run the app, open <code>http://localhost:3000/graphql</code>. You get the Apollo Sandbox playground &mdash; an interactive query editor with autocomplete from your generated schema. Try:</p>
+
+    <pre><code>query {
+  flights {
+    code
+    capacity
+  }
+}</code></pre>
+
+    <p>Notice you only asked for <code>code</code> and <code>capacity</code>. The response has only those two fields, even though <code>Flight</code> has five. That's the GraphQL win in one screenshot.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F3AF;</div>
+        REST: &ldquo;Here are all 25 fields. Use what you need.&rdquo;<br>
+        Mobile app on 3G: *downloads 25 fields, uses 3, parses for 800ms*<br>
+        GraphQL: &ldquo;Tell me which 3 you want.&rdquo;<br>
+        Mobile app on 3G: <code>{ flight { code, gate, time } }</code><br>
+        Mobile app on 3G: *response is 240 bytes*<br>
+        <em>The API where the client is allowed to be picky.</em>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Mapped types in GraphQL too:</strong> <code>@nestjs/graphql</code> ships its own <code>PartialType</code>, <code>PickType</code>, <code>OmitType</code>, <code>IntersectionType</code> &mdash; same names as Lesson 6 but they preserve the GraphQL <code>@Field</code> metadata. Use these for <code>UpdateFlightInput</code>: <code>extends PartialType(CreateFlightInput)</code>. Don't import them from the REST package.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: SUBSCRIPTIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: Subscriptions in 90 Seconds</h2>
+
+    <p>Queries and mutations are request/response. <strong>Subscriptions</strong> are GraphQL's push channel: the client opens a long-lived connection, the server emits events when something changes.</p>
+
+    <pre><code><span class="comment">// src/flights/flights.resolver.ts (additions)</span>
+<span class="keyword">import</span> { Subscription } <span class="keyword">from</span> <span class="string">'@nestjs/graphql'</span>;
+<span class="keyword">import</span> { PubSub } <span class="keyword">from</span> <span class="string">'graphql-subscriptions'</span>;
+
+<span class="keyword">const</span> pubSub = <span class="keyword">new</span> <span class="function">PubSub</span>();  <span class="comment">// in real apps: a Redis-backed pubsub</span>
+
+<span class="decorator">@Mutation</span>(() =&gt; Flight)
+<span class="keyword">async</span> <span class="function">createFlight</span>(<span class="decorator">@Args</span>(<span class="string">'input'</span>) input: <span class="type">CreateFlightInput</span>) {
+  <span class="keyword">const</span> flight = <span class="keyword">await this</span>.flights.<span class="function">create</span>(input);
+  pubSub.<span class="function">publish</span>(<span class="string">'flightCreated'</span>, { flightCreated: flight });
+  <span class="keyword">return</span> flight;
+}
+
+<span class="decorator">@Subscription</span>(() =&gt; Flight)
+<span class="function">flightCreated</span>() {
+  <span class="keyword">return</span> pubSub.<span class="function">asyncIterator</span>(<span class="string">'flightCreated'</span>);
+}</code></pre>
+
+    <p>Any client subscribed to <code>flightCreated</code> gets pushed the new flight the moment a mutation runs. Under the hood it's WebSockets, plus an in-memory or Redis-backed pubsub.</p>
+
+    <div class="info-box orange">
+        <p><strong>Subscriptions vs raw WebSockets:</strong> use GraphQL subscriptions when the data flowing through is the same shape as your queries (live-updating lists, dashboards). Use raw WebSockets / Socket.io (Lesson 9) for chat, presence, multiplayer cursors &mdash; anything where the message shapes are heterogeneous and not query-shaped. We'll meet WebSockets directly in Lesson 9.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up:<br><br>
+        1. Where do you wire <code>SwaggerModule.setup()</code>, and what URL does it expose by default if you pass <code>'api'</code>?<br>
+        2. What does the Swagger CLI plugin do that <code>@ApiProperty</code> does not?<br>
+        3. Name two situations where GraphQL is the better fit than REST.<br>
+        4. In the airport analogy: what is Swagger? What is GraphQL?</div>
+        <div class="recall-hint">4/4: ship the homework, see you in Lesson 8. 2&ndash;3: re-skim Parts 4 and 5. 0&ndash;1: re-read the analogies in Parts 2 and 5.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>What you added in Lesson 7:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F5FA;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--blue);">Swagger / OpenAPI</div>
+            <div class="layer-desc">Auto-generated, interactive docs at <code>/api</code>. Decorate with <code>@ApiTags</code>, <code>@ApiOperation</code>, <code>@ApiResponse</code>, <code>@ApiBearerAuth</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x26A1;</div>
+            <div class="layer-name" style="color: var(--green);">CLI plugin</div>
+            <div class="layer-desc">Read TypeScript types &amp; JSDoc, generate <code>@ApiProperty</code> for free. ~600 lines saved per project.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x2696;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">REST vs GraphQL</div>
+            <div class="layer-desc">Buffet vs concierge. REST: simple, cacheable, public. GraphQL: client-driven shapes, fewer round trips.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F39B;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Resolvers</div>
+            <div class="layer-desc"><code>@ObjectType</code>, <code>@InputType</code>, <code>@Resolver</code>, <code>@Query</code>, <code>@Mutation</code>, <code>@Args</code>. Code-first, schema generated.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4E1;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Subscriptions</div>
+            <div class="layer-desc">Live push over WebSockets. <code>@Subscription</code> + <code>PubSub</code>. Sibling to raw WebSockets in Lesson 9.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 8:</strong> Async power. Background jobs with BullMQ. Domain events with the Nest event emitter. Caching with the cache manager. Cron schedules. The plumbing that makes &ldquo;the request returns immediately, the work happens in the background&rdquo; possible.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Document your flights API with Swagger</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Install <code>@nestjs/swagger</code> and wire <code>SwaggerModule.setup('api', ...)</code> in <code>main.ts</code></li>
+                    <li>Decorate <code>FlightsController</code> with <code>@ApiTags</code>, plus <code>@ApiOperation</code> and <code>@ApiResponse</code> on <em>every</em> endpoint (GET, POST, PATCH, DELETE)</li>
+                    <li>Decorate <code>CreateFlightDto</code> fields with <code>@ApiProperty</code> (with examples)</li>
+                    <li>Open <code>http://localhost:3000/api</code></li>
+                    <li>Take a <strong>screenshot</strong> of the Swagger UI showing all your endpoints expanded</li>
+                    <li>Submit the screenshot</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Push the documented controller</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Push the documented <code>FlightsController</code> + DTO + <code>main.ts</code> changes to your <code>nestjs-course-yourname</code> repo</li>
+                    <li>Submit the commit URL</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Swagger-REST vs GraphQL &mdash; one sentence each</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>One sentence: when would you reach for <strong>Swagger-documented REST</strong>?</li>
+                    <li>One sentence: when would you reach for <strong>GraphQL</strong> instead?</li>
+                    <li>Submit as text in the platform</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Add a GraphQL FlightResolver</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Install <code>@nestjs/graphql @nestjs/apollo @apollo/server graphql</code>. Build a <code>FlightResolver</code> next to your existing REST controller (both should work). Open the GraphQL playground at <code>/graphql</code>. Run a query that fetches <strong>only</strong> <code>code</code> and <code>capacity</code> &mdash; not the other fields. Screenshot the playground showing the query and the trimmed response.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Turn on the Swagger CLI plugin</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add <code>@nestjs/swagger</code> to <code>compilerOptions.plugins</code> in <code>nest-cli.json</code> (with <code>classValidatorShim: true, introspectComments: true</code>). Remove every explicit <code>@ApiProperty</code> from one DTO. Confirm the Swagger UI still shows all the fields. Take <strong>before/after</strong> screenshots of either the DTO file or the Swagger UI.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 7 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Async Power &mdash; Queues, Events, Caching, Cron</p>
+    </div>
+
+</div>
+
+</body>
+</html>

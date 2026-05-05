@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 10</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 10 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Production Ready &mdash; The Capstone</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Write unit tests with <code>@nestjs/testing</code> and override providers cleanly</li>
+            <li>Write end-to-end tests with Supertest against a real Nest application instance</li>
+            <li>Add a <code>/health</code> endpoint with Terminus that load balancers actually trust</li>
+            <li>Wire Sentry into your app so errors surface with stack traces, not silence</li>
+            <li>Pick a deployment path &mdash; Vercel, plain Node + PM2, or Docker &mdash; and ship</li>
+            <li>Set up GitHub Actions so every push runs your tests automatically</li>
+            <li>Hand in your capstone repo: a NestJS service that's actually production-ready</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUICK RECAP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Quick Recap &mdash; The Whole Airport</h2>
+
+    <p>Ten lessons ago we walked into an empty hangar and started sketching a terminal layout on the back of a napkin. Now there are gates, runways, security checkpoints, baggage handling, dispatch radios, and a control tower. Before we wire up the last piece &mdash; production readiness &mdash; let's stand at the edge of the tarmac and look at everything that got built.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F35D;</div>
+            <div class="card-title" style="color: var(--blue);">Lesson 1</div>
+            <div class="card-subtitle" style="color: var(--blue);">Why NestJS</div>
+            <div class="card-desc">Express spaghetti vs structured framework. The airport analogy. Modules, Controllers, Services. <code>nest new</code>.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F3EB;</div>
+            <div class="card-title" style="color: var(--green);">Lesson 2</div>
+            <div class="card-subtitle" style="color: var(--green);">Holy Trinity</div>
+            <div class="card-desc">Modules, Controllers, Providers in depth. <code>@Body</code>, <code>@Query</code>, <code>@Param</code>. Exports, imports, encapsulation.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F6A6;</div>
+            <div class="card-title" style="color: var(--orange);">Lesson 3</div>
+            <div class="card-subtitle" style="color: var(--orange);">Request Pipeline</div>
+            <div class="card-desc">Middleware &rarr; Guard &rarr; Interceptor &rarr; Pipe &rarr; Handler &rarr; Filter. Every stop a request makes.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F4BE;</div>
+            <div class="card-title" style="color: var(--purple);">Lesson 4</div>
+            <div class="card-subtitle" style="color: var(--purple);">Data Layer</div>
+            <div class="card-desc">Prisma vs TypeORM. Repositories, migrations, transactions. The database is just another service.</div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F510;</div>
+            <div class="card-title" style="color: var(--red);">Lesson 5</div>
+            <div class="card-subtitle" style="color: var(--red);">Auth &amp; Security</div>
+            <div class="card-desc">Passport, JWT, Guards, role-based access. Helmet, CORS, rate limiting. The security checkpoint.</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F9F3;</div>
+            <div class="card-title" style="color: var(--blue);">Lesson 6</div>
+            <div class="card-subtitle" style="color: var(--blue);">Validation &amp; DTOs</div>
+            <div class="card-desc"><code>class-validator</code>, <code>class-transformer</code>, <code>ValidationPipe</code>, mapped types. The baggage X-ray.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4D6;</div>
+            <div class="card-title" style="color: var(--green);">Lesson 7</div>
+            <div class="card-subtitle" style="color: var(--green);">APIs at Scale</div>
+            <div class="card-desc">REST conventions, OpenAPI/Swagger, versioning, GraphQL resolvers. The flight info display.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x26A1;</div>
+            <div class="card-title" style="color: var(--orange);">Lesson 8</div>
+            <div class="card-subtitle" style="color: var(--orange);">Async Power</div>
+            <div class="card-desc">BullMQ queues, EventEmitter, cache-manager, cron jobs. Off-hand work to ground crew.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F4E1;</div>
+            <div class="card-title" style="color: var(--purple);">Lesson 9</div>
+            <div class="card-subtitle" style="color: var(--purple);">Microservices &amp; Real-time</div>
+            <div class="card-desc">Transport layers, WebSocket gateways, SSE. Multi-airport networks and live tower comms.</div>
+        </div>
+        <div class="concept-card" style="background: #FFFBEB; border: 2px solid #FCD34D;">
+            <div class="card-icon">&#x1F6EB;</div>
+            <div class="card-title" style="color: #D97706;">Lesson 10</div>
+            <div class="card-subtitle" style="color: #D97706;">Production Ready</div>
+            <div class="card-desc">Tests, health checks, Sentry, deployment, CI/CD. Opening day &mdash; we hand the airport to real traffic.</div>
+        </div>
+    </div>
+
+    <p>Look at that list. Nine lessons of architecture, plumbing, and discipline &mdash; and now an actual airport that can take passengers. The thing nobody tells junior engineers: building the airport is the easy half. Keeping the lights on, catching fires before they spread, and proving to the operators that the runway lights work <em>every time</em> &mdash; that's the half that decides whether your code becomes infrastructure or becomes a war story. That's Lesson 10.</p>
+
+    <div class="info-box blue">
+        <p><strong>One more time, the analogy:</strong> Tests = pre-flight checks. Health checks = the airport's diagnostic dashboard. Sentry = the incident response team. Deployment = handing the keys to the airport authority. CI/CD = the automated runway light system that flicks on every time a plane lands. By the end of this lesson, all five are running.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: THE FINAL MILE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Final Mile</h2>
+
+    <p>You can build an entire NestJS app, run it locally, demo it to your team, get applause, and still ship something that explodes the first weekend at 3am. The reason isn't usually the code &mdash; it's everything <em>around</em> the code. The wiring is fine. The fire alarm isn't.</p>
+
+    <h3>What "production-ready" actually means</h3>
+
+    <p>Production-ready isn't a checkbox on a Jira ticket. It's a list of properties your service has even when nobody is watching. Five of them, in roughly the order you should add them:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F9EA;</div>
+            <div class="layer-name" style="color: var(--blue);">Tested</div>
+            <div class="layer-desc">A change that breaks behavior is caught locally, not by a customer.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1FA7A;</div>
+            <div class="layer-name" style="color: var(--green);">Healthy</div>
+            <div class="layer-desc">The platform can ask "are you alive?" and get an honest answer in &lt;100ms.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E1;</div>
+            <div class="layer-name" style="color: var(--orange);">Observable</div>
+            <div class="layer-desc">Every error in prod ends up somewhere a human will see it before the customer does.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F680;</div>
+            <div class="layer-name" style="color: var(--purple);">Deployed</div>
+            <div class="layer-desc">Shipping a change is one command. Rolling back is one command. No SSH heroics.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--red);">Automated</div>
+            <div class="layer-desc">Tests run on every push. Deploys happen from main. Humans approve, machines execute.</div>
+        </div>
+    </div>
+
+    <div class="story-box">
+        <p>Imagine the airport again. Construction is done. The terminals are gleaming, the gates are numbered, the baggage carousels spin smoothly. Then the airport authority shows up for inspection. They don't care that the architecture is beautiful. They want to see five things, in order: <strong>can you simulate every scenario without real passengers?</strong> (tests). <strong>Can the FAA radar see you're operational?</strong> (health checks). <strong>If a plane skids off a runway, who sees it first &mdash; you or CNN?</strong> (Sentry / observability). <strong>Can you open another terminal next year without breaking this one?</strong> (deployment). <strong>And when a new piece of equipment arrives, does it get plugged in by hand or by the runway control system?</strong> (CI/CD).</p>
+        <p>Pass all five and they hand you the keys. Fail any one and the airport stays empty. Today is opening day. Let's pass the inspection.</p>
+        <div class="tech-note">
+            <strong>The honest version:</strong> most teams ship without one or two of these, and they survive. But each missing piece is a small bet that nothing weird will happen. NestJS gives you all five with very little code &mdash; the ratio of "code written" to "production guarantees gained" is the best of any Node framework.
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F517;</div>
+        Manager: &ldquo;Is the new service ready to go live?&rdquo;<br>
+        Developer: &ldquo;Yep! It runs on my machine.&rdquo;<br>
+        Manager: &ldquo;Is there a health check?&rdquo;<br>
+        Developer: &ldquo;A what?&rdquo;<br>
+        Manager: &ldquo;Tests?&rdquo;<br>
+        Developer: &ldquo;I tested it manually. Twice.&rdquo;<br>
+        Manager: &ldquo;Where do errors go?&rdquo;<br>
+        Developer: &ldquo;<code>console.error</code>. Why?&rdquo;<br>
+        <em>That weekend the on-call was Bob. Bob is not having a good weekend.</em>
+    </div>
+
+    <h3>The plan for this lesson</h3>
+
+    <p>Each part of this lesson maps to one of the five properties above. By the end, your <code>nestjs-course-yourname</code> repo &mdash; the same one you've been pushing to since Lesson 1 &mdash; will have all five. Then you hand it in. That's the capstone.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Before you read on</div>
+        <div class="recall-question">Look at your current <code>nestjs-course-yourname</code> repo right now. Which of the five production-ready properties does it already have? Which does it have <em>partially</em>? Which is missing entirely? Write the list before continuing &mdash; this lesson will fill in everything you mark as missing.</div>
+        <div class="recall-hint">Most students at this point have 0&ndash;1 of the five. That's normal. The next 7 parts close the gap.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: UNIT TESTS WITH JEST -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Unit Tests with Jest</h2>
+
+    <p>NestJS ships Jest as the default test runner, and it ships <code>@nestjs/testing</code> as the framework's official test harness. You don't have to choose a stack &mdash; you just have to use it.</p>
+
+    <h3>The test pyramid, briefly</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="360" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">The Test Pyramid</text>
+
+            <!-- Top: E2E -->
+            <polygon points="280,60 480,60 460,120 300,120" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="380" y="88" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#DC2626">E2E (few)</text>
+            <text x="380" y="106" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Real HTTP, real flow, slow</text>
+
+            <!-- Middle: Integration -->
+            <polygon points="220,128 540,128 520,200 240,200" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="380" y="158" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">Integration (some)</text>
+            <text x="380" y="178" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Module + DB or external service</text>
+
+            <!-- Bottom: Unit -->
+            <polygon points="120,208 640,208 620,310 140,310" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="380" y="248" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">Unit (many)</text>
+            <text x="380" y="268" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">One class, mocked deps, milliseconds</text>
+            <text x="380" y="285" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Fastest feedback &mdash; this is where you live day-to-day</text>
+
+            <!-- Side labels -->
+            <text x="60" y="90" font-family="Inter" font-weight="600" font-size="11" fill="#6B7280">slow</text>
+            <text x="60" y="280" font-family="Inter" font-weight="600" font-size="11" fill="#6B7280">fast</text>
+            <text x="700" y="90" font-family="Inter" font-weight="600" font-size="11" fill="#6B7280">$$$</text>
+            <text x="700" y="280" font-family="Inter" font-weight="600" font-size="11" fill="#6B7280">cheap</text>
+        </svg>
+        <div class="diagram-caption">Many cheap unit tests, a few expensive E2E tests. Don't invert it.</div>
+    </div>
+
+    <p>The pyramid says: write lots of fast unit tests for individual classes, fewer integration tests, and a small handful of end-to-end tests that exercise the real wire. We'll write both unit and E2E in this lesson &mdash; that's enough for a service to be confidently shippable.</p>
+
+    <h3>The TestingModule pattern</h3>
+
+    <p>The trick of testing a NestJS class isn't &ldquo;import the class and call <code>new</code>&rdquo;. It's &ldquo;ask Nest to build a tiny module that contains just this class and its mocked dependencies.&rdquo; That's what <code>Test.createTestingModule()</code> does &mdash; it's a mini DI container scoped to one test file.</p>
+
+    <pre><code><span class="comment">// flights.service.spec.ts</span>
+<span class="keyword">import</span> { Test, TestingModule } <span class="keyword">from</span> <span class="string">'@nestjs/testing'</span>;
+<span class="keyword">import</span> { FlightsService } <span class="keyword">from</span> <span class="string">'./flights.service'</span>;
+<span class="keyword">import</span> { PrismaService } <span class="keyword">from</span> <span class="string">'../prisma/prisma.service'</span>;
+
+<span class="function">describe</span>(<span class="string">'FlightsService'</span>, () =&gt; {
+  <span class="keyword">let</span> service: FlightsService;
+  <span class="keyword">let</span> prisma: { flight: { findMany: jest.Mock; create: jest.Mock } };
+
+  <span class="function">beforeEach</span>(<span class="keyword">async</span> () =&gt; {
+    prisma = {
+      flight: {
+        findMany: jest.<span class="function">fn</span>(),
+        create: jest.<span class="function">fn</span>(),
+      },
+    };
+
+    <span class="keyword">const</span> module: TestingModule = <span class="keyword">await</span> Test.<span class="function">createTestingModule</span>({
+      providers: [
+        FlightsService,
+        { provide: PrismaService, useValue: prisma },
+      ],
+    }).<span class="function">compile</span>();
+
+    service = module.<span class="function">get</span>(FlightsService);
+  });
+
+  <span class="function">it</span>(<span class="string">'returns all flights'</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> flights = [{ id: <span class="string">'1'</span>, destination: <span class="string">'NYC'</span>, gate: <span class="string">'A12'</span> }];
+    prisma.flight.findMany.<span class="function">mockResolvedValue</span>(flights);
+
+    <span class="keyword">const</span> result = <span class="keyword">await</span> service.<span class="function">findAll</span>();
+
+    <span class="function">expect</span>(result).<span class="function">toEqual</span>(flights);
+    <span class="function">expect</span>(prisma.flight.findMany).<span class="function">toHaveBeenCalledTimes</span>(<span class="string">1</span>);
+  });
+
+  <span class="function">it</span>(<span class="string">'creates a flight with the given payload'</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> dto = { destination: <span class="string">'LHR'</span>, gate: <span class="string">'B7'</span> };
+    prisma.flight.create.<span class="function">mockResolvedValue</span>({ id: <span class="string">'2'</span>, ...dto });
+
+    <span class="keyword">const</span> result = <span class="keyword">await</span> service.<span class="function">create</span>(dto);
+
+    <span class="function">expect</span>(result.id).<span class="function">toBe</span>(<span class="string">'2'</span>);
+    <span class="function">expect</span>(prisma.flight.create).<span class="function">toHaveBeenCalledWith</span>({ data: dto });
+  });
+});</code></pre>
+
+    <p>Notice what's happening: <code>FlightsService</code> is the real thing. <code>PrismaService</code> is a fake we control. We hand that fake to Nest's DI via <code>useValue</code>, and Nest wires the real service against the fake dependency. We're testing one class in isolation &mdash; no database, no network, no surprise.</p>
+
+    <div class="info-box green">
+        <p><strong>Real benefit:</strong> these tests run in &lt;200ms total. You can run them on save. When a teammate breaks <code>findAll</code> by adding a sneaky <code>.where</code> clause, your terminal lights up red before the change ever reaches a PR review.</p>
+    </div>
+
+    <h3>The override pattern for full modules</h3>
+
+    <p>If you'd rather import the whole <code>FlightsModule</code> (including its real <code>PrismaModule</code> imports) and only swap one thing, use <code>.overrideProvider().useValue()</code>:</p>
+
+    <pre><code><span class="keyword">const</span> module = <span class="keyword">await</span> Test.<span class="function">createTestingModule</span>({
+  imports: [FlightsModule],
+})
+  .<span class="function">overrideProvider</span>(PrismaService)
+  .<span class="function">useValue</span>(mockPrisma)
+  .<span class="function">compile</span>();</code></pre>
+
+    <p>Same outcome, less manual wiring. Use this when the module under test has many providers and you only care about replacing one or two of them.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F9EA;</div>
+        Junior dev: &ldquo;I don't write tests &mdash; my code is short and obvious.&rdquo;<br>
+        Six months later: &ldquo;Why did this regression ship to prod?&rdquo;<br>
+        Junior dev: &ldquo;Because nothing told me it broke.&rdquo;<br>
+        Senior dev: &ldquo;That's literally the job description of a test.&rdquo;<br>
+        <em>Tests aren't pessimism. Tests are paid memory.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Quick check</div>
+        <div class="recall-question">In the spec above, why do we call <code>compile()</code> at the end of the chain? What would happen if we forgot it and tried to <code>get(FlightsService)</code> immediately?</div>
+        <div class="recall-hint">Hint: <code>compile()</code> is what actually instantiates the providers and resolves the DI graph. Without it, the module is just metadata.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: E2E TESTS WITH SUPERTEST -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: E2E Tests with Supertest</h2>
+
+    <p>Unit tests prove your classes work. E2E tests prove your <em>app</em> works. They boot the entire Nest application in memory and hit it with real HTTP requests via Supertest. No actual port is opened &mdash; Supertest talks to the in-memory HTTP server directly.</p>
+
+    <p>The shape of an E2E test:</p>
+
+    <pre><code><span class="comment">// test/flights.e2e-spec.ts</span>
+<span class="keyword">import</span> { Test } <span class="keyword">from</span> <span class="string">'@nestjs/testing'</span>;
+<span class="keyword">import</span> { INestApplication, ValidationPipe } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> * <span class="keyword">as</span> request <span class="keyword">from</span> <span class="string">'supertest'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'../src/app.module'</span>;
+<span class="keyword">import</span> { PrismaService } <span class="keyword">from</span> <span class="string">'../src/prisma/prisma.service'</span>;
+
+<span class="function">describe</span>(<span class="string">'Flights (e2e)'</span>, () =&gt; {
+  <span class="keyword">let</span> app: INestApplication;
+  <span class="keyword">let</span> created: { id: <span class="type">string</span> };
+
+  <span class="function">beforeAll</span>(<span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> moduleRef = <span class="keyword">await</span> Test.<span class="function">createTestingModule</span>({
+      imports: [AppModule],
+    })
+      .<span class="function">overrideProvider</span>(PrismaService)
+      .<span class="function">useValue</span>(<span class="function">createInMemoryPrismaMock</span>())
+      .<span class="function">compile</span>();
+
+    app = moduleRef.<span class="function">createNestApplication</span>();
+    app.<span class="function">useGlobalPipes</span>(<span class="keyword">new</span> <span class="function">ValidationPipe</span>({ whitelist: <span class="keyword">true</span> }));
+    <span class="keyword">await</span> app.<span class="function">init</span>();
+  });
+
+  <span class="function">afterAll</span>(<span class="keyword">async</span> () =&gt; {
+    <span class="keyword">await</span> app.<span class="function">close</span>();
+  });
+
+  <span class="function">it</span>(<span class="string">'POST /flights creates a flight'</span>, <span class="keyword">async</span> () =&gt; {
+    <span class="keyword">const</span> res = <span class="keyword">await</span> <span class="function">request</span>(app.<span class="function">getHttpServer</span>())
+      .<span class="function">post</span>(<span class="string">'/flights'</span>)
+      .<span class="function">send</span>({ destination: <span class="string">'NYC'</span>, gate: <span class="string">'A12'</span> })
+      .<span class="function">expect</span>(<span class="string">201</span>);
+
+    <span class="function">expect</span>(res.body).<span class="function">toMatchObject</span>({ destination: <span class="string">'NYC'</span>, gate: <span class="string">'A12'</span> });
+    created = res.body;
+  });
+
+  <span class="function">it</span>(<span class="string">'GET /flights/:id returns the created flight'</span>, () =&gt;
+    <span class="function">request</span>(app.<span class="function">getHttpServer</span>())
+      .<span class="function">get</span>(<span class="string">`/flights/<span class="keyword">${</span>created.id<span class="keyword">}</span>`</span>)
+      .<span class="function">expect</span>(<span class="string">200</span>)
+      .<span class="function">expect</span>((res) =&gt; {
+        <span class="function">expect</span>(res.body.id).<span class="function">toBe</span>(created.id);
+      }));
+});</code></pre>
+
+    <p>The first test creates a flight and saves the result. The second uses that ID to fetch the same flight. Two tests, real HTTP semantics, real validation, real serialization &mdash; no mocks of the Nest layer itself. The only thing we replaced is the database, because hitting a real Postgres in CI is expensive and flaky.</p>
+
+    <div class="info-box blue">
+        <p><strong>Where E2E tests live:</strong> by Nest convention, in the <code>test/</code> directory at the project root, with the suffix <code>.e2e-spec.ts</code>. There's a separate <code>npm run test:e2e</code> script that picks them up. Unit specs (<code>.spec.ts</code>) sit next to the file they test, inside <code>src/</code>.</p>
+    </div>
+
+    <h3>Unit vs E2E &mdash; when to write which</h3>
+
+    <table>
+        <tr>
+            <th>If you're testing&hellip;</th>
+            <th>Write a&hellip;</th>
+            <th>Why</th>
+        </tr>
+        <tr>
+            <td>A pure piece of business logic</td>
+            <td><strong>Unit test</strong></td>
+            <td>Fast, deterministic, fails for one obvious reason</td>
+        </tr>
+        <tr>
+            <td>A service that calls another service</td>
+            <td><strong>Unit test</strong> (mock the dependency)</td>
+            <td>You're testing this layer, not its collaborators</td>
+        </tr>
+        <tr>
+            <td>That a route returns the right status code</td>
+            <td><strong>E2E test</strong></td>
+            <td>Status codes happen at the HTTP layer, not in your service</td>
+        </tr>
+        <tr>
+            <td>That validation rejects bad input</td>
+            <td><strong>E2E test</strong></td>
+            <td>The pipe runs in the actual request flow, not in a unit</td>
+        </tr>
+        <tr>
+            <td>That guards block unauthorized callers</td>
+            <td><strong>E2E test</strong></td>
+            <td>Guards are part of the request pipeline; integration is the point</td>
+        </tr>
+        <tr>
+            <td>A complex algorithm with 12 branches</td>
+            <td><strong>Unit test</strong> (one per branch)</td>
+            <td>E2E for 12 branches would be slow and obscure which one broke</td>
+        </tr>
+    </table>
+
+    <div class="info-box orange">
+        <p><strong>Insight:</strong> a 70/30 split (unit / E2E) is healthy for most NestJS services. If you're writing 80%+ E2E tests, your tests are probably slow and brittle. If you're writing 100% unit tests, you're not catching wiring bugs &mdash; the kind where the controller forgot to inject the service or the validation pipe wasn't registered.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F50D;</div>
+        Test that mocks everything: &ldquo;Everything passed!&rdquo;<br>
+        Production: <em>500 Internal Server Error</em><br>
+        Developer: &ldquo;But the test passed!&rdquo;<br>
+        Senior dev: &ldquo;You mocked the bug.&rdquo;<br>
+        <em>If your test never fails, ask whether it ever could.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: HEALTH CHECKS WITH TERMINUS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Health Checks with Terminus</h2>
+
+    <p>Now your tests pass. The service runs. Time to ship it &mdash; but the platform you're shipping to (Vercel, Kubernetes, Railway, AWS, your reverse proxy) needs a way to ask: &ldquo;hey, are you alive? are you ready for traffic?&rdquo; That question has a standard answer: a <code>/health</code> endpoint.</p>
+
+    <h3>Why platforms care</h3>
+
+    <p>A load balancer in front of your service pings <code>/health</code> every few seconds. If you respond with 200, you stay in the rotation. If you respond with 500 (or don't respond at all), the load balancer pulls you out and either reroutes traffic to a healthier instance or restarts you. This loop is invisible to you when it works &mdash; and the difference between &ldquo;our service had a 4-hour outage&rdquo; and &ldquo;our service had a 30-second blip&rdquo; when it doesn't.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">The Health Check Loop</text>
+
+            <defs>
+                <marker id="arrG" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+                <marker id="arrR" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/>
+                </marker>
+            </defs>
+
+            <!-- Load balancer -->
+            <rect x="40" y="100" width="160" height="80" rx="12" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="120" y="135" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Load Balancer</text>
+            <text x="120" y="155" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">pings every 10s</text>
+
+            <!-- Service -->
+            <rect x="320" y="60" width="180" height="80" rx="12" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="410" y="92" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">Your NestJS App</text>
+            <text x="410" y="112" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">GET /health</text>
+            <text x="410" y="128" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">checks DB + deps</text>
+
+            <!-- Bad service (rotating out) -->
+            <rect x="320" y="170" width="180" height="80" rx="12" fill="#FEE2E2" stroke="#DC2626" stroke-width="2" stroke-dasharray="4,3"/>
+            <text x="410" y="202" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#DC2626">Sick Replica</text>
+            <text x="410" y="222" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">DB pool exhausted</text>
+            <text x="410" y="238" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">returns 503</text>
+
+            <!-- Arrows -->
+            <line x1="200" y1="120" x2="315" y2="100" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrG)"/>
+            <line x1="315" y1="100" x2="200" y2="120" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="255" y="98" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C" font-weight="600">200 OK &rarr; keep traffic</text>
+
+            <line x1="200" y1="160" x2="315" y2="210" stroke="#DC2626" stroke-width="2" marker-end="url(#arrR)"/>
+            <line x1="315" y1="210" x2="200" y2="160" stroke="#DC2626" stroke-width="2"/>
+            <text x="255" y="200" text-anchor="middle" font-family="Inter" font-size="11" fill="#DC2626" font-weight="600">503 &rarr; remove from pool</text>
+
+            <!-- Restart action -->
+            <rect x="560" y="170" width="160" height="80" rx="12" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="640" y="202" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">Restart</text>
+            <text x="640" y="220" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">or alert ops</text>
+            <line x1="500" y1="210" x2="555" y2="210" stroke="#E8790C" stroke-width="2" marker-end="url(#arrR)"/>
+        </svg>
+        <div class="diagram-caption">A load balancer + a /health endpoint = self-healing service. No engineer needed at 3am.</div>
+    </div>
+
+    <h3>Liveness vs readiness</h3>
+
+    <p>Two flavors of health check, and they answer different questions:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1FA7A;</div>
+            <div class="card-title" style="color: var(--green);">/health/live</div>
+            <div class="card-subtitle" style="color: var(--green);">Liveness</div>
+            <div class="card-desc">"Is the process running and not deadlocked?" If this fails, the platform restarts the container. Should be cheap and almost-always-yes.</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F6A6;</div>
+            <div class="card-title" style="color: var(--blue);">/health/ready</div>
+            <div class="card-subtitle" style="color: var(--blue);">Readiness</div>
+            <div class="card-desc">"Are you ready to serve a real request?" Checks the DB, Redis, downstream APIs. If this fails, traffic is paused (no restart).</div>
+        </div>
+    </div>
+
+    <h3>Wiring it up with @nestjs/terminus</h3>
+
+    <pre><code><span class="function">npm</span> install --save @nestjs/terminus @nestjs/axios axios</code></pre>
+
+    <p>Generate a health module and controller:</p>
+
+    <pre><code><span class="function">nest</span> g module health
+<span class="function">nest</span> g controller health</code></pre>
+
+    <p>Then wire Terminus into the module and add the indicators you care about:</p>
+
+    <pre><code><span class="comment">// src/health/health.module.ts</span>
+<span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { TerminusModule } <span class="keyword">from</span> <span class="string">'@nestjs/terminus'</span>;
+<span class="keyword">import</span> { HttpModule } <span class="keyword">from</span> <span class="string">'@nestjs/axios'</span>;
+<span class="keyword">import</span> { HealthController } <span class="keyword">from</span> <span class="string">'./health.controller'</span>;
+<span class="keyword">import</span> { PrismaModule } <span class="keyword">from</span> <span class="string">'../prisma/prisma.module'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [TerminusModule, HttpModule, PrismaModule],
+  controllers: [HealthController],
+})
+<span class="keyword">export class</span> HealthModule {}</code></pre>
+
+    <pre><code><span class="comment">// src/health/health.controller.ts</span>
+<span class="keyword">import</span> { Controller, Get } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> {
+  HealthCheckService,
+  HealthCheck,
+  HttpHealthIndicator,
+  HealthIndicatorResult,
+} <span class="keyword">from</span> <span class="string">'@nestjs/terminus'</span>;
+<span class="keyword">import</span> { PrismaService } <span class="keyword">from</span> <span class="string">'../prisma/prisma.service'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'health'</span>)
+<span class="keyword">export class</span> HealthController {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private readonly</span> health: HealthCheckService,
+    <span class="keyword">private readonly</span> http: HttpHealthIndicator,
+    <span class="keyword">private readonly</span> prisma: PrismaService,
+  ) {}
+
+  <span class="decorator">@Get</span>()
+  <span class="decorator">@HealthCheck</span>()
+  <span class="function">check</span>() {
+    <span class="keyword">return</span> <span class="keyword">this</span>.health.<span class="function">check</span>([
+      () =&gt; <span class="keyword">this</span>.http.<span class="function">pingCheck</span>(<span class="string">'self'</span>, <span class="string">'http://localhost:3000'</span>),
+      () =&gt; <span class="keyword">this</span>.<span class="function">prismaCheck</span>(),
+    ]);
+  }
+
+  <span class="keyword">private async</span> <span class="function">prismaCheck</span>(): <span class="type">Promise</span>&lt;HealthIndicatorResult&gt; {
+    <span class="keyword">try</span> {
+      <span class="keyword">await</span> <span class="keyword">this</span>.prisma.$queryRaw`<span class="string">SELECT 1</span>`;
+      <span class="keyword">return</span> { database: { status: <span class="string">'up'</span> } };
+    } <span class="keyword">catch</span> (err) {
+      <span class="keyword">return</span> { database: { status: <span class="string">'down'</span>, message: err.message } };
+    }
+  }
+}</code></pre>
+
+    <p>Hit <code>GET /health</code>:</p>
+
+    <pre><code>{
+  <span class="string">"status"</span>: <span class="string">"ok"</span>,
+  <span class="string">"info"</span>: {
+    <span class="string">"self"</span>: { <span class="string">"status"</span>: <span class="string">"up"</span> },
+    <span class="string">"database"</span>: { <span class="string">"status"</span>: <span class="string">"up"</span> }
+  },
+  <span class="string">"error"</span>: {},
+  <span class="string">"details"</span>: {
+    <span class="string">"self"</span>: { <span class="string">"status"</span>: <span class="string">"up"</span> },
+    <span class="string">"database"</span>: { <span class="string">"status"</span>: <span class="string">"up"</span> }
+  }
+}</code></pre>
+
+    <div class="info-box green">
+        <p><strong>Real-world:</strong> Terminus has built-in indicators for TypeORM, Mongoose, Sequelize, MikroORM, Prisma, microservices, gRPC, disk, and memory. The custom <code>prismaCheck</code> above is one approach; <code>@nestjs/terminus</code> also exposes a <code>PrismaHealthIndicator</code> directly. Either way, the contract is the same: return <code>{ name: { status: 'up' | 'down' } }</code>.</p>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Insight:</strong> don't put expensive checks in <code>/health/live</code>. If your liveness check pings the database and the DB is slow, the platform will restart you &mdash; making things worse. Liveness should answer in milliseconds. Readiness can do the deeper checks.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: ERROR TRACKING WITH SENTRY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Error Tracking with Sentry</h2>
+
+    <p>Question: when an exception happens in your prod app right now, where does it go? If your honest answer is &ldquo;<code>console.error</code>, and we maybe see it if we tail the logs,&rdquo; you have an observability problem. <code>console.error</code> is what you use during development. In prod, you need an error tracker that captures the stack, the request context, the user, and groups duplicates so you don't see the same bug 10,000 times. Sentry is the boring, correct default.</p>
+
+    <h3>Why not just logs?</h3>
+
+    <div class="info-box red">
+        <p><strong>Logs are a stream. Errors are events.</strong> You don't want to scroll through a million lines of access logs hunting for the one stack trace at 03:14:22. You want a dashboard that says: &ldquo;this exception happened 47 times in the last hour, here's the stack, here's the user, here's the request body.&rdquo; That's the difference between <code>console.error</code> and Sentry.</p>
+    </div>
+
+    <h3>Setup</h3>
+
+    <pre><code><span class="function">npm</span> install --save @sentry/nestjs @sentry/profiling-node</code></pre>
+
+    <p>Create an <code>instrument.ts</code> file. It must be imported <strong>before</strong> any other module so Sentry can patch the runtime:</p>
+
+    <pre><code><span class="comment">// src/instrument.ts</span>
+<span class="keyword">import</span> * <span class="keyword">as</span> Sentry <span class="keyword">from</span> <span class="string">'@sentry/nestjs'</span>;
+<span class="keyword">import</span> { nodeProfilingIntegration } <span class="keyword">from</span> <span class="string">'@sentry/profiling-node'</span>;
+
+Sentry.<span class="function">init</span>({
+  dsn: process.env.SENTRY_DSN,
+  environment: process.env.NODE_ENV ?? <span class="string">'development'</span>,
+  integrations: [<span class="function">nodeProfilingIntegration</span>()],
+  tracesSampleRate: <span class="string">1.0</span>,
+  profilesSampleRate: <span class="string">1.0</span>,
+});</code></pre>
+
+    <p>Then in <code>main.ts</code>, the import order matters:</p>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="comment">// IMPORTANT: this must be the very first import.</span>
+<span class="keyword">import</span> <span class="string">'./instrument'</span>;
+
+<span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'./app.module'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+  <span class="keyword">await</span> app.<span class="function">listen</span>(process.env.PORT ?? <span class="string">3000</span>);
+}
+<span class="function">bootstrap</span>();</code></pre>
+
+    <p>Register the SentryModule and the global filter in <code>AppModule</code>:</p>
+
+    <pre><code><span class="comment">// src/app.module.ts</span>
+<span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { APP_FILTER } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { SentryModule } <span class="keyword">from</span> <span class="string">'@sentry/nestjs/setup'</span>;
+<span class="keyword">import</span> { SentryGlobalFilter } <span class="keyword">from</span> <span class="string">'@sentry/nestjs/setup'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    SentryModule.<span class="function">forRoot</span>(),
+    <span class="comment">// ...the rest of your app's modules</span>
+  ],
+  providers: [
+    { provide: APP_FILTER, useClass: SentryGlobalFilter },
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <p>That's it. Unhandled exceptions now appear in your Sentry dashboard with full stack traces, request context, and grouping by fingerprint.</p>
+
+    <h3>Manual capture for "expected" errors you still care about</h3>
+
+    <p>Sometimes you catch an error in a service, log it, and move on &mdash; but you still want Sentry to know. Use <code>Sentry.captureException</code>:</p>
+
+    <pre><code><span class="keyword">import</span> * <span class="keyword">as</span> Sentry <span class="keyword">from</span> <span class="string">'@sentry/nestjs'</span>;
+
+<span class="keyword">try</span> {
+  <span class="keyword">await</span> <span class="keyword">this</span>.paymentGateway.<span class="function">charge</span>(amount);
+} <span class="keyword">catch</span> (err) {
+  Sentry.<span class="function">captureException</span>(err, {
+    tags: { source: <span class="string">'payments'</span> },
+    extra: { amount, userId },
+  });
+  <span class="keyword">throw new</span> <span class="function">PaymentFailedException</span>();
+}</code></pre>
+
+    <h3>Source maps &mdash; or don't bother</h3>
+
+    <p>If you skip source maps, your stack traces in Sentry will look like minified TypeScript output: <code>v.prototype.h</code> calling <code>g.j</code>. Useless. Upload source maps with the wizard:</p>
+
+    <pre><code><span class="function">npx</span> @sentry/wizard@latest -i sourcemaps</code></pre>
+
+    <div class="info-box blue">
+        <p><strong>HttpException is intentionally not captured by default.</strong> Sentry's NestJS integration treats <code>HttpException</code> (and its subclasses like <code>NotFoundException</code>, <code>BadRequestException</code>) as control flow, not bugs. That's almost always what you want &mdash; a 404 isn't an error to alert on. If you want to capture them too, configure that in your filter.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DC;</div>
+        Customer: &ldquo;The site's been broken for 3 days.&rdquo;<br>
+        Engineer: &ldquo;What? No it isn't, I just&hellip; oh.&rdquo;<br>
+        <em>tail -F</em> /var/log/app.log<br>
+        <em>2,847,331 lines of <code>Error: ECONNRESET</code></em><br>
+        <em>Sentry would have told them on day one. With a graph.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: PRODUCTION LOGGING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Production Logging</h2>
+
+    <p>Sentry catches errors. Logs catch <em>everything else</em> &mdash; the breadcrumbs you'll need when something weird happens that wasn't an exception. The default Nest logger is fine for development. For production, swap to structured JSON via Pino so your logs are queryable in Datadog, Loki, CloudWatch, or whatever your platform offers.</p>
+
+    <pre><code><span class="function">npm</span> install --save nestjs-pino pino-http
+<span class="function">npm</span> install --save-dev pino-pretty</code></pre>
+
+    <pre><code><span class="comment">// src/app.module.ts (relevant pieces)</span>
+<span class="keyword">import</span> { LoggerModule } <span class="keyword">from</span> <span class="string">'nestjs-pino'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    LoggerModule.<span class="function">forRoot</span>({
+      pinoHttp: {
+        level: process.env.LOG_LEVEL ?? <span class="string">'info'</span>,
+        transport:
+          process.env.NODE_ENV === <span class="string">'development'</span>
+            ? { target: <span class="string">'pino-pretty'</span> }
+            : <span class="keyword">undefined</span>, <span class="comment">// raw JSON in prod</span>
+        redact: [<span class="string">'req.headers.authorization'</span>, <span class="string">'req.headers.cookie'</span>, <span class="string">'*.password'</span>],
+      },
+    }),
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <p>And in <code>main.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> { Logger } <span class="keyword">from</span> <span class="string">'nestjs-pino'</span>;
+
+<span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule, { bufferLogs: <span class="keyword">true</span> });
+app.<span class="function">useLogger</span>(app.<span class="function">get</span>(Logger));</code></pre>
+
+    <h3>Log levels</h3>
+
+    <table>
+        <tr>
+            <th>Level</th>
+            <th>Use for</th>
+            <th>Default in prod</th>
+        </tr>
+        <tr><td><code>error</code></td><td>Something broke and a human should investigate</td><td>on</td></tr>
+        <tr><td><code>warn</code></td><td>Recoverable issue, retry, deprecated path used</td><td>on</td></tr>
+        <tr><td><code>info</code></td><td>Notable lifecycle events (startup, shutdown, big actions)</td><td>on</td></tr>
+        <tr><td><code>debug</code></td><td>Detailed flow useful when chasing a bug</td><td>off</td></tr>
+        <tr><td><code>trace</code></td><td>Every function call, basically. Local only.</td><td>off</td></tr>
+    </table>
+
+    <div class="info-box red">
+        <p><strong>Never log secrets.</strong> Not passwords, not API tokens, not Authorization headers, not full PII. The <code>redact</code> array above is your friend &mdash; add to it whenever a new sensitive field shows up. A leaked log file is the same as a leaked database. Treat it that way.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Three quick checks</div>
+        <div class="recall-question">1. What's the difference between Sentry and Pino &mdash; why do you want both?<br>2. Why does Sentry's <code>instrument.ts</code> have to be imported <em>first</em>, before NestFactory?<br>3. Name three values you should never log.</div>
+        <div class="recall-hint">3/3: production-thinking. 2/3: re-skim Parts 5 and 6. 0&ndash;1: this part is the one to re-read.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: DEPLOYMENT OPTIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: Deployment Options</h2>
+
+    <p>Three reasonable paths to ship a NestJS app in 2026. Pick whichever matches your team's existing infrastructure &mdash; none of them are wrong.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x25B2;</div>
+            <div class="card-title" style="color: var(--green);">Vercel / Serverless</div>
+            <div class="card-subtitle" style="color: var(--green);">Easiest, cheapest start</div>
+            <div class="card-desc">Zero infra. Each request spins up a function. Great for low-to-medium traffic. Cold starts on the free tier. Watch out for stateful things (BullMQ workers, websockets).</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F5A5;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--blue);">Node + PM2</div>
+            <div class="card-subtitle" style="color: var(--blue);">Classic, predictable</div>
+            <div class="card-desc">Long-running Node process behind nginx or Caddy. Cheapest at scale. You manage the box. Perfect when you already have ops capacity.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F433;</div>
+            <div class="card-title" style="color: var(--purple);">Docker / K8s</div>
+            <div class="card-subtitle" style="color: var(--purple);">Most flexible, most overhead</div>
+            <div class="card-desc">Build a container image, ship it anywhere &mdash; ECS, GKE, Fly.io, Railway, your own cluster. Same image in dev and prod.</div>
+        </div>
+    </div>
+
+    <h3>Path A: Vercel (serverless)</h3>
+
+    <p>NestJS works on Vercel via the <code>@vercel/node</code> runtime and a single adapter file. Vercel's recent updates support Nest with near-zero config &mdash; you mostly just need an entry point at <code>api/index.ts</code>:</p>
+
+    <pre><code><span class="comment">// api/index.ts</span>
+<span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { ExpressAdapter } <span class="keyword">from</span> <span class="string">'@nestjs/platform-express'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'../src/app.module'</span>;
+<span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">'express'</span>;
+
+<span class="keyword">const</span> server = <span class="function">express</span>();
+<span class="keyword">let</span> ready: <span class="type">Promise</span>&lt;<span class="type">void</span>&gt;;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule, <span class="keyword">new</span> <span class="function">ExpressAdapter</span>(server));
+  app.<span class="function">enableCors</span>();
+  <span class="keyword">await</span> app.<span class="function">init</span>();
+}
+
+ready ??= <span class="function">bootstrap</span>();
+
+<span class="keyword">export default async function</span> <span class="function">handler</span>(req, res) {
+  <span class="keyword">await</span> ready;
+  <span class="function">server</span>(req, res);
+}</code></pre>
+
+    <p>Add a minimal <code>vercel.json</code>:</p>
+
+    <pre><code>{
+  <span class="string">"version"</span>: <span class="string">2</span>,
+  <span class="string">"builds"</span>: [{ <span class="string">"src"</span>: <span class="string">"api/index.ts"</span>, <span class="string">"use"</span>: <span class="string">"@vercel/node"</span> }],
+  <span class="string">"routes"</span>: [{ <span class="string">"src"</span>: <span class="string">"/(.*)"</span>, <span class="string">"dest"</span>: <span class="string">"api/index.ts"</span> }]
+}</code></pre>
+
+    <p>Then <code>vercel deploy</code>. Done. The free tier is enough for a capstone demo.</p>
+
+    <div class="info-box orange">
+        <p><strong>Insight:</strong> on Vercel, your Nest app starts <em>once per cold-start</em> and is reused for warm requests. That means startup-time work (DB pool creation, Sentry init) happens lazily and gets amortized. But long-running things &mdash; cron jobs, BullMQ workers, websocket gateways &mdash; don't fit the model. Run those on a real server and use Vercel only for the HTTP API.</p>
+    </div>
+
+    <h3>Path B: Node + PM2 + reverse proxy</h3>
+
+    <pre><code><span class="comment"># on the server</span>
+<span class="function">npm</span> ci --omit=dev
+<span class="function">npm</span> run build
+<span class="function">npm</span> install -g pm2
+
+<span class="comment"># start the compiled app under PM2 with cluster mode</span>
+pm2 start dist/main.js --name airport-api -i max
+pm2 save
+pm2 startup</code></pre>
+
+    <p>Put nginx or Caddy in front, terminate TLS, proxy to <code>localhost:3000</code>. PM2 restarts the process on crashes and gives you <code>pm2 logs</code>, <code>pm2 monit</code>, and zero-downtime reloads. This is what most "boring" production setups still look like &mdash; and there's nothing wrong with that.</p>
+
+    <h3>Path C: Docker</h3>
+
+    <p>A multi-stage Dockerfile that builds the TS, then ships only the compiled output and prod dependencies:</p>
+
+    <pre><code><span class="comment"># Dockerfile</span>
+<span class="keyword">FROM</span> node:<span class="string">22</span>-alpine <span class="keyword">AS</span> builder
+<span class="keyword">WORKDIR</span> /app
+<span class="keyword">COPY</span> package*.json ./
+<span class="keyword">RUN</span> npm ci
+<span class="keyword">COPY</span> . .
+<span class="keyword">RUN</span> npm run build
+
+<span class="keyword">FROM</span> node:<span class="string">22</span>-alpine
+<span class="keyword">WORKDIR</span> /app
+<span class="keyword">ENV</span> NODE_ENV=production
+<span class="keyword">COPY</span> package*.json ./
+<span class="keyword">RUN</span> npm ci --omit=dev
+<span class="keyword">COPY</span> --from=builder /app/dist ./dist
+<span class="keyword">EXPOSE</span> <span class="string">3000</span>
+<span class="keyword">HEALTHCHECK</span> --interval=30s --timeout=5s --start-period=20s \
+  CMD wget -qO- http://localhost:3000/health || exit 1
+<span class="keyword">CMD</span> [<span class="string">"node"</span>, <span class="string">"dist/main.js"</span>]</code></pre>
+
+    <pre><code><span class="function">docker</span> build -t airport-api .
+<span class="function">docker</span> run -p 3000:3000 --env-file .env airport-api</code></pre>
+
+    <p>That image runs anywhere &mdash; ECS, Fly.io, Railway, GKE, your laptop. The <code>HEALTHCHECK</code> directive uses the same <code>/health</code> endpoint we built in Part 4. Layered defense.</p>
+
+    <div class="info-box blue">
+        <p><strong>Picking a path:</strong> for the capstone, Vercel is the easiest. Pick it unless you already have a server or a Docker host you'd rather use. The grading rubric doesn't care which one &mdash; it cares that <code>/health</code> returns 200 from a public URL.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        Junior: &ldquo;Should we use Kubernetes?&rdquo;<br>
+        Senior: &ldquo;Do you have 50 services?&rdquo;<br>
+        Junior: &ldquo;We have one.&rdquo;<br>
+        Senior: &ldquo;Then no.&rdquo;<br>
+        <em>The right answer is almost always &ldquo;the simplest thing your team can operate.&rdquo;</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 8: CI/CD WITH GITHUB ACTIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 8: CI/CD with GitHub Actions</h2>
+
+    <p>The final automation. Right now, your tests run when you remember to run them. CI flips that &mdash; tests run on every push, no exceptions, no &ldquo;I forgot to run them locally.&rdquo; A green check on the PR means the test suite passed for that exact commit on a clean machine. That's a much stronger guarantee than &ldquo;works on my machine.&rdquo;</p>
+
+    <h3>The minimal workflow</h3>
+
+    <p>Drop this in <code>.github/workflows/ci.yml</code>:</p>
+
+    <pre><code><span class="keyword">name</span>: <span class="string">CI</span>
+
+<span class="keyword">on</span>:
+  <span class="keyword">push</span>:
+    <span class="keyword">branches</span>: [<span class="string">main</span>]
+  <span class="keyword">pull_request</span>:
+    <span class="keyword">branches</span>: [<span class="string">main</span>]
+
+<span class="keyword">jobs</span>:
+  <span class="keyword">test</span>:
+    <span class="keyword">runs-on</span>: <span class="string">ubuntu-latest</span>
+    <span class="keyword">steps</span>:
+      - <span class="keyword">uses</span>: <span class="string">actions/checkout@v4</span>
+
+      - <span class="keyword">name</span>: <span class="string">Use Node.js 22</span>
+        <span class="keyword">uses</span>: <span class="string">actions/setup-node@v4</span>
+        <span class="keyword">with</span>:
+          <span class="keyword">node-version</span>: <span class="string">'22'</span>
+          <span class="keyword">cache</span>: <span class="string">'npm'</span>
+
+      - <span class="keyword">name</span>: <span class="string">Install dependencies</span>
+        <span class="keyword">run</span>: <span class="string">npm ci</span>
+
+      - <span class="keyword">name</span>: <span class="string">Lint</span>
+        <span class="keyword">run</span>: <span class="string">npm run lint</span>
+
+      - <span class="keyword">name</span>: <span class="string">Build</span>
+        <span class="keyword">run</span>: <span class="string">npm run build</span>
+
+      - <span class="keyword">name</span>: <span class="string">Unit tests</span>
+        <span class="keyword">run</span>: <span class="string">npm run test -- --ci --coverage</span>
+
+      - <span class="keyword">name</span>: <span class="string">E2E tests</span>
+        <span class="keyword">run</span>: <span class="string">npm run test:e2e</span></code></pre>
+
+    <p>Push it. Open the Actions tab on GitHub. Watch the green check appear (or the red X, which is the test suite doing its job).</p>
+
+    <h3>Optional: deploy on push to main</h3>
+
+    <p>Add a second job that runs only on main and only if tests passed:</p>
+
+    <pre><code>  <span class="keyword">deploy</span>:
+    <span class="keyword">needs</span>: <span class="string">test</span>
+    <span class="keyword">if</span>: <span class="string">github.ref == 'refs/heads/main'</span>
+    <span class="keyword">runs-on</span>: <span class="string">ubuntu-latest</span>
+    <span class="keyword">steps</span>:
+      - <span class="keyword">uses</span>: <span class="string">actions/checkout@v4</span>
+      - <span class="keyword">name</span>: <span class="string">Deploy to Vercel</span>
+        <span class="keyword">run</span>: <span class="string">npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}</span></code></pre>
+
+    <p>That's the whole CI/CD loop in roughly 40 lines of YAML. From this point on, every push is automatically tested. Every merge to main is automatically deployed. Humans approve, machines execute.</p>
+
+    <div class="info-box green">
+        <p><strong>Real benefit:</strong> CI/CD is the single biggest force multiplier for a small team. It removes the entire class of bug that goes &ldquo;works on my machine&rdquo; and it removes the entire class of outage that goes &ldquo;I forgot to deploy after merging.&rdquo; The capstone bonus task asks you to set this up &mdash; do it.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F916;</div>
+        Manager: &ldquo;The deploy is broken.&rdquo;<br>
+        Developer: &ldquo;Did the tests pass on CI?&rdquo;<br>
+        Manager: &ldquo;Yes.&rdquo;<br>
+        Developer: &ldquo;Did the deploy script run?&rdquo;<br>
+        Manager: &ldquo;Yes.&rdquo;<br>
+        Developer: &ldquo;Then the deploy isn't broken &mdash; production is broken. Two different things.&rdquo;<br>
+        <em>CI/CD: shifting blame from people to evidence since 2009.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>What just happened in this lesson:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F9EA;</div>
+            <div class="layer-name" style="color: var(--blue);">Tests</div>
+            <div class="layer-desc"><code>@nestjs/testing</code> + Jest for units, Supertest for E2E. Mock with <code>useValue</code> / <code>overrideProvider</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1FA7A;</div>
+            <div class="layer-name" style="color: var(--green);">Health</div>
+            <div class="layer-desc"><code>@nestjs/terminus</code> + <code>/health</code>. Liveness fast, readiness deep. Load balancers stay informed.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E1;</div>
+            <div class="layer-name" style="color: var(--orange);">Sentry</div>
+            <div class="layer-desc">Errors flow to a dashboard with stack traces, grouping, and request context. Source maps make them readable.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4DC;</div>
+            <div class="layer-name" style="color: var(--purple);">Logs</div>
+            <div class="layer-desc">Structured JSON via Pino. Levels per environment. Redact secrets &mdash; always.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F680;</div>
+            <div class="layer-name" style="color: var(--red);">Deploy</div>
+            <div class="layer-desc">Vercel, PM2, or Docker. Pick the simplest one your team can operate.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--blue);">CI/CD</div>
+            <div class="layer-desc">GitHub Actions runs tests on every push. Green check or fix the code. No exceptions.</div>
+        </div>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>One more time, in airport language:</strong> the pre-flight checklists run automatically (tests + CI). The control tower can see every gate's status (health). When something does go wrong, the incident response team gets a page within seconds (Sentry). The flight schedule auto-publishes to the new terminal as soon as it's ready (CD). And the airport authority handed you the keys, because you proved all of the above. That's production-ready.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- CAPSTONE HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>&#x1F393; Capstone Homework &mdash; Final Submission</h2>
+
+        <div class="info-box orange" style="margin-top: 0;">
+            <p><strong>This is the final, graded submission of the course.</strong> Your <code>nestjs-course-yourname</code> repo &mdash; the one you've been pushing to since Lesson 1 &mdash; is the capstone deliverable. Everything below builds on what's already there.</p>
+        </div>
+
+        <h3>Required (graded):</h3>
+        <ol>
+            <li>
+                <strong>Final state of your <code>nestjs-course-yourname</code> repo</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Submit the repo URL. The repo must include all of:</p>
+                <ul style="margin: 4px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>At least <strong>5 unit tests</strong> passing (<code>npm run test</code>)</li>
+                    <li>At least <strong>2 e2e tests</strong> passing (<code>npm run test:e2e</code>)</li>
+                    <li>A <code>/health</code> endpoint (Terminus) that returns 200</li>
+                    <li>Sentry initialized in <code>main.ts</code> (a free-tier DSN or even a dummy DSN to show config is fine)</li>
+                    <li>Either a working <code>Dockerfile</code> <em>or</em> a <code>vercel.json</code> + <code>api/index.ts</code></li>
+                </ul>
+                <p style="margin: 8px 0 0; font-size: 13px; color: var(--gray-500);">Submission: repo URL (PR/repo link).</p>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Deploy your app somewhere accessible</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Pick one: <strong>Vercel</strong> (recommended &mdash; free tier covers this), <strong>Railway</strong>, <strong>Fly.io</strong>, or your own server. Submit:</p>
+                <ul style="margin: 4px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>The live URL of your deployed app</li>
+                    <li>A screenshot of <code>GET /health</code> returning 200 from the live deployment (browser, Postman, or curl output)</li>
+                </ul>
+                <p style="margin: 8px 0 0; font-size: 13px; color: var(--gray-500);">Submission: screenshot.</p>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Course retrospective &mdash; 4&ndash;6 sentences</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Write a short retrospective. Two questions:</p>
+                <ul style="margin: 4px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>What surprised you most across the 10 lessons?</li>
+                    <li>What would you do differently if you started a new NestJS service tomorrow?</li>
+                </ul>
+                <p style="margin: 8px 0 0; font-size: 13px; color: var(--gray-500);">This one's mostly for you &mdash; the act of writing it cements what you learned. The instructor reads them.</p>
+                <p style="margin: 4px 0 0; font-size: 13px; color: var(--gray-500);">Submission: text.</p>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>GitHub Actions: tests on every push</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add the <code>.github/workflows/ci.yml</code> from Part 8 (or a tighter version of it) to your repo. Push a small commit to trigger it. Submit a screenshot of the green check on GitHub's Actions tab.</p>
+                <p style="margin: 4px 0 0; font-size: 13px; color: var(--gray-500);">Submission: screenshot.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Sentry with a real DSN, end-to-end</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Sign up for a free Sentry account, get a real DSN, set it in your env. Add a <code>/debug</code> endpoint that throws (<code>throw new Error('test capture')</code>). Hit it. Take a screenshot of the captured event in your Sentry dashboard with the stack trace visible.</p>
+                <p style="margin: 4px 0 0; font-size: 13px; color: var(--gray-500);">Submission: screenshot.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- FINAL WORDS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Final Words</h2>
+
+    <div class="story-box">
+        <p>Ten lessons ago you walked onto an empty plot of land. Just dirt, a sketchy diagram, and the word &ldquo;module&rdquo; that you weren't quite sure about. Now there's an airport. Real terminals (Lesson 2), a real request pipeline (Lesson 3), a real database underneath (Lesson 4), security checkpoints (Lesson 5), baggage X-rays (Lesson 6), an arrivals board the public can read (Lesson 7), ground crew handling async work (Lesson 8), inter-airport radio (Lesson 9), and now &mdash; opening day &mdash; an automated control tower that watches it all (Lesson 10).</p>
+        <p>The thing worth remembering: none of this was magic. Every piece had a small, specific job. Every decorator was documentation the framework reads at runtime. Every &ldquo;hard&rdquo; concept &mdash; DI, the request pipeline, microservices &mdash; turned into a few lines of code with a clear name once you saw where it fit. That's the gift NestJS gives a team: shared vocabulary. The next dev who joins your service in 2027 will read your <code>FlightsModule</code> and know exactly where everything lives, because the framework already told them.</p>
+        <p>You're done with the course. You're not done learning &mdash; nobody is &mdash; but you have the mental model now. Apply it. Ship something small. Then ship something bigger. The airport is yours.</p>
+        <div class="tech-note">
+            <strong>If you only remember three things:</strong> structure beats freedom at scale; the framework is your team's shared language; ship boringly, observe carefully.
+        </div>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 10 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">&#x1F389; Course complete &mdash; keep flying. The runway is yours.</p>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 1 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Why NestJS? From Spaghetti to Structure</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand what problem NestJS solves and why it exists</li>
+            <li>Know the core philosophy: modules, controllers, providers</li>
+            <li>Be able to scaffold, run, and navigate a new NestJS project</li>
+            <li>Understand what happens when Nest starts up</li>
+            <li>Have a mental model (the airport) you can use for every lesson ahead</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1: THE SPAGHETTI PROBLEM -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Express Spaghetti Problem</h2>
+
+    <p>To understand why NestJS exists, you first need to understand the pain it's responding to. Let's talk about what backend development in Node.js looked like before it.</p>
+
+    <h3>Node.js + Express: Total Freedom, Total Chaos</h3>
+
+    <p>Express is a minimal framework. It gives you a router, some middleware support, and essentially nothing else. It's like being handed an empty warehouse and told to build a factory. You <em>can</em> do it &mdash; but you're also responsible for every single design decision.</p>
+
+    <p>What typically happens in a team of 5 developers over 18 months:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4C1;</div>
+            <div class="layer-name" style="color: var(--red);">routes/</div>
+            <div class="layer-desc">Some routes. Others are in controllers/. Or maybe api/. Depends on who wrote it.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4C1;</div>
+            <div class="layer-name" style="color: var(--red);">helpers/ utils/ lib/</div>
+            <div class="layer-desc">All three exist. Nobody knows which one to use. All three are used.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4C1;</div>
+            <div class="layer-name" style="color: var(--red);">auth.js</div>
+            <div class="layer-desc">Authentication logic. Also in middleware.js. And in routes/user.js.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x2753;</div>
+            <div class="layer-name" style="color: var(--red);">database.js?</div>
+            <div class="layer-desc">Connection is initialized somewhere. Nobody can find it without grep.</div>
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F35D;</div>
+        New hire: &ldquo;Hey, where's the password reset logic?&rdquo;<br>
+        Senior dev: &ldquo;Uhh... try <code>handlers/</code>.&rdquo;<br>
+        New hire: &ldquo;Not there.&rdquo;<br>
+        Senior dev: &ldquo;Try <code>routes/auth.js</code>.&rdquo;<br>
+        New hire: &ldquo;Nope.&rdquo;<br>
+        Senior dev: &ldquo;...try <code>services/users/password.js</code>. Or maybe Bob just put it inline.&rdquo;<br>
+        <em>Bob left the company six months ago.</em>
+    </div>
+
+    <p>This is the spaghetti problem. Not a lack of talent &mdash; a lack of <strong>enforced conventions</strong>. Express gives you freedom. Freedom, at scale, becomes confusion.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Think first &mdash; then read on</div>
+        <div class="recall-question">If you were starting a Node.js API from scratch today with a team of 4 people, what conventions would you establish? Where would you put route handlers? Business logic? Database access? Write your mental model in one sentence before reading Part 2.</div>
+        <div class="recall-hint">No wrong answers. The fact that this question is hard to answer concisely is exactly the problem NestJS solves.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: ENTER NESTJS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Enter NestJS</h2>
+
+    <p>NestJS is a framework for building server-side Node.js applications. It sits <em>on top of</em> Express (or Fastify &mdash; your choice) and adds something Express deliberately avoided: <strong>a strong, opinionated architecture</strong>.</p>
+
+    <h3>The Core Philosophy</h3>
+
+    <div class="story-box">
+        <p>The Nest team looked at Angular &mdash; the frontend framework from Google &mdash; and said: <em>&ldquo;This is the most organized way to build large applications. Why don't we do this on the backend?&rdquo;</em></p>
+        <p>Angular brought three ideas that NestJS adopted wholesale: <strong>modules</strong> (logical grouping of related code), <strong>dependency injection</strong> (components declare what they need, the framework provides it), and <strong>decorators</strong> (@ annotations that describe what a class does without changing its logic).</p>
+        <p>The result: a framework where every team member, regardless of experience, knows exactly where to find auth logic, where to put business logic, and how to wire up a new feature &mdash; because the framework <em>tells you</em>.</p>
+        <div class="tech-note">
+            <strong>Under the hood:</strong> NestJS compiles down to Express by default. The network request handling, the HTTP parsing, the middleware &mdash; all still Express. NestJS adds the architectural layer on top. Switching to Fastify (for higher performance) is one config option: <code>NestFactory.create&lt;NestFastifyApplication&gt;(AppModule, new FastifyAdapter())</code>.
+        </div>
+    </div>
+
+    <h3>Express vs NestJS &mdash; same warehouse, different plans</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F3ED;</div>
+            <div class="card-title" style="color: var(--red);">Express</div>
+            <div class="card-subtitle" style="color: var(--red);">Empty warehouse, your problem</div>
+            <div class="card-desc">Minimal, unopinionated. You decide every convention. Maximum flexibility, zero structure enforcement. Great for prototypes and tiny services.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F3E2;</div>
+            <div class="card-title" style="color: var(--green);">NestJS</div>
+            <div class="card-subtitle" style="color: var(--green);">Blueprint included</div>
+            <div class="card-desc">Opinionated, structured. Modules, controllers, services &mdash; each has a defined role. Costs some flexibility upfront, pays back massively as the team and codebase grow.</div>
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Key insight:</strong> NestJS doesn't make you write <em>more</em> code than Express. It makes you write it in <em>predictable places</em>. The <code>@Controller</code>, <code>@Injectable</code>, <code>@Module</code> decorators are documentation that the framework reads at runtime. They're your contract with your team.</p>
+    </div>
+
+    <h3>TypeScript is not optional</h3>
+
+    <p>NestJS is written in TypeScript and expects TypeScript. This is a feature, not a restriction. Decorators in JavaScript are still experimental (Stage 3 proposal as of 2026). TypeScript makes them reliable. It also means you get type-safe dependency injection, which is most of the magic.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DD;</div>
+        Pure JS developer: &ldquo;Why do I need <code>@Injectable()</code>? Can't I just... import it?&rdquo;<br>
+        NestJS: &ldquo;Sure. But then I don't know what you need, and you have to manage instances yourself.&rdquo;<br>
+        Developer: &ldquo;That's what I always did.&rdquo;<br>
+        NestJS: &ldquo;How's that working out at 50 services?&rdquo;<br>
+        Developer: &ldquo;...where do I put the decorator?&rdquo;<br>
+        <em>TypeScript: the peer pressure that actually helps.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: THE AIRPORT ANALOGY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: The Airport Analogy</h2>
+
+    <p>We'll use one analogy throughout this entire course. Every time a new concept comes up, we'll map it back here. Commit this to memory &mdash; it'll save you a lot of re-reading.</p>
+
+    <h3>Your NestJS app is an airport</h3>
+
+    <div class="story-box">
+        <p>Imagine a large international airport. It has multiple <strong>terminals</strong>: Terminal 1 handles domestic flights, Terminal 2 handles international, Terminal 3 handles cargo. Each terminal is <strong>self-contained</strong> &mdash; its own gates, its own staff, its own rules. Terminals don't randomly share staff or gates.</p>
+        <p>Inside each terminal, there are <strong>gate agents</strong>. A gate agent's job is narrow: receive passengers, check their ticket, tell them where to go. Gate agents don't carry bags, fuel planes, or manage the schedule. They receive, validate, and route.</p>
+        <p>The actual <strong>ground crew</strong> &mdash; fueling, baggage handling, maintenance &mdash; works backstage. Passengers never see them. Gate agents don't manage them directly. There's a central <strong>operations dispatch</strong> that knows what crew is available and sends the right one to the right gate when needed.</p>
+        <div class="tech-note">
+            <strong>The analogy in one line:</strong> Terminals = Modules. Gate agents = Controllers. Ground crew = Services (Providers). Operations dispatch = Nest's dependency injection system. That's the entire architecture, right there.
+        </div>
+    </div>
+
+    <h3>The full mapping</h3>
+
+    <table>
+        <tr>
+            <th>Airport</th>
+            <th>NestJS</th>
+            <th>Responsibility</th>
+        </tr>
+        <tr>
+            <td>&#x1F6EB; Terminal (T1, T2, T3)</td>
+            <td><strong>Module</strong></td>
+            <td>Groups related code together. Self-contained. Declares what it provides and what it needs.</td>
+        </tr>
+        <tr>
+            <td>&#x1F477; Gate Agent</td>
+            <td><strong>Controller</strong></td>
+            <td>Receives incoming requests. Validates ticket (request format). Routes to the right service. Returns the response.</td>
+        </tr>
+        <tr>
+            <td>&#x1F6E0;&#xFE0F; Ground Crew</td>
+            <td><strong>Service / Provider</strong></td>
+            <td>Does the actual work: queries the database, calls external APIs, applies business logic. Never talks to passengers directly.</td>
+        </tr>
+        <tr>
+            <td>&#x1F4F1; Ops Dispatch</td>
+            <td><strong>DI Container</strong></td>
+            <td>Knows which crew is available. Injects the right service instance where it's needed. You never call <code>new UserService()</code> manually.</td>
+        </tr>
+        <tr>
+            <td>&#x1F6C2; Security Checkpoint</td>
+            <td><strong>Guard</strong></td>
+            <td>Stops the request before it reaches the gate. "Do you have the right token/role?" Yes → proceed. No → 401/403.</td>
+        </tr>
+        <tr>
+            <td>&#x1F9F3; Baggage X-ray</td>
+            <td><strong>Pipe</strong></td>
+            <td>Scans and transforms incoming data. Validates the shape of the request body. Rejects malformed requests before they reach the controller.</td>
+        </tr>
+        <tr>
+            <td>&#x1F3A6; Flight Recorder</td>
+            <td><strong>Interceptor</strong></td>
+            <td>Wraps around every request/response. Logs timing, adds headers, transforms the response format. Runs before and after the handler.</td>
+        </tr>
+        <tr>
+            <td>&#x1F6A8; Lost &amp; Found Desk</td>
+            <td><strong>Exception Filter</strong></td>
+            <td>Catches unhandled errors. Turns raw exceptions into clean, user-friendly error responses. The last line of defense.</td>
+        </tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>We'll cover each of these in their own lessons.</strong> Today we focus on the first three: Modules, Controllers, and Services. Those three are all you need to build a real API endpoint. The rest are features you add when you need them.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: YOUR FIRST NEST APP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Your First Nest App</h2>
+
+    <p>Enough theory. Let's build something. From here on, every explanation will be grounded in code you can actually run.</p>
+
+    <h3>Install the Nest CLI</h3>
+
+    <p>The Nest CLI is your main tool for scaffolding the entire course. Install it globally once:</p>
+
+    <pre><code><span class="comment"># install globally</span>
+<span class="function">npm</span> i -g @nestjs/cli
+
+<span class="comment"># verify</span>
+<span class="function">nest</span> --version
+<span class="comment"># → 10.x.x</span></code></pre>
+
+    <div class="info-box green">
+        <p><strong>Node.js requirement:</strong> NestJS requires Node.js 16 or later. Run <code>node --version</code> to check. Node 20 LTS or 22 LTS recommended &mdash; these are what Vercel and most hosting platforms default to.</p>
+    </div>
+
+    <h3>Scaffold a new project</h3>
+
+    <pre><code><span class="function">nest</span> new airport-api
+<span class="comment"># CLI will ask: which package manager? → pick npm</span>
+<span class="comment"># Takes ~30 seconds</span>
+
+<span class="function">cd</span> airport-api
+<span class="function">npm</span> run start:dev</code></pre>
+
+    <p>Open <code>http://localhost:3000</code>. You should see:</p>
+
+    <pre><code><span class="string">Hello World!</span></code></pre>
+
+    <p>That's a working HTTP server with one GET endpoint, auto-restart on file changes, and TypeScript compilation &mdash; all out of the box. In Express, you'd have assembled four npm packages to get here.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Guess before looking &mdash; how many files?</div>
+        <div class="recall-question">You just scaffolded a "Hello World" NestJS app. Before opening the file tree: how many files do you think <code>nest new</code> created? Guess a number. Then open your editor and look.</div>
+        <div class="recall-hint">The number surprises most people coming from Express. There's a reason for each file &mdash; we'll go through them now.</div>
+    </div>
+
+    <h3>Project structure tour</h3>
+
+    <div class="file-tree">
+airport-api/
+├── <span class="dir">src/</span>
+│   ├── <span class="highlight">app.controller.ts</span>     <span class="comment">← handles GET /</span>
+│   ├── <span class="highlight">app.controller.spec.ts</span> <span class="comment">← test file (we'll use this in Lesson 9)</span>
+│   ├── <span class="highlight">app.module.ts</span>         <span class="comment">← the root module (Terminal 0 — the hub)</span>
+│   ├── <span class="highlight">app.service.ts</span>         <span class="comment">← does the actual work</span>
+│   └── <span class="highlight">main.ts</span>               <span class="comment">← entry point, starts the server</span>
+├── <span class="dir">test/</span>
+│   └── <span class="file">app.e2e-spec.ts</span>        <span class="comment">← end-to-end test (Lesson 9)</span>
+├── <span class="file">nest-cli.json</span>             <span class="comment">← Nest CLI config</span>
+├── <span class="file">package.json</span>
+└── <span class="file">tsconfig.json</span>
+    </div>
+
+    <p>Five source files. That's it. Let's open each one.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">main.ts &mdash; the ignition switch</span>
+        <div class="step-desc">Creates the Nest application and starts listening on a port. You'll rarely edit this file, but you need to understand it.</div>
+    </div>
+
+    <pre><code><span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'./app.module'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);
+}
+<span class="function">bootstrap</span>();</code></pre>
+
+    <p><code>NestFactory.create(AppModule)</code> is the key call. You hand Nest the root module, and it builds the entire dependency graph, wires up all controllers and services, and returns a running application. Three lines of actual logic &mdash; that's the whole entry point.</p>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">app.module.ts &mdash; the root terminal</span>
+        <div class="step-desc">Every Nest app has exactly one root module. All other modules connect to it. Think Terminal 0 — the central hub all terminals connect through.</div>
+    </div>
+
+    <pre><code><span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { AppController } <span class="keyword">from</span> <span class="string">'./app.controller'</span>;
+<span class="keyword">import</span> { AppService } <span class="keyword">from</span> <span class="string">'./app.service'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [],          <span class="comment">// other modules this module depends on</span>
+  controllers: [AppController], <span class="comment">// gate agents stationed here</span>
+  providers: [AppService],      <span class="comment">// ground crew available in this terminal</span>
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <p>Notice the class body is empty. <strong>All the configuration is in the decorator.</strong> This is the NestJS pattern everywhere: classes hold no config, decorators define behavior. The class is just a name &mdash; a label for the container.</p>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">app.controller.ts &mdash; the gate agent</span>
+        <div class="step-desc">Handles incoming HTTP requests. Maps routes to methods. Calls the service to do the real work. Returns the result.</div>
+    </div>
+
+    <pre><code><span class="keyword">import</span> { Controller, Get } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { AppService } <span class="keyword">from</span> <span class="string">'./app.service'</span>;
+
+<span class="decorator">@Controller</span>()
+<span class="keyword">export class</span> AppController {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> appService: AppService) {}
+
+  <span class="decorator">@Get</span>()
+  <span class="function">getHello</span>(): <span class="type">string</span> {
+    <span class="keyword">return</span> <span class="keyword">this</span>.appService.<span class="function">getHello</span>();
+  }
+}</code></pre>
+
+    <p><code>@Controller()</code> tells Nest this class handles HTTP requests. <code>@Get()</code> maps the <code>getHello</code> method to <code>GET /</code>. The constructor receives <code>AppService</code> &mdash; not by calling <code>new AppService()</code>, but by declaring the type. Nest sees the type, looks up its DI container, and injects the right instance. That's dependency injection in four lines.</p>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">app.service.ts &mdash; the ground crew</span>
+        <div class="step-desc">Contains the actual business logic. In the Hello World example it's trivial, but this is where database queries, external API calls, and complex logic live.</div>
+    </div>
+
+    <pre><code><span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> AppService {
+  <span class="function">getHello</span>(): <span class="type">string</span> {
+    <span class="keyword">return</span> <span class="string">'Hello World!'</span>;
+  }
+}</code></pre>
+
+    <p><code>@Injectable()</code> marks this class as something that can be managed by Nest's DI system. That's all it does. Remove it, and Nest can't inject it anywhere. Add it, and Nest knows: &ldquo;this class is ground crew, ready to be deployed wherever needed.&rdquo;</p>
+
+    <div class="info-box purple">
+        <p><strong>Why the separation?</strong> You might wonder why we need a separate service class for <code>return 'Hello World!'</code>. In this toy example, we don't. But the pattern scales: controllers stay thin (handle HTTP concerns), services stay focused (handle business logic). When you add a database, you change the service. When you add a new route, you change the controller. They evolve independently.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: WHAT HAPPENS WHEN NEST STARTS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: What Happens When Nest Starts</h2>
+
+    <p>You ran <code>npm run start:dev</code>. Nest printed some colored logs and started listening. Let's trace exactly what happened.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="380" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Nest Bootstrap Sequence</text>
+
+            <defs>
+                <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+                <marker id="arrGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <!-- Step 1: main.ts -->
+            <rect x="30" y="50" width="700" height="48" rx="8" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="55" y="72" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">1. main.ts</text>
+            <text x="180" y="72" font-family="Inter" font-size="12" fill="#6B7280">NestFactory.create(AppModule) — "I'm creating an app. AppModule is the root."</text>
+            <line x1="380" y1="98" x2="380" y2="118" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Step 2: Module scan -->
+            <rect x="30" y="122" width="700" height="48" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="55" y="144" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">2. Module scan</text>
+            <text x="200" y="144" font-family="Inter" font-size="12" fill="#6B7280">Nest reads @Module({controllers, providers, imports}) and builds the dependency graph</text>
+            <line x1="380" y1="170" x2="380" y2="190" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Step 3: DI container -->
+            <rect x="30" y="194" width="700" height="48" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="55" y="216" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">3. DI container builds</text>
+            <text x="230" y="216" font-family="Inter" font-size="12" fill="#6B7280">Nest creates one instance of each @Injectable provider. No new() needed by you.</text>
+            <line x1="380" y1="242" x2="380" y2="262" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Step 4: Routes -->
+            <rect x="30" y="266" width="700" height="48" rx="8" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="55" y="288" font-family="Inter" font-weight="600" font-size="13" fill="#1A8F5C">4. Routes register</text>
+            <text x="210" y="288" font-family="Inter" font-size="12" fill="#6B7280">@Controller and @Get/@Post scan completes. GET / → AppController.getHello is wired.</text>
+            <line x1="380" y1="314" x2="380" y2="334" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrGreen)"/>
+
+            <!-- Step 5: listen -->
+            <rect x="200" y="338" width="360" height="32" rx="8" fill="#1A8F5C"/>
+            <text x="380" y="358" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="white">5. app.listen(3000) — ready for requests</text>
+        </svg>
+        <div class="diagram-caption">Nest builds the entire dependency graph before accepting a single request</div>
+    </div>
+
+    <h3>What this means in practice</h3>
+
+    <p>If you forget to add a service to the module's <code>providers</code> array, Nest fails at step 3 &mdash; at <strong>startup time</strong>, not when a user hits an endpoint. This is one of NestJS's biggest developer experience wins: wiring errors surface immediately, not in production at 2am.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x23F0;</div>
+        Express error: *user gets a 500 at 2am, logs show "Cannot read property 'x' of undefined"*<br>
+        NestJS error: *startup log at 9am* &ldquo;Nest can't resolve dependencies of UserController. Please make sure UserService is available in the current module.&rdquo;<br>
+        <em>One framework lets you find wiring bugs in prod. The other yells at you immediately. Guess which is kinder.</em>
+    </div>
+
+    <h3>Your turn: change &ldquo;Hello World&rdquo; to something real</h3>
+
+    <p>Let's verify you understand the flow. Add a new endpoint that returns a personalized greeting. Open <code>app.controller.ts</code> and add:</p>
+
+    <pre><code><span class="keyword">import</span> { Controller, Get, Param } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { AppService } <span class="keyword">from</span> <span class="string">'./app.service'</span>;
+
+<span class="decorator">@Controller</span>()
+<span class="keyword">export class</span> AppController {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> appService: AppService) {}
+
+  <span class="decorator">@Get</span>()
+  <span class="function">getHello</span>(): <span class="type">string</span> {
+    <span class="keyword">return</span> <span class="keyword">this</span>.appService.<span class="function">getHello</span>();
+  }
+
+  <span class="comment">// Add this:</span>
+  <span class="decorator">@Get</span>(<span class="string">'hello/:name'</span>)
+  <span class="function">greet</span>(<span class="decorator">@Param</span>(<span class="string">'name'</span>) name: <span class="type">string</span>): <span class="type">string</span> {
+    <span class="keyword">return</span> <span class="string">`Hello, <span class="keyword">${</span>name<span class="keyword">}</span>! Welcome to the NestJS course.`</span>;
+  }
+}</code></pre>
+
+    <p>Save. Nest reloads automatically. Hit <code>http://localhost:3000/hello/YourName</code>. You just handled a URL parameter &mdash; no <code>req.params.name</code> drilling, no manual extraction. The <code>@Param</code> decorator does it declaratively.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up, answer these:<br><br>
+        1. What's the difference between a Controller and a Service (in the airport metaphor)?<br>
+        2. What does <code>@Injectable()</code> actually tell NestJS?<br>
+        3. Where would you add a new service so Nest knows about it?<br>
+        4. At what point does Nest fail if a dependency is missing?</div>
+        <div class="recall-hint">4/4: you're ready for Lesson 2. 2-3/4: re-read Parts 3 and 5. 0-1/4: start from Part 2 &mdash; the decorators and DI container sections.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Here's what you learned in Lesson 1:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F35D;</div>
+            <div class="layer-name" style="color: var(--blue);">The problem</div>
+            <div class="layer-desc">Express gives you freedom; freedom at scale becomes spaghetti. NestJS enforces structure.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F3EB;</div>
+            <div class="layer-name" style="color: var(--green);">The philosophy</div>
+            <div class="layer-desc">Angular-inspired: Modules, Dependency Injection, Decorators. TypeScript-first.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F6EB;</div>
+            <div class="layer-name" style="color: var(--purple);">The analogy</div>
+            <div class="layer-desc">Airport. Modules = Terminals. Controllers = Gate Agents. Services = Ground Crew. DI = Ops Dispatch.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x2699;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">The bootstrap</div>
+            <div class="layer-desc">main.ts → AppModule → DI builds → Routes register → listen(). Wiring errors surface at startup.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 2:</strong> We'll go deep on the Holy Trinity &mdash; Modules, Controllers, Providers &mdash; and build a real feature with multiple endpoints, a dedicated module, and properly injected services. We'll also meet <code>@Body</code>, <code>@Query</code>, and <code>@Headers</code>.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Scaffold and run the starter project</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Install the Nest CLI: <code>npm i -g @nestjs/cli</code></li>
+                    <li>Create a new project: <code>nest new airport-api</code></li>
+                    <li>Run it: <code>npm run start:dev</code></li>
+                    <li>Add the <code>GET /hello/:name</code> endpoint from Part 5</li>
+                    <li>Take a <strong>screenshot</strong> showing the endpoint working in your browser or Postman/Insomnia</li>
+                    <li>Submit the screenshot</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Push your starter to a GitHub repo</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Create a new public repo: <code>nestjs-course-yourname</code></li>
+                    <li>Push your <code>airport-api</code> project there</li>
+                    <li>Submit the repo URL (we'll keep using this repo for every lesson going forward)</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Quick answer: Controller vs Service</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 1&ndash;2 sentences: what is the difference between a <strong>Controller</strong> and a <strong>Service</strong> in NestJS? Use the airport analogy.</li>
+                    <li>Submit as text in the platform</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Add a second controller</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Create a new <code>FlightController</code> with a <code>GET /flights</code> endpoint that returns a hardcoded array of 3 flight objects: <code>[{ id: 1, destination: 'NYC', gate: 'A12' }, ...]</code>. Register it in <code>AppModule</code>.</p>
+                <p style="font-size: 14px; color: var(--gray-500);">Hint: the CLI can generate it for you: <code>nest generate controller flight</code></p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Swap to Fastify</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Follow the <a href="https://docs.nestjs.com/techniques/performance" style="color: var(--blue);">NestJS Fastify docs</a> and switch your app to use the Fastify adapter. Verify it still responds correctly. What do you notice?</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 1 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Controllers, Providers &amp; Modules &mdash; The Holy Trinity</p>
+    </div>
+
+</div>
+
+</body>
+</html>

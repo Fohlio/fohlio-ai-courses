@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 9</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-item {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+        }
+        .recap-item strong {
+            color: var(--blue);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 9 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Microservices &amp; Real-time &mdash; Transports, WebSocket gateways, SSE, hybrid apps</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Know when to split a monolith &mdash; and the cost of doing it too early</li>
+            <li>Understand NestJS microservice transports: TCP, Redis, NATS, RabbitMQ, Kafka, gRPC</li>
+            <li>Build a separate microservice with <code>NestFactory.createMicroservice</code></li>
+            <li>Call it from the main app via <code>ClientProxy</code> &mdash; <code>send()</code> vs <code>emit()</code></li>
+            <li>Push live updates to browsers with WebSocket gateways</li>
+            <li>Pick between WebSockets and Server-Sent Events</li>
+            <li>Run HTTP and microservice in the same process (hybrid app)</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <h2 class="part-header">Quick Recap (Lessons 1&ndash;8)</h2>
+
+    <p>Eight lessons in. The airport is fully staffed:</p>
+
+    <div class="recap-grid">
+        <div class="recap-item"><strong>L1 &mdash; Architecture</strong>Modules, controllers, services, DI, decorators. The airport map.</div>
+        <div class="recap-item"><strong>L2 &mdash; Holy Trinity</strong><code>@Module</code>, <code>@Controller</code>, <code>@Injectable</code> &mdash; the three pillars.</div>
+        <div class="recap-item"><strong>L3 &mdash; Pipes &amp; Validation</strong>X-ray scanner. DTOs + <code>ValidationPipe</code>.</div>
+        <div class="recap-item"><strong>L4 &mdash; Guards &amp; Auth</strong>Security checkpoint. JWT and roles.</div>
+        <div class="recap-item"><strong>L5 &mdash; Interceptors &amp; Filters</strong>Flight Recorder + Lost &amp; Found.</div>
+        <div class="recap-item"><strong>L6 &mdash; Database</strong>Prisma, repositories, transactions.</div>
+        <div class="recap-item"><strong>L7 &mdash; Config</strong>Env vars, validation, multi-env.</div>
+        <div class="recap-item"><strong>L8 &mdash; Async Power</strong>Caching, queues, events, cron, logging.</div>
+    </div>
+
+    <p>Everything so far has been <em>one process, one HTTP server</em>. Today we cross that boundary &mdash; multiple processes, multiple protocols, real-time pushes to browsers.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: WHEN TO SPLIT A MONOLITH -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: When to Split a Monolith (Honest Take)</h2>
+
+    <p>Microservices are the most over-prescribed architecture in our industry. Conference talks and Medium posts make it sound like every team needs five services on day one. They don't. Most apps you'll work on at Fohlio absolutely do not.</p>
+
+    <div class="info-box red">
+        <p><strong>The honest default:</strong> start as a monolith. Use modules to keep boundaries clean. Stay there as long as possible. A well-organized NestJS monolith with clear modules can carry you to tens of millions of requests a day on a few pods. You almost certainly do not have a microservices problem; you have a &ldquo;our modules are messy&rdquo; problem.</p>
+    </div>
+
+    <h3>The hidden costs nobody talks about</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F570;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--red);">Latency multiplied</div>
+            <div class="layer-desc">A single HTTP request that used to be one in-process call now becomes 5 network hops. Each adds 1&ndash;5ms. Tail latencies get worse fast.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--red);">Distributed tracing required</div>
+            <div class="layer-desc">A bug now spans 4 services. Without OpenTelemetry / a tracing stack, you're grepping logs across pods at 2am.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4C8;</div>
+            <div class="layer-name" style="color: var(--red);">Schema drift</div>
+            <div class="layer-desc">Service A's <code>UserDto</code> and service B's <code>UserDto</code> diverge in a sprint. Now you've got a contract bug in production.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--red);">Distributed transactions</div>
+            <div class="layer-desc">There are no distributed transactions worth using. Hello, Saga pattern. Hello, eventual consistency.</div>
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>The honest engineering trade:</strong> microservices solve <em>organizational</em> and <em>scaling-shape</em> problems by trading them for <em>operational</em> problems. If your org doesn't have the org problems, you just adopted the operational problems for free.</p>
+    </div>
+
+    <h3>Real reasons to actually split</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4CF;</div>
+            <div class="layer-name" style="color: var(--green);">Different scale shape</div>
+            <div class="layer-desc">PDF generation needs 16GB RAM, the API needs 1GB. Splitting lets each scale independently.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F465;</div>
+            <div class="layer-name" style="color: var(--green);">Different team ownership</div>
+            <div class="layer-desc">Two teams stomping on each other's deploys. Conway's Law: split the service to match the org chart.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F512;</div>
+            <div class="layer-name" style="color: var(--green);">Different security posture</div>
+            <div class="layer-desc">Payments need PCI compliance and auditing. Pulling them out lets the rest of the app stay simple.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6AB;</div>
+            <div class="layer-name" style="color: var(--red);">&ldquo;Microservices are modern&rdquo;</div>
+            <div class="layer-desc">Not a reason. This is how you end up with 12 services, 12 deploy pipelines, and one product.</div>
+        </div>
+    </div>
+
+    <div class="story-box">
+        <p>Most airports are <em>one big terminal complex</em>. They get bigger, they add wings, but they keep everything under one roof for as long as they can &mdash; because shared services (security, baggage, ATC) are easier when they're physically together.</p>
+        <p>Eventually the runway is on the wrong side of the highway, or the cargo operation is so different (giant trucks, bulk fuel, no passengers) that it makes sense to put it in a <strong>satellite terminal</strong> across the field. The two buildings still talk &mdash; via radio, by van, by tunnel &mdash; but they're separate buildings with separate management.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Microservices = satellite terminals. The radio between them = the transport layer (TCP, Redis, NATS, etc.). NestJS doesn't care which radio you use; the patterns are the same.
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F3D7;&#xFE0F;</div>
+        Junior: &ldquo;We have 14 microservices.&rdquo;<br>
+        Me: &ldquo;How many users?&rdquo;<br>
+        Junior: &ldquo;200.&rdquo;<br>
+        Me: &ldquo;...&rdquo;<br>
+        Junior: &ldquo;Per month.&rdquo;<br>
+        <em>Distributed monolith problems with monolithic-app traffic. Speedrunning the worst of both worlds.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Think first</div>
+        <div class="recall-question">In your current Fohlio work, name <em>one</em> thing that genuinely deserves to be its own service, and one thing that absolutely should stay in the monolith. Why each?</div>
+        <div class="recall-hint">No wrong answers &mdash; the test is whether you can articulate <em>why</em>. &ldquo;Different scale shape,&rdquo; &ldquo;different team,&rdquo; &ldquo;different security boundary&rdquo; are good answers. &ldquo;Felt like it&rdquo; is not.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: TRANSPORTS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: NestJS Microservice Transports</h2>
+
+    <p>NestJS abstracts the wire protocol behind a single interface. You write the same controllers, services, and DTOs &mdash; just pick which transport carries the messages. Here's the menu:</p>
+
+    <table>
+        <tr>
+            <th>Transport</th>
+            <th>What it is</th>
+            <th>When to pick it</th>
+        </tr>
+        <tr>
+            <td><strong>TCP</strong></td>
+            <td>Built-in, no broker. Direct socket between caller and service.</td>
+            <td>Internal services on the same private network. Simplest setup, no extra infra.</td>
+        </tr>
+        <tr>
+            <td><strong>Redis</strong></td>
+            <td>Pub/sub on top of Redis you probably already have.</td>
+            <td>Many subscribers per event, you already run Redis, want loose coupling. <em>Not durable.</em></td>
+        </tr>
+        <tr>
+            <td><strong>NATS</strong></td>
+            <td>Lightweight messaging, fast, simple ops.</td>
+            <td>Cloud-native, microservices-heavy stack. Excellent at-most-once delivery, very low latency.</td>
+        </tr>
+        <tr>
+            <td><strong>RabbitMQ</strong></td>
+            <td>Mature broker, durable queues, complex routing.</td>
+            <td>You need durability + complex routing rules. Bank-style work-queue patterns.</td>
+        </tr>
+        <tr>
+            <td><strong>Kafka</strong></td>
+            <td>Distributed log. Replayable streams.</td>
+            <td>Event sourcing, analytics pipelines, &ldquo;we want to replay events from last Tuesday.&rdquo;</td>
+        </tr>
+        <tr>
+            <td><strong>gRPC</strong></td>
+            <td>HTTP/2 + Protobuf. Strongly typed contracts.</td>
+            <td>Polyglot stacks (Go service talking to Node), strict contracts, streaming.</td>
+        </tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>Two communication styles, regardless of transport:</strong></p>
+        <ul style="margin-top: 8px; padding-left: 20px;">
+            <li><strong>Message (request/response)</strong> &mdash; <code>@MessagePattern</code> on the service, <code>client.send()</code> from the caller. Returns an <code>Observable</code>.</li>
+            <li><strong>Event (fire-and-forget)</strong> &mdash; <code>@EventPattern</code> on the service, <code>client.emit()</code> from the caller. No response, multiple subscribers OK.</li>
+        </ul>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>One contract, two formats:</strong> the <em>same</em> NestJS code &mdash; controllers with <code>@MessagePattern</code> / <code>@EventPattern</code> &mdash; works for any of these transports. The transport is a <code>main.ts</code>-level decision, not a code-rewrite. That's the abstraction win.</p>
+    </div>
+
+    <h3>Two protocols you'll skim past in interviews &mdash; quick reference</h3>
+
+    <table>
+        <tr>
+            <th>Protocol</th>
+            <th>One-line summary</th>
+            <th>NestJS transport constant</th>
+        </tr>
+        <tr><td>MQTT</td><td>Pub/sub for IoT and constrained devices. Tiny, low-bandwidth.</td><td><code>Transport.MQTT</code></td></tr>
+        <tr><td>NATS</td><td>Cloud-native messaging. Sub-millisecond, simple ops.</td><td><code>Transport.NATS</code></td></tr>
+        <tr><td>RabbitMQ (AMQP)</td><td>Durable queues, complex routing, mature.</td><td><code>Transport.RMQ</code></td></tr>
+        <tr><td>Kafka</td><td>Replayable event log. Big data and streams.</td><td><code>Transport.KAFKA</code></td></tr>
+        <tr><td>Redis</td><td>Pub/sub on the Redis you already run. Not durable.</td><td><code>Transport.REDIS</code></td></tr>
+        <tr><td>gRPC</td><td>HTTP/2 + Protobuf. Strict typed contracts, streaming.</td><td><code>Transport.GRPC</code></td></tr>
+        <tr><td>TCP</td><td>Built-in. No broker. Direct socket.</td><td><code>Transport.TCP</code></td></tr>
+    </table>
+
+    <div class="info-box green">
+        <p><strong>Pragma:</strong> 90% of NestJS microservices in the wild use TCP, Redis, or RabbitMQ. Don't pick Kafka or gRPC because they sound impressive &mdash; pick them when their shape fits the problem (replayable streams or polyglot typed contracts respectively).</p>
+    </div>
+
+    <h3>Picking transport: a 30-second decision tree</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F50C;</div>
+            <div class="card-title" style="color: var(--blue);">TCP</div>
+            <div class="card-subtitle" style="color: var(--blue);">No broker, internal only</div>
+            <div class="card-desc">Two Nest services in the same VPC. You don't already run Redis/NATS. Default starting point.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F500;</div>
+            <div class="card-title" style="color: var(--orange);">Redis pub/sub</div>
+            <div class="card-subtitle" style="color: var(--orange);">Already running Redis</div>
+            <div class="card-desc">You use Redis for cache and BullMQ already. Use it for fan-out events too. No new ops cost.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F411;</div>
+            <div class="card-title" style="color: var(--purple);">RabbitMQ</div>
+            <div class="card-subtitle" style="color: var(--purple);">Durable + routing</div>
+            <div class="card-desc">Messages must survive a broker restart. Complex routing keys. Banking-grade reliability.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4DC;</div>
+            <div class="card-title" style="color: var(--green);">Kafka</div>
+            <div class="card-subtitle" style="color: var(--green);">Event log, replayable</div>
+            <div class="card-desc">Big data, analytics, event sourcing. Overkill for &ldquo;send this email&rdquo; &mdash; that's a queue, not a log.</div>
+        </div>
+        <div class="concept-card" style="background: var(--gray-100);">
+            <div class="card-icon">&#x1F31F;</div>
+            <div class="card-title" style="color: var(--gray-700);">NATS</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Cloud-native, lightweight</div>
+            <div class="card-desc">If you're greenfielding microservices and want the simplest broker that's still production-grade.</div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F4D1;</div>
+            <div class="card-title" style="color: var(--red);">gRPC</div>
+            <div class="card-subtitle" style="color: var(--red);">Typed, polyglot</div>
+            <div class="card-desc">Cross-language services, strict contracts, streaming RPC. The cost: managing <code>.proto</code> files.</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: BUILDING A MICROSERVICE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Building a Microservice (TCP)</h2>
+
+    <p>Let's split &ldquo;send notifications&rdquo; out of <code>airport-api</code> into its own NestJS app. We'll keep both apps in the same student repo &mdash; <code>airport-api/</code> for the main app and <code>notifications-service/</code> as a sibling folder.</p>
+
+    <h3>Install</h3>
+
+    <pre><code><span class="function">npm</span> install @nestjs/microservices</code></pre>
+
+    <h3>The shape of the split</h3>
+
+    <div class="file-tree">
+nestjs-course-yourname/
+├── <span class="dir">airport-api/</span>          <span class="comment">← existing main app (HTTP)</span>
+│   └── <span class="dir">src/</span>
+│       └── <span class="highlight">main.ts</span>          <span class="comment">← NestFactory.create</span>
+└── <span class="dir">notifications-service/</span> <span class="comment">← new sibling app (microservice)</span>
+    └── <span class="dir">src/</span>
+        ├── <span class="highlight">main.ts</span>          <span class="comment">← NestFactory.createMicroservice</span>
+        ├── <span class="highlight">app.module.ts</span>
+        └── <span class="highlight">notifications.controller.ts</span>
+    </div>
+
+    <p>Two folders, two <code>package.json</code> files (or one workspace root if you prefer a monorepo). They share nothing at the code level &mdash; only the wire contract (the pattern names and payload shapes).</p>
+
+    <h3>The microservice's <code>main.ts</code></h3>
+
+    <pre><code><span class="comment">// notifications-service/src/main.ts</span>
+<span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { MicroserviceOptions, Transport } <span class="keyword">from</span> <span class="string">'@nestjs/microservices'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'./app.module'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">createMicroservice</span>&lt;<span class="type">MicroserviceOptions</span>&gt;(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options: { host: <span class="string">'0.0.0.0'</span>, port: <span class="string">4000</span> },
+    },
+  );
+  <span class="keyword">await</span> app.<span class="function">listen</span>();
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'Notifications microservice listening on TCP :4000'</span>);
+}
+<span class="function">bootstrap</span>();</code></pre>
+
+    <p>Notice: <code>createMicroservice</code> instead of <code>create</code>. Same DI, same modules &mdash; different listener.</p>
+
+    <h3>The notifications controller</h3>
+
+    <pre><code><span class="comment">// notifications-service/src/notifications.controller.ts</span>
+<span class="keyword">import</span> { Controller, Logger } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { MessagePattern, EventPattern, Payload } <span class="keyword">from</span> <span class="string">'@nestjs/microservices'</span>;
+
+<span class="decorator">@Controller</span>()
+<span class="keyword">export class</span> NotificationsController {
+  <span class="keyword">private readonly</span> logger = <span class="keyword">new</span> <span class="function">Logger</span>(NotificationsController.name);
+
+  <span class="comment">// Request/response: caller awaits a result</span>
+  <span class="decorator">@MessagePattern</span>(<span class="string">'send_notification'</span>)
+  <span class="function">sendNotification</span>(<span class="decorator">@Payload</span>() data: { userId: <span class="type">string</span>; text: <span class="type">string</span> }) {
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">`-&gt; <span class="keyword">${</span>data.userId<span class="keyword">}</span>: <span class="keyword">${</span>data.text<span class="keyword">}</span>`</span>);
+    <span class="keyword">return</span> { ok: <span class="keyword">true</span>, deliveredAt: <span class="keyword">new</span> <span class="function">Date</span>().<span class="function">toISOString</span>() };
+  }
+
+  <span class="comment">// Fire-and-forget: caller doesn't wait, multiple subscribers OK</span>
+  <span class="decorator">@EventPattern</span>(<span class="string">'flight.created'</span>)
+  <span class="function">handleFlightCreated</span>(<span class="decorator">@Payload</span>() flight: <span class="keyword">any</span>) {
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">`Flight created event received: <span class="keyword">${</span>flight.id<span class="keyword">}</span>`</span>);
+  }
+}</code></pre>
+
+    <p>Two patterns, one controller. <code>@MessagePattern</code> expects a return value; <code>@EventPattern</code> doesn't.</p>
+
+    <div class="info-box green">
+        <p><strong>Reuse what you already know:</strong> the same <code>ValidationPipe</code>, <code>Guards</code>, and <code>Interceptors</code> from Lessons 3&ndash;5 work on microservice handlers. Validation, auth, logging &mdash; all of it lifts straight over. The transport changes; the patterns don't.</p>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Patterns are values, not strings only:</strong> the pattern can be a string (<code>'send_notification'</code>) or any plain object (<code>{ cmd: 'send', kind: 'sms' }</code>). Both sides need to use the same pattern. Convention: dotted strings for events (<code>flight.created</code>), commands for requests (<code>send_notification</code>).</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: CALLING IT FROM THE MAIN APP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Calling It from the Main App</h2>
+
+    <p>The main app needs a <code>ClientProxy</code> &mdash; a typed handle that lets it talk to the microservice over the chosen transport.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 780 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="780" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="390" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Main app &rarr; ClientProxy &rarr; TCP &rarr; Microservice</text>
+
+            <defs>
+                <marker id="arrMs" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#3451B2"/>
+                </marker>
+            </defs>
+
+            <!-- Main app -->
+            <rect x="40" y="80" width="200" height="120" rx="12" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="140" y="108" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#1D4ED8">airport-api</text>
+            <text x="140" y="128" text-anchor="middle" font-family="Inter" font-size="11" fill="#1E40AF">HTTP server :3000</text>
+            <rect x="60" y="142" width="160" height="44" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="140" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1E40AF">FlightsService</text>
+            <text x="140" y="176" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3451B2">@Inject('NOTIFY')</text>
+
+            <!-- Wire -->
+            <line x1="240" y1="140" x2="540" y2="140" stroke="#3451B2" stroke-width="2.5" marker-end="url(#arrMs)"/>
+            <text x="390" y="124" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2" font-weight="600">TCP :4000</text>
+            <text x="390" y="160" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280" font-style="italic">JSON-encoded message</text>
+
+            <!-- Microservice -->
+            <rect x="540" y="80" width="200" height="120" rx="12" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="640" y="108" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#1A8F5C">notifications-service</text>
+            <text x="640" y="128" text-anchor="middle" font-family="Inter" font-size="11" fill="#065F46">TCP listener :4000</text>
+            <rect x="560" y="142" width="160" height="44" rx="6" fill="white" stroke="#6EE7B7"/>
+            <text x="640" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#065F46">@MessagePattern</text>
+            <text x="640" y="176" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1A8F5C">@EventPattern</text>
+
+            <text x="390" y="240" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280" font-style="italic">Same student repo, two folders, two processes &mdash; one logical app split in two.</text>
+        </svg>
+        <div class="diagram-caption">Two processes, one transport, the same Nest patterns on both ends.</div>
+    </div>
+
+    <h3>Register the client in the main app</h3>
+
+    <pre><code><span class="comment">// airport-api/src/flights/flights.module.ts</span>
+<span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { ClientsModule, Transport } <span class="keyword">from</span> <span class="string">'@nestjs/microservices'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    ClientsModule.<span class="function">register</span>([
+      {
+        name: <span class="string">'NOTIFY'</span>, <span class="comment">// the DI token we'll inject</span>
+        transport: Transport.TCP,
+        options: { host: <span class="string">'localhost'</span>, port: <span class="string">4000</span> },
+      },
+    ]),
+  ],
+  controllers: [FlightsController],
+  providers: [FlightsService],
+})
+<span class="keyword">export class</span> FlightsModule {}</code></pre>
+
+    <h3>Use the client in the service</h3>
+
+    <pre><code><span class="keyword">import</span> { Inject, Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { ClientProxy } <span class="keyword">from</span> <span class="string">'@nestjs/microservices'</span>;
+<span class="keyword">import</span> { firstValueFrom } <span class="keyword">from</span> <span class="string">'rxjs'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private readonly</span> prisma: PrismaService,
+    <span class="decorator">@Inject</span>(<span class="string">'NOTIFY'</span>) <span class="keyword">private readonly</span> notify: ClientProxy,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">create</span>(dto: CreateFlightDto) {
+    <span class="keyword">const</span> flight = <span class="keyword">await this</span>.prisma.flight.<span class="function">create</span>({ data: dto });
+
+    <span class="comment">// Fire-and-forget: the microservice may have multiple subscribers</span>
+    <span class="keyword">this</span>.notify.<span class="function">emit</span>(<span class="string">'flight.created'</span>, flight);
+
+    <span class="comment">// Request/response (when you actually need a result):</span>
+    <span class="keyword">const</span> ack = <span class="keyword">await</span> <span class="function">firstValueFrom</span>(
+      <span class="keyword">this</span>.notify.<span class="function">send</span>(<span class="string">'send_notification'</span>, {
+        userId: dto.userId,
+        text: <span class="string">`Your flight to <span class="keyword">${</span>flight.destination<span class="keyword">}</span> is booked.`</span>,
+      }),
+    );
+
+    <span class="keyword">return</span> { flight, ack };
+  }
+}</code></pre>
+
+    <h3>Async registration (when client config comes from env)</h3>
+
+    <p>Hard-coding <code>host</code> and <code>port</code> works for the demo. In real life the values live in <code>ConfigService</code> (Lesson 7). Use <code>registerAsync</code>:</p>
+
+    <pre><code>ClientsModule.<span class="function">registerAsync</span>([
+  {
+    name: <span class="string">'NOTIFY'</span>,
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    <span class="function">useFactory</span>: (config: <span class="type">ConfigService</span>) =&gt; ({
+      transport: Transport.TCP,
+      options: {
+        host: config.<span class="function">get</span>(<span class="string">'NOTIFY_HOST'</span>),
+        port: config.<span class="function">get</span>&lt;<span class="type">number</span>&gt;(<span class="string">'NOTIFY_PORT'</span>),
+      },
+    }),
+  },
+])</code></pre>
+
+    <p>Same pattern as every other Nest module's <code>forRootAsync</code>/<code>registerAsync</code>. Once you've seen it twice, you've seen it forever.</p>
+
+    <h3>send() vs emit()</h3>
+
+    <table>
+        <tr>
+            <th></th>
+            <th><code>client.send(pattern, data)</code></th>
+            <th><code>client.emit(pattern, data)</code></th>
+        </tr>
+        <tr>
+            <td>Returns</td>
+            <td><code>Observable&lt;T&gt;</code></td>
+            <td><code>Observable&lt;void&gt;</code> (cold)</td>
+        </tr>
+        <tr>
+            <td>Pairs with</td>
+            <td><code>@MessagePattern</code></td>
+            <td><code>@EventPattern</code></td>
+        </tr>
+        <tr>
+            <td>Style</td>
+            <td>Request / response</td>
+            <td>Fire and forget</td>
+        </tr>
+        <tr>
+            <td>Subscribers</td>
+            <td>Exactly one handler</td>
+            <td>Multiple handlers OK</td>
+        </tr>
+    </table>
+
+    <h3>Error handling across the wire</h3>
+
+    <p>When the microservice throws, NestJS serializes the error and the caller's Observable errors. Use <code>RpcException</code> for clean error semantics:</p>
+
+    <pre><code><span class="comment">// In the microservice</span>
+<span class="keyword">import</span> { RpcException } <span class="keyword">from</span> <span class="string">'@nestjs/microservices'</span>;
+
+<span class="decorator">@MessagePattern</span>(<span class="string">'send_notification'</span>)
+<span class="function">send</span>(<span class="decorator">@Payload</span>() data: <span class="keyword">any</span>) {
+  <span class="keyword">if</span> (!data.userId) {
+    <span class="keyword">throw new</span> <span class="function">RpcException</span>({ code: <span class="string">'BAD_INPUT'</span>, message: <span class="string">'userId required'</span> });
+  }
+  <span class="comment">// ...</span>
+}</code></pre>
+
+    <pre><code><span class="comment">// In the caller, catch with rxjs</span>
+<span class="keyword">import</span> { catchError, of } <span class="keyword">from</span> <span class="string">'rxjs'</span>;
+
+<span class="keyword">return this</span>.notify
+  .<span class="function">send</span>(<span class="string">'send_notification'</span>, payload)
+  .<span class="function">pipe</span>(
+    <span class="function">catchError</span>((err) =&gt; {
+      <span class="keyword">this</span>.logger.<span class="function">error</span>(<span class="string">'Notify failed'</span>, err);
+      <span class="keyword">return</span> <span class="function">of</span>({ ok: <span class="keyword">false</span> }); <span class="comment">// degrade gracefully</span>
+    }),
+  );</code></pre>
+
+    <div class="info-box red">
+        <p><strong>Distributed-system reality:</strong> the network <em>will</em> fail. Timeouts, broker hiccups, deploy windows. Treat <code>send()</code> as a network call &mdash; wrap it with timeouts (<code>rxjs</code> <code>timeout()</code>), retries (only if the operation is idempotent), and a fallback.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test</div>
+        <div class="recall-question">For each: <code>send</code> or <code>emit</code>?<br><br>
+        1. Compute &amp; return a price quote from the pricing service.<br>
+        2. Tell three downstream services that an order was placed.<br>
+        3. Get the user's avatar URL from the user service.<br>
+        4. Notify the audit-log service that admin X did action Y.</div>
+        <div class="recall-hint">1 &amp; 3 = <code>send</code> (you need the answer). 2 &amp; 4 = <code>emit</code> (broadcast, fire-and-forget).</div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x260E;&#xFE0F;</div>
+        <code>send()</code>: &ldquo;Hello, are you there? Can you do this thing? I'll wait. Did you do it? OK thanks bye.&rdquo;<br>
+        <code>emit()</code>: &ldquo;Just FYI, this happened.&rdquo; *hangs up*<br>
+        <em>One is a phone call, the other is a postcard. Pick the right channel.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: WEBSOCKET GATEWAYS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Real-time with WebSocket Gateways</h2>
+
+    <p>Until now, every connection has been short-lived: client opens, sends a request, gets a response, closes. WebSockets flip that &mdash; the client keeps a connection open, and the server can push data <em>whenever it wants</em>.</p>
+
+    <div class="story-box">
+        <p>Walk past the <strong>arrivals board</strong> at any airport. Flights flip from &ldquo;On time&rdquo; to &ldquo;Delayed&rdquo; to &ldquo;Boarding&rdquo; without anyone refreshing the screen. The board is always connected. When a flight changes status, the system pushes the new value &mdash; instantly, to every screen at once.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> WebSocket gateway = the live arrivals board. <code>server.emit('flight_updated', flight)</code> = pushing the new status to every listening screen at once.
+        </div>
+    </div>
+
+    <h3>Install</h3>
+
+    <pre><code><span class="function">npm</span> install @nestjs/websockets @nestjs/platform-socket.io socket.io</code></pre>
+
+    <h3>The gateway</h3>
+
+    <pre><code><span class="keyword">import</span> {
+  WebSocketGateway,
+  WebSocketServer,
+  SubscribeMessage,
+  MessageBody,
+  ConnectedSocket,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+} <span class="keyword">from</span> <span class="string">'@nestjs/websockets'</span>;
+<span class="keyword">import</span> { Server, Socket } <span class="keyword">from</span> <span class="string">'socket.io'</span>;
+<span class="keyword">import</span> { Logger } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@WebSocketGateway</span>({ cors: { origin: <span class="string">'*'</span> } })
+<span class="keyword">export class</span> FlightsGateway <span class="keyword">implements</span> OnGatewayConnection, OnGatewayDisconnect {
+  <span class="keyword">private readonly</span> logger = <span class="keyword">new</span> <span class="function">Logger</span>(FlightsGateway.name);
+
+  <span class="decorator">@WebSocketServer</span>()
+  server!: <span class="type">Server</span>;
+
+  <span class="function">handleConnection</span>(client: <span class="type">Socket</span>) {
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">`Client connected: <span class="keyword">${</span>client.id<span class="keyword">}</span>`</span>);
+  }
+
+  <span class="function">handleDisconnect</span>(client: <span class="type">Socket</span>) {
+    <span class="keyword">this</span>.logger.<span class="function">log</span>(<span class="string">`Client disconnected: <span class="keyword">${</span>client.id<span class="keyword">}</span>`</span>);
+  }
+
+  <span class="comment">// Client-&gt;server: a client subscribes to flight updates</span>
+  <span class="decorator">@SubscribeMessage</span>(<span class="string">'subscribe_flights'</span>)
+  <span class="function">onSubscribe</span>(<span class="decorator">@ConnectedSocket</span>() client: <span class="type">Socket</span>) {
+    client.<span class="function">join</span>(<span class="string">'flights-room'</span>);
+    <span class="keyword">return</span> { ok: <span class="keyword">true</span> };
+  }
+
+  <span class="comment">// Server-&gt;clients: called by FlightsService after a PATCH</span>
+  <span class="function">broadcastFlightUpdate</span>(flight: <span class="keyword">any</span>) {
+    <span class="keyword">this</span>.server.<span class="function">to</span>(<span class="string">'flights-room'</span>).<span class="function">emit</span>(<span class="string">'flight_updated'</span>, flight);
+  }
+}</code></pre>
+
+    <h3>Trigger the broadcast from your service</h3>
+
+    <pre><code><span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private readonly</span> prisma: PrismaService,
+    <span class="keyword">private readonly</span> gateway: FlightsGateway,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">update</span>(id: <span class="type">string</span>, dto: UpdateFlightDto) {
+    <span class="keyword">const</span> updated = <span class="keyword">await this</span>.prisma.flight.<span class="function">update</span>({ where: { id }, data: dto });
+    <span class="keyword">this</span>.gateway.<span class="function">broadcastFlightUpdate</span>(updated);
+    <span class="keyword">return</span> updated;
+  }
+}</code></pre>
+
+    <p>Register <code>FlightsGateway</code> in <code>FlightsModule</code> as a provider. That's it &mdash; <code>PATCH /flights/:id</code> now causes every connected dashboard to receive the new flight in real time.</p>
+
+    <h3>Namespaces &mdash; isolating different client populations</h3>
+
+    <p>One Socket.IO server can host multiple namespaces, each with its own gateway:</p>
+
+    <pre><code><span class="decorator">@WebSocketGateway</span>({ namespace: <span class="string">'/admin'</span>, cors: { origin: <span class="string">'*'</span> } })
+<span class="keyword">export class</span> AdminGateway { <span class="comment">/* admin-only events */</span> }
+
+<span class="decorator">@WebSocketGateway</span>({ namespace: <span class="string">'/public'</span>, cors: { origin: <span class="string">'*'</span> } })
+<span class="keyword">export class</span> PublicGateway { <span class="comment">/* public flight board */</span> }</code></pre>
+
+    <p>Clients connect with <code>io('/admin')</code> or <code>io('/public')</code>. Different auth, different events, no risk of cross-talk &mdash; and you can scale them independently if one becomes a hot spot.</p>
+
+    <h3>Rooms &mdash; broadcasting to a subset of clients</h3>
+
+    <p>You rarely want to broadcast to <em>everyone</em>. You want to broadcast to &ldquo;everyone watching project X&rdquo; or &ldquo;everyone subscribed to flight 738.&rdquo; Socket.IO calls these <strong>rooms</strong>:</p>
+
+    <pre><code><span class="decorator">@SubscribeMessage</span>(<span class="string">'subscribe_flight'</span>)
+<span class="function">onSubscribeFlight</span>(
+  <span class="decorator">@ConnectedSocket</span>() client: <span class="type">Socket</span>,
+  <span class="decorator">@MessageBody</span>() flightId: <span class="type">string</span>,
+) {
+  client.<span class="function">join</span>(<span class="string">`flight:<span class="keyword">${</span>flightId<span class="keyword">}</span>`</span>);
+  <span class="keyword">return</span> { ok: <span class="keyword">true</span> };
+}
+
+<span class="comment">// Later, on a flight update:</span>
+<span class="keyword">this</span>.server.<span class="function">to</span>(<span class="string">`flight:<span class="keyword">${</span>flight.id<span class="keyword">}</span>`</span>).<span class="function">emit</span>(<span class="string">'flight_updated'</span>, flight);</code></pre>
+
+    <p>Rooms are server-side only &mdash; clients never know they're &ldquo;in&rdquo; a room. They just receive the events you broadcast to it. You can put a single client in dozens of rooms (one per project, one per flight, one per their user-id) and pick the audience precisely.</p>
+
+    <h3>Tiny HTML test client (drop this in a file and open it)</h3>
+
+    <pre><code><span class="comment">&lt;!-- test-client.html --&gt;</span>
+&lt;script src=<span class="string">"https://cdn.socket.io/4.7.0/socket.io.min.js"</span>&gt;&lt;/script&gt;
+&lt;script&gt;
+  <span class="keyword">const</span> socket = <span class="function">io</span>(<span class="string">'http://localhost:3000'</span>);
+  socket.<span class="function">on</span>(<span class="string">'connect'</span>, () =&gt; {
+    socket.<span class="function">emit</span>(<span class="string">'subscribe_flights'</span>);
+  });
+  socket.<span class="function">on</span>(<span class="string">'flight_updated'</span>, (flight) =&gt; {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">'live update:'</span>, flight);
+  });
+&lt;/script&gt;</code></pre>
+
+    <div class="info-box purple">
+        <p><strong>Multi-instance gotcha:</strong> when you scale to multiple pods, a broadcast on pod 1 doesn't reach clients on pod 2. The fix is the Socket.IO Redis adapter &mdash; it propagates emits across pods through Redis pub/sub. One config change, no code change. Plan for it before you scale, not after the bug ticket arrives.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4FA;</div>
+        Frontend: &ldquo;Why do half my clients get the live update and half don't?&rdquo;<br>
+        Backend: &ldquo;How many pods are you running?&rdquo;<br>
+        Frontend: &ldquo;Three.&rdquo;<br>
+        Backend: &ldquo;...so each user is connected to a random one of three islands, and your emit only reaches one island.&rdquo;<br>
+        Frontend: &ldquo;I want to go back to polling.&rdquo;<br>
+        <em>Real-time scaling: easy until the second pod, then you remember Redis exists for a reason.</em>
+    </div>
+
+    <h3>Lifecycle hooks worth knowing</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--blue);">handleConnection</div>
+            <div class="layer-desc">Fires when a client connects. Read the auth token here. Disconnect on failure.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F44B;</div>
+            <div class="layer-name" style="color: var(--blue);">handleDisconnect</div>
+            <div class="layer-desc">Cleanup time. Remove the user from your in-memory presence map, log the disconnect.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F680;</div>
+            <div class="layer-name" style="color: var(--blue);">afterInit</div>
+            <div class="layer-desc">Once after the server is up. Wire middleware, attach the Redis adapter, register namespaces.</div>
+        </div>
+    </div>
+
+    <h3>Auth on a WebSocket connection</h3>
+
+    <p>HTTP guards don't fire automatically on WS connections &mdash; the upgrade happens before any controller. Two common approaches:</p>
+
+    <pre><code><span class="comment">// Option A: validate the token in handleConnection</span>
+<span class="function">handleConnection</span>(client: <span class="type">Socket</span>) {
+  <span class="keyword">const</span> token = client.handshake.auth?.token;
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> user = <span class="keyword">this</span>.jwt.<span class="function">verify</span>(token);
+    client.data.user = user;
+  } <span class="keyword">catch</span> {
+    client.<span class="function">disconnect</span>(<span class="keyword">true</span>);
+  }
+}
+
+<span class="comment">// Option B: a NestJS WsGuard you @UseGuards on @SubscribeMessage methods</span>
+<span class="decorator">@UseGuards</span>(WsAuthGuard)
+<span class="decorator">@SubscribeMessage</span>(<span class="string">'subscribe_flights'</span>)
+<span class="function">onSubscribe</span>(<span class="decorator">@ConnectedSocket</span>() client: <span class="type">Socket</span>) { <span class="comment">/* ... */</span> }</code></pre>
+
+    <p>Same JWT logic from Lesson 4 &mdash; just different transport.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: SERVER-SENT EVENTS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Server-Sent Events &mdash; The Loudspeaker</h2>
+
+    <p>WebSockets are bidirectional. Sometimes you don't need that &mdash; you only need server &rarr; client pushes. SSE is half a WebSocket: simpler, plain HTTP, auto-reconnect built into the browser.</p>
+
+    <div class="story-box">
+        <p>The airport's <strong>announcement loudspeaker</strong> only goes one way: from the tower to everyone on the concourse. You can't talk back. You don't need to. You just listen for &ldquo;Final boarding for flight 738&rdquo; and react.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> SSE = the loudspeaker. One-way, server &rarr; client, over plain HTTP. Browsers auto-reconnect when the connection drops.
+        </div>
+    </div>
+
+    <h3>Why SSE often beats WebSockets in 2026</h3>
+
+    <p>If you only need server-to-client pushes, SSE is almost always the easier choice today:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E1;</div>
+            <div class="layer-name" style="color: var(--green);">Just HTTP</div>
+            <div class="layer-desc">Works through every CDN, proxy, and load balancer that already handles HTTP. WS often needs special config.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--green);">Auto-reconnect</div>
+            <div class="layer-desc">The browser's <code>EventSource</code> reconnects automatically. With WS you'd write that loop yourself.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--green);">Auth comes for free</div>
+            <div class="layer-desc">Cookies, headers, JWTs &mdash; all the same as a normal HTTP request. With WS, auth on upgrade is its own puzzle.</div>
+        </div>
+    </div>
+
+    <h3>The SSE endpoint</h3>
+
+    <pre><code><span class="keyword">import</span> { Controller, Sse, MessageEvent } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Observable, interval, map } <span class="keyword">from</span> <span class="string">'rxjs'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="keyword">export class</span> FlightsController {
+  <span class="decorator">@Sse</span>(<span class="string">'stream'</span>)
+  <span class="function">stream</span>(): <span class="type">Observable</span>&lt;<span class="type">MessageEvent</span>&gt; {
+    <span class="keyword">return</span> <span class="function">interval</span>(<span class="string">2000</span>).<span class="function">pipe</span>(
+      <span class="function">map</span>((n) =&gt; ({
+        data: { tick: n, at: <span class="keyword">new</span> <span class="function">Date</span>().<span class="function">toISOString</span>() },
+      })),
+    );
+  }
+}</code></pre>
+
+    <p>Open <code>http://localhost:3000/flights/stream</code> in a browser &mdash; you'll see a <code>data:</code> event arrive every 2 seconds, forever.</p>
+
+    <h3>Connecting SSE to your real data &mdash; the EventEmitter bridge</h3>
+
+    <p>The toy example streams a counter. In production, you stream <em>real events</em> &mdash; usually piped from EventEmitter2 (Lesson 8) into the SSE stream &mdash; so an HTTP route becomes a live data feed:</p>
+
+    <pre><code><span class="keyword">import</span> { Controller, Sse, MessageEvent } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { EventEmitter2 } <span class="keyword">from</span> <span class="string">'@nestjs/event-emitter'</span>;
+<span class="keyword">import</span> { fromEvent, map, Observable } <span class="keyword">from</span> <span class="string">'rxjs'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="keyword">export class</span> FlightsController {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> events: EventEmitter2) {}
+
+  <span class="decorator">@Sse</span>(<span class="string">'live'</span>)
+  <span class="function">live</span>(): <span class="type">Observable</span>&lt;<span class="type">MessageEvent</span>&gt; {
+    <span class="keyword">return</span> <span class="function">fromEvent</span>(<span class="keyword">this</span>.events, <span class="string">'flight.updated'</span>).<span class="function">pipe</span>(
+      <span class="function">map</span>((flight) =&gt; ({ data: flight })),
+    );
+  }
+}</code></pre>
+
+    <p>Anywhere in the codebase, <code>this.events.emit('flight.updated', flight)</code> &mdash; every browser with the SSE stream open instantly receives that flight. No polling, no WebSocket library, no auth dance beyond the original HTTP request.</p>
+
+    <h3>Client-side (one line of browser API)</h3>
+
+    <pre><code><span class="keyword">const</span> es = <span class="keyword">new</span> <span class="function">EventSource</span>(<span class="string">'http://localhost:3000/flights/stream'</span>);
+es.<span class="function">onmessage</span> = (e) =&gt; <span class="function">console</span>.<span class="function">log</span>(<span class="function">JSON</span>.<span class="function">parse</span>(e.data));</code></pre>
+
+    <h3>WebSocket vs SSE</h3>
+
+    <table>
+        <tr>
+            <th></th>
+            <th>WebSocket</th>
+            <th>SSE</th>
+        </tr>
+        <tr><td>Direction</td><td>Bidirectional</td><td>Server &rarr; client only</td></tr>
+        <tr><td>Protocol</td><td>WS upgrade (custom)</td><td>Plain HTTP/1.1 streaming</td></tr>
+        <tr><td>Auto-reconnect</td><td>You implement</td><td>Built into browsers</td></tr>
+        <tr><td>Through corporate proxies</td><td>Often blocked</td><td>Usually works (it's just HTTP)</td></tr>
+        <tr><td>Best for</td><td>Chat, multiplayer, drag-collab</td><td>Notifications, live dashboards, log tail</td></tr>
+    </table>
+
+    <div class="info-box green">
+        <p><strong>Real example:</strong> the &ldquo;build status&rdquo; widget on a CI dashboard? SSE. Slack-style chat? WebSockets. Stock ticker page that just needs prices flowing? SSE. Multiplayer cursor on a Figma-style canvas? WebSockets.</p>
+    </div>
+
+    <h3>Backpressure &amp; cleanup &mdash; the SSE catch</h3>
+
+    <p>SSE connections live forever. If your <code>Observable</code> never completes and never gets unsubscribed, you'll leak listeners every time a tab closes. Two rules:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x267B;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--blue);">Use rxjs</div>
+            <div class="layer-desc">Return a real Observable (not a manual <code>setInterval</code>). Nest unsubscribes when the client disconnects.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F50A;</div>
+            <div class="layer-name" style="color: var(--orange);">Heartbeat</div>
+            <div class="layer-desc">Some proxies kill idle connections. Emit a comment line every 20s as a keepalive: <code>{ data: ':keepalive' }</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F511;</div>
+            <div class="layer-name" style="color: var(--green);">Last-Event-ID</div>
+            <div class="layer-desc">If clients reconnect, browsers send back the last <code>id</code> they saw. Use it to backfill missed events.</div>
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4E1;</div>
+        Junior: &ldquo;I want a live updating dashboard. WebSockets, right?&rdquo;<br>
+        Me: &ldquo;Does the dashboard send anything <em>back</em> to the server?&rdquo;<br>
+        Junior: &ldquo;...no.&rdquo;<br>
+        Me: &ldquo;Then SSE. One file, no library, browser handles reconnect.&rdquo;<br>
+        Junior: &ldquo;That sounds too easy.&rdquo;<br>
+        <em>Sometimes the boring answer is the right one.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: HYBRID APPS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: Hybrid Apps &mdash; HTTP + Microservice in One Process</h2>
+
+    <p>You don't have to pick. NestJS can run an HTTP server <em>and</em> a microservice listener in the same process. This is the typical first step when you're extracting microservices from a monolith &mdash; the new service still serves HTTP for tooling/health-checks while listening on the microservice transport for the new contracts.</p>
+
+    <div class="story-box">
+        <p>Most real airports are <em>both</em>: a passenger terminal serving the public face, plus a service entrance round the back where catering trucks and fuel bowsers come and go. Same building, two doors, different protocols. Visitors don't see the back door; vendors don't queue at security.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Hybrid app = passenger terminal (HTTP) plus loading dock (microservice transport). One process owns both doors.
+        </div>
+    </div>
+
+    <h3>The hybrid <code>main.ts</code></h3>
+
+    <pre><code><span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { Transport } <span class="keyword">from</span> <span class="string">'@nestjs/microservices'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'./app.module'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule); <span class="comment">// HTTP</span>
+
+  app.<span class="function">connectMicroservice</span>({
+    transport: Transport.TCP,
+    options: { host: <span class="string">'0.0.0.0'</span>, port: <span class="string">4000</span> },
+  });
+
+  <span class="keyword">await</span> app.<span class="function">startAllMicroservices</span>(); <span class="comment">// boot the TCP listener</span>
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);                <span class="comment">// boot the HTTP server</span>
+}
+<span class="function">bootstrap</span>();</code></pre>
+
+    <p>One <code>AppModule</code>. Same controllers can mix HTTP routes (<code>@Get</code>, <code>@Post</code>) and message handlers (<code>@MessagePattern</code>, <code>@EventPattern</code>). The same DI container backs both.</p>
+
+    <h3>What you can mix in one controller</h3>
+
+    <pre><code><span class="decorator">@Controller</span>()
+<span class="keyword">export class</span> NotificationsController {
+  <span class="comment">// HTTP route &mdash; for health, debug, manual triggers</span>
+  <span class="decorator">@Get</span>(<span class="string">'health'</span>)
+  <span class="function">health</span>() { <span class="keyword">return</span> { ok: <span class="keyword">true</span> }; }
+
+  <span class="comment">// Microservice request/response</span>
+  <span class="decorator">@MessagePattern</span>(<span class="string">'send_notification'</span>)
+  <span class="function">send</span>(<span class="decorator">@Payload</span>() data: <span class="keyword">any</span>) { <span class="comment">/* ... */</span> }
+
+  <span class="comment">// Microservice fire-and-forget event</span>
+  <span class="decorator">@EventPattern</span>(<span class="string">'flight.created'</span>)
+  <span class="function">onFlight</span>(<span class="decorator">@Payload</span>() flight: <span class="keyword">any</span>) { <span class="comment">/* ... */</span> }
+}</code></pre>
+
+    <p>One class, three transports, same DI graph behind all of it.</p>
+
+    <h3>When to use hybrid</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F331;</div>
+            <div class="layer-name" style="color: var(--green);">Early extraction</div>
+            <div class="layer-desc">You're carving a service out. HTTP for the existing clients, microservice transport for new internal callers.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2764;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">Health checks</div>
+            <div class="layer-desc">Your platform expects <code>GET /health</code>. The actual work happens over RabbitMQ. Hybrid lets you have both.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--green);">Webhooks + events</div>
+            <div class="layer-desc">External webhooks come in over HTTP; internal events come over Kafka. Same service, two doors.</div>
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Final self-test</div>
+        <div class="recall-question">Without scrolling, answer:<br><br>
+        1. What's the difference between <code>client.send</code> and <code>client.emit</code>?<br>
+        2. When would you pick SSE over WebSockets?<br>
+        3. Which transport would you use for two Nest services in the same VPC with no other infra?<br>
+        4. What's the airport analogy for a microservice?</div>
+        <div class="recall-hint">1: send = request/response, emit = fire-and-forget. 2: one-way push, simpler, plain HTTP. 3: TCP. 4: a satellite terminal across the runway, connected by radio.</div>
+    </div>
+
+
+    <h3>One more story to put it all together</h3>
+
+    <p>Picture the same passenger from Lesson 8 booking a flight. The main app (<code>airport-api</code>) handles the HTTP. The notifications service is a satellite terminal connected by TCP. After the flight row is written, the main app:</p>
+
+    <ol style="margin: 12px 0 16px 24px; color: var(--gray-700);">
+        <li>Calls <code>this.notify.emit('flight.created', flight)</code> &mdash; the notifications microservice receives it and starts the email job.</li>
+        <li>Calls <code>this.gateway.broadcastFlightUpdate(flight)</code> &mdash; every browser with the live arrivals board open updates instantly.</li>
+        <li>The SSE endpoint serving the manager dashboard already has an Observable wired to <code>flight.*</code> events &mdash; the dashboard ticks too, no WebSocket needed.</li>
+    </ol>
+
+    <p>One write, three audiences, three transports, zero blocked threads. That's the payoff of the whole lesson.</p>
+
+    <div class="info-box blue">
+        <p><strong>Heuristic for picking among today's tools:</strong> ask &ldquo;who needs this?&rdquo; If <em>another service</em> needs it &rarr; microservice transport. If <em>connected users</em> need it &rarr; WebSocket gateway (interactive) or SSE (read-only). If <em>both</em> need it &rarr; emit it to events and have the gateway and the microservice client both listen.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3D8;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--blue);">When to split</div>
+            <div class="layer-desc">Different scale, different team, different security. Not because microservices are &ldquo;modern.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F50C;</div>
+            <div class="layer-name" style="color: var(--green);">Transports</div>
+            <div class="layer-desc">TCP, Redis, NATS, RabbitMQ, Kafka, gRPC. Pick by infra you have + durability you need.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4E8;</div>
+            <div class="layer-name" style="color: var(--purple);">Two patterns</div>
+            <div class="layer-desc"><code>@MessagePattern</code> + <code>send()</code> for request/response; <code>@EventPattern</code> + <code>emit()</code> for fan-out.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4FA;</div>
+            <div class="layer-name" style="color: var(--orange);">Real-time</div>
+            <div class="layer-desc">WebSocket gateways for two-way, SSE for one-way. <code>server.to(room).emit(...)</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F500;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Hybrid</div>
+            <div class="layer-desc"><code>app.connectMicroservice()</code> + <code>app.startAllMicroservices()</code>. HTTP and microservice in one process.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 10 (the finale):</strong> production readiness. Testing (unit + e2e), health checks (<code>@nestjs/terminus</code>), error reporting with Sentry, deployment patterns (Docker, Vercel, Railway), and CI/CD wiring. Everything you need to put a NestJS app in front of real users without losing sleep.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Extract notifications into a microservice (TCP)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Inside your <code>nestjs-course-yourname</code> repo, scaffold a second NestJS app as a sibling folder (e.g. <code>notifications-service/</code>) or under <code>apps/notifications</code> &mdash; either is fine</li>
+                    <li>Make it a microservice with <code>NestFactory.createMicroservice</code>, transport TCP, port 4000</li>
+                    <li>Add a <code>@EventPattern('flight.created')</code> handler that logs the incoming flight</li>
+                    <li>Wire <code>airport-api</code> with <code>ClientsModule.register</code> and call <code>client.emit('flight.created', flight)</code> after creating a flight</li>
+                    <li>Run both processes. Take a <strong>screenshot</strong> showing both terminals: the main app accepting <code>POST /flights</code> and the microservice logging the event</li>
+                    <li>Submit the screenshot</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>WebSocket gateway broadcasting flight updates</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add a <code>FlightsGateway</code> (Socket.IO) in <code>airport-api</code></li>
+                    <li>When <code>PATCH /flights/:id</code> succeeds, broadcast <code>flight_updated</code> with the updated flight</li>
+                    <li>Connect to it from a tiny HTML page (or Postman's WebSocket client) and verify you receive the event live</li>
+                    <li>Push to <code>nestjs-course-yourname</code> and submit the commit link</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>WebSocket vs SSE &mdash; 2-3 sentences</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 2&ndash;3 sentences, when would you reach for WebSockets and when for SSE? Use a concrete example for each</li>
+                    <li>Submit as text in the platform</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Switch the microservice transport from TCP to Redis</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Change <code>Transport.TCP</code> to <code>Transport.REDIS</code> in both the microservice's <code>createMicroservice</code> options and the main app's <code>ClientsModule.register</code>. Verify <code>emit('flight.created')</code> still works end-to-end. Take a <strong>screenshot</strong> of both processes after the switch, with the microservice receiving an event over Redis.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>gRPC reading exercise</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Read the <a href="https://docs.nestjs.com/microservices/grpc" style="color: var(--blue);">NestJS gRPC docs</a>. In 3 bullets, answer: (a) what does gRPC give you that REST doesn't? (b) what's the cost of using it? (c) when would you specifically reach for it over TCP/Redis/NATS? Submit as text.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 9 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 8px;">One lesson left. We've come a long way from <code>Hello World</code>.</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Production Ready &mdash; Testing, Health Checks, Sentry, Deployment, CI/CD</p>
+    </div>
+
+</div>
+
+</body>
+</html>

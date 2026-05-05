@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong {
+            color: var(--blue);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 2 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Controllers, Providers &amp; Modules &mdash; The Holy Trinity</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Know exactly what each of the three building blocks is responsible for &mdash; and what it is <em>not</em></li>
+            <li>Be fluent with controller decorators: <code>@Get</code>, <code>@Post</code>, <code>@Body</code>, <code>@Query</code>, <code>@Param</code>, <code>@Headers</code></li>
+            <li>Understand provider scopes (DEFAULT, REQUEST, TRANSIENT) at a glance</li>
+            <li>Build a real <code>FlightsModule</code> with full CRUD &mdash; the foundation we'll keep extending all course</li>
+            <li>Recognize the three most common &ldquo;why doesn't it work?&rdquo; pitfalls</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <h2 class="part-header">Quick Recap</h2>
+
+    <p>Last lesson we got our hands dirty for the first time. Here's the short version &mdash; if any of these feel hazy, scroll back to Lesson 1 before diving in.</p>
+
+    <div class="recap-grid">
+        <div class="recap-item"><strong>Lesson 1:</strong> Scaffolded <code>airport-api</code> with <code>nest new</code>, ran <code>npm run start:dev</code>, hit Hello World.</div>
+        <div class="recap-item"><strong>Lesson 1:</strong> Met the airport analogy &mdash; Modules = Terminals, Controllers = Gate Agents, Services = Ground Crew, DI Container = Ops Dispatch.</div>
+        <div class="recap-item"><strong>Lesson 1:</strong> Saw the bootstrap sequence: <code>main.ts</code> &rarr; module scan &rarr; DI container builds &rarr; routes register &rarr; <code>app.listen(3000)</code>.</div>
+        <div class="recap-item"><strong>Lesson 1:</strong> Touched the Holy Trinity superficially &mdash; saw <code>@Module</code>, <code>@Controller</code>, <code>@Injectable</code> decorators but didn't really pull them apart.</div>
+    </div>
+
+    <p>Today we pull them apart.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: WHY THREE THINGS INSTEAD OF ONE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Why Three Things Instead of One?</h2>
+
+    <p>A reasonable question to ask: &ldquo;Why do I need a Controller <em>and</em> a Service <em>and</em> a Module? Couldn't this be one file?&rdquo;</p>
+
+    <p>Short answer: yes, it could. For about three weeks. Then it can't.</p>
+
+    <h3>The airport, again</h3>
+
+    <div class="story-box">
+        <p>Picture Heathrow Terminal 5. A passenger walks up to the gate with a boarding pass. The <strong>gate agent</strong> looks at the pass, scans it, says &ldquo;welcome aboard, your seat is 14C.&rdquo; That's it. The agent does not personally drive the baggage truck. The agent does not personally fuel the plane. The agent does not personally negotiate ground handling contracts.</p>
+        <p>If the gate agent <em>did</em> all of that, two bad things would happen. First, every gate would have a 90-minute queue because one person can't do five jobs. Second, the moment the airline switches from baggage vendor X to vendor Y, you'd have to retrain every gate agent at every terminal in the world.</p>
+        <p>Instead: gate agents talk to ground crew via a dispatch system. The ground crew can change vendors, change processes, even change country &mdash; and gate agents notice nothing. That's the separation we want in code.</p>
+        <div class="tech-note">
+            <strong>The same idea in software words:</strong> Controllers handle HTTP. Services handle business logic. Modules group them. When the database changes, only the service changes. When the URL scheme changes, only the controller changes. The boundary is the entire point.
+        </div>
+    </div>
+
+    <h3>What each block actually owns</h3>
+
+    <table>
+        <tr>
+            <th>Block</th>
+            <th>Owns</th>
+            <th>Doesn't own</th>
+        </tr>
+        <tr>
+            <td><strong>Controller</strong></td>
+            <td>Routes, HTTP verbs, status codes, request shape</td>
+            <td>Database, business rules, third-party APIs</td>
+        </tr>
+        <tr>
+            <td><strong>Service (Provider)</strong></td>
+            <td>Business logic, orchestration, data access</td>
+            <td>How the request arrived (HTTP? CLI? queue?)</td>
+        </tr>
+        <tr>
+            <td><strong>Module</strong></td>
+            <td>Wiring &mdash; who can see whom, what's exported, what's imported</td>
+            <td>Any actual logic at all &mdash; the class body is empty</td>
+        </tr>
+    </table>
+
+    <h3>One request, three stops</h3>
+
+    <p>Here's what happens when <code>GET /flights/42</code> hits your app. Notice how each block does one thing and hands off:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="360" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">A request through the Holy Trinity</text>
+
+            <defs>
+                <marker id="arr2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+                </marker>
+            </defs>
+
+            <!-- Module box (the terminal) -->
+            <rect x="40" y="60" width="680" height="240" rx="14" fill="white" stroke="#7C3AED" stroke-width="2" stroke-dasharray="6,4"/>
+            <text x="60" y="82" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">FlightsModule (the terminal)</text>
+            <text x="60" y="100" font-family="Inter" font-size="11" fill="#6B7280">declares which controllers and providers live in here</text>
+
+            <!-- Request -->
+            <rect x="20" y="170" width="120" height="40" rx="8" fill="#3451B2"/>
+            <text x="80" y="194" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="white">GET /flights/42</text>
+            <line x1="140" y1="190" x2="180" y2="190" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr2)"/>
+
+            <!-- Controller -->
+            <rect x="180" y="150" width="180" height="80" rx="10" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="270" y="173" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">FlightsController</text>
+            <text x="270" y="193" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6B7280">findOne(@Param id)</text>
+            <text x="270" y="213" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">gate agent</text>
+            <line x1="360" y1="190" x2="400" y2="190" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr2)"/>
+
+            <!-- Service -->
+            <rect x="400" y="150" width="180" height="80" rx="10" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="490" y="173" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">FlightsService</text>
+            <text x="490" y="193" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6B7280">findOne(id)</text>
+            <text x="490" y="213" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">ground crew</text>
+            <line x1="580" y1="190" x2="620" y2="190" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr2)"/>
+
+            <!-- Data -->
+            <rect x="620" y="170" width="100" height="40" rx="8" fill="#1A8F5C"/>
+            <text x="670" y="194" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="white">Flight #42</text>
+
+            <!-- DI annotation -->
+            <line x1="270" y1="230" x2="270" y2="260" stroke="#E8790C" stroke-width="2" stroke-dasharray="4,4"/>
+            <line x1="270" y1="260" x2="490" y2="260" stroke="#E8790C" stroke-width="2" stroke-dasharray="4,4"/>
+            <line x1="490" y1="260" x2="490" y2="230" stroke="#E8790C" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arr2)"/>
+            <rect x="320" y="270" width="120" height="22" rx="4" fill="#FFF3E5"/>
+            <text x="380" y="285" text-anchor="middle" font-family="Inter" font-weight="600" font-size="11" fill="#E8790C">DI: Ops Dispatch</text>
+        </svg>
+        <div class="diagram-caption">The controller never calls <code>new FlightsService()</code> &mdash; the DI container hands it the right instance.</div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Key idea:</strong> A well-written controller is boring. A well-written service is also boring. A well-written module is downright dull. <em>Boring is the goal.</em> Excitement in any of these layers usually means a bug.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DA;</div>
+        Junior dev: &ldquo;I put the SQL query right in the controller, it works fine.&rdquo;<br>
+        Senior dev: &ldquo;Cool. Now move it to GraphQL.&rdquo;<br>
+        Junior dev: &ldquo;Uhh.&rdquo;<br>
+        Senior dev: &ldquo;Now also expose it as a CLI command.&rdquo;<br>
+        Junior dev: &ldquo;...I'm going to refactor.&rdquo;<br>
+        <em>Layers exist for the day requirements change. They always change.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before reading on</div>
+        <div class="recall-question">Imagine your service does <code>users.findById(id)</code> by querying Postgres. Tomorrow, the company decides to put a Redis cache in front of the database. <strong>Which file changes?</strong> Just the service? The controller too? The module?</div>
+        <div class="recall-hint">If you hesitated for more than two seconds, that hesitation is exactly why we separate these layers. Answer at the end of Part 4.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: CONTROLLERS DEEP DIVE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Controllers Deep Dive</h2>
+
+    <p>A controller is a class decorated with <code>@Controller(prefix)</code>. Inside, every method decorated with an HTTP verb decorator (<code>@Get</code>, <code>@Post</code>, etc.) becomes a route. That's the whole concept. The rest is decorators that pull pieces out of the request.</p>
+
+    <h3>The route prefix</h3>
+
+    <pre><code><span class="keyword">import</span> { Controller, Get } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="keyword">export class</span> FlightsController {
+  <span class="decorator">@Get</span>()
+  <span class="function">findAll</span>() {
+    <span class="keyword">return</span> <span class="string">'all flights'</span>;     <span class="comment">// GET /flights</span>
+  }
+
+  <span class="decorator">@Get</span>(<span class="string">'today'</span>)
+  <span class="function">findToday</span>() {
+    <span class="keyword">return</span> <span class="string">"today's flights"</span>; <span class="comment">// GET /flights/today</span>
+  }
+}</code></pre>
+
+    <p>The prefix in <code>@Controller('flights')</code> is glued to every method-level path. <code>@Get()</code> with no argument means &ldquo;the prefix itself.&rdquo; <code>@Get('today')</code> means &ldquo;prefix + /today.&rdquo; This is gate-numbering: every gate agent at Terminal 2 has gate numbers that start with 2 (2A, 2B, 2C). The prefix is the terminal letter; the method path is the gate.</p>
+
+    <h3>The HTTP verb decorators</h3>
+
+    <table>
+        <tr>
+            <th>Decorator</th>
+            <th>Purpose</th>
+            <th>Default status</th>
+        </tr>
+        <tr><td><code>@Get(path?)</code></td><td>Read</td><td>200</td></tr>
+        <tr><td><code>@Post(path?)</code></td><td>Create</td><td>201</td></tr>
+        <tr><td><code>@Put(path?)</code></td><td>Replace whole resource</td><td>200</td></tr>
+        <tr><td><code>@Patch(path?)</code></td><td>Partial update</td><td>200</td></tr>
+        <tr><td><code>@Delete(path?)</code></td><td>Remove</td><td>200</td></tr>
+        <tr><td><code>@Head(path?)</code></td><td>Headers only, no body</td><td>200</td></tr>
+        <tr><td><code>@Options(path?)</code></td><td>CORS preflight, capabilities</td><td>200</td></tr>
+        <tr><td><code>@All(path?)</code></td><td>Match every verb</td><td>200</td></tr>
+    </table>
+
+    <h3>Request data decorators</h3>
+
+    <p>Inside a route handler you usually need pieces of the incoming request: a path parameter, a query string, a body, sometimes a header. NestJS gives you a decorator for each, so you never have to dig into <code>req</code> manually.</p>
+
+    <table>
+        <tr><th>Decorator</th><th>Pulls from</th><th>Example</th></tr>
+        <tr><td><code>@Param('id')</code></td><td>URL path</td><td><code>/flights/42</code> &rarr; <code>id = '42'</code></td></tr>
+        <tr><td><code>@Query('q')</code></td><td>Query string</td><td><code>?q=NYC</code> &rarr; <code>q = 'NYC'</code></td></tr>
+        <tr><td><code>@Body()</code> / <code>@Body('field')</code></td><td>JSON body</td><td>POST body &rarr; full object or one field</td></tr>
+        <tr><td><code>@Headers('x-token')</code></td><td>HTTP headers</td><td>header value</td></tr>
+        <tr><td><code>@Ip()</code></td><td>Client IP</td><td><code>'192.168.1.10'</code></td></tr>
+        <tr><td><code>@Req()</code> / <code>@Res()</code></td><td>Raw Express objects</td><td>escape hatch, use sparingly</td></tr>
+    </table>
+
+    <h3>A full controller, end-to-end</h3>
+
+    <p>Here's what a real <code>FlightsController</code> looks like with multiple methods. We'll build the actual service in Part 5 &mdash; for now focus on the shape.</p>
+
+    <pre><code><span class="keyword">import</span> {
+  Controller, Get, Post, Patch, Delete,
+  Param, Body, Query, HttpCode, ParseIntPipe,
+} <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { FlightsService } <span class="keyword">from</span> <span class="string">'./flights.service'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="keyword">export class</span> FlightsController {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> flights: FlightsService) {}
+
+  <span class="decorator">@Get</span>()
+  <span class="function">findAll</span>(<span class="decorator">@Query</span>(<span class="string">'destination'</span>) destination?: <span class="type">string</span>) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.flights.<span class="function">findAll</span>({ destination });
+  }
+
+  <span class="decorator">@Get</span>(<span class="string">':id'</span>)
+  <span class="function">findOne</span>(<span class="decorator">@Param</span>(<span class="string">'id'</span>, ParseIntPipe) id: <span class="type">number</span>) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.flights.<span class="function">findOne</span>(id);
+  }
+
+  <span class="decorator">@Post</span>()
+  <span class="function">create</span>(<span class="decorator">@Body</span>() body: { destination: <span class="type">string</span>; gate: <span class="type">string</span> }) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.flights.<span class="function">create</span>(body);
+  }
+
+  <span class="decorator">@Patch</span>(<span class="string">':id'</span>)
+  <span class="function">update</span>(
+    <span class="decorator">@Param</span>(<span class="string">'id'</span>, ParseIntPipe) id: <span class="type">number</span>,
+    <span class="decorator">@Body</span>() patch: { gate?: <span class="type">string</span> },
+  ) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.flights.<span class="function">update</span>(id, patch);
+  }
+
+  <span class="decorator">@Delete</span>(<span class="string">':id'</span>)
+  <span class="decorator">@HttpCode</span>(<span class="string">204</span>)
+  <span class="function">remove</span>(<span class="decorator">@Param</span>(<span class="string">'id'</span>, ParseIntPipe) id: <span class="type">number</span>) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.flights.<span class="function">remove</span>(id);
+  }
+}</code></pre>
+
+    <p>Take a moment to count the lines that talk about <em>HTTP</em>: route paths, status codes, body parsing. Now count lines that talk about <em>flights</em>: zero. The controller is a translator between &ldquo;HTTP world&rdquo; and &ldquo;flights world.&rdquo; The flights logic lives entirely in the service.</p>
+
+    <h3>Returning values vs streaming</h3>
+
+    <p>By default, when you <code>return</code> something from a route handler, Nest takes care of the response: a JS object becomes JSON, a primitive is returned as-is, an async function is awaited. <strong>This is what you want 95% of the time.</strong></p>
+
+    <p>The 5% case &mdash; large file streams, custom headers per byte, Server-Sent Events &mdash; uses <code>@Res()</code> to grab the raw Express response object. The moment you do that, Nest steps back: <em>you</em> are now responsible for calling <code>res.send()</code> or the request hangs.</p>
+
+    <div class="info-box red">
+        <p><strong>Gotcha:</strong> If you ever inject <code>@Res()</code> just to set a cookie or a header, use <code>@Res({ passthrough: true })</code>. Without <code>passthrough</code>, you take over the entire response and your <code>return</code> value is silently ignored.</p>
+    </div>
+
+    <h3>Status codes, redirects, and headers</h3>
+
+    <pre><code><span class="keyword">import</span> { Controller, Post, Get, HttpCode, Header, Redirect } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'gates'</span>)
+<span class="keyword">export class</span> GatesController {
+  <span class="decorator">@Post</span>()
+  <span class="decorator">@HttpCode</span>(<span class="string">202</span>)               <span class="comment">// override default 201</span>
+  <span class="decorator">@Header</span>(<span class="string">'X-Source'</span>, <span class="string">'airport-api'</span>) <span class="comment">// custom response header</span>
+  <span class="function">enqueue</span>() {
+    <span class="keyword">return</span> { status: <span class="string">'accepted'</span> };
+  }
+
+  <span class="decorator">@Get</span>(<span class="string">'old-route'</span>)
+  <span class="decorator">@Redirect</span>(<span class="string">'/gates/new-route'</span>, <span class="string">301</span>)
+  <span class="function">oldRoute</span>() {}
+}</code></pre>
+
+    <p><code>@HttpCode</code> changes the default. <code>@Header</code> appends a header to every response from this handler. <code>@Redirect</code> issues an HTTP redirect &mdash; the URL and status are baked in at decoration time, but you can also return <code>{ url, statusCode }</code> dynamically from the method body to override.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Quick recall &mdash; don't peek</div>
+        <div class="recall-question">Without scrolling: which decorator do you use to pull <code>?destination=NYC</code> off a URL? And which one for <code>/flights/42</code>?</div>
+        <div class="recall-hint">Hint: one is for the &ldquo;<em>?</em>&rdquo; part, the other is for the &ldquo;<em>:</em>&rdquo; part.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: PROVIDERS DEEP DIVE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Providers Deep Dive</h2>
+
+    <p>&ldquo;Provider&rdquo; is the umbrella term NestJS uses for &ldquo;a class the DI container manages.&rdquo; In day-to-day code, providers usually fall into one of three flavors: <strong>services</strong>, <strong>repositories</strong>, and <strong>helpers</strong>. They all look the same from Nest's perspective.</p>
+
+    <h3>The whole magic is one decorator</h3>
+
+    <pre><code><span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="function">findAll</span>() {
+    <span class="keyword">return</span> [];
+  }
+}</code></pre>
+
+    <p><code>@Injectable()</code> tells Nest: &ldquo;you are allowed to manage instances of this class.&rdquo; That's it. Nothing else changes about the class. You could remove the decorator and instantiate it manually with <code>new FlightsService()</code> &mdash; but then Nest has no idea this class exists, and trying to inject it elsewhere fails.</p>
+
+    <h3>Three flavors of provider</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F6E0;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--blue);">Service</div>
+            <div class="card-subtitle" style="color: var(--blue);">Business logic</div>
+            <div class="card-desc">FlightsService, BookingsService. Orchestrates work, calls repositories, applies rules. The bulk of your codebase lives here.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F5C4;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--green);">Repository</div>
+            <div class="card-subtitle" style="color: var(--green);">Data access</div>
+            <div class="card-desc">FlightsRepository. Owns the database queries. Service calls it. We'll formalize repositories in Lesson 4 (Prisma).</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F527;</div>
+            <div class="card-title" style="color: var(--orange);">Helper / Utility</div>
+            <div class="card-subtitle" style="color: var(--orange);">Pure functions in a class</div>
+            <div class="card-desc">DateFormatter, GateNumberGenerator. Stateless utilities the DI container hands out. Easy to mock in tests.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F4E1;</div>
+            <div class="card-title" style="color: var(--purple);">Adapter / Client</div>
+            <div class="card-subtitle" style="color: var(--purple);">External I/O</div>
+            <div class="card-desc">EmailClient, S3Adapter, StripeAdapter. Wraps a third-party SDK so the rest of the app doesn't depend on it directly.</div>
+        </div>
+    </div>
+
+    <h3>Constructor injection &mdash; the contract</h3>
+
+    <p>You declare what a class needs in its constructor. Nest reads the parameter types and supplies the correct singleton from its container.</p>
+
+    <pre><code><span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private readonly</span> repo: FlightsRepository,
+    <span class="keyword">private readonly</span> formatter: DateFormatter,
+    <span class="keyword">private readonly</span> emails: EmailClient,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">cancel</span>(id: <span class="type">number</span>) {
+    <span class="keyword">const</span> flight = <span class="keyword">await this</span>.repo.<span class="function">findOne</span>(id);
+    <span class="keyword">await this</span>.emails.<span class="function">notifyPassengers</span>(flight);
+    <span class="keyword">return this</span>.repo.<span class="function">update</span>(id, { status: <span class="string">'cancelled'</span> });
+  }
+}</code></pre>
+
+    <p>The <code>private readonly</code> shorthand is a TypeScript thing &mdash; it both declares a field and assigns the constructor parameter to it in one go. Nest doesn't care about the modifier, but you should always use <code>private</code> (these are internal collaborators) and <code>readonly</code> (you should never reassign them after construction).</p>
+
+    <div class="info-box green">
+        <p><strong>Real example:</strong> When you write <code>constructor(private readonly flights: FlightsService) {}</code> in a controller, Nest goes to its container, finds the singleton instance of <code>FlightsService</code>, and hands it over. There's no <code>new FlightsService()</code> anywhere in your code. Ops Dispatch is doing the dispatching.</p>
+    </div>
+
+    <h3>Provider scopes &mdash; advanced but worth a quick look</h3>
+
+    <p>By default, every provider in NestJS is a <strong>singleton</strong>. One instance, shared across the entire application, for the entire app's lifetime. This is what you want 95% of the time, and it's why DI is fast.</p>
+
+    <p>Two other scopes exist for the 5% case:</p>
+
+    <table>
+        <tr><th>Scope</th><th>Lifetime</th><th>Use case</th></tr>
+        <tr>
+            <td><code>Scope.DEFAULT</code></td>
+            <td>One instance, app lifetime</td>
+            <td>Stateless services. The default. Pick this unless you know you need otherwise.</td>
+        </tr>
+        <tr>
+            <td><code>Scope.REQUEST</code></td>
+            <td>One instance per HTTP request</td>
+            <td>Per-request state: a request-scoped logger that knows the request ID, a multi-tenant DB connection chosen from a header.</td>
+        </tr>
+        <tr>
+            <td><code>Scope.TRANSIENT</code></td>
+            <td>New instance every injection site</td>
+            <td>Rare. Loggers that need to capture the class name they're injected into.</td>
+        </tr>
+    </table>
+
+    <pre><code><span class="keyword">import</span> { Injectable, Scope } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Injectable</span>({ scope: Scope.REQUEST })
+<span class="keyword">export class</span> RequestLogger {
+  <span class="keyword">private readonly</span> id = Math.<span class="function">random</span>().<span class="function">toString</span>(<span class="string">36</span>).<span class="function">slice</span>(<span class="string">2</span>, <span class="string">8</span>);
+
+  <span class="function">log</span>(msg: <span class="type">string</span>) {
+    console.<span class="function">log</span>(<span class="string">`[<span class="keyword">${</span><span class="keyword">this</span>.id<span class="keyword">}</span>] <span class="keyword">${</span>msg<span class="keyword">}</span>`</span>);
+  }
+}</code></pre>
+
+    <div class="info-box orange">
+        <p><strong>Aha moment:</strong> Request-scoped providers <em>force every consumer up the chain to also become request-scoped</em>. If <code>FlightsController</code> injects a request-scoped logger, the controller itself is also instantiated per request. This costs performance &mdash; every request now allocates and tears down an instance graph. Use sparingly.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x267B;&#xFE0F;</div>
+        Dev: &ldquo;I made everything REQUEST-scoped, just to be safe.&rdquo;<br>
+        Prod: <em>2x latency, OOM by lunchtime</em><br>
+        Dev: &ldquo;Hmm.&rdquo;<br>
+        <em>DEFAULT is default for a reason. Singletons are cheap, instances are not.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: MODULES DEEP DIVE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Modules Deep Dive</h2>
+
+    <p>Every NestJS app has at least one module &mdash; the root <code>AppModule</code>. Real apps have many: <code>FlightsModule</code>, <code>UsersModule</code>, <code>BookingsModule</code>, <code>AuthModule</code>. A module is a <em>terminal</em>: a self-contained area with its own gates, its own crew, and a clear list of which crew it shares with other terminals.</p>
+
+    <h3>The four properties of @Module</h3>
+
+    <pre><code><span class="decorator">@Module</span>({
+  imports:     [],   <span class="comment">// other modules whose exports we use</span>
+  controllers: [],   <span class="comment">// gate agents stationed in this terminal</span>
+  providers:   [],   <span class="comment">// crew available inside this terminal</span>
+  exports:     [],   <span class="comment">// crew this terminal lends to other terminals</span>
+})
+<span class="keyword">export class</span> FlightsModule {}</code></pre>
+
+    <table>
+        <tr><th>Property</th><th>What it does</th></tr>
+        <tr>
+            <td><code>controllers</code></td>
+            <td>Classes Nest should scan for routes. Listed here once, period.</td>
+        </tr>
+        <tr>
+            <td><code>providers</code></td>
+            <td>Classes the DI container can hand out <em>inside this module</em>. Private by default.</td>
+        </tr>
+        <tr>
+            <td><code>imports</code></td>
+            <td>Other modules whose <code>exports</code> you want to consume. Importing a module gives you access to whatever it has exported &mdash; nothing more.</td>
+        </tr>
+        <tr>
+            <td><code>exports</code></td>
+            <td>The subset of <em>your</em> providers that other modules are allowed to inject when they import you.</td>
+        </tr>
+    </table>
+
+    <h3>Encapsulation &mdash; the part that trips everyone up</h3>
+
+    <div class="story-box">
+        <p>Imagine Terminal 2 has a baggage handler named Steve. Terminal 3 needs Steve for an international transfer. Can Terminal 3 just grab Steve? <em>No.</em> Terminal 3 has to formally request Steve via the airport's inter-terminal agreement. And Terminal 2 has to <em>list Steve</em> on the &ldquo;people we lend out&rdquo; roster.</p>
+        <p>Same in NestJS. <code>FlightsModule</code> declares <code>FlightsService</code> in <code>providers</code>. By default, <code>FlightsService</code> is private &mdash; only the controllers and providers <em>inside</em> <code>FlightsModule</code> can inject it. If <code>BookingsModule</code> also needs <code>FlightsService</code>, two things must happen:</p>
+        <p>1. <code>FlightsModule</code> must <strong>export</strong> <code>FlightsService</code>.<br>
+        2. <code>BookingsModule</code> must <strong>import</strong> <code>FlightsModule</code>.</p>
+        <div class="tech-note">
+            <strong>Why bother?</strong> Without encapsulation, every provider would be a global. Any module could inject anything. You'd lose the &ldquo;wait, who depends on what?&rdquo; visibility that makes large NestJS apps refactorable. The cost is two extra lines per shared service. The benefit is a year-three codebase you can still navigate.
+        </div>
+    </div>
+
+    <h3>An end-to-end example</h3>
+
+    <pre><code><span class="comment">// flights.module.ts</span>
+<span class="decorator">@Module</span>({
+  controllers: [FlightsController],
+  providers:   [FlightsService],
+  exports:     [FlightsService],   <span class="comment">// 👈 lend FlightsService out</span>
+})
+<span class="keyword">export class</span> FlightsModule {}
+
+<span class="comment">// bookings.module.ts</span>
+<span class="decorator">@Module</span>({
+  imports:     [FlightsModule],    <span class="comment">// 👈 borrow it</span>
+  controllers: [BookingsController],
+  providers:   [BookingsService],
+})
+<span class="keyword">export class</span> BookingsModule {}
+
+<span class="comment">// bookings.service.ts</span>
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> BookingsService {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> flights: FlightsService) {} <span class="comment">// works</span>
+}</code></pre>
+
+    <p>Drop either the <code>exports</code> line or the <code>imports</code> line and Nest fails at startup with the famous error:</p>
+
+    <pre><code><span class="comment">Nest can't resolve dependencies of the BookingsService (?).
+Please make sure that the argument FlightsService at index [0]
+is available in the BookingsModule context.</span></code></pre>
+
+    <p>Memorize that error message. You will see it. Often.</p>
+
+    <h3>Feature modules vs the root module</h3>
+
+    <p>A <strong>feature module</strong> wraps one piece of functionality &mdash; flights, users, bookings. The <strong>root module</strong> (<code>AppModule</code>) wires the whole airport together by importing every feature module. Root modules typically have an empty <code>controllers</code> array and a small <code>providers</code> list (cross-cutting things like config). The work happens in feature modules.</p>
+
+    <pre><code><span class="comment">// app.module.ts &mdash; the root</span>
+<span class="decorator">@Module</span>({
+  imports: [FlightsModule, BookingsModule, UsersModule],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <h3>Shared modules</h3>
+
+    <p>If three feature modules all need the same utility, you don't import that utility three times &mdash; you put it in a <code>SharedModule</code> that exports it, and each feature module imports <code>SharedModule</code>. We'll do exactly this in the homework.</p>
+
+    <div class="info-box purple">
+        <p><strong>Why it matters at scale:</strong> Modules are the unit of <em>cognitive isolation</em>. When a new dev joins and you say &ldquo;go look at <code>FlightsModule</code>,&rdquo; they should be able to read it top to bottom without needing to know how <code>BookingsModule</code> works. The encapsulation makes that possible. It's the architectural payoff of writing a few extra lines.</p>
+    </div>
+
+    <p><strong>Answer to the recall question from Part 1:</strong> Only the service changes. The controller and the module stay identical &mdash; they don't know or care whether the data comes from Postgres, Redis, or the moon. That's the whole point.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: BUILDING FLIGHTSMODULE END-TO-END -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Building FlightsModule End-to-End</h2>
+
+    <p>Time to build the foundation we'll keep extending all course. Open your <code>airport-api</code> repo. We'll generate everything via the CLI &mdash; no hand-typing the boilerplate.</p>
+
+    <h3>Generate the files</h3>
+
+    <pre><code><span class="comment"># inside airport-api/</span>
+<span class="function">nest</span> generate module flights
+<span class="function">nest</span> g controller flights         <span class="comment"># shorthand</span>
+<span class="function">nest</span> g service flights</code></pre>
+
+    <p>Three commands. The CLI does five things:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4C2;</div>
+            <div class="layer-name" style="color: var(--green);">Creates files</div>
+            <div class="layer-desc"><code>flights.module.ts</code>, <code>flights.controller.ts</code>, <code>flights.service.ts</code> + a spec test for each</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--green);">Wires the module</div>
+            <div class="layer-desc">Adds <code>FlightsController</code> and <code>FlightsService</code> to <code>FlightsModule</code> automatically</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--green);">Updates AppModule</div>
+            <div class="layer-desc">Adds <code>FlightsModule</code> to <code>AppModule.imports</code> &mdash; you don't even have to touch <code>app.module.ts</code></div>
+        </div>
+    </div>
+
+    <h3>Project layout after generation</h3>
+
+    <div class="file-tree">
+airport-api/src/
+├── <span class="dir">flights/</span>
+│   ├── <span class="highlight">flights.module.ts</span>
+│   ├── <span class="highlight">flights.controller.ts</span>
+│   ├── <span class="highlight">flights.controller.spec.ts</span>
+│   ├── <span class="highlight">flights.service.ts</span>
+│   └── <span class="highlight">flights.service.spec.ts</span>
+├── <span class="file">app.controller.ts</span>
+├── <span class="file">app.module.ts</span>       <span class="comment">← FlightsModule auto-imported</span>
+├── <span class="file">app.service.ts</span>
+└── <span class="file">main.ts</span>
+    </div>
+
+    <h3>The service &mdash; in-memory store</h3>
+
+    <p>Open <code>flights.service.ts</code> and replace the body with this:</p>
+
+    <pre><code><span class="keyword">import</span> { Injectable, NotFoundException } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="keyword">export interface</span> Flight {
+  id: <span class="type">number</span>;
+  destination: <span class="type">string</span>;
+  gate: <span class="type">string</span>;
+  status: <span class="string">'scheduled'</span> | <span class="string">'boarding'</span> | <span class="string">'cancelled'</span>;
+}
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">private</span> flights: Flight[] = [
+    { id: <span class="string">1</span>, destination: <span class="string">'NYC'</span>, gate: <span class="string">'A12'</span>, status: <span class="string">'scheduled'</span> },
+    { id: <span class="string">2</span>, destination: <span class="string">'LON'</span>, gate: <span class="string">'B04'</span>, status: <span class="string">'boarding'</span> },
+  ];
+  <span class="keyword">private</span> nextId = <span class="string">3</span>;
+
+  <span class="function">findAll</span>(filter?: { destination?: <span class="type">string</span> }) {
+    <span class="keyword">if</span> (filter?.destination) {
+      <span class="keyword">return this</span>.flights.<span class="function">filter</span>(f =&gt; f.destination === filter.destination);
+    }
+    <span class="keyword">return this</span>.flights;
+  }
+
+  <span class="function">findOne</span>(id: <span class="type">number</span>) {
+    <span class="keyword">const</span> flight = <span class="keyword">this</span>.flights.<span class="function">find</span>(f =&gt; f.id === id);
+    <span class="keyword">if</span> (!flight) <span class="keyword">throw new</span> <span class="function">NotFoundException</span>(<span class="string">`Flight <span class="keyword">${</span>id<span class="keyword">}</span> not found`</span>);
+    <span class="keyword">return</span> flight;
+  }
+
+  <span class="function">create</span>(input: { destination: <span class="type">string</span>; gate: <span class="type">string</span> }) {
+    <span class="keyword">const</span> flight: Flight = {
+      id: <span class="keyword">this</span>.nextId++,
+      destination: input.destination,
+      gate: input.gate,
+      status: <span class="string">'scheduled'</span>,
+    };
+    <span class="keyword">this</span>.flights.<span class="function">push</span>(flight);
+    <span class="keyword">return</span> flight;
+  }
+
+  <span class="function">update</span>(id: <span class="type">number</span>, patch: Partial&lt;Flight&gt;) {
+    <span class="keyword">const</span> flight = <span class="keyword">this</span>.<span class="function">findOne</span>(id);
+    Object.<span class="function">assign</span>(flight, patch);
+    <span class="keyword">return</span> flight;
+  }
+
+  <span class="function">remove</span>(id: <span class="type">number</span>) {
+    <span class="keyword">const</span> idx = <span class="keyword">this</span>.flights.<span class="function">findIndex</span>(f =&gt; f.id === id);
+    <span class="keyword">if</span> (idx === -<span class="string">1</span>) <span class="keyword">throw new</span> <span class="function">NotFoundException</span>(<span class="string">`Flight <span class="keyword">${</span>id<span class="keyword">}</span> not found`</span>);
+    <span class="keyword">this</span>.flights.<span class="function">splice</span>(idx, <span class="string">1</span>);
+  }
+}</code></pre>
+
+    <p>An in-memory array is fine for now. Lesson 4 swaps it for a real database without changing a line of the controller.</p>
+
+    <h3>The controller &mdash; full CRUD</h3>
+
+    <p>Now <code>flights.controller.ts</code>. Use the controller from Part 2 verbatim. Save. Nest reloads. You should see something like this in the terminal:</p>
+
+    <pre><code><span class="comment">[Nest] LOG [RoutesResolver] FlightsController {/flights}:
+[Nest] LOG [RouterExplorer] Mapped {/flights, GET}
+[Nest] LOG [RouterExplorer] Mapped {/flights/:id, GET}
+[Nest] LOG [RouterExplorer] Mapped {/flights, POST}
+[Nest] LOG [RouterExplorer] Mapped {/flights/:id, PATCH}
+[Nest] LOG [RouterExplorer] Mapped {/flights/:id, DELETE}</span></code></pre>
+
+    <h3>Take it for a spin</h3>
+
+    <pre><code><span class="comment"># list all</span>
+<span class="function">curl</span> http://localhost:3000/flights
+
+<span class="comment"># filter</span>
+<span class="function">curl</span> <span class="string">'http://localhost:3000/flights?destination=NYC'</span>
+
+<span class="comment"># create</span>
+<span class="function">curl</span> -X POST http://localhost:3000/flights \
+  -H <span class="string">'Content-Type: application/json'</span> \
+  -d <span class="string">'{"destination":"TYO","gate":"C07"}'</span>
+
+<span class="comment"># patch</span>
+<span class="function">curl</span> -X PATCH http://localhost:3000/flights/1 \
+  -H <span class="string">'Content-Type: application/json'</span> \
+  -d <span class="string">'{"gate":"A99"}'</span>
+
+<span class="comment"># delete</span>
+<span class="function">curl</span> -X DELETE http://localhost:3000/flights/1
+<span class="comment"># → 204 No Content</span></code></pre>
+
+    <div class="info-box green">
+        <p><strong>You just shipped a real CRUD API.</strong> Five endpoints, in-memory persistence, validated path params, and proper status codes. No <code>app.use(express.json())</code>, no manual route registration, no &ldquo;wait, where do I put this?&rdquo;. The framework took care of every plumbing decision.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test</div>
+        <div class="recall-question">Without looking at the code: name the four properties of <code>@Module({...})</code> and what each does in one phrase.</div>
+        <div class="recall-hint">imports / controllers / providers / exports. If you can describe each in your own words, you're ready for Part 6.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: COMMON PITFALLS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Common Pitfalls</h2>
+
+    <p>Three errors you <em>will</em> hit at some point. Recognize them and you'll fix them in seconds. Don't recognize them and you'll lose an afternoon.</p>
+
+    <h3>Pitfall 1: Forgetting to add a provider</h3>
+
+    <p>You created <code>FlightsService</code>, you injected it into <code>FlightsController</code>, but you forgot to list it in <code>FlightsModule.providers</code>. (Usually because you wrote the file by hand instead of using the CLI.)</p>
+
+    <div class="info-box red">
+        <p><strong>Error you'll see at startup:</strong></p>
+        <pre style="margin-top: 8px;"><code>Nest can't resolve dependencies of the FlightsController (?).
+Please make sure that the argument FlightsService at index [0]
+is available in the FlightsModule context.</code></pre>
+        <p style="margin-top: 8px;"><strong>Fix:</strong> add <code>FlightsService</code> to <code>providers: [...]</code> in <code>flights.module.ts</code>.</p>
+    </div>
+
+    <h3>Pitfall 2: Forgetting to export a shared provider</h3>
+
+    <p>Module A's service injects Module B's service. You imported Module B in Module A. But you forgot to <code>exports</code> the service from Module B.</p>
+
+    <div class="info-box red">
+        <p><strong>Error:</strong> the same &ldquo;Nest can't resolve dependencies&rdquo; message, but this time the missing thing is in another module's namespace. The fix is on the <em>providing</em> side, not the consuming side.</p>
+        <p style="margin-top: 8px;"><strong>Fix:</strong> add the service to <code>exports: [...]</code> in the module that owns it.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F50D;</div>
+        Dev: &ldquo;I imported the module! Why doesn't it work?&rdquo;<br>
+        Nest: &ldquo;Module B never said you could have it.&rdquo;<br>
+        Dev: &ldquo;But I imported it!&rdquo;<br>
+        Nest: &ldquo;Importing is the request. Exporting is the permission.&rdquo;<br>
+        <em>Borrowing a library book requires both you walking in <em>and</em> the library being open.</em>
+    </div>
+
+    <h3>Pitfall 3: Circular dependency (preview)</h3>
+
+    <p>Module A imports Module B. Module B imports Module A. Now Nest can't decide which to instantiate first. Cue startup explosion.</p>
+
+    <pre><code><span class="comment">Error: Nest cannot create the module instance. Often, this is
+because of a circular dependency between modules.</span></code></pre>
+
+    <p>NestJS provides <code>forwardRef()</code> as a band-aid:</p>
+
+    <pre><code><span class="decorator">@Module</span>({
+  imports: [<span class="function">forwardRef</span>(() =&gt; UsersModule)],
+})
+<span class="keyword">export class</span> AuthModule {}</code></pre>
+
+    <p>It works. But the <em>better</em> fix is almost always to extract the shared piece into a third module that both depend on. We'll cover this properly in Lesson 5 when authentication forces the issue.</p>
+
+    <div class="info-box orange">
+        <p><strong>Heuristic:</strong> if you reach for <code>forwardRef()</code>, stop. Ask: &ldquo;is there a third concept hiding here that should be its own module?&rdquo; The answer is yes about 80% of the time.</p>
+    </div>
+
+    <h3>Pitfall 4 (bonus): Using new() instead of injection</h3>
+
+    <pre><code><span class="comment">// ❌ DON'T</span>
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="keyword">export class</span> FlightsController {
+  <span class="keyword">private</span> service = <span class="keyword">new</span> <span class="function">FlightsService</span>(); <span class="comment">// 🚨</span>
+
+  <span class="decorator">@Get</span>()
+  <span class="function">findAll</span>() { <span class="keyword">return this</span>.service.<span class="function">findAll</span>(); }
+}</code></pre>
+
+    <p>This compiles. It even appears to work. But you've completely bypassed the DI container: this <code>FlightsService</code> is a separate instance from the one Nest knows about. If anything else holds state in the service (and eventually something will), you've quietly created a split brain.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        Dev: &ldquo;The cache works on read but doesn't update on write &mdash; weird?&rdquo;<br>
+        <em>Three hours later</em>: it turns out the &ldquo;read&rdquo; instance was the DI singleton, the &ldquo;write&rdquo; instance was a <code>new ThingService()</code> someone snuck in.<br>
+        <em>Singletons are only singletons if you let the framework manage them.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>What you can do now that you couldn't an hour ago:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F477;</div>
+            <div class="layer-name" style="color: var(--blue);">Controllers</div>
+            <div class="layer-desc">Build a route handler with <code>@Get/@Post/@Patch/@Delete</code> and pull data from <code>@Param</code>, <code>@Query</code>, <code>@Body</code>, <code>@Headers</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F6E0;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">Providers</div>
+            <div class="layer-desc">Annotate a class with <code>@Injectable</code>, inject it via constructor, choose a scope when (rarely) you need to.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F6EB;</div>
+            <div class="layer-name" style="color: var(--purple);">Modules</div>
+            <div class="layer-desc">Wire <code>imports / controllers / providers / exports</code> &mdash; the four-line contract that defines a feature.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--orange);">FlightsModule</div>
+            <div class="layer-desc">Generated, wired, and serving full CRUD on <code>/flights</code> &mdash; the foundation we'll extend in every lesson going forward.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 3:</strong> the Request Pipeline. Middleware, Guards, Interceptors, Pipes, and Exception Filters &mdash; the five layers a request passes through before and after your handler. We'll see why <code>ParseIntPipe</code> works, where to put auth, and how to globally format every error response.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Generate a UsersModule with full in-memory CRUD</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Run <code>nest g module users</code>, <code>nest g controller users</code>, <code>nest g service users</code></li>
+                    <li>Endpoints: <code>GET /users</code>, <code>POST /users</code>, <code>GET /users/:id</code>, <code>DELETE /users/:id</code></li>
+                    <li>User shape: <code>{ id: number, name: string, email: string }</code></li>
+                    <li>Use an in-memory array, exactly like the FlightsService example</li>
+                    <li>Take a <strong>screenshot</strong> showing both <code>POST /users</code> creating a user and <code>GET /users</code> returning the array including the new one (Postman/Insomnia/curl &mdash; your choice)</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Push to your existing repo</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Commit your changes to the <code>nestjs-course-yourname</code> repo from Lesson 1</li>
+                    <li>Submit the link to the commit (or a PR if you used a feature branch)</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Quick answer: why not <code>new UsersService()</code>?</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 2&ndash;3 sentences: why doesn't the controller create its service with <code>new UsersService()</code> directly? Use the airport analogy.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Read about provider scopes</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Read the NestJS docs page on <a href="https://docs.nestjs.com/fundamentals/injection-scopes" style="color: var(--blue);">Injection Scopes</a>. Then answer in a few sentences: when would you reach for <code>Scope.REQUEST</code>? Give one realistic backend scenario where DEFAULT (singleton) genuinely doesn't work.</p>
+                <p style="font-size: 14px; color: var(--gray-500);">Submit as text.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Build a SharedModule</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Create a <code>SharedModule</code> that exposes a tiny <code>UtilsService</code> (with one method &mdash; e.g. <code>generateId()</code> or <code>formatTimestamp(date)</code>). Import <code>SharedModule</code> into both <code>FlightsModule</code> and <code>UsersModule</code>, and call <code>UtilsService</code> from both their services. Take a <strong>screenshot</strong> showing both endpoints returning data that uses the shared utility.</p>
+                <p style="font-size: 14px; color: var(--gray-500);">Hint: <code>nest g module shared</code> + <code>nest g service shared/utils</code>. Don't forget <code>exports: [UtilsService]</code> in <code>SharedModule</code>.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 2 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: The Request Pipeline &mdash; Middleware, Guards, Interceptors, Pipes, Filters</p>
+    </div>
+
+</div>
+
+</body>
+</html>

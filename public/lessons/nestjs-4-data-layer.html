@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 4</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 4 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">The Data Layer &mdash; Databases, the repository pattern, migrations, seeding</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand why an ORM is non-negotiable for any non-trivial API</li>
+            <li>Set up PostgreSQL locally and connect Prisma to it</li>
+            <li>Define a schema, run migrations, and generate a typed client</li>
+            <li>Wrap PrismaClient in a NestJS-native PrismaService and inject it into your features</li>
+            <li>Replace the in-memory FlightsService from Lesson 2 with real persistence</li>
+            <li>Know when you'd reach for TypeORM instead</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <div class="info-box blue">
+        <p><strong>Quick recap of Lessons 1&ndash;3:</strong> You scaffolded an <code>airport-api</code> project (L1), built a <code>FlightsModule</code> with controllers and services backed by an in-memory array (L2), and walked through the request pipeline &mdash; middleware, guards, pipes, interceptors, exception filters (L3). Today, that in-memory array goes away. Restart the server and your flights vanish? Not anymore.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: FROM MEMORY TO DATABASE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: From Memory to Database</h2>
+
+    <p>Open the <code>FlightsService</code> you built in Lesson 2. Somewhere in there is a line that looks like this:</p>
+
+    <pre><code><span class="keyword">private</span> flights: Flight[] = [];</code></pre>
+
+    <p>That's a Node.js array. It lives in the process's memory. The moment you stop the server &mdash; or the server crashes, or you deploy a new version, or your laptop reboots &mdash; every flight you ever created is gone. Forever. Unrecoverable.</p>
+
+    <p>This is fine for a demo. It is catastrophic for anything real. The first thing every production API needs is a place to put data that <em>survives</em> the process.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4A5;</div>
+        Junior: &ldquo;The flights endpoint works perfectly in dev!&rdquo;<br>
+        Senior: &ldquo;Cool. Restart the server.&rdquo;<br>
+        Junior: &ldquo;...okay, restarted.&rdquo;<br>
+        Senior: &ldquo;Now hit GET /flights.&rdquo;<br>
+        Junior: &ldquo;It returns an empty array. Why is it empty?&rdquo;<br>
+        <em>Because RAM is not a database. Welcome to backend.</em>
+    </div>
+
+    <h3>What &ldquo;persistence&rdquo; actually means</h3>
+
+    <p>A database is a separate process &mdash; usually on a separate machine &mdash; that holds your data on disk and gives you a network protocol to query it. Your Node.js app talks to it over TCP. When your app restarts, the database doesn't care. It just sits there, holding everything.</p>
+
+    <p>The most common database for application backends is PostgreSQL. It's open source, battle-tested, free, and supports basically every feature you'll ever need. Throughout this course, we'll use Postgres. The lessons translate directly to MySQL, SQLite, or any other SQL database &mdash; the ORM hides the differences.</p>
+
+    <div class="story-box">
+        <p>Back to the airport. Every flight, every passenger, every gate assignment, every baggage tag &mdash; all of that has to be written down somewhere that survives shift changes, power outages, and the occasional renovation. That somewhere is the airport's <strong>central records archive</strong>.</p>
+        <p>The archive is its own building. Has its own staff. Has its own filing system. Gate agents don't walk into the archive and rummage through cabinets &mdash; that would be slow, error-prone, and probably illegal. Instead, there's a <strong>records clerk</strong> who knows exactly how to file something, how to retrieve it, how to update it without losing the rest of the file. Gate agents just say "give me passenger X" and the clerk hands them the right folder.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Database = the archive (PostgreSQL, the building that holds everything). ORM = the records clerk (Prisma, who knows how to file and retrieve). Schema = the filing system itself (which cabinet holds what). Migration = renovating the cabinets without losing the files.
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before reading on</div>
+        <div class="recall-question">Without an ORM, your service would have to write SQL strings by hand &mdash; something like <code>SELECT * FROM flights WHERE id = $1</code>. Name two things that can go wrong with this approach. (Hint: think about what happens when a junior dev names a column wrong, or when the request body has an apostrophe in it.)</div>
+        <div class="recall-hint">Part 2 will list more reasons. But the two you came up with are probably the top two.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: WHY YOU NEED AN ORM -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Why You Need an ORM</h2>
+
+    <p>An ORM &mdash; Object-Relational Mapper &mdash; is a library that turns SQL queries into method calls and rows into typed objects. Instead of writing strings of SQL, you write TypeScript:</p>
+
+    <pre><code><span class="comment">// Without an ORM (using node-postgres directly)</span>
+<span class="keyword">const</span> result = <span class="keyword">await</span> client.<span class="function">query</span>(
+  <span class="string">'SELECT * FROM flights WHERE destination = $1 AND gate = $2'</span>,
+  [destination, gate]
+);
+<span class="keyword">const</span> flights = result.rows; <span class="comment">// any[]. No types. Welcome to runtime errors.</span>
+
+<span class="comment">// With Prisma</span>
+<span class="keyword">const</span> flights = <span class="keyword">await</span> prisma.flight.<span class="function">findMany</span>({
+  where: { destination, gate },
+}); <span class="comment">// Flight[] — fully typed, autocomplete, compile-time check</span></code></pre>
+
+    <h3>The pain of raw SQL, in detail</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F480;</div>
+            <div class="card-title" style="color: var(--red);">Raw SQL</div>
+            <div class="card-subtitle" style="color: var(--red);">Strings everywhere</div>
+            <div class="card-desc">Typos surface at runtime. Column renames break code silently. SQL injection is one missed parameter away. Result rows are <code>any</code>. No autocomplete. No refactor support.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4D1;</div>
+            <div class="card-title" style="color: var(--green);">Prisma</div>
+            <div class="card-subtitle" style="color: var(--green);">Schema is the source of truth</div>
+            <div class="card-desc">One <code>schema.prisma</code> file generates a typed client. Column rename = compile error in every place that referenced it. Parameters are bound automatically &mdash; no injection. Autocomplete on every query.</div>
+        </div>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>Real-world horror story:</strong> A junior dev renamed <code>users.email</code> to <code>users.email_address</code> in a Postgres migration. The team was using raw SQL. Nothing crashed at startup. The login endpoint just silently returned 401 for every user for two hours, because the auth query referenced <code>email</code> which no longer existed. With Prisma, that rename would have been caught at <code>tsc</code> time.</p>
+    </div>
+
+    <h3>What an ORM actually does for you</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4D0;</div>
+            <div class="layer-name" style="color: var(--blue);">Type safety</div>
+            <div class="layer-desc">Schema → generated types. Every query result is shaped. <code>flight.destinaton</code> won't compile.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--blue);">Parameter binding</div>
+            <div class="layer-desc">No string concatenation. SQL injection is impossible by construction.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F500;</div>
+            <div class="layer-name" style="color: var(--blue);">Migrations</div>
+            <div class="layer-desc">Schema changes are diffed and turned into reversible SQL files. No more "did anyone run this on staging?"</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--blue);">Relations</div>
+            <div class="layer-desc">Joins become <code>include: { airline: true }</code>. The result is correctly typed as Flight & { airline: Airline }.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--blue);">Query introspection</div>
+            <div class="layer-desc">Log every query Prisma generates. Spot N+1 problems early. Tune indexes with confidence.</div>
+        </div>
+    </div>
+
+    <h3>Which ORM &mdash; the NestJS landscape</h3>
+
+    <p>NestJS is ORM-agnostic. The framework just gives you DI; what you put inside an <code>@Injectable()</code> service is your choice. Three serious options:</p>
+
+    <table>
+        <tr>
+            <th>ORM</th>
+            <th>Style</th>
+            <th>When you'd pick it</th>
+        </tr>
+        <tr>
+            <td><strong>Prisma</strong></td>
+            <td>Schema-first, generated client</td>
+            <td>You want maximum type safety, minimum boilerplate, and great DX. Default choice for new projects in 2026.</td>
+        </tr>
+        <tr>
+            <td><strong>TypeORM</strong></td>
+            <td>Decorator-based entities, ActiveRecord or DataMapper</td>
+            <td>You like Java/Spring style. Heavy use of inheritance. Need niche DB features Prisma doesn't expose yet.</td>
+        </tr>
+        <tr>
+            <td><strong>MikroORM</strong></td>
+            <td>Identity Map / Unit of Work (Hibernate-style)</td>
+            <td>You're coming from Doctrine/Hibernate and want that exact mental model. Less common.</td>
+        </tr>
+    </table>
+
+    <p>This lesson uses <strong>Prisma</strong>. It's what most new NestJS projects pick today, and it's what you'll see in 9 out of 10 NestJS job postings. We'll touch TypeORM at the end so you recognise it.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DD;</div>
+        Architect: &ldquo;I don't trust ORMs. I'll just write raw SQL.&rdquo;<br>
+        *Six months later, after the third SQL injection report from security*<br>
+        Architect: &ldquo;...okay, but I'll write a thin wrapper around <code>pg</code>.&rdquo;<br>
+        *Three months later, the wrapper has 800 lines, no tests, and one person on the team understands it*<br>
+        <em>You didn't avoid the ORM. You just wrote a worse one with no documentation.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: SETTING UP PRISMA -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Setting Up Prisma</h2>
+
+    <p>Three commands and one config file. That's the whole setup.</p>
+
+    <h3>Step 1: Get a Postgres running</h3>
+
+    <p>The fastest way to get Postgres on your machine is Docker. Drop this <code>docker-compose.yml</code> at the root of <code>airport-api</code>:</p>
+
+    <pre><code><span class="comment"># docker-compose.yml</span>
+<span class="keyword">version</span>: <span class="string">'3.9'</span>
+<span class="keyword">services</span>:
+  <span class="keyword">db</span>:
+    <span class="keyword">image</span>: <span class="string">postgres:16-alpine</span>
+    <span class="keyword">restart</span>: <span class="string">unless-stopped</span>
+    <span class="keyword">environment</span>:
+      <span class="keyword">POSTGRES_USER</span>: <span class="string">airport</span>
+      <span class="keyword">POSTGRES_PASSWORD</span>: <span class="string">airport</span>
+      <span class="keyword">POSTGRES_DB</span>: <span class="string">airport</span>
+    <span class="keyword">ports</span>:
+      <span class="keyword">-</span> <span class="string">'5432:5432'</span>
+    <span class="keyword">volumes</span>:
+      <span class="keyword">-</span> <span class="string">db-data:/var/lib/postgresql/data</span>
+<span class="keyword">volumes</span>:
+  <span class="keyword">db-data</span>:</code></pre>
+
+    <pre><code>docker compose up -d
+<span class="comment"># → postgres listening on localhost:5432</span></code></pre>
+
+    <div class="info-box green">
+        <p><strong>Don't have Docker?</strong> <a href="https://postgresapp.com/" style="color: var(--blue);">Postgres.app</a> on macOS, the official installer on Windows, or your distro's package manager on Linux all work. The connection URL changes; everything else in this lesson is identical.</p>
+    </div>
+
+    <h3>Step 2: Install Prisma</h3>
+
+    <pre><code>npm i -D prisma
+npm i @prisma/client
+
+<span class="comment"># scaffold prisma/ directory and a .env file</span>
+npx prisma init</code></pre>
+
+    <p><code>npx prisma init</code> creates two things:</p>
+
+    <div class="file-tree">
+airport-api/
+├── <span class="dir">prisma/</span>
+│   └── <span class="highlight">schema.prisma</span>      <span class="comment">← your schema lives here</span>
+├── <span class="file">.env</span>                  <span class="comment">← DATABASE_URL goes here</span>
+└── <span class="file">...</span>
+    </div>
+
+    <p>Open <code>.env</code> and set:</p>
+
+    <pre><code><span class="keyword">DATABASE_URL</span>=<span class="string">"postgresql://airport:airport@localhost:5432/airport?schema=public"</span></code></pre>
+
+    <h3>Step 3: Define the schema</h3>
+
+    <p>Open <code>prisma/schema.prisma</code> and replace its contents with this:</p>
+
+    <pre><code><span class="comment">// prisma/schema.prisma</span>
+<span class="keyword">generator</span> client {
+  provider = <span class="string">"prisma-client-js"</span>
+}
+
+<span class="keyword">datasource</span> db {
+  provider = <span class="string">"postgresql"</span>
+  url      = env(<span class="string">"DATABASE_URL"</span>)
+}
+
+<span class="keyword">model</span> Airport {
+  id      <span class="type">Int</span>      <span class="decorator">@id @default(autoincrement())</span>
+  code    <span class="type">String</span>   <span class="decorator">@unique</span> <span class="comment">// JFK, LAX, SFO</span>
+  name    <span class="type">String</span>
+  city    <span class="type">String</span>
+  country <span class="type">String</span>
+  flights <span class="type">Flight[]</span>          <span class="comment">// reverse relation</span>
+}
+
+<span class="keyword">model</span> Flight {
+  id          <span class="type">Int</span>      <span class="decorator">@id @default(autoincrement())</span>
+  number      <span class="type">String</span>   <span class="decorator">@unique</span>           <span class="comment">// "BA178"</span>
+  destination <span class="type">String</span>
+  gate        <span class="type">String</span>?
+  departsAt   <span class="type">DateTime</span>
+  airportId   <span class="type">Int</span>
+  airport     <span class="type">Airport</span>  <span class="decorator">@relation</span>(fields: [airportId], references: [id])
+  createdAt   <span class="type">DateTime</span> <span class="decorator">@default(now())</span>
+  updatedAt   <span class="type">DateTime</span> <span class="decorator">@updatedAt</span>
+
+  <span class="decorator">@@index</span>([airportId])
+}</code></pre>
+
+    <p>The <code>schema.prisma</code> language is its own thing &mdash; not TypeScript, not SQL. It's declarative: you describe <em>what your data looks like</em> and Prisma generates everything else. Read it top to bottom: a Flight has an id, a number, a destination, an optional gate, departure time, and a foreign key to Airport. The <code>airport</code> field on Flight isn't a column &mdash; it's the typed relation Prisma will let you <code>include</code> in queries.</p>
+
+    <div class="info-box orange">
+        <p><strong>Notice:</strong> <code>gate String?</code> &mdash; the question mark means optional/nullable. <code>departsAt DateTime</code> with no question mark means required. This is the entire null-safety story in your data layer, in one character.</p>
+    </div>
+
+    <h3>Step 4: Run the first migration</h3>
+
+    <pre><code>npx prisma migrate dev --name init</code></pre>
+
+    <p>This single command does four things:</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Diffs your schema against the database</span>
+        <div class="step-desc">DB is empty, schema has 2 models. Diff = "create both tables."</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Generates a SQL migration file</span>
+        <div class="step-desc">Drops it in <code>prisma/migrations/&lt;timestamp&gt;_init/migration.sql</code>. Commit this to git.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Applies the migration</span>
+        <div class="step-desc">Runs the SQL against your local database. Tables now exist.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Regenerates the typed client</span>
+        <div class="step-desc">Updates <code>node_modules/.prisma/client</code> with the latest types. Your TypeScript now knows about Flight and Airport.</div>
+    </div>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">prisma migrate dev &mdash; what flows where</text>
+
+            <defs>
+                <marker id="arrG" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <rect x="40" y="60" width="180" height="80" rx="10" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="130" y="90" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">schema.prisma</text>
+            <text x="130" y="112" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">your source of truth</text>
+            <text x="130" y="128" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">(in git)</text>
+
+            <line x1="225" y1="100" x2="295" y2="100" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrG)"/>
+
+            <rect x="300" y="60" width="180" height="80" rx="10" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="390" y="90" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">migration.sql</text>
+            <text x="390" y="112" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">CREATE TABLE...</text>
+            <text x="390" y="128" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">(in git)</text>
+
+            <line x1="485" y1="100" x2="555" y2="100" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrG)"/>
+
+            <rect x="560" y="60" width="160" height="80" rx="10" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="640" y="90" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">PostgreSQL</text>
+            <text x="640" y="112" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">tables created</text>
+
+            <line x1="130" y1="145" x2="130" y2="200" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrG)"/>
+            <rect x="40" y="205" width="680" height="50" rx="10" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="380" y="226" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">@prisma/client regenerates</text>
+            <text x="380" y="244" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">your IDE now autocompletes prisma.flight.findMany(...) with full types</text>
+        </svg>
+        <div class="diagram-caption">One command, four side effects, all reversible. Schema → SQL → DB → typed client.</div>
+    </div>
+
+    <p>Open <code>prisma/migrations/&lt;timestamp&gt;_init/migration.sql</code>. You'll see the actual SQL Prisma generated &mdash; <code>CREATE TABLE</code>, foreign key constraints, indexes. <strong>This is the file your DBA reviews in a PR.</strong> Prisma is just a generator; the real artifact is SQL, in git, plain to read.</p>
+
+    <div class="info-box purple">
+        <p><strong>Why a migration file matters:</strong> In a team, "how does staging's schema differ from prod's?" is a question you must be able to answer instantly. With migration files in git, the answer is "diff the migrations folder between the two branches." Without them, the answer is "I don't know, let's pray."</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: PRISMASERVICE — THE NESTJS WAY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: PrismaService &mdash; The NestJS Way</h2>
+
+    <p>Prisma's docs show you this:</p>
+
+    <pre><code><span class="keyword">import</span> { PrismaClient } <span class="keyword">from</span> <span class="string">'@prisma/client'</span>;
+<span class="keyword">const</span> prisma = <span class="keyword">new</span> <span class="function">PrismaClient</span>();
+<span class="comment">// use prisma.flight.findMany() etc</span></code></pre>
+
+    <p>This works. <strong>Don't do it in a NestJS app.</strong> If you scatter <code>new PrismaClient()</code> across files, you create multiple connection pools, you have no lifecycle hooks, you can't mock it in tests, and you've broken the entire DI promise. Instead, wrap it in an injectable service exactly once.</p>
+
+    <h3>Generate the module and service</h3>
+
+    <pre><code>nest g module prisma
+nest g service prisma</code></pre>
+
+    <p>Open <code>src/prisma/prisma.service.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> { Injectable, OnModuleInit, OnModuleDestroy } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { PrismaClient } <span class="keyword">from</span> <span class="string">'@prisma/client'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> PrismaService
+  <span class="keyword">extends</span> PrismaClient
+  <span class="keyword">implements</span> OnModuleInit, OnModuleDestroy {
+
+  <span class="keyword">async</span> <span class="function">onModuleInit</span>(): <span class="type">Promise</span>&lt;<span class="type">void</span>&gt; {
+    <span class="keyword">await this</span>.<span class="function">$connect</span>();
+  }
+
+  <span class="keyword">async</span> <span class="function">onModuleDestroy</span>(): <span class="type">Promise</span>&lt;<span class="type">void</span>&gt; {
+    <span class="keyword">await this</span>.<span class="function">$disconnect</span>();
+  }
+}</code></pre>
+
+    <p>Three things to notice:</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title"><code>extends PrismaClient</code></span>
+        <div class="step-desc">Your service <em>is</em> a PrismaClient. Every method (<code>flight</code>, <code>airport</code>, <code>$transaction</code>) is inherited. You're not wrapping &mdash; you're labelling.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title"><code>OnModuleInit</code> &rarr; connect on startup</span>
+        <div class="step-desc">Nest calls <code>onModuleInit()</code> after the DI graph is built but before requests start flowing. Connection failures crash the app at startup &mdash; not at the first request.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title"><code>OnModuleDestroy</code> &rarr; clean shutdown</span>
+        <div class="step-desc">When Nest tears down (SIGTERM during a deploy, for example), connections close cleanly. No orphan connections piling up on Postgres.</div>
+    </div>
+
+    <p>Now <code>src/prisma/prisma.module.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { PrismaService } <span class="keyword">from</span> <span class="string">'./prisma.service'</span>;
+
+<span class="decorator">@Module</span>({
+  providers: [PrismaService],
+  exports: [PrismaService], <span class="comment">// ← critical: lets other modules inject it</span>
+})
+<span class="keyword">export class</span> PrismaModule {}</code></pre>
+
+    <p><code>exports</code> is what tells Nest "any module that imports PrismaModule can inject PrismaService." Forget it, and you'll get a "PrismaService is not in the current module's scope" error at startup.</p>
+
+    <h3>Wire it into AppModule</h3>
+
+    <pre><code><span class="comment">// src/app.module.ts</span>
+<span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { PrismaModule } <span class="keyword">from</span> <span class="string">'./prisma/prisma.module'</span>;
+<span class="keyword">import</span> { FlightsModule } <span class="keyword">from</span> <span class="string">'./flights/flights.module'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [PrismaModule, FlightsModule],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <div class="story-box">
+        <p>Back to the airport. Why don't gate agents each have their own private records clerk hidden under the desk? Because then ten gate agents would each be opening, holding, and closing their own connection to the archive at the same time &mdash; the archive's loading dock would jam, sessions would leak, and nobody would know who's actually talking to it.</p>
+        <p>Instead, the airport employs <strong>one</strong> records clerk per shift, available to every gate agent who needs a file. The clerk arrives before the first flight (<code>onModuleInit</code>), works for every agent that asks (<code>injection</code>), and clocks out when the airport closes (<code>onModuleDestroy</code>).</p>
+        <div class="tech-note">
+            <strong>That's the singleton pattern, expressed by NestJS DI.</strong> One PrismaClient instance, one connection pool, lifecycle managed by the framework, available to every service that asks for it.
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test</div>
+        <div class="recall-question">Without scrolling: 1) why does PrismaService implement <code>OnModuleInit</code> instead of just calling <code>$connect()</code> in the constructor? 2) why must we add <code>exports: [PrismaService]</code> to PrismaModule?</div>
+        <div class="recall-hint">Hint for #1: constructors are sync. <code>$connect()</code> is async. Hint for #2: NestJS DI is module-scoped.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: REPLACING THE IN-MEMORY STORE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Replacing the In-Memory Store</h2>
+
+    <p>Time to delete that array. Open <code>src/flights/flights.service.ts</code>. Here's the before:</p>
+
+    <pre><code><span class="comment">// BEFORE — Lesson 2's in-memory version</span>
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">private</span> flights: Flight[] = [];
+
+  <span class="function">findAll</span>() { <span class="keyword">return this</span>.flights; }
+  <span class="function">create</span>(dto: CreateFlightDto) {
+    <span class="keyword">const</span> flight = { id: Date.<span class="function">now</span>(), ...dto };
+    <span class="keyword">this</span>.flights.<span class="function">push</span>(flight);
+    <span class="keyword">return</span> flight;
+  }
+  <span class="comment">// ...</span>
+}</code></pre>
+
+    <p>And here's the after:</p>
+
+    <pre><code><span class="comment">// AFTER — Prisma-backed</span>
+<span class="keyword">import</span> { Injectable, NotFoundException } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { PrismaService } <span class="keyword">from</span> <span class="string">'../prisma/prisma.service'</span>;
+<span class="keyword">import</span> { CreateFlightDto, UpdateFlightDto } <span class="keyword">from</span> <span class="string">'./dto'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> prisma: PrismaService) {}
+
+  <span class="function">findAll</span>() {
+    <span class="keyword">return this</span>.prisma.flight.<span class="function">findMany</span>({
+      orderBy: { departsAt: <span class="string">'asc'</span> },
+    });
+  }
+
+  <span class="keyword">async</span> <span class="function">findOne</span>(id: <span class="type">number</span>) {
+    <span class="keyword">const</span> flight = <span class="keyword">await this</span>.prisma.flight.<span class="function">findUnique</span>({
+      where: { id },
+      include: { airport: <span class="keyword">true</span> },
+    });
+    <span class="keyword">if</span> (!flight) <span class="keyword">throw new</span> <span class="function">NotFoundException</span>(<span class="string">`Flight ${id} not found`</span>);
+    <span class="keyword">return</span> flight;
+  }
+
+  <span class="function">create</span>(dto: CreateFlightDto) {
+    <span class="keyword">return this</span>.prisma.flight.<span class="function">create</span>({ data: dto });
+  }
+
+  <span class="function">update</span>(id: <span class="type">number</span>, dto: UpdateFlightDto) {
+    <span class="keyword">return this</span>.prisma.flight.<span class="function">update</span>({
+      where: { id },
+      data: dto,
+    });
+  }
+
+  <span class="function">remove</span>(id: <span class="type">number</span>) {
+    <span class="keyword">return this</span>.prisma.flight.<span class="function">delete</span>({ where: { id } });
+  }
+}</code></pre>
+
+    <p>The constructor now takes <code>PrismaService</code>. Every method is one Prisma call. The whole class is shorter than the in-memory version was, and now your flights survive a restart.</p>
+
+    <h3>Don't forget to import PrismaModule</h3>
+
+    <p>Open <code>src/flights/flights.module.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { PrismaModule } <span class="keyword">from</span> <span class="string">'../prisma/prisma.module'</span>;
+<span class="keyword">import</span> { FlightsController } <span class="keyword">from</span> <span class="string">'./flights.controller'</span>;
+<span class="keyword">import</span> { FlightsService } <span class="keyword">from</span> <span class="string">'./flights.service'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [PrismaModule],     <span class="comment">// ← so we can inject PrismaService</span>
+  controllers: [FlightsController],
+  providers: [FlightsService],
+})
+<span class="keyword">export class</span> FlightsModule {}</code></pre>
+
+    <h3>The autocomplete payoff</h3>
+
+    <p>Hit <code>this.prisma.flight.</code> in your IDE. You'll see <code>findMany</code>, <code>findFirst</code>, <code>findUnique</code>, <code>create</code>, <code>createMany</code>, <code>update</code>, <code>upsert</code>, <code>delete</code>, <code>count</code>, <code>aggregate</code>, <code>groupBy</code>. Every argument is typed. <code>where</code> only accepts the columns Flight actually has. <code>data</code> requires the fields your schema marks as required.</p>
+
+    <p>This is what it means for the schema to be the source of truth: change <code>schema.prisma</code>, run <code>prisma migrate dev</code>, and every consumer of the wrong shape lights up red until you fix it.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F50D;</div>
+        Code reviewer: &ldquo;What if someone passes a column name that doesn't exist?&rdquo;<br>
+        You: &ldquo;Doesn't compile.&rdquo;<br>
+        Code reviewer: &ldquo;What if they typo the table name?&rdquo;<br>
+        You: &ldquo;Doesn't compile.&rdquo;<br>
+        Code reviewer: &ldquo;What if they forget a required field on create?&rdquo;<br>
+        You: &ldquo;Doesn't. Compile.&rdquo;<br>
+        <em>The compiler is now your QA. Free of charge. Always awake.</em>
+    </div>
+
+    <h3>Try it end-to-end</h3>
+
+    <pre><code><span class="comment"># Postgres up, app running</span>
+docker compose up -d
+npm run start:dev
+
+<span class="comment"># Create a flight</span>
+curl -X POST http://localhost:3000/flights \
+  -H <span class="string">"Content-Type: application/json"</span> \
+  -d <span class="string">'{"number":"BA178","destination":"LHR","departsAt":"2026-05-01T18:00:00Z","airportId":1}'</span>
+
+<span class="comment"># Restart the server, hit GET /flights — your data is still there.</span></code></pre>
+
+    <p>That last line is the whole point of this lesson.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F504;</div>
+        Junior: &ldquo;The server crashed and came back up.&rdquo;<br>
+        Senior: &ldquo;Are the flights still there?&rdquo;<br>
+        Junior: *runs GET /flights*<br>
+        Junior: &ldquo;...yeah. They're all there.&rdquo;<br>
+        Senior: &ldquo;Welcome to having a database.&rdquo;<br>
+        <em>The first time persistence "just works" through a crash, you understand what state actually means.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: MIGRATIONS & SEEDING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Migrations &amp; Seeding</h2>
+
+    <h3>The three migration commands</h3>
+
+    <table>
+        <tr>
+            <th>Command</th>
+            <th>When</th>
+            <th>What it does</th>
+        </tr>
+        <tr>
+            <td><code>prisma migrate dev</code></td>
+            <td>Local development</td>
+            <td>Creates a new migration file, applies it, regenerates the client. Will reset the DB if it detects drift.</td>
+        </tr>
+        <tr>
+            <td><code>prisma migrate deploy</code></td>
+            <td>Staging / production</td>
+            <td>Applies pending migrations only. Never generates new ones, never resets. Safe in CI/CD pipelines.</td>
+        </tr>
+        <tr>
+            <td><code>prisma db push</code></td>
+            <td>Prototyping only</td>
+            <td>Pushes the current schema directly without creating a migration file. <strong>Don't use in real codebases</strong> &mdash; you lose the audit trail.</td>
+        </tr>
+    </table>
+
+    <div class="info-box red">
+        <p><strong>Rule of thumb:</strong> if a teammate or a CI server will ever run this database, you need <code>migrate dev</code> + <code>migrate deploy</code>. The migration file is the contract. <code>db push</code> is for the first 30 minutes of a hackathon and nothing else.</p>
+    </div>
+
+    <h3>Seeding &mdash; sane defaults for local dev</h3>
+
+    <p>You don't want every developer to manually <code>POST /flights</code> ten times to have something to look at. Seed the DB instead. Create <code>prisma/seed.ts</code>:</p>
+
+    <pre><code><span class="keyword">import</span> { PrismaClient } <span class="keyword">from</span> <span class="string">'@prisma/client'</span>;
+<span class="keyword">const</span> prisma = <span class="keyword">new</span> <span class="function">PrismaClient</span>();
+
+<span class="keyword">async function</span> <span class="function">main</span>() {
+  <span class="keyword">const</span> jfk = <span class="keyword">await</span> prisma.airport.<span class="function">upsert</span>({
+    where: { code: <span class="string">'JFK'</span> },
+    update: {},
+    create: { code: <span class="string">'JFK'</span>, name: <span class="string">'John F. Kennedy'</span>, city: <span class="string">'New York'</span>, country: <span class="string">'USA'</span> },
+  });
+
+  <span class="keyword">await</span> prisma.flight.<span class="function">createMany</span>({
+    data: [
+      { number: <span class="string">'BA178'</span>, destination: <span class="string">'LHR'</span>, gate: <span class="string">'A12'</span>,
+        departsAt: <span class="keyword">new</span> Date(<span class="string">'2026-05-01T18:00:00Z'</span>), airportId: jfk.id },
+      { number: <span class="string">'AF007'</span>, destination: <span class="string">'CDG'</span>, gate: <span class="string">'B4'</span>,
+        departsAt: <span class="keyword">new</span> Date(<span class="string">'2026-05-01T20:30:00Z'</span>), airportId: jfk.id },
+    ],
+    skipDuplicates: <span class="keyword">true</span>,
+  });
+}
+
+<span class="function">main</span>().<span class="function">then</span>(() =&gt; prisma.<span class="function">$disconnect</span>());</code></pre>
+
+    <p>Wire it up in <code>package.json</code>:</p>
+
+    <pre><code><span class="string">"prisma"</span>: {
+  <span class="string">"seed"</span>: <span class="string">"ts-node prisma/seed.ts"</span>
+}</code></pre>
+
+    <p>Now <code>npx prisma db seed</code> populates a fresh DB with realistic data. <code>prisma migrate dev</code> auto-runs the seed when it resets the database. Onboarding a new dev becomes: <code>git clone &amp;&amp; docker compose up -d &amp;&amp; npm i &amp;&amp; npx prisma migrate dev &amp;&amp; npm start</code>.</p>
+
+    <div class="info-box green">
+        <p><strong>Seeding is also your test fixture.</strong> Same script, different DB URL, before each integration test. We'll come back to that in Lesson 9 (Testing).</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F331;</div>
+        New hire: &ldquo;The README says <code>npm i &amp;&amp; prisma migrate dev</code>. I ran both. The dashboard is empty.&rdquo;<br>
+        Senior: &ldquo;Did you seed?&rdquo;<br>
+        New hire: &ldquo;...the what?&rdquo;<br>
+        Senior: &ldquo;<code>npx prisma db seed</code>. Add it to onboarding docs. Send a PR.&rdquo;<br>
+        <em>"It works on my machine" is usually a missing seed command.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: TYPEORM IN 60 SECONDS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: TypeORM in 60 Seconds</h2>
+
+    <p>You'll meet TypeORM in older NestJS codebases. The mental model is different &mdash; entities are TypeScript classes decorated with <code>@Entity()</code>, columns are decorated with <code>@Column()</code>, and the ORM scans them at runtime.</p>
+
+    <pre><code><span class="comment">// flight.entity.ts (TypeORM style)</span>
+<span class="keyword">import</span> { Entity, Column, PrimaryGeneratedColumn } <span class="keyword">from</span> <span class="string">'typeorm'</span>;
+
+<span class="decorator">@Entity</span>()
+<span class="keyword">export class</span> Flight {
+  <span class="decorator">@PrimaryGeneratedColumn</span>()
+  id: <span class="type">number</span>;
+
+  <span class="decorator">@Column</span>({ unique: <span class="keyword">true</span> })
+  number: <span class="type">string</span>;
+
+  <span class="decorator">@Column</span>()
+  destination: <span class="type">string</span>;
+}</code></pre>
+
+    <pre><code><span class="comment">// flights.service.ts (TypeORM style)</span>
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> FlightsService {
+  <span class="keyword">constructor</span>(
+    <span class="decorator">@InjectRepository</span>(Flight) <span class="keyword">private</span> flightsRepo: Repository&lt;Flight&gt;,
+  ) {}
+
+  <span class="function">findAll</span>() { <span class="keyword">return this</span>.flightsRepo.<span class="function">find</span>(); }
+}</code></pre>
+
+    <h3>Prisma vs TypeORM &mdash; the honest comparison</h3>
+
+    <table>
+        <tr>
+            <th>Dimension</th>
+            <th>Prisma</th>
+            <th>TypeORM</th>
+        </tr>
+        <tr>
+            <td>Source of truth</td>
+            <td>schema.prisma file</td>
+            <td>TS classes with decorators</td>
+        </tr>
+        <tr>
+            <td>Type safety</td>
+            <td>Generated, exhaustive</td>
+            <td>Decent, leaks <code>any</code> in advanced queries</td>
+        </tr>
+        <tr>
+            <td>Migrations</td>
+            <td>Built-in, schema-diff based</td>
+            <td>Built-in, but you often write them by hand</td>
+        </tr>
+        <tr>
+            <td>Inheritance / polymorphism</td>
+            <td>Limited &mdash; not the goal</td>
+            <td>Strong &mdash; STI, table-per-class, etc.</td>
+        </tr>
+        <tr>
+            <td>Raw SQL escape hatch</td>
+            <td><code>$queryRaw</code>, well-typed</td>
+            <td><code>queryBuilder</code>, very expressive</td>
+        </tr>
+        <tr>
+            <td>Maturity in 2026</td>
+            <td>Default for new projects</td>
+            <td>Common in projects that started 2018&ndash;2022</td>
+        </tr>
+    </table>
+
+    <div class="info-box orange">
+        <p><strong>When to choose TypeORM:</strong> heavy class-inheritance domain models, you need its specific Postgres features (custom types, advanced query builder), or you're maintaining an existing TypeORM codebase. Otherwise, in 2026, default to Prisma.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DA;</div>
+            <div class="layer-name" style="color: var(--blue);">The archive</div>
+            <div class="layer-desc">Database = Postgres. ORM = the records clerk that knows how to file and retrieve.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F511;</div>
+            <div class="layer-name" style="color: var(--green);">The setup</div>
+            <div class="layer-desc"><code>npm i prisma</code>, <code>prisma init</code>, write schema, <code>prisma migrate dev</code>. Four commands, one config.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F9E9;</div>
+            <div class="layer-name" style="color: var(--purple);">The pattern</div>
+            <div class="layer-desc">PrismaService extends PrismaClient. <code>onModuleInit</code> connects, <code>onModuleDestroy</code> disconnects. Singleton via DI.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--orange);">The migration</div>
+            <div class="layer-desc">Schema diff &rarr; SQL file in git &rarr; applied. <code>migrate dev</code> locally, <code>migrate deploy</code> in CI.</div>
+        </div>
+        <div class="layer-item" style="background: #FEE2E2;">
+            <div class="layer-icon">&#x1F331;</div>
+            <div class="layer-name" style="color: var(--red);">The seed</div>
+            <div class="layer-desc">prisma/seed.ts gives every dev a sane local fixture. Same script doubles as test data.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 5:</strong> Now that data persists, anyone hitting <code>DELETE /flights/:id</code> can wipe your whole table. Time to bolt on auth. We'll do password hashing with bcrypt, JWT-based login, role-based access control, and the production security layer (Helmet, CORS, rate limiting).</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Set up Postgres + Prisma and run your first migration</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Get Postgres running locally (Docker compose, Postgres.app, or installer)</li>
+                    <li>Run <code>npx prisma init</code> in your <code>airport-api</code> project</li>
+                    <li>Define a <code>Flight</code> model in <code>schema.prisma</code> (use the one from Part 3)</li>
+                    <li>Run <code>npx prisma migrate dev --name init</code></li>
+                    <li>Open <code>prisma/migrations/&lt;timestamp&gt;_init/migration.sql</code></li>
+                    <li>Take a <strong>screenshot</strong> of the generated SQL file</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Replace the in-memory FlightsService with Prisma</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Generate <code>PrismaModule</code> + <code>PrismaService</code> as shown in Part 4</li>
+                    <li>Rewrite all CRUD methods of <code>FlightsService</code> to use Prisma</li>
+                    <li>Verify the data persists across server restarts</li>
+                    <li>Push to your <code>nestjs-course-yourname</code> repo</li>
+                    <li>Submit the commit/PR link</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Quick answer: why extend PrismaClient?</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 2&ndash;3 sentences: why does PrismaService extend PrismaClient instead of every service just doing <code>new PrismaClient()</code>?</li>
+                    <li>Use the airport analogy &mdash; think about who manages the records archive.</li>
+                    <li>Submit as text in the platform</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Add a relational model: Airline</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add an <code>Airline</code> model to your schema. Each <code>Flight</code> belongs to one Airline (foreign key). Run <code>prisma migrate dev --name add-airline</code>. Add a method <code>findAllByAirline(airlineId: number)</code> to <code>FlightsService</code> using Prisma's <code>where</code> clause and <code>include</code>. Hit the endpoint and screenshot the JSON response showing nested airline data.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Prisma vs TypeORM &mdash; when would you reach for TypeORM?</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Read the NestJS docs sections on TypeORM and Prisma. In <strong>3 bullets</strong>, list specific scenarios where you would actively prefer TypeORM over Prisma. Be concrete (not "TypeORM is more flexible" &mdash; flexible <em>how</em>, for what problem?). Submit as text.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 4 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Auth &amp; Security &mdash; Passport, JWT, Helmet, CORS</p>
+    </div>
+
+</div>
+
+</body>
+</html>
