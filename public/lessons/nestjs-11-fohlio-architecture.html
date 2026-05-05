@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 11 (Bonus)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .recap-card {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 13px;
+        }
+        .recap-card .recap-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--blue);
+            font-size: 12px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .recap-card.current {
+            background: var(--green-light);
+            border-color: var(--green);
+        }
+        .recap-card.current .recap-num {
+            color: var(--green);
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+            .recap-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 11 of 12 &mdash; Bonus</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Fohlio in the Wild &mdash; Part 1: Architecture, Data, Conventions</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this bonus lesson you will:</p>
+        <ul>
+            <li>Understand why <code>architecture.md</code> is treated as law, not suggestion</li>
+            <li>Know the canonical Module Convention every Fohlio feature follows</li>
+            <li>Translate Prisma habits to MikroORM v7 (the ORM we actually use)</li>
+            <li>Understand the Repository Pattern &mdash; why services never touch the ORM directly</li>
+            <li>Know how universal soft-delete works and where it bites</li>
+            <li>Read and write cursor-based pagination at production scale</li>
+            <li>Know when to reach past MikroORM into Kysely &mdash; and how</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- QUICK RECAP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Quick Recap: Lessons 1&ndash;10</h2>
+
+    <p>Before we open the production codebase, a fast pass over the textbook foundation. If any of these feel hazy, scroll back &mdash; the rest of this lesson assumes them.</p>
+
+    <div class="recap-grid">
+        <div class="recap-card"><span class="recap-num">L1</span> Why NestJS &mdash; spaghetti vs structure, the airport analogy</div>
+        <div class="recap-card"><span class="recap-num">L2</span> Modules, Controllers, Providers &mdash; the holy trinity</div>
+        <div class="recap-card"><span class="recap-num">L3</span> Request pipeline &mdash; pipes, guards, interceptors, filters</div>
+        <div class="recap-card"><span class="recap-num">L4</span> Data layer &mdash; entities, ORM, migrations (taught with Prisma)</div>
+        <div class="recap-card"><span class="recap-num">L5</span> Auth &amp; security &mdash; JWT, guards, password hashing</div>
+        <div class="recap-card"><span class="recap-num">L6</span> Validation &amp; DTOs &mdash; class-validator, class-transformer</div>
+        <div class="recap-card"><span class="recap-num">L7</span> APIs at scale &mdash; versioning, Swagger, error contracts</div>
+        <div class="recap-card"><span class="recap-num">L8</span> Async power &mdash; queues, schedulers, BullMQ</div>
+        <div class="recap-card"><span class="recap-num">L9</span> Microservices &mdash; transports, events, boundaries</div>
+        <div class="recap-card"><span class="recap-num">L10</span> Production-ready &mdash; testing, logging, observability</div>
+        <div class="recap-card current"><span class="recap-num">L11 (today)</span> Fohlio's production patterns: the architecture.md law, MikroORM, repositories, soft-delete, cursor pagination, Kysely escape hatch</div>
+    </div>
+
+    <p>You learned generic NestJS in 10 lessons. Now we open the door to the production codebase &mdash; <code>asuncion</code> &mdash; and show how Fohlio implements those concepts at scale, where conventions are written down and enforced, and where the textbook examples meet five years of real engineering pain.</p>
+
+    <div class="info-box blue">
+        <p><strong>The repo:</strong> <code>fohlio-spechub-backend/asuncion</code>. Keep it open in another tab while you read &mdash; every code excerpt below cites a real file path. Open it, find it, see the surrounding context. That is the lesson.</p>
+    </div>
+
+    <h3>New airport mappings for Lesson 11</h3>
+
+    <p>Same airport, four new signs:</p>
+
+    <table>
+        <tr>
+            <th>Airport</th>
+            <th>Fohlio backend</th>
+            <th>What it means</th>
+        </tr>
+        <tr>
+            <td>&#x1F4D6; Operations Manual</td>
+            <td><code>architecture.md</code></td>
+            <td>The written rules. MUST/NEVER language. Every engineer reads it before shipping.</td>
+        </tr>
+        <tr>
+            <td>&#x1F50D; Records Librarian</td>
+            <td><strong>Repository</strong></td>
+            <td>The only person allowed inside the archive. Services file requests; they never enter themselves.</td>
+        </tr>
+        <tr>
+            <td>&#x1F4DD; Records Clerk we hired</td>
+            <td><strong>MikroORM v7</strong></td>
+            <td>Lesson 4 used Prisma for teaching. Production runs MikroORM &mdash; same job, different paperwork.</td>
+        </tr>
+        <tr>
+            <td>&#x1F58B;&#xFE0F; "RETIRED" stamp</td>
+            <td><strong>Soft-delete</strong> (<code>deletedAt</code>)</td>
+            <td>Records never leave the archive. We stamp them retired and the default queries skip them.</td>
+        </tr>
+        <tr>
+            <td>&#x27A1;&#xFE0F; "Next 50 after flight X"</td>
+            <td><strong>Cursor pagination</strong></td>
+            <td>Faster than "page 50" once the archive is big. The whole archive uses it.</td>
+        </tr>
+        <tr>
+            <td>&#x1F393; Senior Researcher</td>
+            <td><strong>Kysely</strong></td>
+            <td>For the 10% of queries the records clerk can't express cleanly. Escape hatch &mdash; still files through the librarian.</td>
+        </tr>
+    </table>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: architecture.md is Law -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: architecture.md is Law, Not Suggestion</h2>
+
+    <p>When one engineer writes a service, "convention" lives in their head. When five engineers write one codebase, "convention" without enforcement becomes "everyone's preference" &mdash; which is the same thing as "no convention at all." Six months in, you have three different folder layouts, four ways to throw an error, and two ORMs.</p>
+
+    <p>Fohlio's solution: a 1,800-line document, <code>asuncion/architecture.md</code>, that codifies <em>how</em> we build. It uses MUST and NEVER language. PRs that violate it get rejected. New rules apply to the PR that adds them &mdash; you cannot merge "I'll fix it later."</p>
+
+    <div class="story-box">
+        <p>Every airport you've ever flown through looks self-organizing. Gate agents wave you through; ground crew appears with the bags; flights leave on time. The illusion is that everyone <em>knows what to do</em> intuitively.</p>
+        <p>They don't. Behind the desks, in every airline office, sits a thick black binder labeled <strong>Operations Manual</strong>. Every action &mdash; how to gate-check a bag, how to reroute a passenger, what the fueling sequence is &mdash; is written down. New hires read it. Senior staff still consult it. Audits check against it. The intuition you see is years of compliance with a written rule.</p>
+        <p>That binder is <code>architecture.md</code>. The rules look bureaucratic until you imagine the airport without them.</p>
+        <div class="tech-note">
+            <strong>Where to find it:</strong> <code>asuncion/architecture.md</code> at the repo root. It's referenced from <code>AGENTS.md</code> and <code>CLAUDE.md</code>, both of which exist precisely so AI tools (and humans) can't claim they didn't see the rules.
+        </div>
+    </div>
+
+    <h3>The actual MUST/NEVER language</h3>
+
+    <p>Three excerpts, copied from the real file. Notice the tone:</p>
+
+    <pre><code><span class="comment">// architecture.md — Repository Pattern (line 235)</span>
+- All DB query construction MUST live in repository files
+- Services MUST NOT construct ORM queries — delegate to repositories
+- Services MUST NOT call <span class="function">em.persist()</span>, <span class="function">em.flush()</span>, or <span class="function">em.transactional()</span> directly
+- All persistence MUST go through repository methods
+
+<span class="comment">// architecture.md — Pagination (line 1191)</span>
+- Unbounded or user-growable collections MUST use cursor-based pagination
+- NEVER use offset/page-number pagination for tenant-facing product surfaces
+  without explicit human approval
+
+<span class="comment">// architecture.md — Soft Delete Lifecycle (line 1275)</span>
+- User-facing entities MUST use soft delete by default
+- Soft-deleted records MUST be excluded by default via MikroORM <span class="decorator">@Filter</span>
+- Unique constraints on soft-deletable entities MUST use partial indexes
+  (<span class="string">WHERE deleted_at IS NULL</span>) so re-creation after deletion is possible</code></pre>
+
+    <p>Notice what's <em>not</em> here: words like "should consider" or "we generally prefer." MUST is binary. Either the code complies or it doesn't.</p>
+
+    <h3>The Module Convention</h3>
+
+    <p>Every feature module follows the same canonical layout. Open any module in <code>asuncion/src/modules/</code> and you see the same shape. This is the law transcribed from <code>architecture.md</code> &gt; Module Convention:</p>
+
+    <div class="file-tree">
+src/modules/users/
+├── <span class="dir">entities/</span>            <span class="comment">← MikroORM entities</span>
+│   ├── <span class="highlight">user.entity.ts</span>
+│   └── <span class="file">profile.entity.ts</span>
+├── <span class="dir">dto/</span>                 <span class="comment">← request/response DTOs (class-validator)</span>
+│   ├── <span class="file">create-user.dto.ts</span>
+│   ├── <span class="file">update-profile.dto.ts</span>
+│   └── <span class="file">user-response.dto.ts</span>
+├── <span class="dir">repositories/</span>        <span class="comment">← DB query construction lives here</span>
+│   └── <span class="highlight">user.repository.ts</span>
+├── <span class="dir">assemblers/</span>          <span class="comment">← entity → DTO transformers (static)</span>
+├── <span class="dir">commands/  queries/  handlers/</span>  <span class="comment">← optional, only for CQRS</span>
+├── <span class="highlight">users.controller.ts</span>  <span class="comment">← exactly one primary controller</span>
+├── <span class="highlight">users.service.ts</span>     <span class="comment">← exactly one primary service</span>
+└── <span class="highlight">users.module.ts</span>
+    </div>
+
+    <p>This is a real listing of <code>asuncion/src/modules/users/</code>. The same shape exists in <code>auth/</code>, <code>workspaces/</code>, <code>projects/</code>, <code>contacts/</code>, and every other module in the repo. When a new engineer joins and is asked "where does the password reset logic live?", the answer is no longer "uhh, try grep" &mdash; it's "auth module, service file, look for the password method." Predictable. Boring. Correct.</p>
+
+    <div class="info-box red">
+        <p><strong>Why "let me just put it here for now" is forbidden:</strong> the foundational principle in <code>AGENTS.md</code> is <em>Consistency over novelty</em>. A new pattern is a liability. Three engineers will copy it before anyone notices. Three months later, "for now" is a 200-file commitment. The rule is: if no existing pattern fits, escalate &mdash; don't quietly invent one.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DC;</div>
+        Junior: &ldquo;Can I just throw a <code>new Error()</code> here? It's just one place.&rdquo;<br>
+        Senior: &ldquo;Three things. One: <code>architecture.md</code> says throw NestJS exceptions with structured codes. Two: we already have <code>conflict()</code> in <code>common/utils/domain-errors.util.ts</code>. Three: 'just one place' is how we ended up with four error shapes last year.&rdquo;<br>
+        <em>The doc isn't pedantry. It's the post-mortem of every bad decision, written in advance.</em>
+    </div>
+
+    <h3>Document precedence &mdash; what wins when docs disagree</h3>
+
+    <p>Real teams have feature specs, PRDs, master plans, task prompts, and AI-generated implementation plans flying around in any given week. They contradict each other. <code>AGENTS.md</code> resolves the question explicitly:</p>
+
+    <div class="info-box orange">
+        <p><strong>From AGENTS.md &gt; Document Precedence:</strong> &ldquo;When a feature spec, PRD, master plan, or task prompt conflicts with this file or <code>architecture.md</code>, <strong>this file and <code>architecture.md</code> win.</strong> Feature specs define <em>what</em> to build. These files define <em>how</em> to build it. A feature spec that says &lsquo;audit all mutations&rsquo; does not override <code>architecture.md</code> scoping audit to privileged mutations only.&rdquo;</p>
+    </div>
+
+    <p>This matters most when an AI tool, a contractor, or a junior engineer arrives with a plan that violates a rule. The plan loses. The rule wins. If you genuinely think the rule needs to change, that's a separate PR with explicit human approval &mdash; not a silent override.</p>
+
+    <h3>Foundational principles the rules descend from</h3>
+
+    <p>The rule list is long, but the principles it descends from are short. <code>AGENTS.md</code> calls them out at the top so you can reason from first principles when no specific rule covers your situation:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--gray-50); border: 1px solid var(--gray-200);">
+            <div class="layer-icon">&#x270F;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--gray-900);">Simplicity before cleverness</div>
+            <div class="layer-desc">No abstraction, indirection, or "future-proofing" without a concrete current need.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-50); border: 1px solid var(--gray-200);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--gray-900);">Consistency over novelty</div>
+            <div class="layer-desc">A new pattern is a liability. Check the canonical reference modules first.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-50); border: 1px solid var(--gray-200);">
+            <div class="layer-icon">&#x1F522;</div>
+            <div class="layer-name" style="color: var(--gray-900);">Rule of Three</div>
+            <div class="layer-desc">Same non-trivial block in 3 places = duplication. Extract before continuing.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-50); border: 1px solid var(--gray-200);">
+            <div class="layer-icon">&#x1F3AF;</div>
+            <div class="layer-name" style="color: var(--gray-900);">Scope follows the goal</div>
+            <div class="layer-desc">"While we're here" is scope creep. Adjacent improvements file as separate tasks.</div>
+        </div>
+    </div>
+
+    <p>Memorize these four. They are the constitution; the specific MUST/NEVER rules are case law.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before reading on</div>
+        <div class="recall-question">You're at 50+ feature modules across 6 engineers. There's no <code>architecture.md</code>. What concretely breaks first &mdash; in code review, in onboarding, in production debugging? Write down two specific failure modes before reading Part 2.</div>
+        <div class="recall-hint">Hint: think about the cost of <em>finding</em> something vs the cost of <em>writing</em> it. Convention pays back on read, not on write.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: MikroORM -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: MikroORM (and Why We Switched From Prisma)</h2>
+
+    <p>Lesson 4 taught Prisma. Prisma is excellent for learning &mdash; the schema file is one of the friendliest APIs in the Node ecosystem, the generated client gives you autocomplete out of the box, and the migration story is straightforward. If you're picking up an ORM for the first time, Prisma is a kind teacher.</p>
+
+    <p>Production runs <strong>MikroORM v7</strong>. From <code>asuncion/package.json</code>:</p>
+
+    <pre><code><span class="string">"@mikro-orm/core"</span>: <span class="string">"^7.0.1"</span>,
+<span class="string">"@mikro-orm/postgresql"</span>: <span class="string">"^7.0.1"</span>,
+<span class="string">"@mikro-orm/nestjs"</span>: <span class="string">"^7.0.1"</span>,
+<span class="string">"@mikro-orm/migrations"</span>: <span class="string">"^7.0.1"</span>,
+<span class="string">"@mikro-orm/seeder"</span>: <span class="string">"^7.0.5"</span>,</code></pre>
+
+    <h3>Why MikroORM, specifically</h3>
+
+    <p>The <code>AGENTS.md</code> "Key Decisions" table calls it out explicitly:</p>
+
+    <div class="info-box blue">
+        <p><strong>From AGENTS.md:</strong> &ldquo;ORM &mdash; <strong>MikroORM 7</strong>. Why: <em>Better TypeScript support, unit-of-work pattern, built-in soft delete filters.</em>&rdquo;</p>
+    </div>
+
+    <p>Three reasons matter day-to-day:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--blue);">Unit of Work</div>
+            <div class="layer-desc">Mutate entities in memory; one <code>flush()</code> writes everything in one transaction. No "did I forget to save?"</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F511;</div>
+            <div class="layer-name" style="color: var(--green);">Identity Map</div>
+            <div class="layer-desc">Same row fetched twice = same JS object. Critical for multi-tenant code where the same workspace pops up everywhere in one request.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F50C;</div>
+            <div class="layer-name" style="color: var(--purple);">Lifecycle hooks &amp; filters</div>
+            <div class="layer-desc"><code>@BeforeCreate</code>, <code>@BeforeUpdate</code>, <code>@Filter('softDelete')</code>. We rely heavily on these for password hashing and soft-delete.</div>
+        </div>
+    </div>
+
+    <h3>Prisma vs MikroORM &mdash; what changes for you</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F4DA;</div>
+            <div class="card-title" style="color: var(--red);">Prisma (what you learned)</div>
+            <div class="card-subtitle" style="color: var(--red);">Schema file + generated client</div>
+            <div class="card-desc">Schema in <code>schema.prisma</code>. Active-record-ish: <code>prisma.user.findUnique({where:{...}})</code>. Auto-commits each call. No identity map.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F3ED;</div>
+            <div class="card-title" style="color: var(--green);">MikroORM (production)</div>
+            <div class="card-subtitle" style="color: var(--green);">TypeScript classes + decorators</div>
+            <div class="card-desc">Entities are TS classes with <code>@Entity</code>, <code>@Property</code>. Repositories extend <code>EntityRepository&lt;T&gt;</code>. Mutate in memory, then <code>em.flush()</code> commits everything atomically.</div>
+        </div>
+    </div>
+
+    <h3>The same operation in both worlds</h3>
+
+    <p>Concrete: "create a user, set their profile name, send a welcome email." Same operation, two ORMs. Compare the cognitive shape:</p>
+
+    <pre><code><span class="comment">// Prisma — what Lesson 4 taught</span>
+<span class="keyword">const</span> user = <span class="keyword">await</span> prisma.user.create({
+  data: {
+    email,
+    profile: { create: { firstName, lastName } },
+  },
+});
+<span class="keyword">await</span> mailer.sendWelcome(user);
+<span class="comment">// Each prisma call commits independently. If the email fails,</span>
+<span class="comment">// the user already exists in the DB. You handle that with try/catch + delete.</span></code></pre>
+
+    <pre><code><span class="comment">// MikroORM — what production uses</span>
+<span class="keyword">await this</span>.userRepository.em.transactional(<span class="keyword">async</span> (em) =&gt; {
+  <span class="keyword">const</span> user = em.create(<span class="type">User</span>, { email });
+  user.profile = em.create(<span class="type">Profile</span>, { firstName, lastName });
+  <span class="keyword">await</span> em.flush();              <span class="comment">// one INSERT per entity, one transaction</span>
+  <span class="keyword">await</span> mailer.sendWelcome(user); <span class="comment">// if this throws, the tx rolls back</span>
+});</code></pre>
+
+    <p>Two differences worth internalizing:</p>
+
+    <ol style="margin-left: 24px; color: var(--gray-700);">
+        <li><strong>Unit-of-work.</strong> In MikroORM you <em>build the in-memory graph</em>, then <code>flush()</code> commits everything atomically. Prisma's create-with-nested-create does similar in one call, but composing multiple operations atomically is more deliberate in MikroORM.</li>
+        <li><strong>Identity map.</strong> If you fetch the same workspace by id twice in one request, MikroORM gives you the <em>same JS object</em> both times. Mutations on one are visible on the other. Prisma returns two separate POJOs &mdash; you get correctness only by being careful.</li>
+    </ol>
+
+    <p>Neither approach is "better" in the abstract. MikroORM's tradeoff fits Fohlio's multi-tenant request shape, where the same workspace and user object thread through 20 service calls per request. The identity map prevents 19 of those from being silent inconsistencies.</p>
+
+    <h3>A real entity from asuncion</h3>
+
+    <p>Here's <code>asuncion/src/modules/users/entities/user.entity.ts</code>, lightly trimmed. Look at the lifecycle hook at the bottom &mdash; that's where the password actually gets hashed:</p>
+
+    <pre><code><span class="keyword">import</span> argon2 <span class="keyword">from</span> <span class="string">'argon2'</span>;
+<span class="keyword">import</span> {
+  Entity, Property, Unique, Enum, OneToOne, ManyToMany,
+  BeforeCreate, BeforeUpdate,
+} <span class="keyword">from</span> <span class="string">'@mikro-orm/decorators/legacy'</span>;
+<span class="keyword">import</span> { BaseEntity } <span class="keyword">from</span> <span class="string">'../../../common/entities/base.entity.js'</span>;
+<span class="keyword">import</span> { UserRepository } <span class="keyword">from</span> <span class="string">'../repositories/user.repository.js'</span>;
+
+<span class="decorator">@Entity</span>({ tableName: <span class="string">'users'</span>, repository: () =&gt; UserRepository })
+<span class="keyword">export class</span> User <span class="keyword">extends</span> BaseEntity {
+  <span class="decorator">@Unique</span>()
+  <span class="decorator">@Property</span>({ type: <span class="string">'text'</span>, nullable: <span class="keyword">false</span> })
+  email!: <span class="type">string</span>;
+
+  <span class="decorator">@Property</span>({ type: <span class="string">'text'</span>, nullable: <span class="keyword">true</span>, hidden: <span class="keyword">true</span> })
+  hashedPassword?: <span class="type">string</span>;
+
+  <span class="decorator">@Enum</span>({ items: () =&gt; UserStatus, nativeEnumName: <span class="string">'user_status_enum'</span> })
+  status: <span class="type">UserStatus</span> = UserStatus.ACTIVE;
+
+  <span class="comment">// ... relations omitted ...</span>
+
+  <span class="decorator">@BeforeCreate</span>()
+  <span class="decorator">@BeforeUpdate</span>()
+  <span class="keyword">async</span> <span class="function">hashPassword</span>(): <span class="type">Promise&lt;void&gt;</span> {
+    <span class="keyword">if</span> (<span class="keyword">this</span>.hashedPassword &amp;&amp; !<span class="keyword">this</span>.hashedPassword.startsWith(<span class="string">'$argon2'</span>)) {
+      <span class="comment">// OWASP params: m=7168, t=5, p=1</span>
+      <span class="keyword">this</span>.hashedPassword = <span class="keyword">await</span> argon2.hash(<span class="keyword">this</span>.hashedPassword, {
+        memoryCost: <span class="string">7168</span>, parallelism: <span class="string">1</span>, timeCost: <span class="string">5</span>,
+      });
+    }
+  }
+}</code></pre>
+
+    <p>Three things to notice:</p>
+
+    <ol style="margin-left: 24px; color: var(--gray-700);">
+        <li><code>@Entity({ repository: () =&gt; UserRepository })</code> &mdash; the entity itself declares which repository class owns it. When you inject <code>UserRepository</code>, NestJS gets back a properly-wired instance.</li>
+        <li><code>extends BaseEntity</code> &mdash; <code>id: BigInt</code>, <code>createdAt</code>, <code>updatedAt</code> come from <code>src/common/entities/base.entity.ts</code>. Every entity in the repo extends it. No exceptions.</li>
+        <li><code>@BeforeCreate() @BeforeUpdate() hashPassword()</code> &mdash; password hashing is part of the entity. There is no path through the system that writes a user without hashing its password. The clerk stamps every record before it goes into the archive, automatically.</li>
+    </ol>
+
+    <h3>Migrations</h3>
+
+    <p>From <code>asuncion/package.json</code> scripts:</p>
+
+    <pre><code><span class="string">"db:migration:auto-generate"</span>: <span class="string">"npx mikro-orm migration:create"</span>,
+<span class="string">"db:migration:up"</span>: <span class="string">"npx mikro-orm migration:up"</span>,
+<span class="string">"db:migration:down"</span>: <span class="string">"npx mikro-orm migration:down"</span>,
+<span class="string">"db:reset"</span>: <span class="string">"npm run db:schema:drop &amp;&amp; npm run db:migration:up &amp;&amp; npm run db:seed"</span>,</code></pre>
+
+    <p>The CLI is the standard MikroORM workflow: change an entity, run <code>migration:create</code>, MikroORM diffs the schema and writes a migration file, you review it, then <code>migration:up</code>. Identical mental model to Prisma's <code>prisma migrate</code> &mdash; different command, same idea.</p>
+
+    <div class="info-box orange">
+        <p><strong>Pre-launch detail (Key Decisions):</strong> the repo is currently <em>entity-first</em> &mdash; no migration files are checked in. You edit entities and run <code>db:reset</code> to rebuild from scratch. This switches to migration-first at the first real-data deployment. Don't add migration files until that decision flips.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F632;</div>
+        New hire: &ldquo;I spent three weeks learning Prisma for this course and now you're telling me prod uses MikroORM?!&rdquo;<br>
+        Tech lead: &ldquo;Yes.&rdquo;<br>
+        New hire: &ldquo;...&rdquo;<br>
+        Tech lead: &ldquo;Relax. Entities, relations, transactions, migrations &mdash; the concepts transfer. The API differs at the call site. You'll be productive in MikroORM in two days. Three if you read the unit-of-work docs.&rdquo;<br>
+        <em>The framework you learn is never the framework you ship. The skill that transfers is "how do ORMs think."</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: Repository Pattern -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: The Repository Pattern &mdash; Services Never Touch the ORM</h2>
+
+    <p>This is the single biggest pattern shift between the textbook and Fohlio production. In the textbook, controllers call services, and services call <code>prisma.user.findUnique(...)</code> directly. In Fohlio, that's a code-review block.</p>
+
+    <p>The rule, copied from <code>architecture.md</code>:</p>
+
+    <div class="info-box red">
+        <p><strong>Service Pattern, MUST NOTs (line 220):</strong></p>
+        <p style="margin-top: 8px;">&bull; MUST NOT construct ORM queries &mdash; delegate to repositories via named methods<br>
+        &bull; MUST NOT call <code>em.persist()</code>, <code>em.flush()</code>, or <code>em.transactional()</code> directly &mdash; all persistence MUST go through repository methods<br>
+        &bull; All raw SQL, Kysely queries, QueryBuilder writes MUST live in repositories</p>
+    </div>
+
+    <h3>The librarian metaphor</h3>
+
+    <div class="story-box">
+        <p>Picture the airport's records archive. It's a long room of filing cabinets, climate-controlled, fluorescent-lit. The cabinets are alphabetized, cross-referenced, indexed.</p>
+        <p>The <strong>records librarian</strong> is the only person allowed in. She knows the layout, knows which cabinets to never open without gloves, knows that the &ldquo;deleted&rdquo; cabinet is actually the &ldquo;retired&rdquo; cabinet and the records there still count for some queries. She has a counter at the front. People file requests at the counter. She walks back, gets what they need, brings it back.</p>
+        <p>The <strong>service</strong> is the waiter at the gate. The waiter takes a passenger's request, walks to the counter, says &ldquo;I need the booking for confirmation code XYZ.&rdquo; The waiter never enters the archive. The waiter would lose the indexing, file something in the wrong drawer, leave a soft-deleted record visible to the wrong query. So the rule is: <em>waiters file requests; librarians fetch.</em></p>
+        <div class="tech-note">
+            <strong>In code:</strong> service calls <code>this.userRepository.findByEmail(email)</code>. Service never calls <code>em.find()</code>, <code>em.findOne()</code>, <code>em.persist()</code>, or <code>em.flush()</code>. The repository owns the transaction boundary too &mdash; <code>em.transactional()</code> lives inside repository methods, not in services.
+        </div>
+    </div>
+
+    <h3>A real repository</h3>
+
+    <p>Full file: <code>asuncion/src/modules/users/repositories/user.repository.ts</code>. This is the entire public API the rest of the system has, for the User entity:</p>
+
+    <pre><code><span class="keyword">import</span> { EntityRepository, <span class="keyword">type</span> FindOneOptions } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { User, UserStatus } <span class="keyword">from</span> <span class="string">'../entities/user.entity.js'</span>;
+
+<span class="keyword">export class</span> UserRepository <span class="keyword">extends</span> EntityRepository&lt;<span class="type">User</span>&gt; {
+  <span class="function">findByEmail</span>(email: <span class="type">string</span>, options?: <span class="type">FindOneOptions&lt;User&gt;</span>) {
+    <span class="keyword">return this</span>.findOne({ email }, options);
+  }
+
+  <span class="function">findById</span>(id: <span class="type">string</span>, options?: <span class="type">FindOneOptions&lt;User&gt;</span>) {
+    <span class="keyword">return this</span>.findOne({ id }, options);
+  }
+
+  <span class="function">findByGoogleId</span>(googleId: <span class="type">string</span>) {
+    <span class="keyword">return this</span>.findOne({ googleId });
+  }
+
+  <span class="keyword">async</span> <span class="function">save</span>(user: <span class="type">User</span>): <span class="type">Promise&lt;void&gt;</span> {
+    <span class="keyword">this</span>.em.persist(user);
+    <span class="keyword">await this</span>.em.flush();
+  }
+
+  <span class="comment">/**
+   * Find by email, or create an INACTIVE user if none exists.
+   * Re-checks inside a transaction to prevent race-condition duplicates.
+   */</span>
+  <span class="keyword">async</span> <span class="function">findOrCreateByEmail</span>(email: <span class="type">string</span>): <span class="type">Promise&lt;User&gt;</span> {
+    <span class="keyword">const</span> existing = <span class="keyword">await this</span>.findByEmail(email);
+    <span class="keyword">if</span> (existing) <span class="keyword">return</span> existing;
+
+    <span class="keyword">let</span> created!: <span class="type">User</span>;
+    <span class="keyword">await this</span>.em.transactional(<span class="keyword">async</span> (em) =&gt; {
+      <span class="keyword">const</span> recheck = <span class="keyword">await</span> em.findOne(<span class="type">User</span>, { email });
+      <span class="keyword">if</span> (recheck) { created = recheck; <span class="keyword">return</span>; }
+      <span class="keyword">const</span> user = em.create(<span class="type">User</span>, { email, status: UserStatus.INACTIVE });
+      <span class="keyword">await</span> em.flush();
+      created = user;
+    });
+    <span class="keyword">return</span> created;
+  }
+}</code></pre>
+
+    <p>Notice: methods are named after <em>what they return</em>, not <em>what they query</em>. <code>findByEmail</code>, not <code>queryUsersByEmailColumn</code>. <code>findOrCreateByEmail</code>, not <code>upsertUser</code>. The repository is the dictionary of business-meaningful lookups.</p>
+
+    <h3>The service that uses it</h3>
+
+    <p>Full file: <code>asuncion/src/modules/users/users.service.ts</code>. Look how thin it is &mdash; it's pure orchestration:</p>
+
+    <pre><code><span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> UsersService {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> userRepository: <span class="type">UserRepository</span>) {}
+
+  <span class="keyword">async</span> <span class="function">findByEmail</span>(email: <span class="type">string</span>): <span class="type">Promise&lt;User | null&gt;</span> {
+    <span class="keyword">return this</span>.userRepository.findByEmail(email);
+  }
+
+  <span class="keyword">async</span> <span class="function">findOrCreateByEmail</span>(email: <span class="type">string</span>): <span class="type">Promise&lt;User&gt;</span> {
+    <span class="keyword">return this</span>.userRepository.findOrCreateByEmail(email);
+  }
+
+  <span class="keyword">async</span> <span class="function">updateProfile</span>(userId: <span class="type">string</span>, dto: <span class="type">UpdateProfileDto</span>): <span class="type">Promise&lt;User&gt;</span> {
+    <span class="keyword">const</span> user = <span class="keyword">await this</span>.userRepository.findOneOrFail(
+      { id: userId },
+      { populate: [<span class="string">'profile'</span>, <span class="string">'currentWorkspaceRole'</span>] },
+    );
+    <span class="keyword">if</span> (!user.profile) {
+      <span class="keyword">const</span> profile = <span class="keyword">new</span> Profile();
+      profile.user = user;
+      user.profile = profile;
+    }
+    <span class="keyword">if</span> (dto.firstName !== <span class="keyword">undefined</span>) user.profile.firstName = dto.firstName;
+    <span class="keyword">if</span> (dto.lastName !== <span class="keyword">undefined</span>) user.profile.lastName = dto.lastName;
+
+    <span class="keyword">await this</span>.userRepository.save(user);
+    <span class="keyword">return</span> user;
+  }
+}</code></pre>
+
+    <p>Zero <code>em.find</code>. Zero <code>em.persist</code>. Zero raw SQL. Every database touch goes through <code>userRepository</code>. The service does what services are supposed to do: orchestrate, validate, decide.</p>
+
+    <h3>GOOD vs BAD &mdash; same operation, two worlds</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--red-light); text-align: left;">
+            <div class="card-icon" style="text-align: center;">&#x274C;</div>
+            <div class="card-title" style="color: var(--red); text-align: center;">BAD &mdash; service touches ORM</div>
+            <div class="card-desc" style="margin-top: 8px;">
+            <pre style="margin: 0; font-size: 11px; padding: 10px;"><code><span class="comment">// users.service.ts</span>
+<span class="keyword">async</span> <span class="function">findByEmail</span>(email: <span class="type">string</span>) {
+  <span class="keyword">return this</span>.em.findOne(
+    <span class="type">User</span>, { email },
+  );
+}</code></pre>
+            </div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light); text-align: left;">
+            <div class="card-icon" style="text-align: center;">&#x2705;</div>
+            <div class="card-title" style="color: var(--green); text-align: center;">GOOD &mdash; via repository</div>
+            <div class="card-desc" style="margin-top: 8px;">
+            <pre style="margin: 0; font-size: 11px; padding: 10px;"><code><span class="comment">// users.service.ts</span>
+<span class="keyword">async</span> <span class="function">findByEmail</span>(email: <span class="type">string</span>) {
+  <span class="keyword">return this</span>.userRepository
+    .findByEmail(email);
+}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>Why this matters in practice:</strong></p>
+        <p style="margin-top: 8px;">&bull; <strong>Testability.</strong> Service specs mock <code>UserRepository</code> &mdash; one collaborator, two-line setup. The alternative is mocking <code>EntityManager</code> with all its overloaded signatures.<br>
+        &bull; <strong>Single source of truth for query patterns.</strong> Soft-delete filters, populate hints, partial-index lookups &mdash; all live in one place per entity. When the index changes, you change one file.<br>
+        &bull; <strong>Test-the-layer-that-owns-the-logic (AGENTS.md #5).</strong> Query construction is owned by repositories &mdash; they MUST have <code>*.repository.spec.ts</code> tests that hit a real DB. Services get unit tests against mocked repositories. Each layer is tested where its complexity actually lives.</p>
+    </div>
+
+    <h3>Where transactions live</h3>
+
+    <p>Architecture.md is unusually opinionated about who owns transactions: <strong>repositories, not services.</strong></p>
+
+    <pre><code><span class="comment">// architecture.md, Repository Pattern (line 346–348):</span>
+- MUST use <span class="function">em.persist()</span> + <span class="function">em.flush()</span> for writes
+- Multi-entity writes MUST use <span class="function">em.transactional()</span> inside the repository
+  method that owns the operation
+- The repository that owns the primary entity owns the transaction
+- State-changing methods MUST validate all required related rows inside the
+  transaction before mutating state. If an expected related row is missing,
+  throw and roll back — MUST NOT silently skip and continue with partial success</code></pre>
+
+    <p>Notice the <code>findOrCreateByEmail</code> example we just read &mdash; the <code>em.transactional</code> block is in the <strong>repository</strong>, not the service. The repository re-checks for the row inside the transaction to avoid race conditions. The service just calls <code>this.userRepository.findOrCreateByEmail(email)</code> and gets back a User. This is the unit-of-work pattern at full strength: persistence boundaries are owned by the layer that knows the schema.</p>
+
+    <h3>Repository spec coverage</h3>
+
+    <p>Because repositories own the queries, transactions, and persistence invariants, <strong>they MUST have spec files</strong> &mdash; from <code>architecture.md</code>:</p>
+
+    <div class="info-box blue">
+        <p>&ldquo;Repositories with raw SQL, transactions, or query construction MUST have <code>*.repository.spec.ts</code>. E2E covers the happy-path wire-up; it does not substitute for repository specs.&rdquo;</p>
+    </div>
+
+    <p>Look at the user module again &mdash; <code>asuncion/src/modules/users/repositories/user.repository.spec.ts</code> sits next to the repository file. Open it; it hits a real Postgres (in Docker) and verifies the actual SQL behavior, including soft-delete filter interaction. This is where the test budget goes &mdash; not in shallow service mocks.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Predict before reading on</div>
+        <div class="recall-question">You're writing a unit test for <code>UsersService.updateProfile</code>. Sketch what you mock. Now imagine the service called <code>this.em.findOneOrFail(...)</code> directly &mdash; what would you mock instead? Which test is shorter?</div>
+        <div class="recall-hint">The repository version: <code>userRepository = { findOneOrFail: vi.fn(), save: vi.fn() }</code>. The em version: you mock <code>EntityManager</code> with its full signature surface. The latter is brittle and tests almost nothing.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: Soft Delete -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Universal Soft-Delete</h2>
+
+    <p>Nothing in the user-facing data model is ever truly deleted. Workspaces, projects, contacts, roles, memberships &mdash; they get a <code>deletedAt</code> timestamp set, and default queries skip them. From <code>architecture.md</code> &gt; Soft Delete Lifecycle (line 1275):</p>
+
+    <pre><code>- User-facing entities MUST use soft delete by default
+- Hard delete is only for infrastructure records (expired tokens, processed jobs)
+- Soft-deleted records MUST be excluded by default via MikroORM
+  <span class="decorator">@Filter</span>({ name: <span class="string">'softDelete'</span>, cond: { deletedAt: <span class="keyword">null</span> }, default: <span class="keyword">true</span> })
+- Unique constraints MUST use partial indexes (WHERE deleted_at IS NULL)</code></pre>
+
+    <h3>Why we never hard-delete user data</h3>
+
+    <ul style="margin-left: 24px; color: var(--gray-700); margin-bottom: 16px;">
+        <li><strong>Audit.</strong> Who removed what, when. The row is the evidence.</li>
+        <li><strong>Recovery.</strong> &ldquo;I deleted the wrong project&rdquo; happens weekly in any SaaS. Restore is one column flip.</li>
+        <li><strong>Foreign-key integrity.</strong> If we delete a user, every project they touched would lose its <code>created_by</code>. Soft-delete keeps the graph intact.</li>
+        <li><strong>GDPR.</strong> Real deletion is a <em>separate</em> hard-delete job that runs on user request, with rules about what to anonymize vs scrub.</li>
+    </ul>
+
+    <h3>The actual entity declaration</h3>
+
+    <p>From <code>asuncion/src/modules/workspaces/entities/workspace.entity.ts</code>:</p>
+
+    <pre><code><span class="decorator">@Entity</span>({ tableName: <span class="string">'workspaces'</span>, repository: () =&gt; WorkspaceRepository })
+<span class="decorator">@Filter</span>({ name: <span class="string">'softDelete'</span>, cond: { deletedAt: <span class="keyword">null</span> }, default: <span class="keyword">true</span> })
+<span class="keyword">export class</span> Workspace <span class="keyword">extends</span> BaseEntity {
+  <span class="decorator">@Property</span>({ type: <span class="string">'text'</span>, nullable: <span class="keyword">false</span> })
+  name!: <span class="type">string</span>;
+
+  <span class="decorator">@ManyToOne</span>(() =&gt; User, { nullable: <span class="keyword">false</span> })
+  owner!: <span class="type">Rel&lt;User&gt;</span>;
+
+  <span class="decorator">@Property</span>({ type: <span class="string">'datetime'</span>, nullable: <span class="keyword">true</span> })
+  deletedAt?: <span class="type">Date</span>;
+
+  <span class="comment">// ... relations ...</span>
+}</code></pre>
+
+    <p>Two pieces:</p>
+
+    <ol style="margin-left: 24px; color: var(--gray-700);">
+        <li><code>deletedAt?: Date</code> &mdash; the column. Nullable. <code>null</code> = active, timestamp = retired.</li>
+        <li><code>@Filter({ name: 'softDelete', cond: { deletedAt: null }, default: true })</code> &mdash; MikroORM's filter system. Every <code>em.find(Workspace, ...)</code> or <code>workspaceRepository.findById(...)</code> automatically appends <code>WHERE deleted_at IS NULL</code>. You get this for free, on every query, without remembering.</li>
+    </ol>
+
+    <h3>Deleting and restoring</h3>
+
+    <p>From the <code>ProjectRepository</code> &mdash; soft-delete is just an assignment plus flush:</p>
+
+    <pre><code><span class="comment">// inside a transaction in project.repository.ts</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> link <span class="keyword">of</span> project.projectUserLinks) {
+  link.deletedAt = <span class="keyword">new</span> Date();   <span class="comment">// retire the membership rows</span>
+}
+project.deletedAt = <span class="keyword">new</span> Date();   <span class="comment">// retire the project itself</span>
+<span class="keyword">await this</span>.em.flush();          <span class="comment">// one transaction, atomic</span></code></pre>
+
+    <h3>The unique-constraint trap</h3>
+
+    <p>You have a soft-deleted workspace named <code>"Acme"</code>. The user creates a new workspace, also <code>"Acme"</code>. Naive <code>UNIQUE(name)</code> rejects it &mdash; the soft-deleted row is still in the table.</p>
+
+    <p>Fix: <strong>partial unique indexes</strong>. The constraint only applies to live rows:</p>
+
+    <pre><code>CREATE UNIQUE INDEX workspaces_name_active
+  ON workspaces (name)
+  WHERE deleted_at IS NULL;</code></pre>
+
+    <p><code>architecture.md</code> mandates this for every soft-deletable entity with a unique constraint.</p>
+
+    <div class="info-box red">
+        <p><strong>The gotcha that bites everyone once:</strong> ORM <code>@Filter('softDelete')</code> only fires for ORM operations. <strong>Raw SQL and Kysely bypass it silently</strong>, leaking ghost records.</p>
+        <p style="margin-top: 8px;">From <code>architecture.md</code> line 349: &ldquo;All raw SQL &mdash; Kysely queries, QueryBuilder writes, and entity <code>formula</code> subqueries &mdash; MUST include <code>deleted_at IS NULL</code> on every soft-deletable table.&rdquo; Look at the project repo's Kysely lookup: <code>.where('deleted_at', 'is', null)</code> &mdash; explicit, every time.</p>
+    </div>
+
+    <h3>Cascading soft-deletes are explicit, not automatic</h3>
+
+    <p>This is where naive implementations get silently wrong. Consider: you soft-delete a workspace. What happens to its projects? Its memberships? Its roles?</p>
+
+    <p>MikroORM does <strong>not</strong> cascade soft-deletes automatically. From <code>architecture.md</code>:</p>
+
+    <div class="info-box red">
+        <p>&ldquo;Cascading soft deletes MUST be handled explicitly in the service layer &mdash; MikroORM does not cascade soft deletes automatically. When a parent is soft-deleted, the service MUST decide which children to soft-delete and execute those writes in the same transaction.&rdquo;</p>
+    </div>
+
+    <p>The service decides the policy (often: soft-delete the workspace, soft-delete all <code>WorkspaceUserLink</code> rows, but leave the actual <code>User</code> rows untouched because the user may still belong to other workspaces). The repository executes the writes inside one <code>em.transactional()</code> block. If anything fails, everything rolls back &mdash; no half-deleted aggregate.</p>
+
+    <p>This is the exact opposite of how DELETE CASCADE works in raw SQL. You trade convenience for control: the cascade rules live in code you can read and test, not in a foreign-key declaration buried in a migration.</p>
+
+    <h3>Restore over recreate</h3>
+
+    <p>When a user re-invites someone they previously removed, we don't create a new membership row alongside the soft-deleted one. We restore the existing row by clearing its <code>deletedAt</code>. From <code>architecture.md</code>:</p>
+
+    <pre><code><span class="comment">// pattern: addOrRestore() in repository</span>
+<span class="keyword">const</span> existing = <span class="keyword">await this</span>.findOne(
+  { workspace: workspaceId, user: userId },
+  { filters: { softDelete: <span class="keyword">false</span> } },  <span class="comment">// see soft-deleted rows too</span>
+);
+<span class="keyword">if</span> (existing?.deletedAt) {
+  existing.deletedAt = <span class="keyword">undefined</span>;        <span class="comment">// restore: un-retire the row</span>
+  existing.role = newRole;
+  <span class="keyword">await this</span>.em.flush();
+  <span class="keyword">return</span> existing;
+}</code></pre>
+
+    <p>This avoids ID churn and preserves relationship history. Stripe does it. GitHub does it. Slack does it. We do it.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F5D1;&#xFE0F;</div>
+        User: &ldquo;I deleted that project by accident, can you bring it back?&rdquo;<br>
+        Engineer: &ldquo;It's fine, nothing is ever actually deleted here.&rdquo;<br>
+        User: &ldquo;...is that a feature?&rdquo;<br>
+        Engineer: &ldquo;Yes.&rdquo;<br>
+        User: &ldquo;Even my data from 2022?&rdquo;<br>
+        Engineer: &ldquo;Yes.&rdquo;<br>
+        User: &ldquo;Even the embarrassing project name?&rdquo;<br>
+        Engineer: &ldquo;Especially that one.&rdquo;<br>
+        <em>The RETIRED stamp doesn't fade.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: Cursor pagination -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Cursor-based Pagination at Scale</h2>
+
+    <p>The textbook example for pagination is <code>?page=5&amp;limit=20</code>. It's intuitive, demos well, and breaks at scale. Fohlio doesn't use it for tenant-facing lists. From <code>architecture.md</code>:</p>
+
+    <div class="info-box red">
+        <p><strong>From architecture.md (Pagination, line 1191):</strong> &ldquo;Unbounded or user-growable collections MUST use cursor-based pagination. <strong>NEVER use offset/page-number pagination</strong> for tenant-facing product surfaces without explicit human approval.&rdquo;</p>
+    </div>
+
+    <h3>Why offset breaks</h3>
+
+    <p>When you ask Postgres for <code>OFFSET 100000 LIMIT 50</code>, the database has to <em>scan and discard</em> the first 100,000 matching rows before returning anything. Page 1 is fast. Page 2,000 is a 200ms query that touches half a million rows for 50 results.</p>
+
+    <p>Cursor pagination instead says: &ldquo;give me the next 50 rows after this anchor.&rdquo; Postgres uses the index on the sort column, jumps to the anchor, scans 50 rows, returns. Page 2,000 costs the same as page 1.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="360" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Offset vs Cursor &mdash; the same &ldquo;next 50&rdquo; query, two costs</text>
+
+            <!-- LEFT: Offset -->
+            <rect x="30" y="50" width="340" height="280" rx="12" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="200" y="76" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#DC2626">OFFSET-based (BAD at scale)</text>
+            <text x="200" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#374151">SELECT * FROM projects</text>
+            <text x="200" y="118" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#374151">ORDER BY id LIMIT 50</text>
+            <text x="200" y="136" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="12" fill="#DC2626">OFFSET 100000;</text>
+
+            <!-- bar showing scanned rows -->
+            <rect x="50" y="170" width="300" height="22" rx="4" fill="#FCA5A5"/>
+            <rect x="346" y="170" width="4" height="22" rx="2" fill="#1A8F5C"/>
+            <text x="200" y="208" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Postgres scans &amp; discards 100,000 rows</text>
+            <text x="200" y="224" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C">...then returns 50 (green sliver)</text>
+
+            <text x="200" y="260" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#DC2626">Rows touched: 100,050</text>
+            <text x="200" y="280" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Latency grows linearly with page number.</text>
+            <text x="200" y="300" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Page 2,000 = ~200ms+. Indexes don't help.</text>
+
+            <!-- RIGHT: Cursor -->
+            <rect x="390" y="50" width="340" height="280" rx="12" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="560" y="76" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#1A8F5C">CURSOR-based (Fohlio default)</text>
+            <text x="560" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#374151">SELECT * FROM projects</text>
+            <text x="560" y="118" text-anchor="middle" font-family="JetBrains Mono" font-weight="700" font-size="12" fill="#1A8F5C">WHERE id &gt; $cursor</text>
+            <text x="560" y="136" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#374151">ORDER BY id LIMIT 51;</text>
+
+            <!-- bar showing scanned rows -->
+            <rect x="410" y="170" width="6" height="22" rx="2" fill="#1A8F5C"/>
+            <rect x="416" y="170" width="294" height="22" rx="4" fill="#E5E7EB"/>
+            <text x="560" y="208" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Index seeks straight to the anchor</text>
+            <text x="560" y="224" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C">scans only the next 51 rows</text>
+
+            <text x="560" y="260" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">Rows touched: 51</text>
+            <text x="560" y="280" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Constant cost, regardless of depth.</text>
+            <text x="560" y="300" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Fetches limit+1 to know hasMore.</text>
+        </svg>
+        <div class="diagram-caption">Same result set; one scales, the other doesn't.</div>
+    </div>
+
+    <h3>The Fohlio utility</h3>
+
+    <p>Found at <code>asuncion/src/common/pagination/cursor-pagination.util.ts</code>. Three exports:</p>
+
+    <pre><code><span class="keyword">export interface</span> PaginatedResult&lt;<span class="type">T</span>&gt; {
+  items: <span class="type">T[]</span>;
+  nextCursor: <span class="type">string | null</span>;
+  hasMore: <span class="type">boolean</span>;
+}
+
+<span class="comment">// Cursor format: base64url(JSON.stringify({ [sortField]: value, id: value }))</span>
+<span class="keyword">export function</span> <span class="function">encodeCursor</span>(sortValues: <span class="type">Record&lt;string, unknown&gt;</span>): <span class="type">string</span> {
+  <span class="keyword">return</span> Buffer.from(JSON.stringify(sortValues)).toString(<span class="string">'base64url'</span>);
+}
+
+<span class="keyword">export function</span> <span class="function">decodeCursor</span>(cursor: <span class="type">string</span>) {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> json = Buffer.from(cursor, <span class="string">'base64url'</span>).toString(<span class="string">'utf-8'</span>);
+    <span class="keyword">return</span> JSON.parse(json);
+  } <span class="keyword">catch</span> {
+    <span class="keyword">throw new</span> BadRequestException({ code: <span class="string">'INVALID_CURSOR'</span> });
+  }
+}
+
+<span class="comment">// The repository fetches limit+1 rows; this slices into a result page</span>
+<span class="comment">// and produces the next cursor from the last included row.</span>
+<span class="keyword">export function</span> <span class="function">paginateResults</span>&lt;<span class="type">T</span>&gt;(
+  rows: <span class="type">T[]</span>, limit: <span class="type">number</span>, sortField: <span class="type">string</span>,
+  getId: (item: <span class="type">T</span>) =&gt; <span class="type">string</span>,
+  getSortValue: (item: <span class="type">T</span>) =&gt; <span class="type">unknown</span>,
+): <span class="type">PaginatedResult&lt;T&gt;</span> { <span class="comment">/* ... */</span> }</code></pre>
+
+    <h3>How a real repository uses it</h3>
+
+    <p>From <code>asuncion/src/modules/projects/repositories/project.repository.ts</code> &mdash; the canonical paginated list query:</p>
+
+    <pre><code><span class="keyword">async</span> <span class="function">findAllByWorkspaceId</span>(
+  workspaceId: <span class="type">string</span>,
+  cursor?: <span class="type">string</span>,
+  limit: <span class="type">number</span> = <span class="string">20</span>,
+): <span class="type">Promise&lt;ProjectPage&gt;</span> {
+  <span class="keyword">const</span> where: <span class="type">Record&lt;string, unknown&gt;</span> = { workspace: workspaceId };
+  <span class="keyword">if</span> (cursor) {
+    <span class="keyword">const</span> decoded = decodeCursor(cursor);
+    <span class="comment">// stable sort tuple: position, then id as tie-breaker</span>
+    where.$or = [
+      { position: { $gt: decoded.position } },
+      { position: decoded.position, id: { $gt: decoded.id } },
+    ];
+  }
+  <span class="keyword">const</span> rows = <span class="keyword">await this</span>.find(where, {
+    orderBy: { position: <span class="string">'ASC'</span>, id: <span class="string">'ASC'</span> },
+    limit: limit + <span class="string">1</span>,                <span class="comment">// fetch n+1, paginateResults trims</span>
+    populate: [...PROJECT_POPULATE],
+  });
+  <span class="keyword">return</span> paginateResults(
+    rows, limit, <span class="string">'position'</span>,
+    (r) =&gt; r.id,
+    (r) =&gt; r.position,
+  );
+}</code></pre>
+
+    <p>Three details worth memorizing:</p>
+
+    <ol style="margin-left: 24px; color: var(--gray-700);">
+        <li><strong>The cursor encodes the full sort tuple, not just <code>id</code>.</strong> Sorting by <code>position</code> alone has duplicates &mdash; you need <code>id</code> as a tie-breaker. The cursor includes both.</li>
+        <li><strong><code>limit + 1</code> rows.</strong> If we get back limit+1, we know there's more. No extra <code>COUNT(*)</code> needed.</li>
+        <li><strong>The opaque <code>$or</code> condition</strong> &mdash; this is the SQL pattern for "after this tuple in this sort order." It looks ugly because tuple comparison in SQL is.</li>
+    </ol>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; When does cursor pagination NOT work?</div>
+        <div class="recall-question">Cursor pagination is forward-sequential: page 1, then 2, then 3. When would you actually need offset pagination instead? Think before reading the answer.</div>
+        <div class="recall-hint">Answer: when the user must <em>jump to an arbitrary page</em> (page 47 of an admin export). Cursors don't support that &mdash; you can't construct cursor #47 without walking pages 1&ndash;46. For backoffice/reporting tools, offset is sometimes acceptable. <code>architecture.md</code> calls these out as documented exceptions.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: Kysely -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Kysely &mdash; the Escape Hatch for Complex Queries</h2>
+
+    <p>MikroORM is excellent for the 90% of queries that fit its mental model: find by id, find with relations populated, save an entity graph, soft-delete, paginate. The other 10% &mdash; window functions, recursive CTEs, custom joins with multiple workspace-scoped subqueries &mdash; gets ugly. The QueryBuilder fights you. <code>nativeUpdate</code> is forbidden. Raw SQL strings are forbidden for new sites without explicit justification.</p>
+
+    <p>Enter <strong>Kysely</strong>: a type-safe SQL query builder that types itself off the live DB schema (via <code>kysely-codegen</code>, see <code>asuncion/package.json</code> devDependencies). Same database, same transaction, just a different writing style for queries that are easier to write as SQL.</p>
+
+    <div class="story-box">
+        <p>The records librarian (MikroORM) is excellent at standard requests. &ldquo;Pull the booking for confirmation XYZ&rdquo; &mdash; she walks back, comes out with one folder. &ldquo;Pull all bookings for flight 123 with their seats&rdquo; &mdash; same drill, two cabinets.</p>
+        <p>But occasionally a researcher asks: &ldquo;I need every booking that contains a passenger whose loyalty points exceed the median for their tier, sorted by booking date, grouped by source airport, with the running total of cancellations in the same fare class within 24 hours of each booking.&rdquo;</p>
+        <p>The librarian's standard request form has nowhere to write this. So Fohlio keeps a <strong>senior researcher</strong> on staff &mdash; Kysely &mdash; who works alongside the librarian, in the same archive, under the same rules. The waiter still doesn't go in. The waiter still files at the counter. Internally, the librarian routes the weird query to the senior researcher.</p>
+        <div class="tech-note">
+            <strong>The contract:</strong> Kysely lives <em>inside</em> repositories. Services don't see Kysely either. <code>architecture.md</code> line 351: &ldquo;MUST use <code>getKysely(em)</code> from <code>src/common/db/kysely.ts</code> for every Kysely read &mdash; NEVER call <code>em.getKysely()</code> directly.&rdquo; The helper joins the active MikroORM transaction; the raw call doesn't.
+        </div>
+    </div>
+
+    <h3>The wrapper</h3>
+
+    <p>From <code>asuncion/src/common/db/kysely.ts</code>:</p>
+
+    <pre><code><span class="keyword">import type</span> { SqlEntityManager } <span class="keyword">from</span> <span class="string">'@mikro-orm/sql'</span>;
+<span class="keyword">import type</span> { Kysely } <span class="keyword">from</span> <span class="string">'kysely'</span>;
+<span class="keyword">import type</span> { DB } <span class="keyword">from</span> <span class="string">'./db-types.js'</span>;
+
+<span class="comment">/**
+ * Returns a Kysely instance typed by the project DB schema, participating
+ * in the caller's current MikroORM transaction when one is active.
+ *
+ * em.getKysely() returns a Kysely bound to the connection POOL — its queries
+ * do NOT see uncommitted rows, which silently breaks E2E tests that use
+ * transaction rollback for isolation. Use this helper instead.
+ */</span>
+<span class="keyword">export function</span> <span class="function">getKysely</span>&lt;<span class="type">Schema</span> = <span class="type">DB</span>&gt;(em: <span class="type">SqlEntityManager</span>): <span class="type">Kysely&lt;Schema&gt;</span> {
+  <span class="keyword">const</span> trx = em.getTransactionContext&lt;<span class="type">Kysely&lt;Schema&gt;</span>&gt;();
+  <span class="keyword">return</span> trx ?? (em.getKysely() <span class="keyword">as</span> <span class="type">Kysely&lt;Schema&gt;</span>);
+}</code></pre>
+
+    <h3>A real Kysely query inside a repository</h3>
+
+    <p>From <code>asuncion/src/modules/projects/repositories/project.repository.ts</code> &mdash; case-insensitive name lookup. MikroORM's <code>$ilike</code> has wildcard-leak risk; the team hand-rolls <code>lower()</code> via Kysely to hit the partial unique index <code>projects_workspace_lower_name_active</code>:</p>
+
+    <pre><code><span class="keyword">async</span> <span class="function">findByLowerNameAndWorkspace</span>(
+  normalizedName: <span class="type">string</span>,
+  workspaceId: <span class="type">string</span>,
+): <span class="type">Promise&lt;Project | null&gt;</span> {
+  <span class="keyword">const</span> db = getKysely(<span class="keyword">this</span>.em);              <span class="comment">// transaction-aware</span>
+  <span class="keyword">const</span> row = <span class="keyword">await</span> db
+    .selectFrom(<span class="string">'projects'</span>)
+    .select(<span class="string">'id'</span>)
+    .where(<span class="string">'workspace_id'</span>, <span class="string">'='</span>, workspaceId)
+    .where((eb) =&gt; eb.fn&lt;<span class="type">string</span>&gt;(<span class="string">'lower'</span>, [<span class="string">'name'</span>]), <span class="string">'='</span>, normalizedName)
+    .where(<span class="string">'deleted_at'</span>, <span class="string">'is'</span>, <span class="keyword">null</span>)         <span class="comment">// MUST: Kysely bypasses @Filter</span>
+    .executeTakeFirst();
+
+  <span class="keyword">if</span> (!row) <span class="keyword">return null</span>;
+  <span class="keyword">return this</span>.findOne({ id: <span class="type">String</span>(row.id) });   <span class="comment">// load via ORM for full graph</span>
+}</code></pre>
+
+    <p>Pattern: Kysely fetches the <em>id</em> using the index, then the ORM loads the full entity. You get the index hit and the entity graph. Best of both clerks.</p>
+
+    <h3>When to reach for Kysely</h3>
+
+    <div class="info-box green">
+        <p><strong>Rule of thumb (from the architecture.md "Choosing a query tool" table):</strong> if the MikroORM QueryBuilder fights you for more than 10 minutes, switch to Kysely. If Kysely also fights you (recursive CTEs, PL/pgSQL calls, db-specific extensions), drop to raw SQL via <code>em.getConnection().execute()</code> &mdash; but every raw-SQL site MUST carry a one-line comment naming the limitation it works around. The count of raw-SQL sites is a tracked metric; growth = architectural debt.</p>
+    </div>
+
+    <p>You can see this hierarchy in the wild &mdash; in <code>asuncion/src/modules/catalog/items/queries/catalog-parts-graph.queries.ts</code>, the simpler check uses Kysely with chained joins; the harder five-table self-referential EXISTS check drops to raw SQL with the required justifying comment.</p>
+
+    <h3>The Choosing-a-Query-Tool table</h3>
+
+    <p>Architecture.md ships an actual decision matrix. Lightly summarized:</p>
+
+    <table>
+        <tr>
+            <th>Situation</th>
+            <th>Tool</th>
+            <th>Why</th>
+        </tr>
+        <tr>
+            <td>Find by id, find by simple where clause, save an entity graph</td>
+            <td><strong>ORM</strong> &mdash; <code>em.find</code>, <code>findOne</code>, <code>persist+flush</code></td>
+            <td>The <code>@Filter('softDelete')</code> fires automatically; identity map deduplicates; lifecycle hooks run.</td>
+        </tr>
+        <tr>
+            <td>Joins through an M2M / O2M / M2O relation</td>
+            <td><strong>ORM pivot query + populate</strong></td>
+            <td>The pivot's own <code>@Filter</code> fires; constant 2 batched queries (not N+1).</td>
+        </tr>
+        <tr>
+            <td>Custom SQL the QueryBuilder can't express cleanly</td>
+            <td><strong>Kysely via <code>getKysely(em)</code></strong></td>
+            <td>Type-safe, transaction-aware, generated types from <code>kysely-codegen</code>. Must explicitly add <code>deleted_at IS NULL</code>.</td>
+        </tr>
+        <tr>
+            <td>Recursive CTEs, PL/pgSQL, db-specific extensions</td>
+            <td><strong>Raw SQL</strong> via <code>em.getConnection().execute()</code></td>
+            <td>Last resort. Every site MUST carry a one-line comment naming the limitation it works around.</td>
+        </tr>
+    </table>
+
+    <p>Memorize the order: <strong>ORM &rarr; Kysely &rarr; raw SQL</strong>. Going right increases power and decreases safety. Don't skip levels.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F50D;</div>
+        Engineer: &ldquo;I can't get the QueryBuilder to express this self-join.&rdquo;<br>
+        Tech lead: &ldquo;How long have you been trying?&rdquo;<br>
+        Engineer: &ldquo;...forty minutes.&rdquo;<br>
+        Tech lead: &ldquo;Switch to Kysely.&rdquo;<br>
+        Engineer (twenty minutes later): &ldquo;Done. Twelve lines, type-safe.&rdquo;<br>
+        <em>The right tool isn't the one you start with. It's the one you reach for at minute eleven.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>The textbook taught you NestJS the framework. This lesson taught you NestJS as Fohlio writes it. Six takeaways:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4D6;</div>
+            <div class="layer-name" style="color: var(--blue);">architecture.md is law</div>
+            <div class="layer-desc">MUST/NEVER, not "we generally prefer". The Operations Manual.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--green);">MikroORM, not Prisma</div>
+            <div class="layer-desc">Unit-of-work, identity map, lifecycle hooks. Same concepts, different API.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--purple);">Repositories own the DB</div>
+            <div class="layer-desc">Services orchestrate; repositories are the only ones in the archive.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F58B;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">Soft-delete is universal</div>
+            <div class="layer-desc"><code>deletedAt</code> + <code>@Filter('softDelete')</code> + partial unique indexes. Restore over recreate.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x27A1;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--blue);">Cursor pagination</div>
+            <div class="layer-desc">Forward-sequential, encodes the full sort tuple, fetches limit+1. No offset for tenant data.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F393;</div>
+            <div class="layer-name" style="color: var(--green);">Kysely for the hard 10%</div>
+            <div class="layer-desc">Inside repositories, transaction-aware via <code>getKysely(em)</code>. Always explicit <code>deleted_at IS NULL</code>.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 12 (the final bonus):</strong> Multi-tenancy &mdash; <code>workspaceId</code> in every query, the <code>@CurrentUser()</code> decorator, <code>wsId</code> in JWTs. Stateful auth with Redis. Socket.IO with the Redis adapter at scale. And why <code>npm run start:worker</code> spawns a separate process for BullMQ jobs. The other half of how Fohlio actually ships.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Map a real Fohlio module to the Module Convention</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Clone or open the <code>asuncion</code> repo locally</li>
+                    <li>Pick ONE module &mdash; <code>users</code> is the simplest (<code>asuncion/src/modules/users/</code>)</li>
+                    <li>Take a <strong>screenshot</strong> of the folder structure (VSCode/finder/<code>tree</code> &mdash; whichever)</li>
+                    <li>In the text answer below the screenshot: list which files map to which Module Convention slot (<code>entities/</code>, <code>dto/</code>, <code>repositories/</code>, primary <code>service.ts</code>, primary <code>controller.ts</code>, <code>module.ts</code>) and call out anything extra you see</li>
+                    <li>Submit screenshot</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Refactor FlightsService through a FlightsRepository</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In your <code>nestjs-course-yourname</code> repo from Lessons 1&ndash;10, find the <code>FlightsService</code></li>
+                    <li>Create a <code>FlightsRepository</code> class. Move every DB call out of the service into named repository methods (<code>findById</code>, <code>findAll</code>, <code>save</code>, etc.)</li>
+                    <li>The service must NOT import Prisma/MikroORM directly &mdash; only <code>FlightsRepository</code></li>
+                    <li>Wire it up in the module's <code>providers</code></li>
+                    <li>Push and submit the commit URL</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Explain the Repository Pattern in airport language</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 3&ndash;4 sentences using the airport analogy: explain the Repository Pattern to a teammate who's used to "just call the ORM in the service"</li>
+                    <li>What problem does it solve? Use the <em>waiter / records librarian / archive</em> mapping</li>
+                    <li>Submit as text</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Read architecture.md and surface the rules</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Open <code>asuncion/architecture.md</code> in full. List <strong>3 MUST rules</strong> and <strong>3 NEVER rules</strong> you find &mdash; copy the actual lines, with line numbers if you can. Bonus: pick the rule you find most surprising and explain why in one paragraph. Submit as a screenshot of your notes plus the bonus paragraph as text.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Edge cases of the soft-delete lifecycle</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Read the soft-delete sections in <code>asuncion/architecture.md</code> (lines ~1275&ndash;1335) and trace at least one entity that uses <code>@Filter('softDelete')</code> (try <code>workspace.entity.ts</code>). Then write a 4&ndash;6 sentence note: what edge cases does the implementation handle that a naive <code>where: { deletedAt: null }</code> filter wouldn't? Touch on partial unique indexes, raw-SQL leak risk, restore-over-recreate, and cascading deletes.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 11 of 12 (Bonus)</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Fohlio in the Wild Part 2 &mdash; Multi-tenancy, Auth, Real-time, Workers</p>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NestJS Course - Lesson 5</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 5 of 10</div>
+        <h1>NestJS Course</h1>
+        <div class="subtitle">Auth &amp; Security &mdash; Login flows, JWT, role-based access, production hardening</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Hash passwords correctly with bcrypt &mdash; and know why "encrypt" is the wrong word</li>
+            <li>Build POST /auth/register and POST /auth/login that issue a JWT</li>
+            <li>Protect any controller with <code>@UseGuards(AuthGuard('jwt'))</code></li>
+            <li>Add role-based access with a custom <code>@Roles()</code> decorator and a RolesGuard</li>
+            <li>Layer in production hardening: Helmet, CORS, rate limiting</li>
+            <li>Understand the full request flow from edge to handler</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <div class="info-box blue">
+        <p><strong>Quick recap of Lessons 1&ndash;4:</strong> You scaffolded the app (L1), built modules + controllers + services for Flights (L2), walked through the request pipeline &mdash; middleware, guards, pipes, interceptors, exception filters (L3), and replaced the in-memory store with Prisma + Postgres (L4). Today, the API stops being open to the world.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: WHY AUTH IS A FIRST-CLASS CONCERN -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Why Auth Is a First-Class Concern</h2>
+
+    <p>Right now, your <code>airport-api</code> has a public <code>DELETE /flights/:id</code> endpoint. Anyone with curl and your URL can wipe your database. That's not a bug &mdash; that's the default state of any HTTP server. The internet is open. You make it closed.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6AA;</div>
+        Founder: &ldquo;We'll add auth before launch.&rdquo;<br>
+        *Launch happens*<br>
+        Founder: &ldquo;We'll add auth in v2.&rdquo;<br>
+        *v2 ships*<br>
+        Founder: &ldquo;Why is our database empty?&rdquo;<br>
+        <em>Auth is not a feature you add later. It's the door on the building.</em>
+    </div>
+
+    <h3>Two words: authentication and authorization</h3>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F194;</div>
+            <div class="card-title" style="color: var(--blue);">Authentication</div>
+            <div class="card-subtitle" style="color: var(--blue);">Who are you?</div>
+            <div class="card-desc">Verify identity. Email + password, OAuth, API key, biometric. Output: a verified user identity.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F511;</div>
+            <div class="card-title" style="color: var(--green);">Authorization</div>
+            <div class="card-subtitle" style="color: var(--green);">Are you allowed?</div>
+            <div class="card-desc">Given a verified identity, decide what they can do. Roles, permissions, ownership checks.</div>
+        </div>
+    </div>
+
+    <p>Authentication happens once per session. Authorization happens on every request. They use the same wiring &mdash; <strong>guards</strong> &mdash; but they answer different questions.</p>
+
+    <div class="story-box">
+        <p>Back to the airport. There are two checkpoints, in this order. First: at the security gate, a guard looks at your <strong>boarding pass</strong> and your <strong>ID</strong>. The pass is real, the photo matches, you signed it &mdash; you're who you claim to be. That's <strong>authentication</strong>.</p>
+        <p>Second: at the gate to the lounge, another agent checks whether your boarding pass says "Business" or "Economy." Same passenger, same valid ID &mdash; but only one of them gets through. That's <strong>authorization</strong>.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Boarding pass + ID = JWT (carries identity, signed, tamper-evident). Security guard = AuthGuard('jwt') (verifies the token). Lounge gate agent = RolesGuard (checks the claim inside the token). Bcrypt = the tamper-proof seal on a sealed envelope &mdash; if someone changes the contents, the seal breaks visibly.
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: PASSWORD HASHING WITH BCRYPT -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Password Hashing with bcrypt</h2>
+
+    <p>The first rule of storing passwords: <strong>you don't store passwords</strong>. You store hashes. The difference is what saves your career when the database leaks.</p>
+
+    <h3>Hash vs encryption &mdash; the critical distinction</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="220" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Encryption is reversible. Hashing is not.</text>
+
+            <defs>
+                <marker id="arrR" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/>
+                </marker>
+                <marker id="arrG2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <text x="60" y="80" font-family="Inter" font-weight="600" font-size="12" fill="#374151">ENCRYPTION (DON'T USE FOR PASSWORDS)</text>
+            <rect x="50" y="90" width="140" height="44" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="120" y="117" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#DC2626">"hunter2"</text>
+            <line x1="195" y1="112" x2="265" y2="112" stroke="#DC2626" stroke-width="2" marker-end="url(#arrR)"/>
+            <text x="230" y="105" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">encrypt(key)</text>
+            <line x1="455" y1="112" x2="385" y2="112" stroke="#DC2626" stroke-width="2" marker-end="url(#arrR)"/>
+            <text x="420" y="105" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">decrypt(key)</text>
+            <rect x="270" y="90" width="120" height="44" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="330" y="117" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#DC2626">a8f3c1...</text>
+            <rect x="460" y="90" width="240" height="44" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="580" y="117" text-anchor="middle" font-family="Inter" font-size="11" fill="#DC2626">if attacker has the key, plaintext is back</text>
+
+            <text x="60" y="160" font-family="Inter" font-weight="600" font-size="12" fill="#374151">HASHING (USE FOR PASSWORDS)</text>
+            <rect x="50" y="170" width="140" height="44" rx="8" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="120" y="197" text-anchor="middle" font-family="JetBrains Mono" font-size="12" fill="#1A8F5C">"hunter2"</text>
+            <line x1="195" y1="192" x2="265" y2="192" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrG2)"/>
+            <text x="230" y="185" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">bcrypt.hash</text>
+            <rect x="270" y="170" width="200" height="44" rx="8" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="370" y="197" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1A8F5C">$2b$10$N9qo8uLO...</text>
+            <text x="600" y="187" text-anchor="middle" font-family="Inter" font-weight="600" font-size="11" fill="#1A8F5C">one-way</text>
+            <text x="600" y="202" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">no key, no recovery</text>
+        </svg>
+        <div class="diagram-caption">If your DB leaks, an encrypted password is one stolen key away from disaster. A hashed password is just noise.</div>
+    </div>
+
+    <p><strong>Encryption</strong> is two-way: a key turns plaintext into ciphertext, and the same key reverses it. Useful for data you need to read again later (credit card numbers stored for refunds). Catastrophic for passwords &mdash; if anyone gets the key, every password is plaintext.</p>
+
+    <p><strong>Hashing</strong> is one-way: input goes in, a fixed-length scrambled output comes out, and there is <em>no function</em> that turns the output back into the input. To check a login, you hash the submitted password and compare hashes. You never decrypt anything because there's nothing to decrypt.</p>
+
+    <div class="info-box red">
+        <p><strong>Real-world reminder:</strong> in 2012, LinkedIn leaked 6.5M user passwords stored as unsalted SHA-1 hashes. Within days, 90%+ were cracked. SHA-1 is fast &mdash; great for checksums, terrible for passwords. Bcrypt is intentionally slow and salted. Use bcrypt (or argon2). Never roll your own.</p>
+    </div>
+
+    <h3>Bcrypt in NestJS &mdash; install and use</h3>
+
+    <pre><code>npm i bcrypt
+npm i -D @types/bcrypt</code></pre>
+
+    <pre><code><span class="keyword">import</span> * <span class="keyword">as</span> bcrypt <span class="keyword">from</span> <span class="string">'bcrypt'</span>;
+
+<span class="comment">// On registration:</span>
+<span class="keyword">const</span> SALT_ROUNDS = <span class="string">10</span>;
+<span class="keyword">const</span> hash = <span class="keyword">await</span> bcrypt.<span class="function">hash</span>(plainPassword, SALT_ROUNDS);
+<span class="comment">// store `hash` in the user row. plainPassword goes out of memory immediately.</span>
+
+<span class="comment">// On login:</span>
+<span class="keyword">const</span> matches = <span class="keyword">await</span> bcrypt.<span class="function">compare</span>(submittedPassword, user.passwordHash);
+<span class="keyword">if</span> (!matches) <span class="keyword">throw new</span> <span class="function">UnauthorizedException</span>();</code></pre>
+
+    <p><code>SALT_ROUNDS = 10</code> means bcrypt does 2^10 = 1024 hashing iterations. Roughly 100ms per password on modern hardware. Slow enough that brute-forcing a leaked DB at 1000 guesses/second would take centuries. Fast enough that one user logging in doesn't notice.</p>
+
+    <div class="info-box orange">
+        <p><strong>Salt is automatic:</strong> bcrypt embeds a unique random salt inside every hash output (the <code>$2b$10$</code> prefix). Two users with the same password get different hashes. You don't have to manage salts by hand &mdash; common mistake in homegrown auth.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4C2;</div>
+        Hacker: *exfiltrates 50GB users.csv from your S3 bucket*<br>
+        Hacker: *opens it, sees a column called <code>passwordHash</code> full of <code>$2b$10$N9qo8uLOickgx2ZMRZoMye</code>...*<br>
+        Hacker: &ldquo;...okay this is going to take a while.&rdquo;<br>
+        Hacker: *moves on to the next leak with plaintext passwords*<br>
+        <em>Bcrypt doesn't make you uncrackable. It makes you not worth the bother.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before reading</div>
+        <div class="recall-question">A junior teammate proposes: "let's encrypt the passwords with AES-256 and store the key in an env variable." Why is this still a bad idea, even though AES-256 is unbreakable in practice?</div>
+        <div class="recall-hint">Hint: think about who has access to <em>both</em> the database and the env file.</div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4C4;</div>
+        Engineer: &ldquo;We can't reset their password, we don't store the original.&rdquo;<br>
+        Customer support: &ldquo;Can't you just look it up?&rdquo;<br>
+        Engineer: &ldquo;That's literally the point. We don't <em>have</em> it.&rdquo;<br>
+        Support: &ldquo;...so we send them a reset link?&rdquo;<br>
+        Engineer: &ldquo;Yes. Always. Forever.&rdquo;<br>
+        <em>If a system can email you your old password, run.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: LOCAL AUTH STRATEGY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Local Auth Strategy &mdash; the Login Flow</h2>
+
+    <p>NestJS doesn't ship its own auth library. It uses <a href="https://www.passportjs.org/" style="color: var(--blue);">Passport</a> &mdash; the standard Node.js auth library, with 500+ strategies (local, JWT, OAuth, SAML, the lot). NestJS wraps Passport in <code>@nestjs/passport</code> so each strategy plugs cleanly into the DI system as a guard.</p>
+
+    <pre><code>npm i @nestjs/passport passport passport-local passport-jwt @nestjs/jwt
+npm i -D @types/passport-local @types/passport-jwt</code></pre>
+
+    <h3>Generate the auth + users modules</h3>
+
+    <pre><code>nest g module auth
+nest g service auth
+nest g controller auth
+nest g module users
+nest g service users</code></pre>
+
+    <h3>Step 1: User model &amp; UsersService</h3>
+
+    <p>Add a User to <code>schema.prisma</code> and migrate:</p>
+
+    <pre><code><span class="keyword">model</span> User {
+  id           <span class="type">Int</span>      <span class="decorator">@id @default(autoincrement())</span>
+  email        <span class="type">String</span>   <span class="decorator">@unique</span>
+  passwordHash <span class="type">String</span>
+  role         <span class="type">String</span>   <span class="decorator">@default(<span class="string">"user"</span>)</span>  <span class="comment">// "user" or "admin"</span>
+  createdAt    <span class="type">DateTime</span> <span class="decorator">@default(now())</span>
+}</code></pre>
+
+    <pre><code>npx prisma migrate dev --name add-user</code></pre>
+
+    <pre><code><span class="comment">// src/users/users.service.ts</span>
+<span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { PrismaService } <span class="keyword">from</span> <span class="string">'../prisma/prisma.service'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> UsersService {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> prisma: PrismaService) {}
+
+  <span class="function">findByEmail</span>(email: <span class="type">string</span>) {
+    <span class="keyword">return this</span>.prisma.user.<span class="function">findUnique</span>({ where: { email } });
+  }
+
+  <span class="function">create</span>(data: { email: <span class="type">string</span>; passwordHash: <span class="type">string</span>; role?: <span class="type">string</span> }) {
+    <span class="keyword">return this</span>.prisma.user.<span class="function">create</span>({ data });
+  }
+}</code></pre>
+
+    <h3>Step 2: AuthService &mdash; register and validate</h3>
+
+    <pre><code><span class="comment">// src/auth/auth.service.ts</span>
+<span class="keyword">import</span> { Injectable, UnauthorizedException, ConflictException } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { JwtService } <span class="keyword">from</span> <span class="string">'@nestjs/jwt'</span>;
+<span class="keyword">import</span> * <span class="keyword">as</span> bcrypt <span class="keyword">from</span> <span class="string">'bcrypt'</span>;
+<span class="keyword">import</span> { UsersService } <span class="keyword">from</span> <span class="string">'../users/users.service'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> AuthService {
+  <span class="keyword">constructor</span>(
+    <span class="keyword">private readonly</span> users: UsersService,
+    <span class="keyword">private readonly</span> jwt: JwtService,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">register</span>(email: <span class="type">string</span>, password: <span class="type">string</span>) {
+    <span class="keyword">const</span> existing = <span class="keyword">await this</span>.users.<span class="function">findByEmail</span>(email);
+    <span class="keyword">if</span> (existing) <span class="keyword">throw new</span> <span class="function">ConflictException</span>(<span class="string">'Email already registered'</span>);
+    <span class="keyword">const</span> passwordHash = <span class="keyword">await</span> bcrypt.<span class="function">hash</span>(password, <span class="string">10</span>);
+    <span class="keyword">const</span> user = <span class="keyword">await this</span>.users.<span class="function">create</span>({ email, passwordHash });
+    <span class="keyword">return this</span>.<span class="function">sign</span>(user.id, user.email, user.role);
+  }
+
+  <span class="keyword">async</span> <span class="function">validateUser</span>(email: <span class="type">string</span>, password: <span class="type">string</span>) {
+    <span class="keyword">const</span> user = <span class="keyword">await this</span>.users.<span class="function">findByEmail</span>(email);
+    <span class="keyword">if</span> (!user) <span class="keyword">throw new</span> <span class="function">UnauthorizedException</span>();
+    <span class="keyword">const</span> ok = <span class="keyword">await</span> bcrypt.<span class="function">compare</span>(password, user.passwordHash);
+    <span class="keyword">if</span> (!ok) <span class="keyword">throw new</span> <span class="function">UnauthorizedException</span>();
+    <span class="keyword">return</span> user;
+  }
+
+  <span class="keyword">async</span> <span class="function">login</span>(email: <span class="type">string</span>, password: <span class="type">string</span>) {
+    <span class="keyword">const</span> user = <span class="keyword">await this</span>.<span class="function">validateUser</span>(email, password);
+    <span class="keyword">return this</span>.<span class="function">sign</span>(user.id, user.email, user.role);
+  }
+
+  <span class="keyword">private</span> <span class="function">sign</span>(sub: <span class="type">number</span>, email: <span class="type">string</span>, role: <span class="type">string</span>) {
+    <span class="keyword">const</span> payload = { sub, email, role };
+    <span class="keyword">return</span> { access_token: <span class="keyword">this</span>.jwt.<span class="function">sign</span>(payload) };
+  }
+}</code></pre>
+
+    <h3>Step 3: AuthController &mdash; the public endpoints</h3>
+
+    <pre><code><span class="comment">// src/auth/auth.controller.ts</span>
+<span class="keyword">import</span> { Body, Controller, Post } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { AuthService } <span class="keyword">from</span> <span class="string">'./auth.service'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'auth'</span>)
+<span class="keyword">export class</span> AuthController {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> auth: AuthService) {}
+
+  <span class="decorator">@Post</span>(<span class="string">'register'</span>)
+  <span class="function">register</span>(<span class="decorator">@Body</span>() body: { email: <span class="type">string</span>; password: <span class="type">string</span> }) {
+    <span class="keyword">return this</span>.auth.<span class="function">register</span>(body.email, body.password);
+  }
+
+  <span class="decorator">@Post</span>(<span class="string">'login'</span>)
+  <span class="function">login</span>(<span class="decorator">@Body</span>() body: { email: <span class="type">string</span>; password: <span class="type">string</span> }) {
+    <span class="keyword">return this</span>.auth.<span class="function">login</span>(body.email, body.password);
+  }
+}</code></pre>
+
+    <div class="info-box orange">
+        <p><strong>DTOs in Lesson 6.</strong> The inline <code>{ email; password }</code> body type is fine for now &mdash; in the next lesson we replace it with proper validated DTOs (<code>class-validator</code>, <code>ValidationPipe</code>). For today, focus on the auth flow itself.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: JWT STRATEGY & AUTHGUARD -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: JWT Strategy &amp; AuthGuard('jwt')</h2>
+
+    <p>The login endpoint hands back an <code>access_token</code>. From that point on, every protected request must carry it in the <code>Authorization: Bearer &lt;token&gt;</code> header. We need a <em>guard</em> that:</p>
+
+    <ol style="margin: 0 0 16px 24px; color: var(--gray-700);">
+        <li>Extracts the token from the header</li>
+        <li>Verifies the signature against our secret</li>
+        <li>Decodes the payload</li>
+        <li>Attaches the user to <code>request.user</code></li>
+        <li>Rejects with 401 if anything is wrong</li>
+    </ol>
+
+    <p>That's the JwtStrategy.</p>
+
+    <h3>Set up the JwtModule</h3>
+
+    <p>Add to <code>.env</code>:</p>
+
+    <pre><code><span class="keyword">JWT_SECRET</span>=<span class="string">"change-me-to-a-long-random-string"</span>
+<span class="keyword">JWT_EXPIRES_IN</span>=<span class="string">"1d"</span></code></pre>
+
+    <pre><code><span class="comment">// src/auth/auth.module.ts</span>
+<span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { JwtModule } <span class="keyword">from</span> <span class="string">'@nestjs/jwt'</span>;
+<span class="keyword">import</span> { PassportModule } <span class="keyword">from</span> <span class="string">'@nestjs/passport'</span>;
+<span class="keyword">import</span> { AuthService } <span class="keyword">from</span> <span class="string">'./auth.service'</span>;
+<span class="keyword">import</span> { AuthController } <span class="keyword">from</span> <span class="string">'./auth.controller'</span>;
+<span class="keyword">import</span> { JwtStrategy } <span class="keyword">from</span> <span class="string">'./jwt.strategy'</span>;
+<span class="keyword">import</span> { UsersModule } <span class="keyword">from</span> <span class="string">'../users/users.module'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    UsersModule,
+    PassportModule,
+    JwtModule.<span class="function">register</span>({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: process.env.JWT_EXPIRES_IN ?? <span class="string">'1d'</span> },
+    }),
+  ],
+  controllers: [AuthController],
+  providers: [AuthService, JwtStrategy],
+})
+<span class="keyword">export class</span> AuthModule {}</code></pre>
+
+    <h3>JwtStrategy &mdash; the verification step</h3>
+
+    <pre><code><span class="comment">// src/auth/jwt.strategy.ts</span>
+<span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { PassportStrategy } <span class="keyword">from</span> <span class="string">'@nestjs/passport'</span>;
+<span class="keyword">import</span> { ExtractJwt, Strategy } <span class="keyword">from</span> <span class="string">'passport-jwt'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> JwtStrategy <span class="keyword">extends</span> <span class="function">PassportStrategy</span>(Strategy) {
+  <span class="keyword">constructor</span>() {
+    <span class="function">super</span>({
+      jwtFromRequest: ExtractJwt.<span class="function">fromAuthHeaderAsBearerToken</span>(),
+      ignoreExpiration: <span class="keyword">false</span>,
+      secretOrKey: process.env.JWT_SECRET,
+    });
+  }
+
+  <span class="function">validate</span>(payload: { sub: <span class="type">number</span>; email: <span class="type">string</span>; role: <span class="type">string</span> }) {
+    <span class="comment">// Whatever this returns becomes `request.user` in your controllers</span>
+    <span class="keyword">return</span> { id: payload.sub, email: payload.email, role: payload.role };
+  }
+}</code></pre>
+
+    <p><code>validate()</code> runs <em>only</em> after the signature has been verified and the token isn't expired. If anything fails earlier, the strategy short-circuits with 401 and your method never runs. <strong>You don't have to write any of that</strong> &mdash; passport-jwt does it for you.</p>
+
+    <h3>Protecting a controller</h3>
+
+    <pre><code><span class="comment">// src/flights/flights.controller.ts</span>
+<span class="keyword">import</span> { AuthGuard } <span class="keyword">from</span> <span class="string">'@nestjs/passport'</span>;
+<span class="keyword">import</span> { UseGuards, Req } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="decorator">@UseGuards</span>(<span class="function">AuthGuard</span>(<span class="string">'jwt'</span>))     <span class="comment">// ← every route below requires a valid JWT</span>
+<span class="keyword">export class</span> FlightsController {
+  <span class="comment">// ...all your existing handlers</span>
+
+  <span class="decorator">@Get</span>(<span class="string">'me'</span>)
+  <span class="function">whoAmI</span>(<span class="decorator">@Req</span>() req: <span class="keyword">any</span>) {
+    <span class="keyword">return</span> req.user;  <span class="comment">// { id, email, role } from JwtStrategy.validate()</span>
+  }
+}</code></pre>
+
+    <p>Apply <code>@UseGuards</code> at the class level to protect every method, or at the method level to protect just one. Public endpoints (login, register) have no guard.</p>
+
+    <h3>The full flow, end to end</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="360" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">JWT request flow</text>
+
+            <defs>
+                <marker id="arrB" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#3451B2"/>
+                </marker>
+            </defs>
+
+            <rect x="30" y="50" width="700" height="44" rx="8" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="55" y="77" font-family="Inter" font-weight="600" font-size="13" fill="#3451B2">1. Client</text>
+            <text x="160" y="77" font-family="JetBrains Mono" font-size="11" fill="#374151">GET /flights  Authorization: Bearer eyJhbGc...</text>
+
+            <line x1="380" y1="94" x2="380" y2="114" stroke="#3451B2" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <rect x="30" y="118" width="700" height="44" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+            <text x="55" y="145" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">2. AuthGuard('jwt')</text>
+            <text x="220" y="145" font-family="Inter" font-size="12" fill="#6B7280">extracts token from Authorization header</text>
+
+            <line x1="380" y1="162" x2="380" y2="182" stroke="#3451B2" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <rect x="30" y="186" width="700" height="44" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="55" y="213" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">3. passport-jwt</text>
+            <text x="200" y="213" font-family="Inter" font-size="12" fill="#6B7280">verifies signature with JWT_SECRET, checks expiration</text>
+
+            <line x1="380" y1="230" x2="380" y2="250" stroke="#3451B2" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <rect x="30" y="254" width="700" height="44" rx="8" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="55" y="281" font-family="Inter" font-weight="600" font-size="13" fill="#1A8F5C">4. JwtStrategy.validate()</text>
+            <text x="260" y="281" font-family="Inter" font-size="12" fill="#6B7280">returns user object → attached to request.user</text>
+
+            <line x1="380" y1="298" x2="380" y2="318" stroke="#3451B2" stroke-width="2" marker-end="url(#arrB)"/>
+
+            <rect x="30" y="322" width="700" height="34" rx="8" fill="#1A8F5C"/>
+            <text x="55" y="343" font-family="Inter" font-weight="600" font-size="13" fill="white">5. FlightsController.findAll() runs &mdash; sees req.user, returns flights</text>
+        </svg>
+        <div class="diagram-caption">Five steps. Steps 2&ndash;4 are entirely free &mdash; you just declared <code>@UseGuards(AuthGuard('jwt'))</code>.</div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test</div>
+        <div class="recall-question">Without scrolling: 1) Where does the JWT signature get verified &mdash; in your code, in passport, or in NestJS core? 2) What happens if a request to a protected endpoint arrives with no Authorization header at all? 3) What's the difference between the JWT payload and the JWT secret?</div>
+        <div class="recall-hint">Answers: 1) passport-jwt. 2) AuthGuard returns 401 before your handler runs. 3) Payload is public (anyone can decode it). Secret is private (only the server has it). Tampering with payload invalidates the signature.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: ROLE-BASED ACCESS CONTROL -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Role-Based Access Control</h2>
+
+    <p>JWT verification answers "who are you?" Now we answer "are you allowed to <em>do this</em>?" The pattern: a custom decorator that tags a route with a required role, plus a guard that reads the tag and compares it to the user's role.</p>
+
+    <h3>The @Roles() decorator</h3>
+
+    <pre><code><span class="comment">// src/auth/roles.decorator.ts</span>
+<span class="keyword">import</span> { SetMetadata } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+
+<span class="keyword">export const</span> ROLES_KEY = <span class="string">'roles'</span>;
+<span class="keyword">export const</span> <span class="function">Roles</span> = (...roles: <span class="type">string</span>[]) =&gt; <span class="function">SetMetadata</span>(ROLES_KEY, roles);</code></pre>
+
+    <p><code>SetMetadata</code> attaches a key/value to the route's metadata. It does nothing on its own &mdash; it just leaves a label that another guard will read.</p>
+
+    <h3>The RolesGuard</h3>
+
+    <pre><code><span class="comment">// src/auth/roles.guard.ts</span>
+<span class="keyword">import</span> { CanActivate, ExecutionContext, Injectable, ForbiddenException } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Reflector } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { ROLES_KEY } <span class="keyword">from</span> <span class="string">'./roles.decorator'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> RolesGuard <span class="keyword">implements</span> CanActivate {
+  <span class="keyword">constructor</span>(<span class="keyword">private readonly</span> reflector: Reflector) {}
+
+  <span class="function">canActivate</span>(ctx: ExecutionContext): <span class="type">boolean</span> {
+    <span class="keyword">const</span> required = <span class="keyword">this</span>.reflector.<span class="function">getAllAndOverride</span>&lt;<span class="type">string</span>[]&gt;(ROLES_KEY, [
+      ctx.<span class="function">getHandler</span>(),
+      ctx.<span class="function">getClass</span>(),
+    ]);
+    <span class="keyword">if</span> (!required || required.length === <span class="string">0</span>) <span class="keyword">return true</span>;       <span class="comment">// no roles → allow</span>
+
+    <span class="keyword">const</span> { user } = ctx.<span class="function">switchToHttp</span>().<span class="function">getRequest</span>();
+    <span class="keyword">if</span> (!user || !required.<span class="function">includes</span>(user.role)) {
+      <span class="keyword">throw new</span> <span class="function">ForbiddenException</span>(<span class="string">'Insufficient role'</span>);
+    }
+    <span class="keyword">return true</span>;
+  }
+}</code></pre>
+
+    <p>Reflector is NestJS's helper for reading metadata at runtime. <code>getAllAndOverride</code> checks both the method and the class &mdash; method-level <code>@Roles()</code> wins over class-level if both are present.</p>
+
+    <h3>Apply it to a route</h3>
+
+    <pre><code><span class="comment">// src/flights/flights.controller.ts</span>
+<span class="keyword">import</span> { AuthGuard } <span class="keyword">from</span> <span class="string">'@nestjs/passport'</span>;
+<span class="keyword">import</span> { Roles } <span class="keyword">from</span> <span class="string">'../auth/roles.decorator'</span>;
+<span class="keyword">import</span> { RolesGuard } <span class="keyword">from</span> <span class="string">'../auth/roles.guard'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'flights'</span>)
+<span class="decorator">@UseGuards</span>(<span class="function">AuthGuard</span>(<span class="string">'jwt'</span>), RolesGuard)
+<span class="keyword">export class</span> FlightsController {
+
+  <span class="decorator">@Get</span>()
+  <span class="function">findAll</span>() { <span class="comment">/* any logged-in user */</span> }
+
+  <span class="decorator">@Delete</span>(<span class="string">':id'</span>)
+  <span class="decorator">@Roles</span>(<span class="string">'admin'</span>)               <span class="comment">// ← only admins</span>
+  <span class="decorator">@HttpCode</span>(<span class="string">204</span>)
+  <span class="function">remove</span>(<span class="decorator">@Param</span>(<span class="string">'id'</span>, ParseIntPipe) id: <span class="type">number</span>) {
+    <span class="keyword">return this</span>.flightsService.<span class="function">remove</span>(id);
+  }
+}</code></pre>
+
+    <p>Order matters in <code>@UseGuards()</code>. AuthGuard runs first, attaches <code>request.user</code>; RolesGuard runs second, reads <code>request.user.role</code>. Reverse them and RolesGuard sees an undefined user.</p>
+
+    <div class="info-box purple">
+        <p><strong>Advanced:</strong> for fine-grained permissions (not just roles), the same pattern scales &mdash; create a <code>@Permissions('flight.delete')</code> decorator and a <code>PermissionsGuard</code> that checks user permissions in the database. We'll touch this in Lesson 9.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F46E;</div>
+        Junior: &ldquo;Can a regular user delete flights?&rdquo;<br>
+        Senior: &ldquo;Try it.&rdquo;<br>
+        Junior: *gets 403 Forbidden*<br>
+        Junior: &ldquo;Can an admin?&rdquo;<br>
+        Senior: &ldquo;Try it.&rdquo;<br>
+        Junior: *gets 204 No Content*<br>
+        Senior: &ldquo;That's all RBAC is. A label and a guard.&rdquo;<br>
+        <em>Most "complex permission systems" are this, repeated.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: PRODUCTION SECURITY LAYER -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Production Security Layer</h2>
+
+    <p>Auth handles "who" and "what." Production security handles everything <em>else</em>: someone scanning your endpoints, someone hammering /login with 50,000 password guesses, someone embedding your API in a malicious page. Four standard tools cover 95% of the surface.</p>
+
+    <h3>Helmet &mdash; sane HTTP security headers</h3>
+
+    <pre><code>npm i helmet</code></pre>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> helmet <span class="keyword">from</span> <span class="string">'helmet'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+  app.<span class="function">use</span>(<span class="function">helmet</span>());                 <span class="comment">// ← one line, dozens of headers</span>
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);
+}</code></pre>
+
+    <p>Helmet sets ~15 security-related response headers: <code>Content-Security-Policy</code>, <code>X-Frame-Options</code>, <code>Strict-Transport-Security</code>, <code>X-Content-Type-Options</code>, etc. Each blocks a specific class of attack (clickjacking, MIME sniffing, mixed content). The defaults are sensible &mdash; you mostly only customize CSP.</p>
+
+    <h3>CORS &mdash; controlling who calls your API</h3>
+
+    <pre><code>app.<span class="function">enableCors</span>({
+  origin: [<span class="string">'http://localhost:3000'</span>, <span class="string">'https://app.fohlio.com'</span>],
+  credentials: <span class="keyword">true</span>,
+  methods: [<span class="string">'GET'</span>, <span class="string">'POST'</span>, <span class="string">'PATCH'</span>, <span class="string">'DELETE'</span>],
+});</code></pre>
+
+    <p>By default, browsers refuse cross-origin XHR. CORS opens specific origins. <strong>Never use <code>origin: '*'</code> in production</strong> &mdash; that disables the protection. List the exact frontends that should be allowed to call you.</p>
+
+    <h3>Rate limiting with @nestjs/throttler</h3>
+
+    <pre><code>npm i @nestjs/throttler</code></pre>
+
+    <pre><code><span class="comment">// src/app.module.ts</span>
+<span class="keyword">import</span> { ThrottlerModule, ThrottlerGuard } <span class="keyword">from</span> <span class="string">'@nestjs/throttler'</span>;
+<span class="keyword">import</span> { APP_GUARD } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    ThrottlerModule.<span class="function">forRoot</span>([{ ttl: <span class="string">60_000</span>, limit: <span class="string">10</span> }]), <span class="comment">// 10 req / 60s</span>
+    <span class="comment">// ...other modules</span>
+  ],
+  providers: [
+    { provide: APP_GUARD, useClass: ThrottlerGuard },         <span class="comment">// applied globally</span>
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <p>11th request from the same IP within a minute &rarr; <code>429 Too Many Requests</code>. Lower the limit specifically on <code>/auth/login</code> to slow down credential stuffing &mdash; <code>@Throttle({ default: { ttl: 60_000, limit: 5 } })</code> on the login handler.</p>
+
+    <h3>Cookies, sessions, and CSRF</h3>
+
+    <p>JWTs in the Authorization header (what we built) are immune to CSRF &mdash; the browser doesn't send them automatically across origins. The moment you switch to <strong>cookie-stored auth</strong> (e.g. for SSR apps), CSRF becomes a real threat and you need <code>csurf</code> tokens, <code>SameSite=Lax</code> on the cookie, and <code>secure: true</code> in production.</p>
+
+    <table>
+        <tr>
+            <th>Storage</th>
+            <th>CSRF risk</th>
+            <th>XSS risk</th>
+            <th>When to use</th>
+        </tr>
+        <tr>
+            <td>JWT in <code>Authorization</code> header</td>
+            <td>None &mdash; not auto-sent</td>
+            <td>High if stored in localStorage</td>
+            <td>SPAs, mobile apps</td>
+        </tr>
+        <tr>
+            <td>JWT in HttpOnly cookie</td>
+            <td>Yes &mdash; needs CSRF tokens</td>
+            <td>Lower &mdash; JS can't read it</td>
+            <td>SSR apps, classic web</td>
+        </tr>
+        <tr>
+            <td>Express session</td>
+            <td>Yes &mdash; needs CSRF tokens</td>
+            <td>Same as cookie</td>
+            <td>Stateful traditional apps</td>
+        </tr>
+    </table>
+
+    <div class="info-box red">
+        <p><strong>The trade-off, plainly stated:</strong> there is no auth storage that is safe against both XSS and CSRF without help. If your frontend has an XSS vulnerability, your auth is compromised regardless of where you stored the token. The defenses are <em>both</em> layers, not just one.</p>
+    </div>
+
+    <h3>The full security stack, visualized</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="380" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Request flow through every security layer</text>
+
+            <defs>
+                <marker id="arrSec" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#374151"/>
+                </marker>
+            </defs>
+
+            <rect x="30" y="50" width="700" height="36" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="55" y="73" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">Helmet</text>
+            <text x="200" y="73" font-family="Inter" font-size="11" fill="#6B7280">sets security headers on every response</text>
+            <line x1="380" y1="86" x2="380" y2="100" stroke="#374151" stroke-width="1.5" marker-end="url(#arrSec)"/>
+
+            <rect x="30" y="104" width="700" height="36" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="55" y="127" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">CORS</text>
+            <text x="200" y="127" font-family="Inter" font-size="11" fill="#6B7280">rejects requests from unallowed origins</text>
+            <line x1="380" y1="140" x2="380" y2="154" stroke="#374151" stroke-width="1.5" marker-end="url(#arrSec)"/>
+
+            <rect x="30" y="158" width="700" height="36" rx="8" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+            <text x="55" y="181" font-family="Inter" font-weight="600" font-size="12" fill="#D97706">Throttler</text>
+            <text x="200" y="181" font-family="Inter" font-size="11" fill="#6B7280">10 req / 60s per IP &mdash; otherwise 429</text>
+            <line x1="380" y1="194" x2="380" y2="208" stroke="#374151" stroke-width="1.5" marker-end="url(#arrSec)"/>
+
+            <rect x="30" y="212" width="700" height="36" rx="8" fill="#DBEAFE" stroke="#3451B2" stroke-width="2"/>
+            <text x="55" y="235" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">AuthGuard('jwt')</text>
+            <text x="200" y="235" font-family="Inter" font-size="11" fill="#6B7280">verifies token, attaches request.user</text>
+            <line x1="380" y1="248" x2="380" y2="262" stroke="#374151" stroke-width="1.5" marker-end="url(#arrSec)"/>
+
+            <rect x="30" y="266" width="700" height="36" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="55" y="289" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">RolesGuard</text>
+            <text x="200" y="289" font-family="Inter" font-size="11" fill="#6B7280">checks @Roles() metadata against user.role</text>
+            <line x1="380" y1="302" x2="380" y2="316" stroke="#374151" stroke-width="1.5" marker-end="url(#arrSec)"/>
+
+            <rect x="30" y="320" width="700" height="44" rx="8" fill="#D1FAE5" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="55" y="347" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">Controller handler</text>
+            <text x="200" y="347" font-family="Inter" font-size="11" fill="#6B7280">finally runs &mdash; with a verified, authorized, rate-limited request</text>
+        </svg>
+        <div class="diagram-caption">Each layer rejects bad requests early. Your business logic only sees clean traffic.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: PUTTING IT ALL TOGETHER -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: Putting It All Together &mdash; the Protected Airport</h2>
+
+    <p>Walk through the airport one more time, with everything we built today.</p>
+
+    <div class="story-box">
+        <p>A passenger arrives. <strong>Helmet</strong> is the building's structural code &mdash; reinforced glass, blast-proof doors. Quiet, always there. <strong>CORS</strong> is the receptionist who only lets passengers from approved travel partners through the front entrance. <strong>Rate limiting</strong> is the queue-management system that politely tells the same person they've already approached the desk too many times in a minute.</p>
+        <p>The passenger reaches the security checkpoint. <strong>AuthGuard('jwt')</strong> is the TSA agent: examines the boarding pass (token), checks the holographic seal (signature) against the master pattern (JWT secret), confirms it hasn't expired. Pass &mdash; the passenger is verified.</p>
+        <p>At the lounge entrance, <strong>RolesGuard</strong> looks at the boarding pass class. Business? Welcome in. Economy? Sorry, members only &mdash; 403. Same valid passenger, different door, different rule.</p>
+        <p>And finally the passenger reaches their <strong>gate</strong> &mdash; your controller. Everything has been verified upstream. The handler does its job knowing the request is safe.</p>
+        <div class="tech-note">
+            <strong>The big idea:</strong> Each layer adds one specific protection. None of them are sufficient alone. Together they're "defense in depth." NestJS lets you express each layer with one decorator, then forget about it.
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Final self-test</div>
+        <div class="recall-question">Without scrolling: 1) why hash passwords instead of encrypting them? 2) what does <code>@UseGuards(AuthGuard('jwt'))</code> actually do at request time? 3) what's the order of operations when a request hits Helmet, CORS, Throttler, AuthGuard, RolesGuard? 4) where does the JWT secret live?</div>
+        <div class="recall-hint">4/4: you're ready for Lesson 6. 2-3/4: re-read Parts 2 and 6. 0-1/4: re-read the whole lesson &mdash; this is foundational.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--blue);">Hashing</div>
+            <div class="layer-desc">bcrypt(password, 10). One-way. Salt is automatic. Never store plaintext.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F39F;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">JWT login</div>
+            <div class="layer-desc">POST /auth/login validates credentials, signs a JWT with the user id, email, role.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F6E1;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Guards</div>
+            <div class="layer-desc">AuthGuard('jwt') verifies. RolesGuard authorizes. Order matters.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x26F0;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">Production layer</div>
+            <div class="layer-desc">Helmet (headers) + CORS (origins) + Throttler (rate). Defense in depth.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 6:</strong> Validation, Serialization &amp; DTOs. We'll replace those <code>@Body() body: any</code> placeholders with real DTOs validated by <code>class-validator</code>, hide sensitive fields like <code>passwordHash</code> with <code>class-transformer</code>, and wire up the global ValidationPipe.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Build POST /auth/register and POST /auth/login</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add the User model to <code>schema.prisma</code> and migrate</li>
+                    <li>Generate the <code>auth</code> and <code>users</code> modules</li>
+                    <li>Implement <code>register</code> (hash with bcrypt, store) and <code>login</code> (compare, sign JWT)</li>
+                    <li>In Postman/Insomnia: register a user, then log in</li>
+                    <li>Take a <strong>screenshot</strong> of the login response showing the JWT in the body</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Protect FlightsController with AuthGuard('jwt')</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add <code>@UseGuards(AuthGuard('jwt'))</code> to <code>FlightsController</code></li>
+                    <li>Verify unauthenticated requests get <code>401</code></li>
+                    <li>Verify authenticated requests (with <code>Authorization: Bearer &lt;token&gt;</code>) work as before</li>
+                    <li>Push to your <code>nestjs-course-yourname</code> repo</li>
+                    <li>Submit the commit/PR link</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Quick answer: hashing vs encryption</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 2&ndash;3 sentences: why do we hash passwords instead of encrypting them? What's the practical difference between a hash and an encryption?</li>
+                    <li>Submit as text in the platform</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Add @Roles('admin') to DELETE /flights/:id</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Implement <code>RolesGuard</code> and the <code>@Roles()</code> decorator from Part 5. Apply <code>@Roles('admin')</code> to the delete endpoint. Manually update one user's role to <code>admin</code> in the database. Verify: a regular user gets <code>403 Forbidden</code>, an admin user gets <code>204 No Content</code>. Submit <strong>two screenshots</strong> &mdash; one of each response.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Add Helmet, CORS, and rate limiting</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">In <code>main.ts</code>: <code>app.use(helmet())</code>, <code>app.enableCors({ origin: 'http://localhost:3000' })</code>. Add <code>ThrottlerModule.forRoot([{ ttl: 60_000, limit: 10 }])</code> globally. Submit <strong>two screenshots</strong>: (a) response headers showing Helmet's security headers, (b) a <code>429 Too Many Requests</code> response after firing 11 requests in a minute.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio NestJS Course &mdash; Lesson 5 of 10</p>
+        <p>Questions? Ask in the <code>#nestjs-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Validation, Serialization &amp; DTOs</p>
+    </div>
+
+</div>
+
+</body>
+</html>
