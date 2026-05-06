@@ -13,6 +13,11 @@ function transformUrl(url: string): { src: string; canEmbed: boolean } {
   try {
     const u = new URL(url);
 
+    // Only allow http(s) — blocks javascript:, data:, file:, etc.
+    if (u.protocol !== "http:" && u.protocol !== "https:") {
+      return { src: url, canEmbed: false };
+    }
+
     // Google Drive — convert share link to thumbnail
     if (u.hostname.endsWith("drive.google.com")) {
       const match = u.pathname.match(/\/file\/d\/([^/]+)/);

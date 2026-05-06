@@ -52,8 +52,9 @@ export async function handleStudioUploadRequest(
   viewer: Viewer,
 ): Promise<Result<unknown, StudioUploadError>> {
   if (!env.BLOB_READ_WRITE_TOKEN) {
+    console.error("BLOB_READ_WRITE_TOKEN is missing — studio uploads disabled.");
     return err({
-      error: "BLOB_READ_WRITE_TOKEN is missing. Uploads are disabled until it is configured.",
+      error: "Uploads are temporarily unavailable.",
       type: "server",
     });
   }
@@ -149,27 +150,16 @@ export async function handleStudioUploadRequest(
 
     if (error instanceof Error) {
       if (error.message === "Forbidden") {
-        return err({
-          error: error.message,
-          type: "auth",
-        });
+        return err({ error: "Forbidden", type: "auth" });
       }
 
       if (error.message === "Lesson not found") {
-        return err({
-          error: error.message,
-          type: "validation",
-        });
+        return err({ error: "Lesson not found", type: "validation" });
       }
-
-      return err({
-        error: error.message,
-        type: "server",
-      });
     }
 
     return err({
-      error: "Failed to prepare lesson upload.",
+      error: "Upload failed.",
       type: "server",
     });
   }

@@ -19,13 +19,15 @@ const TYPE_LABELS: Record<string, string> = {
   checklist: "Checklist",
 };
 
+const HTTP_URL_RE = /^https?:\/\/\S+$/i;
+
 function isContentValid(content: SubmissionContent | null): boolean {
   if (!content) return false;
   switch (content.type) {
     case "pr_link":
-      return !!content.url?.trim();
+      return !!content.url?.trim() && HTTP_URL_RE.test(content.url.trim());
     case "screenshot":
-      return !!content.fileUrl?.trim();
+      return !!content.fileUrl?.trim() && HTTP_URL_RE.test(content.fileUrl.trim());
     case "text":
       return !!content.text?.trim();
     case "quiz":
@@ -60,11 +62,13 @@ export function TaskCard({
     initialSubmission?.status === "submitted" ? "submitted" : "editing",
   );
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
 
   const disabled = mode === "submitted";
 
   async function handleSubmit() {
     if (!content || !isContentValid(content)) return;
+    if (uploading) return;
     setSaving(true);
     try {
       const res = await fetch(`/api/submissions/${task.id}`, {
@@ -106,8 +110,10 @@ export function TaskCard({
         )}
         {task.submissionType === "screenshot" && (
           <SubmissionScreenshot
+            taskId={task.id}
             value={content?.type === "screenshot" ? content : null}
             onChange={setContent}
+            onUploadingChange={setUploading}
             disabled={disabled}
           />
         )}
@@ -149,9 +155,9 @@ export function TaskCard({
           <Button
             size="sm"
             onClick={handleSubmit}
-            disabled={!isContentValid(content) || saving}
+            disabled={!isContentValid(content) || saving || uploading}
           >
-            Submit
+            {uploading ? "Uploading…" : "Submit"}
           </Button>
         )}
       </div>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
-import { handleStudioUploadRequest } from "@/lib/studioUploads";
+import { handleHomeworkUploadRequest } from "@/lib/homeworkUploads";
 
 export async function POST(request: Request) {
   const user = await getCurrentUser();
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const result = await handleStudioUploadRequest(request, {
+  const result = await handleHomeworkUploadRequest(request, {
     id: user.id,
     role: user.role,
   });
