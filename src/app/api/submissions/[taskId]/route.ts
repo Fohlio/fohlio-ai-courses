@@ -1,6 +1,69 @@
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+
+const HTTP_URL_RE = /^https?:\/\/\S+$/i;
+
+const PrLinkSchema = z.object({
+  type: z.literal("pr_link"),
+  url: z.string().trim().regex(HTTP_URL_RE, "Must be a public http(s) URL."),
+});
+
+const ScreenshotSchema = z.object({
+  type: z.literal("screenshot"),
+  fileUrl: z.string().trim().regex(HTTP_URL_RE, "Must be a public http(s) URL."),
+  fileName: z.string().min(1).max(255),
+});
+
+const TextSchema = z.object({
+  type: z.literal("text"),
+  text: z.string().trim().min(1).max(10_000),
+});
+
+const QuizSchema = z.object({
+  type: z.literal("quiz"),
+  answers: z
+    .array(
+      z.object({
+        questionIndex: z.number().int().nonnegative(),
+        question: z.string(),
+        answer: z.string(),
+      }),
+    )
+    .min(1),
+});
+
+const ChecklistSchema = z.object({
+  type: z.literal("checklist"),
+  items: z
+    .array(z.object({ label: z.string(), checked: z.boolean() }))
+    .min(1),
+});
+
+const ContentSchema = z.discriminatedUnion("type", [
+  PrLinkSchema,
+  ScreenshotSchema,
+  TextSchema,
+  QuizSchema,
+  ChecklistSchema,
+]);
+
+const PutBodySchema = z.object({
+  courseId: z.string().min(1),
+  lessonId: z.string().min(1),
+  content: ContentSchema,
+});
+
+type ContentType = z.infer<typeof ContentSchema>["type"];
+
+const SUBMISSION_TYPE_TO_CONTENT_TYPE: Record<string, ContentType> = {
+  pr_link: "pr_link",
+  screenshot: "screenshot",
+  text: "text",
+  quiz: "quiz",
+  checklist: "checklist",
+};
 
 export async function PUT(
   request: NextRequest,
@@ -12,17 +75,65 @@ export async function PUT(
   }
 
   const { taskId } = await params;
-  const body = await request.json();
-  const { lessonId, courseId, content } = body;
 
-  if (!content?.type || !lessonId || !courseId) {
+  let parsed;
+  try {
+    parsed = PutBodySchema.parse(await request.json());
+  } catch (error) {
     return NextResponse.json(
-      { error: "courseId, lessonId and content are required" },
+      {
+        error:
+          error instanceof z.ZodError
+            ? error.issues[0]?.message || "Invalid request body."
+            : "Invalid request body.",
+      },
       { status: 400 },
     );
   }
 
-  const status = "submitted";
+  const { courseId, lessonId, content } = parsed;
+
+  const task = await prisma.homeworkTask.findUnique({
+    where: { id: taskId },
+    select: {
+      lessonId: true,
+      submissionType: true,
+      lesson: {
+        select: {
+          courseId: true,
+          isPublished: true,
+          course: { select: { status: true, ownerId: true } },
+        },
+      },
+    },
+  });
+
+  if (!task) {
+    return NextResponse.json({ error: "Task not found" }, { status: 404 });
+  }
+
+  if (task.lessonId !== lessonId || task.lesson.courseId !== courseId) {
+    return NextResponse.json(
+      { error: "Course/lesson does not match task." },
+      { status: 400 },
+    );
+  }
+
+  if (SUBMISSION_TYPE_TO_CONTENT_TYPE[task.submissionType] !== content.type) {
+    return NextResponse.json(
+      { error: "Submission type does not match the task." },
+      { status: 400 },
+    );
+  }
+
+  const isPrivileged =
+    user.role === "admin" || task.lesson.course.ownerId === user.id;
+
+  if (!isPrivileged) {
+    if (task.lesson.course.status !== "published" || !task.lesson.isPublished) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  }
 
   const submission = await prisma.taskSubmission.upsert({
     where: { userId_taskId: { userId: user.id, taskId } },
@@ -31,12 +142,12 @@ export async function PUT(
       taskId,
       lessonId,
       courseId,
-      status,
+      status: "submitted",
       content,
     },
     update: {
       courseId,
-      status,
+      status: "submitted",
       content,
     },
   });
