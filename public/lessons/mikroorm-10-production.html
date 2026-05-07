@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 10</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 10 of 10</div>
+        <h1>MikroORM Course</h1>
+        <div class="subtitle">Capstone &mdash; Production-Ready archive-api</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Have one running <code>archive-api</code> deployed against a managed Postgres, with structured logging, slow-query alerts, and a pre-built metadata cache</li>
+            <li>Have a single capstone PR on <code>mikroorm-course-yourname</code> that demonstrates at least four concepts drawn from Lessons 1&ndash;9</li>
+            <li>Be able to explain, without notes, how a real HTTP request flows from middleware fork to <code>flush()</code>, hitting the right concept from each prior lesson on the way</li>
+            <li>Know when to reach for read replicas, multiple schemas, and request contexts &mdash; and when not to</li>
+            <li>Have a written self-assessment of the two patterns from this course you expect to use most in your day-to-day Fohlio work</li>
+        </ul>
+    </div>
+
+    <p>Before we go any further: <strong>this lesson teaches no new MikroORM concepts.</strong> Lessons 1 through 9 already covered everything you need to ship a real service. Lesson 10's job is to interleave them &mdash; to force your brain to retrieve concepts in mixed order, to compose them into a single working system, and to add the thin operational layer that turns a working dev machine into a production deploy. That's it. If you find yourself reaching for something new in Part 6's capstone, the answer is almost certainly already in a prior lesson.</p>
+
+    <h3>Recap: the whole course on one page</h3>
+
+    <p>Take ten seconds before reading these cards. Cover the right side of the screen with your hand and try to recall the headline of each lesson. Then check.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4DA;</div>
+            <div class="card-title" style="color: var(--blue);">L1: Foundations</div>
+            <div class="card-subtitle" style="color: var(--blue);">DataMapper &middot; Identity Map &middot; Unit of Work</div>
+            <div class="card-desc">Entities are plain objects. The EntityManager tracks changes against snapshots. <code>flush()</code> commits the diff in one transaction.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4D1;</div>
+            <div class="card-title" style="color: var(--green);">L2: Entities</div>
+            <div class="card-subtitle" style="color: var(--green);"><code>defineEntity</code> &middot; properties &middot; primary keys</div>
+            <div class="card-desc">Every column type, modifier, default, and naming-strategy lever you'll use. Bigint vs UUID. Nullable vs optional.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F464;</div>
+            <div class="card-title" style="color: var(--orange);">L3: EntityManager</div>
+            <div class="card-subtitle" style="color: var(--orange);"><code>persist</code> &middot; <code>find</code> &middot; lifecycle states</div>
+            <div class="card-desc">New, managed, removed, detached. How entities move between states, and which method moves them.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F517;</div>
+            <div class="card-title" style="color: var(--purple);">L4: Relations</div>
+            <div class="card-subtitle" style="color: var(--purple);">owning/inverse &middot; Collections &middot; cascade</div>
+            <div class="card-desc">M:1, 1:M, 1:1, M:M. Which side owns the FK. How <code>cascade</code> and <code>orphanRemoval</code> propagate persistence.</div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F4E6;</div>
+            <div class="card-title" style="color: var(--red);">L5: Loading</div>
+            <div class="card-subtitle" style="color: var(--red);"><code>populate</code> &middot; strategies &middot; N+1</div>
+            <div class="card-desc">Joined vs select-in. How to ask for related data without burning a thousand round-trips. <code>fields</code> for slim payloads.</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F39F;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--blue);">L6: QueryBuilder</div>
+            <div class="card-subtitle" style="color: var(--blue);">filters &middot; repositories &middot; raw SQL escape</div>
+            <div class="card-desc">When the FilterQuery is not enough. Custom repositories. Tenant filters and soft-delete filters as cross-cutting policy.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F3D7;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--green);">L7: Migrations</div>
+            <div class="card-subtitle" style="color: var(--green);">schema diff &middot; up/down &middot; seeders</div>
+            <div class="card-desc">Versioned, reviewable changes to the building. Backfills via the EntityManager. Snapshot strategy.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F9E9;</div>
+            <div class="card-title" style="color: var(--orange);">L8: Advanced modeling</div>
+            <div class="card-subtitle" style="color: var(--orange);">embeddables &middot; STI &middot; hooks &middot; JSON</div>
+            <div class="card-desc">Value objects in one column. Inheritance via discriminator. <code>@BeforeUpdate</code>, <code>@AfterCreate</code>. Custom types.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F4E5;</div>
+            <div class="card-title" style="color: var(--purple);">L9: NestJS integration</div>
+            <div class="card-subtitle" style="color: var(--purple);">request scope &middot; <code>@Transactional</code> &middot; DI</div>
+            <div class="card-desc">One fork per request via <code>MikroOrmModule.forRoot</code>. <code>@CreateRequestContext</code> for jobs. Outbox pattern.</div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F680;</div>
+            <div class="card-title" style="color: var(--red);">L10: Production (today)</div>
+            <div class="card-subtitle" style="color: var(--red);">synthesis + ops</div>
+            <div class="card-desc">Compose all 9 lessons into one deployable PR. Add structured logging, metadata cache, read replicas, schema-per-tenant.</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: THE SYNTHESIS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Synthesis &mdash; How the Patterns Compose</h2>
+
+    <p>Pop quiz before we trace one full request. No scrolling.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Pretest (no notes)</div>
+        <div class="recall-question">Without re-reading L3: name the four entity states (the lifecycle states an entity moves through inside the EntityManager) and one trigger that moves an entity into each.</div>
+        <div class="recall-hint">If you can name 4/4 with triggers, your retention is solid &mdash; head straight into Part 1's story. 2-3/4: jot what you have, finish Part 1, then re-skim L3 tonight. 0-1/4: read L3 first, this lesson is much heavier without it.</div>
+    </div>
+
+    <p>Now the synthesis. We're going to walk a single realistic HTTP request all the way through the stack you've built. Every paragraph below is something you've already learned. The new thing is seeing them <em>in order, on one page</em>.</p>
+
+    <h3>One full lifecycle, one paragraph per layer</h3>
+
+    <div class="story-box">
+        <p>The morning shift opens at the Records Library &mdash; sorry, at <code>archive-api</code>. A patron walks up to the desk and hands over a request slip: <code>PATCH /articles/42</code> with a body marking the article as published.</p>
+        <p>The desk clerk (Nest's HTTP layer) doesn't know anything about the master register. They hand the slip to the floor supervisor. The supervisor's first move is mechanical: pull a fresh ledger off the shelf, label it with this patron's name, and tuck it into a clipboard that follows the patron everywhere they go inside the building. <strong>This is the request-scoped <code>em.fork()</code> from L9</strong> &mdash; a private working ledger and a private master-catalog page, scoped to one request via Node's <code>AsyncLocalStorage</code>.</p>
+        <p>The supervisor passes the slip to a subject specialist (the <code>ArticleService</code>) who knows what &ldquo;publish an article&rdquo; means. The specialist asks the catalog for article 42, but with a note: &ldquo;and bring the author and the tags too&rdquo;. <strong>That's <code>populate: ['author', 'tags']</code> from L4 and L5</strong> &mdash; one query plan, not three round trips. The catalog hands back exactly one card per record; if the same patron asked again two minutes later, they'd get the same physical card back, no second trip to the stacks. <strong>That's the Identity Map from L1</strong>.</p>
+        <p>The specialist edits the card &mdash; sets <code>publishedAt = new Date()</code>, calls <code>article.publish()</code>. That method is just JavaScript; it changes object fields. <strong>No SQL has been written yet.</strong> Inside the entity sits a <code>@BeforeUpdate</code> hook from L8 that will run later, at flush time, to bump <code>updatedAt</code> and validate the publish state machine. The specialist also calls <code>this.outbox.queue(article, 'article.published')</code> &mdash; that creates a new <code>OutboxEvent</code> entity and registers it with the same EntityManager. <strong>This is the outbox pattern from L9</strong>: the event row will land in the same transaction as the article update, so either both happen or neither does.</p>
+        <p>The specialist returns. The interceptor wrapping their method is annotated <code>@Transactional()</code>. <strong>That decorator from L9</strong> is what triggers <code>em.flush()</code> when the method resolves &mdash; and rolls back if it throws. Now the working ledger comes alive. <strong>This is the Unit of Work from L1</strong>: it walks the managed entities, diffs each against its snapshot, runs the <code>@BeforeUpdate</code> hook, topologically sorts the change-set, opens a transaction, fires one batched <code>UPDATE</code> for <code>article</code> and one <code>INSERT</code> for <code>outbox_event</code>, and commits. The patron gets <code>200 OK</code>.</p>
+        <p>The patron walks out. The supervisor tears the working ledger off the clipboard, drops it in the recycling bin. The map page goes with it. Nothing about article 42 leaks to the next patron, even though they may pick up article 42 in their own request a millisecond later.</p>
+        <div class="tech-note">
+            <strong>Every line of that story is something you've already seen.</strong> What's new is only the framing: nine lessons, one request, in order. Read it twice. The second pass is the one that locks the synthesis in.
+        </div>
+    </div>
+
+    <p>That's the model. The next four parts add a thin operational skin around it: how do we make this run cleanly under real production load, where dev-mode logging would melt our log bill, where boot time matters, where one Postgres primary can't hold all the read traffic, and where multiple Fohlio tenants need data isolation. Nothing you didn't already learn &mdash; just the production-grade dial settings.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: PRODUCTION LOGGING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Production Logging</h2>
+
+    <p>In Lesson 1 you set <code>debug: true</code>. Every SQL statement printed to the console &mdash; insert, select, begin, commit, the works. That was deliberate: when you're learning, watching the queries fire is the fastest feedback loop in the world.</p>
+
+    <p>In production, <code>debug: true</code> is a footgun. A typical Nest request fires somewhere between 1 and 10 queries. Multiply by your real RPS, multiply by 30 days of log retention, and you've shipped a five-figure Datadog bill in a service that does very little. We need three things instead: <strong>structured logs</strong> (JSON, machine-readable), <strong>only the queries that matter</strong> (slow ones), and <strong>no leaked secrets</strong>.</p>
+
+    <h3>Structured logger via <code>loggerFactory</code></h3>
+
+    <p>The <code>logger</code> option lets you swap the default text logger for any function. The <code>loggerFactory</code> option goes further &mdash; it lets you ship a class that controls every namespace. We'll wire MikroORM's logger output through <code>pino</code> (or NestJS's <code>Logger</code> &mdash; same idea). Here's the production config:</p>
+
+    <pre><code><span class="comment">// src/mikro-orm.config.prod.ts</span>
+<span class="keyword">import</span> { defineConfig } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { DefaultLogger, <span class="type">LoggerNamespace</span>, <span class="type">LogContext</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> pino <span class="keyword">from</span> <span class="string">'pino'</span>;
+
+<span class="keyword">const</span> log = <span class="function">pino</span>({ level: process.env.LOG_LEVEL ?? <span class="string">'info'</span> });
+
+<span class="keyword">class</span> <span class="type">PinoOrmLogger</span> <span class="keyword">extends</span> DefaultLogger {
+  <span class="function">log</span>(namespace: <span class="type">LoggerNamespace</span>, message: <span class="type">string</span>, context?: <span class="type">LogContext</span>) {
+    log.<span class="function">info</span>({ namespace, took: context?.took, label: context?.label }, message);
+  }
+  <span class="function">warn</span>(namespace: <span class="type">LoggerNamespace</span>, message: <span class="type">string</span>, context?: <span class="type">LogContext</span>) {
+    log.<span class="function">warn</span>({ namespace, took: context?.took, label: context?.label }, message);
+  }
+  <span class="function">error</span>(namespace: <span class="type">LoggerNamespace</span>, message: <span class="type">string</span>, context?: <span class="type">LogContext</span>) {
+    log.<span class="function">error</span>({ namespace, took: context?.took, label: context?.label }, message);
+  }
+}
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  <span class="comment">// ... entities, dbName, etc. shared with dev config</span>
+  debug: <span class="keyword">false</span>,                <span class="comment">// no per-query log spam</span>
+  slowQueryThreshold: <span class="string">200</span>,     <span class="comment">// only log queries &gt;= 200ms</span>
+  loggerFactory: (opts) <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">PinoOrmLogger</span>(opts),
+});</code></pre>
+
+    <p>Two switches earn their keep here. <code>debug: false</code> turns off the firehose. <code>slowQueryThreshold: 200</code> turns on the <code>slow-query</code> namespace. From the docs: <em>&ldquo;Slow query logs are always emitted when the threshold is met, regardless of the debug setting.&rdquo;</em> So even with debug off, anything over 200ms still hits your logger as a warning. That's the signal-to-noise ratio you want in production: nothing on the happy path, a clear yellow flag when something is slow enough to matter.</p>
+
+    <h3>Per-query labels for traceability</h3>
+
+    <p>When a slow query fires, the line in your dashboard reads <code>select &quot;a0&quot;.* from &quot;article&quot; ...</code> &mdash; useful, but you'll spend ten minutes finding which endpoint emitted it. Save yourself the grep:</p>
+
+    <pre><code><span class="keyword">const</span> article = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, id, {
+  populate: [<span class="string">'author'</span>, <span class="string">'tags'</span>],
+  logging: { label: <span class="string">'PATCH /articles/:id - load aggregate'</span> },
+});</code></pre>
+
+    <p>The label travels with the query into the slow-query log. In Datadog you can pivot on it. Use it sparingly &mdash; on the half-dozen hot paths and the queries you've already tuned once.</p>
+
+    <h3>Sensitive parameters</h3>
+
+    <p>The <code>query-params</code> namespace is incredibly useful in dev (it inlines bind parameters into the SQL) and is a compliance disaster in prod. Bound parameters can include API tokens, password hashes if you're updating auth, PII, anything. Two rules:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6AB;</div>
+            <div class="layer-name" style="color: var(--red);">Never enable in prod</div>
+            <div class="layer-desc">Don't list <code>'query-params'</code> in <code>debug: [...]</code> in any production config. Period.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--orange);">Filter at the logger</div>
+            <div class="layer-desc">In your <code>PinoOrmLogger</code>, redact patterns like <code>password = ?</code>, <code>api_key = ?</code>, anything that smells like a token. <code>pino</code> has a built-in <code>redact</code> option for exactly this.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4C5;</div>
+            <div class="layer-name" style="color: var(--green);">Retention policy</div>
+            <div class="layer-desc">Slow-query logs: 14&ndash;30 days. Trace logs (if you turn them on temporarily for a Sentry investigation): 24 hours and a calendar reminder to flip them back off.</div>
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>The dev/prod config split.</strong> Don't rely on environment variables to flip <code>debug</code> at runtime &mdash; ship a literal <code>mikro-orm.config.prod.ts</code> that's referenced from your build. If a junior accidentally runs the dev config in production, you want it to fail loudly (mismatched DB host, no SSL), not silently fire 50,000 logs/min.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4B8;</div>
+        <strong>The Datadog bill story.</strong> Day 1 of the course you typed <code>debug: true</code> into <code>archive-api</code> because you wanted to see your INSERTs.<br>
+        Day 100, you ship that same config to prod. Datadog ingests every SELECT, every COMMIT, every BEGIN. <code>200 req/s</code> &times; <code>~5 queries each</code> &times; <code>30 days</code> = a number with a comma in it that does <em>not</em> represent latency.<br>
+        Your CFO Slacks you: &ldquo;Why did our APM bill 4x in March?&rdquo;<br>
+        Your reply: &ldquo;I went from 'where do my queries even go' to 'they go to Datadog at the rate of 200/req &mdash; please turn that off.' Patch is up.&rdquo;<br>
+        <em>The full L1&rarr;L10 arc, in two debug flags.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: METADATA CACHE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Metadata Cache &mdash; Pre-Printed Catalog Cards</h2>
+
+    <p>Every time MikroORM boots, it does a discovery pass: it reads your entity definitions, sniffs TypeScript types via <code>ts-morph</code>, walks every relation, computes column types, generates hydration functions, and assembles a metadata graph. On a laptop, with a small project, this is a few hundred milliseconds you never notice.</p>
+
+    <p>On a serverless cold start with thirty entities, this is a sad number. We're talking 1&ndash;3 seconds before your app handles its first request. In a Vercel or Lambda environment where instances start and die constantly, this directly hits p99 latency.</p>
+
+    <p>The library analogy: every morning, before opening, the librarians re-derive the entire catalog from scratch &mdash; reading every spine, transcribing every title, computing every cross-reference. Pointless. The catalog cards never change between deploys. <strong>Pre-print them once at build time, ship the printed deck, point the runtime at it.</strong></p>
+
+    <h3>Generate at build, load at boot</h3>
+
+    <p>In your CI pipeline, after the TypeScript compile step, run:</p>
+
+    <pre><code><span class="function">npx</span> mikro-orm cache:generate --combined</code></pre>
+
+    <p>This produces <code>./temp/metadata.json</code> &mdash; a single file containing every entity's discovered metadata, ready to load. Bundle it with your build artifact (Docker image, Vercel deployment, whatever). Then, in your production config, point at it:</p>
+
+    <pre><code><span class="comment">// src/mikro-orm.config.prod.ts</span>
+<span class="keyword">import</span> { GeneratedCacheAdapter, defineConfig } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> metadata <span class="keyword">from</span> <span class="string">'../temp/metadata.json'</span>;
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  <span class="comment">// ... rest of config</span>
+  metadataCache: {
+    enabled: <span class="keyword">true</span>,
+    adapter: GeneratedCacheAdapter,
+    options: { data: metadata },
+  },
+});</code></pre>
+
+    <p>That's it. At boot, MikroORM sees the pre-baked metadata, skips the entire <code>ts-morph</code> phase, and is ready to take requests in tens of milliseconds. As a bonus, you can move <code>@mikro-orm/reflection</code> to <code>devDependencies</code> &mdash; production no longer needs the TypeScript reader at all.</p>
+
+    <div class="info-box blue">
+        <p><strong>Two checks before you cache:</strong> (1) Regenerate <code>metadata.json</code> on every CI build, never commit it &mdash; it's a build artifact, not source. (2) If your entity definitions and the cached metadata drift, you'll get loud, mysterious errors at boot. CI should fail the build if <code>cache:generate</code> exits non-zero.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: READ REPLICAS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Read Replicas &mdash; Reading Rooms Off the Master Catalog</h2>
+
+    <p>Your primary Postgres is doing two jobs at once: serving writes (must be authoritative, must be consistent) and serving reads (can be a few hundred ms behind, can be load-balanced). At any non-trivial scale, that's a problem &mdash; the writes are the precious workload, but the reads are 95% of the volume drowning them out.</p>
+
+    <p>Postgres solves this with replication. You spin up one or more replicas that stream WAL from the primary and serve read-only queries. The library equivalent: open a few <strong>reading rooms</strong> &mdash; quiet annexes off the main building, each holding a synchronized copy of the master catalog. Patrons who only need to <em>read</em> a record go to a reading room. Patrons who need to <em>change</em> a record still go to the main desk.</p>
+
+    <h3>Configure replicas in MikroORM</h3>
+
+    <pre><code><span class="comment">// src/mikro-orm.config.prod.ts</span>
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  <span class="comment">// primary (writes)</span>
+  host: <span class="string">'archive-primary.internal'</span>,
+  user: <span class="string">'archive_master'</span>,
+  password: process.env.DB_PASSWORD,
+  dbName: <span class="string">'archive'</span>,
+
+  <span class="comment">// read replicas - only the fields that differ from primary</span>
+  preferReadReplicas: <span class="keyword">true</span>,
+  replicas: [
+    { name: <span class="string">'read-1'</span>, host: <span class="string">'archive-replica-1.internal'</span> },
+    { name: <span class="string">'read-2'</span>, host: <span class="string">'archive-replica-2.internal'</span> },
+  ],
+  <span class="comment">// ... entities, logger, metadataCache</span>
+});</code></pre>
+
+    <p>That's the entire feature. With <code>preferReadReplicas: true</code> (the default), MikroORM routes every <code>SELECT</code> and <code>COUNT</code> outside a transaction to a randomly chosen replica. Writes (<code>INSERT</code>/<code>UPDATE</code>/<code>DELETE</code>) go to primary. Anything inside <code>em.transactional(...)</code> goes to primary too &mdash; including reads &mdash; because mixing reads and writes across primary and a lagging replica inside one transaction is a correctness nightmare.</p>
+
+    <h3>The read-after-write trap</h3>
+
+    <p>Here's the subtle one. Replicas lag. Even on the same Postgres cluster, the replica might be 50&ndash;500ms behind. If your handler does:</p>
+
+    <pre><code><span class="keyword">await</span> em.<span class="function">persistAndFlush</span>(article);    <span class="comment">// goes to primary</span>
+<span class="keyword">const</span> reloaded = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, id);  <span class="comment">// might go to replica</span></code></pre>
+
+    <p>...you risk reading a stale version of the row you literally just wrote. The fix is exactly what the docs spell out: <em>&ldquo;all queries inside a transaction will use write connection.&rdquo;</em> Wrap the whole handler in a <code>@Transactional()</code> from L9 (or <code>em.transactional</code>), and the read after the flush will route to primary because it's still in the same transactional scope. This is one of those cases where the framework does the right thing once you put your code in the right shape &mdash; you don't need to think about routing per query.</p>
+
+    <p>For the rare case where you <em>do</em> need to override per-query, use <code>connectionType</code>:</p>
+
+    <pre><code><span class="keyword">const</span> reportRow = <span class="keyword">await</span> em.<span class="function">findOne</span>(
+  Article,
+  id,
+  { connectionType: <span class="string">'write'</span> },  <span class="comment">// force primary even outside a tx</span>
+);</code></pre>
+
+    <div class="info-box purple">
+        <p><strong>When read replicas earn their keep:</strong> read-heavy services (dashboards, search, list endpoints), reporting workloads, analytics queries, materialized-view feeders. They are <em>not</em> a free win for write-heavy services or for workloads with strict read-after-write requirements (auth, payments) &mdash; in those cases the replica lag will bite you and the operational complexity is not worth it.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: MULTIPLE SCHEMAS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Multiple Schemas &mdash; Floors in the Building</h2>
+
+    <p>In Lesson 6 you saw filters. A multi-tenant app there used a <code>tenant</code> filter: every query for every entity got an automatic <code>WHERE tenant_id = ?</code> appended. Same database, same tables, separation enforced in software.</p>
+
+    <p>Postgres offers a different model: <strong>one schema per tenant</strong>. Same database, same connection, but each tenant's tables live in their own namespace &mdash; <code>tenant_acme.article</code>, <code>tenant_globex.article</code>. The library analogy: same building, but each tenant gets their own <strong>floor</strong>, with its own copy of every shelf, isolated from the others. Same architecture, no risk of accidentally walking off with someone else's books.</p>
+
+    <h3>Configure schema-per-tenant</h3>
+
+    <p>You declare entities with <code>schema: '*'</code> &mdash; a wildcard meaning &ldquo;this entity can live in any schema, decided at runtime&rdquo;:</p>
+
+    <pre><code><span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  schema: <span class="string">'*'</span>,
+  properties: { <span class="comment">/* ... */</span> },
+});</code></pre>
+
+    <p>Then, per request, fork the EM with the tenant's schema:</p>
+
+    <pre><code><span class="comment">// usually inside a NestJS guard or middleware</span>
+<span class="keyword">const</span> tenantSchema = <span class="string">`tenant_</span>${tenantId}<span class="string">`</span>;
+<span class="keyword">const</span> tenantEm = em.<span class="function">fork</span>({ schema: tenantSchema });</code></pre>
+
+    <p>From here on, every <code>find</code>, <code>persist</code>, <code>flush</code> on <code>tenantEm</code> targets that schema's tables. Including the QueryBuilder. Including transactions. The framework handles it.</p>
+
+    <h3>Schema-per-tenant vs filter-per-tenant: when to pick which</h3>
+
+    <table>
+        <tr>
+            <th>&nbsp;</th>
+            <th>Filter (L6)</th>
+            <th>Schema (today)</th>
+        </tr>
+        <tr>
+            <td><strong>Tenant count</strong></td>
+            <td>Thousands+, or unbounded</td>
+            <td>Tens to low hundreds</td>
+        </tr>
+        <tr>
+            <td><strong>Isolation guarantee</strong></td>
+            <td>Software (one missed filter = data leak)</td>
+            <td>Database namespace (Postgres enforces it)</td>
+        </tr>
+        <tr>
+            <td><strong>Per-tenant migrations</strong></td>
+            <td>Free &mdash; one migration covers all</td>
+            <td>Loop over schemas in CI, or use the <code>--schema</code> CLI flag</td>
+        </tr>
+        <tr>
+            <td><strong>Per-tenant backup/restore</strong></td>
+            <td>Hard (row-level export)</td>
+            <td>Easy (<code>pg_dump --schema=tenant_acme</code>)</td>
+        </tr>
+        <tr>
+            <td><strong>Cross-tenant query</strong></td>
+            <td>Trivial &mdash; just drop the filter</td>
+            <td>Awkward &mdash; needs UNION ALL across schemas</td>
+        </tr>
+        <tr>
+            <td><strong>Connection pooling</strong></td>
+            <td>One pool</td>
+            <td>One pool (same DB &mdash; this is the win over schema-per-database)</td>
+        </tr>
+    </table>
+
+    <p>Default to <strong>filter</strong> for SaaS with many small tenants (the typical Fohlio case). Reach for <strong>schema</strong> when you have a small number of large tenants who pay for hard isolation, or when ops needs to back up one tenant without affecting the others. Don't pick schema-per-tenant for hundreds of tenants &mdash; the migration story stops being fun fast.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: CAPSTONE PROJECT -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: The Capstone &mdash; One PR, Four Concepts</h2>
+
+    <p>This is the centerpiece. You're going to make one pull request against your <code>mikroorm-course-yourname</code> repo that demonstrates, in working code, at least <strong>four</strong> of the eight items below. Aim for higher &mdash; six is impressive, eight is a flex &mdash; but four is the bar to pass.</p>
+
+    <h3>The eight criteria</h3>
+
+    <table>
+        <tr>
+            <th>Concept</th>
+            <th>From</th>
+            <th>What &ldquo;done&rdquo; looks like in the PR</th>
+        </tr>
+        <tr>
+            <td><strong>(a)</strong> Non-trivial relation with <code>populate</code></td>
+            <td>L4 + L5</td>
+            <td>An <code>Article</code> with <code>author: M:1</code> and <code>tags: M:M</code>, loaded in one endpoint via <code>populate: ['author', 'tags']</code>. Show the SQL is one or two queries, not N+1.</td>
+        </tr>
+        <tr>
+            <td><strong>(b)</strong> Custom Repository method using QueryBuilder</td>
+            <td>L6</td>
+            <td>A <code>findPublishedByAuthor(authorId)</code> on <code>ArticleRepository</code> that uses <code>em.createQueryBuilder</code> with a join and a non-trivial <code>WHERE</code>. Hooked up via <code>repository: () =&gt; ArticleRepository</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>(c)</strong> Soft-delete filter</td>
+            <td>L6</td>
+            <td>A global filter named <code>softDelete</code> with <code>cond: { deletedAt: null }</code>, default-enabled. Plus an admin endpoint that disables it via <code>em.find(..., { filters: { softDelete: false } })</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>(d)</strong> Migration with a backfill</td>
+            <td>L7</td>
+            <td>A migration that adds a <code>slug</code> column and backfills it from <code>title</code> for existing rows. Uses <code>this.getKnex()</code> or <code>this.execute</code>, runs in the same transaction.</td>
+        </tr>
+        <tr>
+            <td><strong>(e)</strong> Embeddable or JSON property</td>
+            <td>L8</td>
+            <td>An <code>Address</code> embeddable on a <code>Publisher</code> entity (street, city, country) <em>or</em> a JSON <code>metadata</code> property on <code>Article</code> typed via <code>p.json&lt;ArticleMetadata&gt;()</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>(f)</strong> <code>@Transactional</code> service method</td>
+            <td>L9</td>
+            <td>A <code>publishArticle()</code> service method decorated with <code>@Transactional()</code> that loads the article, mutates it, queues an outbox event, and lets the decorator flush.</td>
+        </tr>
+        <tr>
+            <td><strong>(g)</strong> <code>@CreateRequestContext</code> background job</td>
+            <td>L9</td>
+            <td>A <code>@Cron</code> or BullMQ worker decorated with <code>@CreateRequestContext()</code> that processes outbox rows. Demonstrates that EM works outside an HTTP request.</td>
+        </tr>
+        <tr>
+            <td><strong>(h)</strong> Read replica config + metadata cache</td>
+            <td>L10</td>
+            <td>A separate <code>mikro-orm.config.prod.ts</code> with <code>replicas: [...]</code> and <code>GeneratedCacheAdapter</code>. CI step that runs <code>cache:generate</code>.</td>
+        </tr>
+    </table>
+
+    <h3>Suggested PR shape</h3>
+
+    <p>You don't need to invent a project. Keep growing <code>archive-api</code>:</p>
+
+    <div class="file-tree">
+archive-api/
+├── <span class="dir">src/</span>
+│   ├── <span class="dir">entities/</span>
+│   │   ├── <span class="file">Article.ts</span>          <span class="comment">← softDelete filter, JSON metadata, hooks</span>
+│   │   ├── <span class="file">Author.ts</span>
+│   │   ├── <span class="file">Tag.ts</span>
+│   │   ├── <span class="file">Publisher.ts</span>        <span class="comment">← embeddable Address</span>
+│   │   └── <span class="file">OutboxEvent.ts</span>
+│   ├── <span class="dir">articles/</span>
+│   │   ├── <span class="file">article.repository.ts</span>  <span class="comment">← findPublishedByAuthor</span>
+│   │   ├── <span class="file">article.service.ts</span>     <span class="comment">← @Transactional publishArticle</span>
+│   │   └── <span class="file">article.controller.ts</span>
+│   ├── <span class="dir">outbox/</span>
+│   │   └── <span class="file">outbox.processor.ts</span>     <span class="comment">← @CreateRequestContext worker</span>
+│   ├── <span class="dir">migrations/</span>
+│   │   └── <span class="highlight">Migration20260507_addSlug.ts</span>  <span class="comment">← with backfill</span>
+│   ├── <span class="file">mikro-orm.config.ts</span>      <span class="comment">← dev (debug: true)</span>
+│   └── <span class="highlight">mikro-orm.config.prod.ts</span> <span class="comment">← replicas, metadata cache, structured logger</span>
+├── <span class="dir">.github/workflows/</span>
+│   └── <span class="file">deploy.yml</span>             <span class="comment">← runs cache:generate, migration:up</span>
+└── <span class="file">README.md</span>                <span class="comment">← which 4+ criteria you hit, with line links</span>
+    </div>
+
+    <p>Don't try to nail all eight in one weekend &mdash; pick four that lean into your strengths, then add a fifth or sixth if time allows. The PR description should call out, with file links, exactly which criteria you've covered and where to find each one. That's how reviewers will mark you.</p>
+
+
+    <!-- ============================================ -->
+    <!-- INTERLEAVED RECALL -->
+    <!-- ============================================ -->
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Interleaved retrieval &mdash; mid-lesson, mixed across L1&ndash;L9</div>
+        <div class="recall-question">Five questions in random lesson order. No scrolling, write your answers, then check.<br><br>
+        <strong>1.</strong> What does <code>mappedBy</code> do, and which side of a relation carries it &mdash; owning or inverse? <span style="color: var(--gray-500); font-size: 13px;">(L4)</span><br>
+        <strong>2.</strong> What is the difference between <code>populate</code> and <code>fields</code> in a <code>find</code> call, and when would you use each? <span style="color: var(--gray-500); font-size: 13px;">(L5)</span><br>
+        <strong>3.</strong> What problem does <code>@CreateRequestContext</code> solve in a NestJS background job? <span style="color: var(--gray-500); font-size: 13px;">(L9)</span><br>
+        <strong>4.</strong> A migration's <code>up()</code> method runs <code>this.getKnex().raw('UPDATE ...')</code>. Will it run inside the same transaction as the <code>ALTER TABLE</code> that's also in <code>up()</code>? <span style="color: var(--gray-500); font-size: 13px;">(L7)</span><br>
+        <strong>5.</strong> An entity is loaded, modified, and you call <code>em.remove(entity)</code> followed by <code>em.flush()</code>. What state was the entity in before <code>remove</code>, and what state after? Was the modification flushed? <span style="color: var(--gray-500); font-size: 13px;">(L3)</span></div>
+        <div class="recall-hint"><strong>5/5:</strong> capstone material, you're ready. <strong>3-4/5:</strong> identify which lesson the misses came from, re-skim that one before submitting the capstone PR. <strong>0-2/5:</strong> this is the highest-leverage time you'll spend &mdash; pick the two weakest lessons and re-read the recall-boxes in each.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PRODUCTION ARCHITECTURE DIAGRAM -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">The Whole Picture</h2>
+
+    <p>One diagram for the entire deployed stack. Every box on it is something you've built or configured in this course.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 800 540" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="800" height="540" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="400" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">archive-api in production &mdash; one diagram, every concept</text>
+
+            <defs>
+                <marker id="arrL10" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
+                </marker>
+                <marker id="arrBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#3451B2"/>
+                </marker>
+                <marker id="arrGreen10" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <!-- Client -->
+            <rect x="340" y="50" width="120" height="40" rx="8" fill="#EDE9FE" stroke="#7C3AED" strokeWidth="2"/>
+            <text x="400" y="74" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">Client</text>
+            <line x1="400" y1="90" x2="400" y2="108" stroke="#6B7280" strokeWidth="2" marker-end="url(#arrL10)"/>
+
+            <!-- Load balancer -->
+            <rect x="320" y="110" width="160" height="40" rx="8" fill="#DBEAFE" stroke="#3451B2" strokeWidth="2"/>
+            <text x="400" y="134" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="#3451B2">Load Balancer / Edge</text>
+            <line x1="360" y1="150" x2="200" y2="180" stroke="#6B7280" strokeWidth="2" marker-end="url(#arrL10)"/>
+            <line x1="400" y1="150" x2="400" y2="180" stroke="#6B7280" strokeWidth="2" marker-end="url(#arrL10)"/>
+            <line x1="440" y1="150" x2="600" y2="180" stroke="#6B7280" strokeWidth="2" marker-end="url(#arrL10)"/>
+
+            <!-- Nest instances -->
+            <rect x="80" y="185" width="240" height="100" rx="10" fill="#E6F9F0" stroke="#1A8F5C" strokeWidth="2"/>
+            <text x="200" y="210" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">NestJS instance #1</text>
+            <text x="200" y="232" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">RequestContext fork per req (L9)</text>
+            <text x="200" y="248" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">@Transactional services (L9)</text>
+            <text x="200" y="264" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">metadata cache loaded at boot (L10)</text>
+            <text x="200" y="278" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">archive-api:3000</text>
+
+            <rect x="340" y="185" width="160" height="100" rx="10" fill="#E6F9F0" stroke="#1A8F5C" strokeWidth="2"/>
+            <text x="420" y="210" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">NestJS #2</text>
+            <text x="420" y="232" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">request-scoped EM</text>
+            <text x="420" y="248" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">structured pino logs</text>
+            <text x="420" y="278" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">archive-api:3000</text>
+
+            <rect x="520" y="185" width="200" height="100" rx="10" fill="#FFF3E5" stroke="#E8790C" strokeWidth="2"/>
+            <text x="620" y="210" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">Outbox Worker</text>
+            <text x="620" y="232" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">@CreateRequestContext (L9)</text>
+            <text x="620" y="248" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">polls outbox table</text>
+            <text x="620" y="264" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">publishes to event bus</text>
+            <text x="620" y="278" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">cron / BullMQ</text>
+
+            <!-- arrows to DB -->
+            <line x1="200" y1="285" x2="200" y2="345" stroke="#3451B2" strokeWidth="2" marker-end="url(#arrBlue)"/>
+            <text x="160" y="320" font-family="Inter" font-weight="600" font-size="10" fill="#3451B2">writes</text>
+            <line x1="420" y1="285" x2="420" y2="345" stroke="#1A8F5C" strokeWidth="2" stroke-dasharray="4 3" marker-end="url(#arrGreen10)"/>
+            <text x="430" y="320" font-family="Inter" font-weight="600" font-size="10" fill="#1A8F5C">reads</text>
+            <line x1="620" y1="285" x2="320" y2="345" stroke="#3451B2" strokeWidth="2" marker-end="url(#arrBlue)"/>
+
+            <!-- Primary DB -->
+            <rect x="120" y="350" width="200" height="80" rx="10" fill="#FEE2E2" stroke="#DC2626" strokeWidth="2"/>
+            <text x="220" y="376" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#DC2626">Primary Postgres</text>
+            <text x="220" y="396" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">writes &amp; in-tx reads</text>
+            <text x="220" y="414" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">archive-primary.internal</text>
+
+            <!-- WAL stream -->
+            <line x1="320" y1="385" x2="380" y2="385" stroke="#6B7280" strokeWidth="2" stroke-dasharray="3 3" marker-end="url(#arrL10)"/>
+            <text x="350" y="378" text-anchor="middle" font-family="Inter" font-size="9" fill="#6B7280">WAL</text>
+
+            <!-- Replicas -->
+            <rect x="380" y="350" width="200" height="80" rx="10" fill="#E8EDFF" stroke="#3451B2" strokeWidth="2"/>
+            <text x="480" y="376" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Read Replicas (L10)</text>
+            <text x="480" y="396" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">read-only, random-routed</text>
+            <text x="480" y="414" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">replica-1, replica-2</text>
+
+            <!-- Tenant schemas overlay -->
+            <rect x="600" y="350" width="160" height="80" rx="10" fill="#FFFBEB" stroke="#FCD34D" strokeWidth="2"/>
+            <text x="680" y="376" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#D97706">Schemas (L10)</text>
+            <text x="680" y="396" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">tenant_a, tenant_b, ...</text>
+            <text x="680" y="414" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">isolated namespaces</text>
+
+            <!-- Logging fan-out -->
+            <line x1="200" y1="285" x2="200" y2="455" stroke="#7C3AED" strokeWidth="1.5" stroke-dasharray="2 3"/>
+            <line x1="200" y1="455" x2="280" y2="475" stroke="#7C3AED" strokeWidth="1.5" stroke-dasharray="2 3" marker-end="url(#arrL10)"/>
+            <rect x="280" y="465" width="240" height="40" rx="8" fill="#EDE9FE" stroke="#7C3AED" strokeWidth="2"/>
+            <text x="400" y="489" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">Datadog &middot; slow-query &middot; structured (L10)</text>
+
+            <text x="400" y="525" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280" font-style="italic">solid blue = writes &middot; dashed green = reads &middot; dashed gray = WAL replication &middot; dashed purple = log fan-out</text>
+        </svg>
+        <div class="diagram-caption">Three Postgres-cluster boxes, two app boxes, one worker, one logger sink. Every label maps to a lesson.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SELF-TEST -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Self-Test &mdash; Concept-to-Lesson Matrix</h2>
+
+    <p>One last retrieval pass before the homework. For each capstone component, can you name the lesson it came from? Cover the right column.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F50E; Where did each capstone piece come from?</div>
+        <div class="recall-question">Match each item to its source lesson. Try to do all eight from memory.<br><br>
+        <strong>(a)</strong> Non-trivial relation with <code>populate</code> &rarr; ?<br>
+        <strong>(b)</strong> Custom Repository with QueryBuilder &rarr; ?<br>
+        <strong>(c)</strong> Soft-delete filter &rarr; ?<br>
+        <strong>(d)</strong> Migration with backfill &rarr; ?<br>
+        <strong>(e)</strong> Embeddable / JSON property &rarr; ?<br>
+        <strong>(f)</strong> <code>@Transactional</code> service method &rarr; ?<br>
+        <strong>(g)</strong> <code>@CreateRequestContext</code> job &rarr; ?<br>
+        <strong>(h)</strong> Read replicas + metadata cache &rarr; ?</div>
+        <div class="recall-hint">Answers: (a) L4+L5, (b) L6, (c) L6, (d) L7, (e) L8, (f) L9, (g) L9, (h) L10. <strong>8/8:</strong> ship the capstone with confidence. <strong>5-7/8:</strong> note which ones you missed and re-read those lessons' summaries before you start coding. <strong>&lt;5/8:</strong> this is exactly the gap the capstone is meant to expose &mdash; spend an evening on the missed lessons before the PR; the synthesis only locks in once you can place each idea on the map.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary &mdash; The Five Things to Take Forward</h2>
+
+    <p>If you remember nothing else from this course, remember these five.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DA;</div>
+            <div class="layer-name" style="color: var(--blue);">DataMapper philosophy</div>
+            <div class="layer-desc">Entities are plain objects. Persistence lives in the EntityManager. Your domain stays clean.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Identity Map per request</div>
+            <div class="layer-desc">One JS object per row, scoped to one fork, garbage-collected at response. Never leak it across requests.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--orange);">Unit of Work, one flush</div>
+            <div class="layer-desc">Mutate objects freely. Call <code>flush</code> once per business operation. Get one ordered, batched, atomic transaction.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--green);"><code>populate</code> over N+1</div>
+            <div class="layer-desc">If you're loading a list and touching a relation in a loop, you're paying for it. Move the relation into <code>populate</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6E1;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--red);">Production hygiene</div>
+            <div class="layer-desc">Structured logs only. Slow-query threshold, not <code>debug: true</code>. Pre-built metadata cache. Migrations as PR-reviewable changes. Never <code>allowGlobalContext</code>.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>You finished.</strong> Push the capstone PR. Mark the course complete on the platform. Use this repo as the reference whenever you bring MikroORM into a new Fohlio service &mdash; the patterns are the same whether you're shipping <code>archive-api</code> or anything else. If you ever stall on &ldquo;which lesson covered this&rdquo;, the recap-grid at the top of L10 is the index.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Capstone Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Submit the capstone PR</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>One pull request against <code>mikroorm-course-yourname</code> covering at least <strong>4 of the 8 criteria</strong> in Part 6.</li>
+                    <li>The PR description must list, with file links, exactly which criteria you've satisfied and where each one lives.</li>
+                    <li>Migrations must be reversible (<code>up</code> and <code>down</code> both present).</li>
+                    <li>Submit the PR URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Production logs + metadata cache screenshot</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Run <code>archive-api</code> with <code>mikro-orm.config.prod.ts</code>.</li>
+                    <li>Trigger an artificially slow query (e.g. <code>SELECT pg_sleep(0.3) FROM article LIMIT 1</code> via raw SQL) so the slow-query threshold fires.</li>
+                    <li>Submit a screenshot showing: (a) the structured JSON log line for the slow query, (b) a boot log line indicating the metadata cache loaded.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Self-assessment (~200 words, elaborative interrogation)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Answer in plain text: &ldquo;Which two concepts from this course do you expect to use most often in your day-to-day Fohlio work, and why?&rdquo;</li>
+                    <li>Push yourself on the &ldquo;why&rdquo;: name a concrete service or feature where you'd reach for each, and what specifically the concept solves there. Generic answers (&ldquo;it's useful&rdquo;) don't count.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Deploy the capstone to a real environment</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Deploy <code>archive-api</code> to a real host: Vercel + Neon Postgres, Fly.io + Supabase, or Docker on your own VPS. Wire up at least one read replica if your Postgres host supports it. Submit: (a) the deployed URL, (b) a screenshot of <code>GET /articles?populate=author,tags</code> returning a non-empty response from the deployed instance.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Post-mortem: MikroORM vs Prisma at Fohlio (~300 words)</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">You met Prisma in <code>nestjs-4-data-layer</code>. Now compare its mental model to MikroORM's. Where does each win? When would you reach for each at Fohlio? Be specific: name a concrete service shape where Prisma is the right call, and one where MikroORM clearly is. Avoid &ldquo;it depends&rdquo; without examples. Submit as text.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 10 of 10 &mdash; Capstone</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">End of course. Use this repo as your reference. Ship things.</p>
+    </div>
+
+</div>
+
+</body>
+</html>

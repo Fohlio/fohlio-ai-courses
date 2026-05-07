@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 6</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 6 of 10</div>
+        <h1>MikroORM Course</h1>
+        <div class="subtitle">QueryBuilder, Filters, and the SQL Escape Hatches</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Know exactly when <code>em.find</code> stops being enough and QueryBuilder takes over</li>
+            <li>Compose QB chains: <code>select</code>, <code>where</code>, joins, group/having, limit/offset</li>
+            <li>Read the FilterQuery operator alphabet (<code>$and</code>, <code>$or</code>, <code>$gt</code>, <code>$in</code>, <code>$like</code>, <code>$contains</code>, &hellip;) and reach for raw SQL only when nothing else fits</li>
+            <li>Define a <code>softDelete</code> filter once and have every <code>find</code> respect it &mdash; with the option to bypass it on demand</li>
+            <li>Understand why custom Repositories are optional, and write one when it actually pays off</li>
+            <li>Tell the difference between <code>.execute()</code> (raw rows, skips Identity Map) and <code>.getResult()</code> (managed entities)</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3 style="margin-top: 40px;">Where we are in the course</h3>
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4DA;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L1 &mdash; Intro</div>
+            <div class="layer-desc">Data Mapper, Identity Map, Unit of Work, Records Library analogy.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F9F1;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L2 &mdash; Entities</div>
+            <div class="layer-desc"><code>defineEntity</code>, properties, primary keys, custom types.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L3 &mdash; Relations</div>
+            <div class="layer-desc">M:1, 1:M, M:M, owning vs inverse side, cascades.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F464;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L4 &mdash; EntityManager</div>
+            <div class="layer-desc"><code>find</code>, <code>persist</code>, <code>remove</code>, <code>flush</code>, transactions, forks.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L5 &mdash; Loading</div>
+            <div class="layer-desc">Populate, joined vs select-in, partial loading, N+1 traps.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--blue);">L6 &mdash; QB &amp; Filters</div>
+            <div class="layer-desc"><strong>Today.</strong> Escape hatches, FilterQuery operators, Filters, Repositories.</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: WHEN em.find ISN'T ENOUGH -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: When <code>em.find</code> Isn't Enough</h2>
+
+    <p>For the first five lessons we leaned on <code>em.find</code>, populate hints, and the occasional FilterQuery operator like <code>$gt</code>. That handles roughly 85% of a CRUD service. This lesson is about the other 15%.</p>
+
+    <p>Five concrete cases where the EntityManager can't help you and you have to reach for the QueryBuilder:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--orange);">Window functions</div>
+            <div class="layer-desc"><code>ROW_NUMBER() OVER (PARTITION BY author_id ORDER BY published_at DESC)</code> &mdash; &ldquo;latest article per author&rdquo;.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F9EE;</div>
+            <div class="layer-name" style="color: var(--orange);">Custom aggregates</div>
+            <div class="layer-desc"><code>percentile_cont</code>, weighted averages, anything past <code>count/sum/avg</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--orange);">Subqueries</div>
+            <div class="layer-desc">&ldquo;Articles whose tag count is above the global average.&rdquo; You need a subquery in <code>WHERE</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F39B;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">Dynamic conditions</div>
+            <div class="layer-desc">A search endpoint that conditionally adds 8 different filters based on what the user typed.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4D1;</div>
+            <div class="layer-name" style="color: var(--orange);">Complex GROUP BY + HAVING</div>
+            <div class="layer-desc">&ldquo;Authors with at least 3 articles in 2025 whose average view count is above 1000.&rdquo;</div>
+        </div>
+    </div>
+
+    <p>For everything else &mdash; <code>find by id</code>, <code>find by relation</code>, <code>findAndCount</code>, populate trees &mdash; QueryBuilder is overkill. The mental rule from Lesson 1 still holds: describe the change as objects, flush. Escalate only when you must.</p>
+
+    <div class="story-box">
+        <p>Back in the Records Library: most readers walk to the desk and say &ldquo;I want every Tolstoy book published before 1880.&rdquo; The Head Librarian writes that on a standard slip, hands it to the runner, and books appear.</p>
+        <p>But occasionally a researcher walks in with something stranger: &ldquo;For each genre, give me the volume with the highest checkout count in the last 90 days, and a running total of pages across the top three.&rdquo; Standard slips can't express that. The Head Librarian pulls out a <strong>blank request slip with custom filter sections</strong> &mdash; the <strong>QueryBuilder</strong>. The researcher fills in joins, groupings, window aggregates, and the runner executes exactly that plan.</p>
+        <div class="tech-note">
+            <strong>Mapping:</strong> standard FilterQuery = pre-printed request slip. QueryBuilder = blank slip with custom filter sections. <code>em.execute('SELECT &hellip;')</code> = walking into the stacks yourself with a flashlight.
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F92F;</div>
+        Junior: &ldquo;I wrote 200 lines of QueryBuilder to fetch articles by status and tag. I wanted full control over the SQL.&rdquo;<br>
+        Senior, opens the file: &ldquo;<code>em.find(Article, { status: 'published', tags: { name: { $in: ['hot', 'new'] } } })</code>. One line. Same SQL. Same results.&rdquo;<br>
+        Junior: &ldquo;But what if I need it more dynamic?&rdquo;<br>
+        Senior: &ldquo;Then build the FilterQuery object dynamically. QB is an escape hatch, not the front door.&rdquo;<br>
+        <em>The QueryBuilder is the most over-used part of MikroORM. Reach for it last, not first.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: QUERYBUILDER ANATOMY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: QueryBuilder Anatomy</h2>
+
+    <p>You get a QueryBuilder one of two ways. Both return the same thing &mdash; the second just lets you pre-name the root alias, which matters once you start joining.</p>
+
+    <pre><code><span class="comment">// short form, no explicit alias</span>
+<span class="keyword">const</span> qb = em.<span class="function">qb</span>(Article);
+
+<span class="comment">// explicit alias &mdash; needed for joins and raw SQL fragments</span>
+<span class="keyword">const</span> qb = em.<span class="function">createQueryBuilder</span>(Article, <span class="string">'a'</span>);</code></pre>
+
+    <p>From there you chain. Every method returns the same QB instance, fluent-API style.</p>
+
+    <h3>The method alphabet</h3>
+
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>What it does</th>
+        </tr>
+        <tr>
+            <td><code>.select(fields)</code></td>
+            <td>Choose which columns to return. <code>'*'</code> for all, an array for specific fields.</td>
+        </tr>
+        <tr>
+            <td><code>.where(cond)</code></td>
+            <td>Sets the root <code>WHERE</code> clause. Replaces previous <code>where</code> calls.</td>
+        </tr>
+        <tr>
+            <td><code>.andWhere</code> / <code>.orWhere</code></td>
+            <td>Compose conditions across multiple lines without rebuilding the object.</td>
+        </tr>
+        <tr>
+            <td><code>.leftJoin</code> / <code>.innerJoin</code></td>
+            <td>Join a relation by property path. Add <code>AndSelect</code> variants if you also want the joined data hydrated.</td>
+        </tr>
+        <tr>
+            <td><code>.groupBy</code> / <code>.having</code></td>
+            <td>Group rows + filter the groups. <code>HAVING</code> runs after aggregation; <code>WHERE</code> runs before.</td>
+        </tr>
+        <tr>
+            <td><code>.orderBy</code></td>
+            <td><code>{ publishedAt: 'desc' }</code>. Multiple keys = multi-column sort.</td>
+        </tr>
+        <tr>
+            <td><code>.limit(n)</code> / <code>.offset(n)</code></td>
+            <td>Pagination. Combine with <code>getResultAndCount()</code> for the &ldquo;rows + total&rdquo; pattern.</td>
+        </tr>
+    </table>
+
+    <h3>Two terminal methods, two universes</h3>
+
+    <p>This is the most important slide in the lesson. The same QB chain finishes one of two ways, and the choice has consequences.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4C4;</div>
+            <div class="card-title" style="color: var(--orange);">.execute()</div>
+            <div class="card-subtitle" style="color: var(--orange);">Raw rows, no Identity Map</div>
+            <div class="card-desc">Returns plain objects. Not registered in the Identity Map. <em>Not</em> tracked by the Unit of Work. Use for reports, exports, dashboards. Modifying the result and calling <code>flush</code> will do nothing.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F50C;</div>
+            <div class="card-title" style="color: var(--green);">.getResult()</div>
+            <div class="card-subtitle" style="color: var(--green);">Managed entities</div>
+            <div class="card-desc">Returns hydrated entity instances. Registered in the Identity Map, tracked by the Unit of Work. Modify a property, call <code>flush</code>, get an <code>UPDATE</code>. <code>.getSingleResult()</code> for one, <code>.getResultAndCount()</code> for paginated.</div>
+        </div>
+    </div>
+
+    <pre><code><span class="comment">// raw &mdash; fast, but you can't change anything via flush</span>
+<span class="keyword">const</span> rows = <span class="keyword">await</span> em.<span class="function">qb</span>(Article)
+  .<span class="function">select</span>([<span class="string">'id'</span>, <span class="string">'title'</span>, <span class="string">'view_count'</span>])
+  .<span class="function">where</span>({ viewCount: { $gt: <span class="string">1000</span> } })
+  .<span class="function">execute</span>();
+<span class="comment">// rows[0] is a plain object, not an Article instance</span>
+
+<span class="comment">// hydrated &mdash; entities go into the Identity Map</span>
+<span class="keyword">const</span> articles = <span class="keyword">await</span> em.<span class="function">qb</span>(Article)
+  .<span class="function">select</span>(<span class="string">'*'</span>)
+  .<span class="function">where</span>({ viewCount: { $gt: <span class="string">1000</span> } })
+  .<span class="function">getResult</span>();
+articles[<span class="string">0</span>].title = <span class="string">'New Title'</span>;
+<span class="keyword">await</span> em.<span class="function">flush</span>(); <span class="comment">// fires UPDATE &mdash; change-tracking works</span></code></pre>
+
+    <div class="story-box">
+        <p>Back to the Library: <code>.execute()</code> is the runner photocopying the requested page and handing you the copy. The original stays on the shelf, untouched. You can scribble on the copy all you want; the master register doesn't care.</p>
+        <p><code>.getResult()</code> is the runner bringing the actual volume to your carrel. It's now logged in the Master Catalog under your name. Annotate the margin, and the Working Ledger records the change. End-of-shift sign-off (<code>flush</code>) writes those margin notes back into the master register.</p>
+        <div class="tech-note">
+            <strong>Practical rule:</strong> reports/CSV exports/dashboards &rarr; <code>.execute()</code>. Anything you might mutate &rarr; <code>.getResult()</code>.
+        </div>
+    </div>
+
+    <h3>Joins: filter-only vs hydrated</h3>
+
+    <p>This catches everyone once. <code>leftJoin</code> joins the table for filtering and ordering only. <code>leftJoinAndSelect</code> joins <em>and</em> populates the relation on the result. Choose by intent.</p>
+
+    <pre><code><span class="comment">// I just want to filter by tag.name &mdash; books arrays will NOT be populated</span>
+<span class="keyword">const</span> articles1 = <span class="keyword">await</span> em.<span class="function">qb</span>(Article, <span class="string">'a'</span>)
+  .<span class="function">select</span>(<span class="string">'*'</span>)
+  .<span class="function">leftJoin</span>(<span class="string">'a.tags'</span>, <span class="string">'t'</span>)
+  .<span class="function">where</span>({ <span class="string">'t.name'</span>: <span class="string">'fiction'</span> })
+  .<span class="function">getResultList</span>();
+<span class="comment">// articles1[0].tags is NOT initialized</span>
+
+<span class="comment">// I want the tags hydrated on the result</span>
+<span class="keyword">const</span> articles2 = <span class="keyword">await</span> em.<span class="function">qb</span>(Article, <span class="string">'a'</span>)
+  .<span class="function">select</span>(<span class="string">'*'</span>)
+  .<span class="function">leftJoinAndSelect</span>(<span class="string">'a.tags'</span>, <span class="string">'t'</span>)
+  .<span class="function">where</span>({ <span class="string">'t.name'</span>: <span class="string">'fiction'</span> })
+  .<span class="function">getResultList</span>();
+<span class="comment">// articles2[0].tags is fully populated</span></code></pre>
+
+    <div class="info-box orange">
+        <p><strong>Pagination footgun.</strong> When you join a to-many relation and use <code>limit</code>, SQL limits <em>rows</em>, not root entities. MikroORM auto-detects this and wraps the root selection in a subquery so <code>limit 10</code> means &ldquo;10 articles, not 10 rows of article&times;tag&rdquo;. Use <code>setFlag(QueryFlag.DISABLE_PAGINATE)</code> only when you really want raw row limits.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: QUERY CONDITIONS DEEP DIVE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Query Conditions &mdash; the FilterQuery Operator Alphabet</h2>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Pretest before you read on</div>
+        <div class="recall-question">Without looking up: how would you express <code>(price &gt; 100 AND tag IN ('hot', 'new')) OR featured = true</code> using FilterQuery? Take 30 seconds and write your guess in a comment.</div>
+        <div class="recall-hint">If you reach for raw SQL, you're under-using FilterQuery. The answer is below &mdash; using <code>$or</code>, <code>$and</code>, <code>$gt</code>, and array shorthand.</div>
+    </div>
+
+    <p>FilterQuery is the same condition object you've used inside <code>em.find</code>. It works identically in <code>qb.where(&hellip;)</code>. Operators are MongoDB-style: dollar-prefixed keys.</p>
+
+    <h3>Comparison operators</h3>
+
+    <table>
+        <tr>
+            <th>Operator</th>
+            <th>SQL equivalent</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td><code>$eq</code></td>
+            <td><code>=</code></td>
+            <td><code>{ status: { $eq: 'published' } }</code> &mdash; or just <code>{ status: 'published' }</code></td>
+        </tr>
+        <tr>
+            <td><code>$ne</code></td>
+            <td><code>&lt;&gt;</code></td>
+            <td><code>{ deletedAt: { $ne: null } }</code></td>
+        </tr>
+        <tr>
+            <td><code>$gt</code> / <code>$gte</code></td>
+            <td><code>&gt;</code> / <code>&gt;=</code></td>
+            <td><code>{ viewCount: { $gt: 1000 } }</code></td>
+        </tr>
+        <tr>
+            <td><code>$lt</code> / <code>$lte</code></td>
+            <td><code>&lt;</code> / <code>&lt;=</code></td>
+            <td><code>{ publishedAt: { $lte: new Date() } }</code></td>
+        </tr>
+        <tr>
+            <td><code>$in</code> / <code>$nin</code></td>
+            <td><code>IN</code> / <code>NOT IN</code></td>
+            <td><code>{ id: { $in: [1, 2, 7] } }</code> or <code>{ id: [1, 2, 7] }</code></td>
+        </tr>
+        <tr>
+            <td><code>$like</code> / <code>$ilike</code></td>
+            <td><code>LIKE</code> / <code>ILIKE</code> (Postgres)</td>
+            <td><code>{ title: { $ilike: '%mikroorm%' } }</code></td>
+        </tr>
+        <tr>
+            <td><code>$re</code></td>
+            <td><code>~</code> regex (Postgres)</td>
+            <td><code>{ slug: { $re: '^post-\\d+$' } }</code></td>
+        </tr>
+        <tr>
+            <td><code>$fulltext</code></td>
+            <td><code>to_tsquery</code></td>
+            <td><code>{ searchableTitle: { $fulltext: 'data mapper' } }</code> &mdash; needs a <code>FullTextType</code> column or a fulltext index.</td>
+        </tr>
+    </table>
+
+    <h3>Logical operators</h3>
+
+    <p><code>$and</code> joins clauses with AND, <code>$or</code> with OR, <code>$not</code> inverts. Nest them as deeply as you need.</p>
+
+    <pre><code><span class="comment">// answer to the pretest above</span>
+<span class="keyword">const</span> hits = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {
+  $or: [
+    {
+      $and: [
+        { price: { $gt: <span class="string">100</span> } },
+        { tags: { name: { $in: [<span class="string">'hot'</span>, <span class="string">'new'</span>] } } },
+      ],
+    },
+    { featured: <span class="keyword">true</span> },
+  ],
+});</code></pre>
+
+    <p>Same object works inside <code>qb.where(&hellip;)</code>. The QB rewrites it into the same <code>WHERE</code> clause MikroORM would have built for <code>em.find</code>. There is no &ldquo;raw mode&rdquo; vs &ldquo;managed mode&rdquo; for conditions &mdash; same compiler, same SQL.</p>
+
+    <h3>Postgres-specific JSONB operators</h3>
+
+    <p>If you have a <code>jsonb</code> column (e.g. <code>metadata: { tags: ['x', 'y'] }</code>), Postgres has dedicated operators that beat any client-side filtering. MikroORM exposes them directly:</p>
+
+    <table>
+        <tr>
+            <th>Operator</th>
+            <th>Postgres SQL</th>
+            <th>Use case</th>
+        </tr>
+        <tr>
+            <td><code>$contains</code></td>
+            <td><code>@&gt;</code></td>
+            <td>JSONB on left contains JSONB on right. <code>{ metadata: { $contains: { tags: ['hot'] } } }</code></td>
+        </tr>
+        <tr>
+            <td><code>$contained</code></td>
+            <td><code>&lt;@</code></td>
+            <td>JSONB on left is contained in JSONB on right.</td>
+        </tr>
+        <tr>
+            <td><code>$overlap</code></td>
+            <td><code>&amp;&amp;</code></td>
+            <td>Arrays share at least one element.</td>
+        </tr>
+        <tr>
+            <td><code>$hasKey</code> / <code>$hasKeys</code> / <code>$hasSomeKeys</code></td>
+            <td><code>?</code> / <code>?&amp;</code> / <code>?|</code></td>
+            <td>JSONB has key(s).</td>
+        </tr>
+    </table>
+
+    <h3>Collection operators &mdash; <code>$some</code>, <code>$none</code>, <code>$every</code>, <code>$size</code></h3>
+
+    <p>For relation collections. These compile to subqueries.</p>
+
+    <pre><code><span class="comment">// authors with at least one article tagged 'fiction'</span>
+em.<span class="function">find</span>(Author, { articles: { $some: { tags: { name: <span class="string">'fiction'</span> } } } });
+
+<span class="comment">// authors who have NO articles at all</span>
+em.<span class="function">find</span>(Author, { articles: { $none: {} } });
+
+<span class="comment">// authors whose every article is published</span>
+em.<span class="function">find</span>(Author, { articles: { $every: { status: <span class="string">'published'</span> } } });
+
+<span class="comment">// authors with between 3 and 10 articles</span>
+em.<span class="function">find</span>(Author, { articles: { $size: { $gte: <span class="string">3</span>, $lte: <span class="string">10</span> } } });</code></pre>
+
+    <div class="info-box blue">
+        <p><strong>The 90% rule.</strong> If you find yourself dropping to the QueryBuilder &ldquo;just for a complex condition,&rdquo; pause and ask: can FilterQuery express this? Nine times out of ten the answer is yes, and you keep the type safety, the populate hint inference, and the implicit joins.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: RAW SQL FRAGMENTS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Raw SQL Fragments &mdash; the Last Escape Hatch</h2>
+
+    <p>Sometimes the operator alphabet doesn't have what you need. <code>extract(year from published_at)</code>, custom Postgres functions, window expressions, computed comparisons. For these, MikroORM gives you two helpers, both Postgres-aware and parameterized.</p>
+
+    <pre><code><span class="keyword">import</span> { raw, sql } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;</code></pre>
+
+    <h3>raw() &mdash; the function form</h3>
+
+    <p>Use <code>raw(sqlString, params?)</code> when you need a SQL fragment as either a key or a value in your filter.</p>
+
+    <pre><code><span class="comment">// "articles published in 2025"</span>
+<span class="keyword">await</span> em.<span class="function">find</span>(Article, {
+  [<span class="function">raw</span>(<span class="string">'extract(year from published_at)'</span>)]: <span class="string">2025</span>,
+});
+
+<span class="comment">// inside QB.where</span>
+<span class="keyword">const</span> rows = <span class="keyword">await</span> em.<span class="function">qb</span>(Article)
+  .<span class="function">select</span>(<span class="string">'*'</span>)
+  .<span class="function">where</span>({ [<span class="function">raw</span>(<span class="string">'lower(title)'</span>)]: { $like: <span class="string">'%mikroorm%'</span> } })
+  .<span class="function">getResultList</span>();
+
+<span class="comment">// with parameters &mdash; never concatenate strings</span>
+<span class="keyword">await</span> em.<span class="function">qb</span>(Article)
+  .<span class="function">select</span>([<span class="string">'*'</span>, <span class="function">raw</span>(<span class="string">'count(*) over () as total'</span>)])
+  .<span class="function">where</span>(<span class="string">'view_count &gt; ?'</span>, [<span class="string">1000</span>])
+  .<span class="function">execute</span>();</code></pre>
+
+    <h3>sql tagged template &mdash; the prettier form</h3>
+
+    <pre><code><span class="comment">// equivalent to raw('lower(title)')</span>
+<span class="keyword">await</span> em.<span class="function">qb</span>(Article)
+  .<span class="function">select</span>([<span class="string">'*'</span>, sql<span class="string">`u.first_name || ' ' || u.last_name`</span>.<span class="function">as</span>(<span class="string">'fullName'</span>)])
+  .<span class="function">orderBy</span>({ fullName: <span class="string">'asc'</span> });</code></pre>
+
+    <h3>Dropping all the way to em.execute()</h3>
+
+    <p>When even the QueryBuilder is in the way (a one-off bulk update on millions of rows, a Postgres-specific <code>VACUUM ANALYZE</code>, a stored procedure call), you have <code>em.execute(sqlString, params)</code>. It honours the current transaction context and respects the EM fork.</p>
+
+    <pre><code><span class="keyword">const</span> result = <span class="keyword">await</span> em.<span class="function">execute</span>(
+  <span class="string">'update article set view_count = view_count + 1 where slug = ?'</span>,
+  [<span class="string">'top-of-the-hour'</span>],
+);
+<span class="comment">// returns { affectedRows, &hellip; } &mdash; no Identity Map involvement at all</span></code></pre>
+
+    <div class="info-box red">
+        <p><strong>Safety rule.</strong> <em>Always</em> parameterize. <code>em.execute(`select * from user where email = '${email}'`)</code> is a SQL injection waiting for the wrong customer. Use <code>?</code> placeholders and pass values in the second argument. Same in <code>raw()</code> &mdash; the second argument is a real array of parameters, bound by the driver.</p>
+    </div>
+
+    <div class="info-box purple">
+        <p><strong>The escalation ladder.</strong> 1) <code>em.find</code> with FilterQuery. 2) FilterQuery + <code>raw()</code> for the one weird key. 3) <code>em.qb()</code> with chained methods. 4) QB with raw fragments. 5) <code>em.execute()</code>. Stop one rung lower than feels &ldquo;safe&rdquo; &mdash; you almost never need rung 5.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: FILTERS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Filters &mdash; Soft-Delete Once, Forever</h2>
+
+    <p>Filters are the most under-appreciated MikroORM feature. They let you attach a condition to an entity that gets injected into <em>every</em> <code>find</code>, <code>findOne</code>, <code>findAndCount</code>, <code>count</code>, <code>nativeUpdate</code>, and <code>nativeDelete</code> &mdash; unless you explicitly opt out for one query.</p>
+
+    <p>The two killer use-cases: <strong>soft delete</strong> (rows exist but should be hidden by default) and <strong>multi-tenancy</strong> (every query gets scoped by <code>tenantId</code> from request context).</p>
+
+    <div class="story-box">
+        <p>The Records Library has <strong>Restricted Stacks</strong>. Every volume in there exists in the catalog, has a card, has a barcode &mdash; but a regular reader's request for &ldquo;all books by Tolstoy&rdquo; returns only the open-stacks copies. The librarian quietly drops the restricted titles before handing you the list. Not because they don't exist; because your reader ID doesn't have clearance.</p>
+        <p>If you walk in with the right credentials, you say &ldquo;include restricted stacks,&rdquo; and they come back too. The data was never gone &mdash; the filter just hid it from default view.</p>
+        <div class="tech-note">
+            <strong>Mapping:</strong> Filter = the rule the librarian silently applies before answering any question. Soft-delete filter = restricted stacks for deleted volumes. Multi-tenant filter = restricted stacks scoped per organization.
+        </div>
+    </div>
+
+    <h3>Defining a filter on the entity</h3>
+
+    <p>With <code>defineEntity</code>, filters live in the <code>filters</code> map on the schema. The condition is either a static object or a callback that takes <code>args</code>.</p>
+
+    <pre><code><span class="comment">// src/entities/Article.ts</span>
+<span class="keyword">import</span> { defineEntity, p, <span class="type">InferEntity</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  filters: {
+    softDelete: {
+      cond: { deletedAt: <span class="keyword">null</span> },
+      <span class="keyword">default</span>: <span class="keyword">true</span>, <span class="comment">// applied automatically on every query</span>
+    },
+  },
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    slug: p.<span class="function">string</span>().<span class="function">unique</span>(),
+    viewCount: p.<span class="function">integer</span>().<span class="function">default</span>(<span class="string">0</span>),
+    publishedAt: p.<span class="function">datetime</span>().<span class="function">nullable</span>(),
+    deletedAt: p.<span class="function">datetime</span>().<span class="function">nullable</span>(),
+    createdAt: p.<span class="function">datetime</span>().<span class="function">onCreate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>()),
+  },
+});
+
+<span class="keyword">export type</span> <span class="type">IArticle</span> = InferEntity&lt;<span class="keyword">typeof</span> Article&gt;;</code></pre>
+
+    <p>From now on, <code>em.find(Article, {})</code> silently appends <code>and "deleted_at" is null</code> to the SQL. You don't have to remember it. New developers don't have to remember it. The filter <em>is</em> the convention.</p>
+
+    <h3>Toggling filters per query</h3>
+
+    <pre><code><span class="comment">// default &mdash; soft-delete filter is on, deleted rows hidden</span>
+<span class="keyword">const</span> live = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {});
+
+<span class="comment">// admin endpoint &mdash; show every row, including soft-deleted</span>
+<span class="keyword">const</span> all = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {}, { filters: { softDelete: <span class="keyword">false</span> } });
+
+<span class="comment">// drop *every* filter for one query</span>
+<span class="keyword">const</span> raw = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {}, { filters: <span class="keyword">false</span> });</code></pre>
+
+    <h3>Soft delete in practice</h3>
+
+    <pre><code><span class="comment">// instead of em.remove(article), do this:</span>
+article.deletedAt = <span class="keyword">new</span> <span class="function">Date</span>();
+<span class="keyword">await</span> em.<span class="function">flush</span>(); <span class="comment">// fires UPDATE with deleted_at = now()</span>
+
+<span class="comment">// next find call won't see the row, even by ID</span>
+<span class="keyword">const</span> nope = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, article.id); <span class="comment">// null</span></code></pre>
+
+    <h3>Multi-tenant filters &mdash; the real-world pattern</h3>
+
+    <p>For multi-tenant SaaS, you want every query scoped by <code>tenantId</code>. You don't trust developers to remember; you let the framework enforce it. Define a global filter at ORM init, set its parameter from request context, and every fork inherits it.</p>
+
+    <pre><code><span class="keyword">import</span> { MikroORM, RequestContext } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">const</span> orm = <span class="keyword">await</span> MikroORM.<span class="function">init</span>({
+  filters: {
+    tenant: {
+      cond: args <span class="keyword">=&gt;</span> ({ tenantId: args.tenantId }),
+      <span class="keyword">default</span>: <span class="keyword">true</span>,
+    },
+  },
+  <span class="comment">// &hellip; rest of config</span>
+});
+
+<span class="comment">// in your request middleware:</span>
+app.<span class="function">use</span>((req, res, next) <span class="keyword">=&gt;</span> {
+  RequestContext.<span class="function">create</span>(orm.em, () <span class="keyword">=&gt;</span> {
+    <span class="keyword">const</span> em = orm.em.<span class="function">getContext</span>();
+    em.<span class="function">setFilterParams</span>(<span class="string">'tenant'</span>, { tenantId: req.user.tenantId });
+    <span class="function">next</span>();
+  });
+});</code></pre>
+
+    <p>From now on, anywhere in your codebase, <code>em.find(Article, {})</code> auto-appends <code>and "tenant_id" = $1</code>. A bug that forgets to filter? Doesn't compile to a security incident; the filter catches it.</p>
+
+    <div class="info-box green">
+        <p><strong>Filters and joins.</strong> Since v6, filters apply to relations too &mdash; they become part of the <code>JOIN ON</code> condition. So your soft-delete filter on Article also automatically hides deleted articles when they appear via <code>Author.populate(['articles'])</code>. You don't have to remember; the JOIN does.</p>
+    </div>
+
+    <h3>Filters in QueryBuilder</h3>
+
+    <p>QB skips filters by default &mdash; this is intentional, since you might be writing reports that need <em>all</em> rows. To opt back in, call <code>qb.applyFilters(&hellip;)</code>:</p>
+
+    <pre><code><span class="keyword">const</span> qb = em.<span class="function">qb</span>(Article);
+<span class="keyword">await</span> qb.<span class="function">applyFilters</span>({ softDelete: <span class="keyword">true</span> });
+<span class="keyword">const</span> articles = <span class="keyword">await</span> qb.<span class="function">getResultList</span>();</code></pre>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: REPOSITORIES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Repositories &mdash; Typed Shortcuts You Probably Don't Need</h2>
+
+    <p>This is the lesson where I tell you a feature exists and then tell you to skip it most of the time. <code>em.getRepository(Article)</code> returns an <code>EntityRepository&lt;Article&gt;</code>. It's a thin wrapper around the EntityManager, scoped to one entity type, with no special powers.</p>
+
+    <pre><code><span class="keyword">const</span> articles = em.<span class="function">getRepository</span>(Article);
+
+<span class="keyword">const</span> recent = <span class="keyword">await</span> articles.<span class="function">find</span>({ status: <span class="string">'published'</span> }, { limit: <span class="string">10</span> });
+<span class="comment">// identical to em.find(Article, { status: 'published' }, { limit: 10 })</span></code></pre>
+
+    <p>The default repository is just sugar &mdash; it saves you from passing <code>Article</code> to every call. Useful if you like the syntax, optional otherwise. Note: since v6, repositories no longer have <code>persist</code>, <code>persistAndFlush</code>, <code>remove</code>, or <code>flush</code>. Those live on the EntityManager, where they belong.</p>
+
+    <h3>When custom repositories actually pay off</h3>
+
+    <p>The real value of repositories is as <strong>a single home for the QueryBuilder chains specific to one entity</strong>. If your codebase has <code>findHotArticles</code> being reinvented in three controllers with slightly different SQL each, that's the moment.</p>
+
+    <div class="story-box">
+        <p>The Subject Specialist analogy from Lesson 1: the science librarian doesn't have any power the head librarian doesn't have. But if you only need science books, walking to the science desk is friendlier &mdash; they know the local quirks. They have a few well-worn search slips taped to the desk: &ldquo;all titles published in the last 5 years,&rdquo; &ldquo;cross-references to peer-reviewed journals,&rdquo; etc.</p>
+        <p>That's a custom repository. Same authority as the EM, but a typed home for the queries that are specific to <em>this</em> entity.</p>
+    </div>
+
+    <h3>Defining a custom repository</h3>
+
+    <pre><code><span class="comment">// src/repositories/ArticleRepository.ts</span>
+<span class="keyword">import</span> { EntityRepository } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { raw } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { type <span class="type">IArticle</span> } <span class="keyword">from</span> <span class="string">'../entities/Article'</span>;
+
+<span class="keyword">export class</span> ArticleRepository <span class="keyword">extends</span> EntityRepository&lt;<span class="type">IArticle</span>&gt; {
+  <span class="function">findHotArticles</span>(minViews: <span class="type">number</span>) {
+    <span class="keyword">return this</span>.em
+      .<span class="function">qb</span>(<span class="keyword">this</span>.entityName, <span class="string">'a'</span>)
+      .<span class="function">select</span>(<span class="string">'*'</span>)
+      .<span class="function">where</span>({ viewCount: { $gt: minViews } })
+      .<span class="function">orderBy</span>({ viewCount: <span class="string">'desc'</span> })
+      .<span class="function">getResultList</span>();
+  }
+
+  <span class="function">searchByTitle</span>(q: <span class="type">string</span>) {
+    <span class="keyword">return this</span>.em
+      .<span class="function">qb</span>(<span class="keyword">this</span>.entityName, <span class="string">'a'</span>)
+      .<span class="function">select</span>(<span class="string">'*'</span>)
+      .<span class="function">where</span>({
+        $or: [
+          { title: { $ilike: <span class="string">`%${q}%`</span> } },
+          { [<span class="function">raw</span>(<span class="string">'lower(slug)'</span>)]: { $like: <span class="string">`%${q.toLowerCase()}%`</span> } },
+        ],
+      })
+      .<span class="function">getResultList</span>();
+  }
+}</code></pre>
+
+    <h3>Wiring it into the entity</h3>
+
+    <p>Tell <code>defineEntity</code> which repository class to use. Pass it as a callback &mdash; this avoids circular import problems.</p>
+
+    <pre><code><span class="comment">// src/entities/Article.ts (continued)</span>
+<span class="keyword">import</span> { ArticleRepository } <span class="keyword">from</span> <span class="string">'../repositories/ArticleRepository'</span>;
+
+<span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  repository: () <span class="keyword">=&gt;</span> ArticleRepository,
+  filters: { softDelete: { cond: { deletedAt: <span class="keyword">null</span> }, <span class="keyword">default</span>: <span class="keyword">true</span> } },
+  properties: { <span class="comment">/* &hellip; */</span> },
+});</code></pre>
+
+    <p>Now <code>em.getRepository(Article)</code> is typed as <code>ArticleRepository</code>. Calling <code>.findHotArticles(1000)</code> works, autocompletes, and lives in one file instead of three controllers.</p>
+
+    <div class="info-box blue">
+        <p><strong>Heuristic.</strong> Skip custom repositories until you have either (a) the same QB chain repeated in 3+ places, or (b) a domain operation that genuinely belongs on the entity boundary (e.g. &ldquo;publish article&rdquo; with an event emit). Otherwise the indirection costs more than it saves.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: HANDS-ON -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: Hands-On &mdash; Soft-Delete + Article Repository</h2>
+
+    <p>Time to wire all of this into <code>archive-api</code>. By the end of this section you'll have:</p>
+
+    <ol style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li>An <code>Article</code> entity with a <code>softDelete</code> filter that hides deleted rows by default.</li>
+        <li>An <code>ArticleRepository</code> with two methods: <code>findHotArticles(minViews)</code> and <code>searchByTitle(q)</code>.</li>
+        <li>A demo script that shows the SQL <em>with</em> the filter active and <em>without</em>, side-by-side in the query log.</li>
+    </ol>
+
+    <h3>Step 1 &mdash; the entity</h3>
+
+    <p>Already shown above. Drop it in <code>src/entities/Article.ts</code>. Make sure your <code>mikro-orm.config.ts</code> includes <code>Article</code> in the <code>entities</code> array.</p>
+
+    <h3>Step 2 &mdash; the repository</h3>
+
+    <p>Already shown. Drop it in <code>src/repositories/ArticleRepository.ts</code>. Wire it into the entity definition.</p>
+
+    <h3>Step 3 &mdash; the demo</h3>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> { MikroORM } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'./mikro-orm.config'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'./entities/Article'</span>;
+
+<span class="keyword">async function</span> <span class="function">main</span>() {
+  <span class="keyword">const</span> orm = <span class="keyword">await</span> MikroORM.<span class="function">init</span>(config);
+  <span class="keyword">await</span> orm.schema.<span class="function">refreshDatabase</span>();
+
+  <span class="keyword">const</span> em = orm.em.<span class="function">fork</span>();
+  <span class="keyword">const</span> articles = em.<span class="function">getRepository</span>(Article);
+
+  <span class="comment">// seed: 3 live, 1 hot, 1 soft-deleted</span>
+  em.<span class="function">create</span>(Article, { title: <span class="string">'Intro to Mikro'</span>,    slug: <span class="string">'intro'</span>,   viewCount: <span class="string">120</span>  });
+  em.<span class="function">create</span>(Article, { title: <span class="string">'Hot take on QB'</span>,    slug: <span class="string">'qb'</span>,      viewCount: <span class="string">5000</span> });
+  em.<span class="function">create</span>(Article, { title: <span class="string">'Filters explained'</span>, slug: <span class="string">'filters'</span>, viewCount: <span class="string">200</span>  });
+  em.<span class="function">create</span>(Article, { title: <span class="string">'Old draft'</span>, slug: <span class="string">'old'</span>, viewCount: <span class="string">10</span>,
+                       deletedAt: <span class="keyword">new</span> <span class="function">Date</span>(<span class="string">'2024-01-01'</span>) });
+  <span class="keyword">await</span> em.<span class="function">flush</span>();
+
+  <span class="comment">// 1) default find &mdash; soft-delete filter ON, draft hidden</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'\n--- with filter (default) ---'</span>);
+  <span class="keyword">const</span> live = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {});
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'rows:'</span>, live.length); <span class="comment">// 3</span>
+
+  <span class="comment">// 2) bypass filter &mdash; see all rows</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'\n--- filter disabled ---'</span>);
+  <span class="keyword">const</span> all = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {}, { filters: { softDelete: <span class="keyword">false</span> } });
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'rows:'</span>, all.length); <span class="comment">// 4</span>
+
+  <span class="comment">// 3) repository &mdash; typed methods, QB under the hood</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'\n--- findHotArticles(1000) ---'</span>);
+  <span class="keyword">const</span> hot = <span class="keyword">await</span> articles.<span class="function">findHotArticles</span>(<span class="string">1000</span>);
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'hot:'</span>, hot.<span class="function">map</span>(a <span class="keyword">=&gt;</span> a.title));
+
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'\n--- searchByTitle("filt") ---'</span>);
+  <span class="keyword">const</span> matches = <span class="keyword">await</span> articles.<span class="function">searchByTitle</span>(<span class="string">'filt'</span>);
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'matches:'</span>, matches.<span class="function">map</span>(a <span class="keyword">=&gt;</span> a.title));
+
+  <span class="keyword">await</span> orm.<span class="function">close</span>();
+}
+
+<span class="function">main</span>().<span class="function">catch</span>(<span class="function">console</span>.error);</code></pre>
+
+    <h3>What the query log proves</h3>
+
+    <p>With <code>debug: true</code> in your config, you'll see two key differences in the SQL:</p>
+
+    <pre><code><span class="comment">--- with filter (default) ---</span>
+<span class="comment">[query] select "a0".* from "article" as "a0" where "a0"."deleted_at" is null</span>
+
+<span class="comment">--- filter disabled ---</span>
+<span class="comment">[query] select "a0".* from "article" as "a0"</span></code></pre>
+
+    <p>One <code>WHERE</code> clause appears or disappears. That's all it took to make soft-delete invisible-by-default across your entire codebase.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 8: SVG DIAGRAM -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 8: The Three Paths to SQL</h2>
+
+    <p>Three ways your code can produce a Postgres query. Different code paths, different ergonomics, different relationships to the Identity Map. This diagram is worth memorizing.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 540" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="540" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Three Paths from Your Code to a SQL Query</text>
+
+            <defs>
+                <marker id="arr6" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+                <marker id="arr6Green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+                <marker id="arr6Red" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/>
+                </marker>
+            </defs>
+
+            <!-- Three columns -->
+            <!-- Column 1: em.find / FilterQuery -->
+            <rect x="30" y="60" width="220" height="60" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="140" y="84" text-anchor="middle" font-family="JetBrains Mono" font-weight="600" font-size="13" fill="#1A8F5C">em.find / FilterQuery</text>
+            <text x="140" y="104" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Pre-printed request slip</text>
+
+            <!-- Column 2: QueryBuilder -->
+            <rect x="270" y="60" width="220" height="60" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="380" y="84" text-anchor="middle" font-family="JetBrains Mono" font-weight="600" font-size="13" fill="#3451B2">em.qb(&hellip;).chain(&hellip;)</text>
+            <text x="380" y="104" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Custom-filter slip</text>
+
+            <!-- Column 3: em.execute -->
+            <rect x="510" y="60" width="220" height="60" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="620" y="84" text-anchor="middle" font-family="JetBrains Mono" font-weight="600" font-size="13" fill="#DC2626">em.execute(rawSQL)</text>
+            <text x="620" y="104" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Walk into the stacks yourself</text>
+
+            <!-- Filters apply / partial / not -->
+            <rect x="30" y="140" width="220" height="48" rx="8" fill="white" stroke="#E5E7EB"/>
+            <text x="140" y="160" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">Filters apply automatically</text>
+            <text x="140" y="178" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">softDelete, multi-tenant, etc.</text>
+
+            <rect x="270" y="140" width="220" height="48" rx="8" fill="white" stroke="#E5E7EB"/>
+            <text x="380" y="160" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">Filters opt-in via applyFilters()</text>
+            <text x="380" y="178" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">QB skips by default</text>
+
+            <rect x="510" y="140" width="220" height="48" rx="8" fill="white" stroke="#E5E7EB"/>
+            <text x="620" y="160" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">No filters at all</text>
+            <text x="620" y="178" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">You write everything explicitly</text>
+
+            <!-- arrows down to common SQL stage -->
+            <line x1="140" y1="188" x2="140" y2="220" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arr6Green)"/>
+            <line x1="380" y1="188" x2="380" y2="220" stroke="#3451B2" stroke-width="2" marker-end="url(#arr6)"/>
+            <line x1="620" y1="188" x2="620" y2="220" stroke="#DC2626" stroke-width="2" marker-end="url(#arr6Red)"/>
+
+            <!-- SQL execution layer -->
+            <rect x="30" y="226" width="700" height="50" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="2"/>
+            <text x="380" y="248" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#374151">PostgreSQL driver &rarr; one parameterized SQL query</text>
+            <text x="380" y="266" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">All three paths converge here. The SQL runs. Rows come back.</text>
+
+            <!-- arrows down to result handling -->
+            <line x1="140" y1="276" x2="140" y2="308" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arr6Green)"/>
+            <line x1="380" y1="276" x2="380" y2="308" stroke="#3451B2" stroke-width="2" marker-end="url(#arr6)"/>
+            <line x1="620" y1="276" x2="620" y2="308" stroke="#DC2626" stroke-width="2" marker-end="url(#arr6Red)"/>
+
+            <!-- result paths -->
+            <rect x="30" y="314" width="220" height="80" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="140" y="336" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">Hydrated entities</text>
+            <text x="140" y="356" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Registered in Identity Map.</text>
+            <text x="140" y="372" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Tracked by Unit of Work.</text>
+            <text x="140" y="388" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Mutate &amp; flush works.</text>
+
+            <rect x="270" y="314" width="220" height="80" rx="8" fill="white" stroke="#3451B2" stroke-width="2"/>
+            <text x="380" y="336" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">.getResult() &rarr; entities</text>
+            <text x="380" y="354" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Behaves like em.find result.</text>
+            <text x="380" y="372" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">.execute() &rarr; raw rows</text>
+            <text x="380" y="388" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Skips Identity Map.</text>
+
+            <rect x="510" y="314" width="220" height="80" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="620" y="336" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">Plain rows</text>
+            <text x="620" y="356" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">No Identity Map.</text>
+            <text x="620" y="372" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">No change tracking.</text>
+            <text x="620" y="388" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">For bulk ops &amp; reports.</text>
+
+            <!-- bottom rule -->
+            <rect x="30" y="420" width="700" height="90" rx="8" fill="#FFFBEB" stroke="#FCD34D" stroke-width="2"/>
+            <text x="380" y="446" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#D97706">Escalation ladder</text>
+            <text x="380" y="468" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">1) em.find with FilterQuery &mdash; default for ~85% of CRUD.</text>
+            <text x="380" y="486" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">2) QB chain &mdash; for window funcs, custom aggregates, dynamic conditions.</text>
+            <text x="380" y="504" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">3) em.execute &mdash; only when both above are insufficient. Almost never.</text>
+        </svg>
+        <div class="diagram-caption">Same database, three code paths. The further right you go, the less the framework helps you and the more you must remember.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SELF-TEST -->
+    <!-- ============================================ -->
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up, answer:<br><br>
+        1. What's the difference between <code>qb.execute()</code> and <code>qb.getResult()</code>? Which one ends up in the Identity Map?<br>
+        2. By default, do filters apply to QueryBuilder queries? How do you opt back in?<br>
+        3. Name two situations where a custom Repository genuinely earns its keep, and one where it's overkill.<br>
+        4. Why is dropping to <code>em.execute(rawString)</code> the rung you should reach for last, not first?</div>
+        <div class="recall-hint">4/4: ready for migrations in Lesson 7. 2-3/4: re-skim Parts 2 and 5. 0-1/4: this is the heaviest lesson in the course; budget another session for Part 3 (operators) and Part 5 (filters), and try the hands-on before re-reading.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--blue);">QB is an escape hatch</div>
+            <div class="layer-desc">Reach for it for window functions, complex GROUP BY, custom aggregates, dynamic conditions, subqueries. Otherwise <code>em.find</code> + FilterQuery is shorter and safer.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4DC;</div>
+            <div class="layer-name" style="color: var(--purple);">FilterQuery alphabet</div>
+            <div class="layer-desc"><code>$and</code>, <code>$or</code>, <code>$gt</code>, <code>$gte</code>, <code>$lt</code>, <code>$lte</code>, <code>$in</code>, <code>$nin</code>, <code>$ne</code>, <code>$like</code>, <code>$ilike</code>, <code>$re</code>, <code>$fulltext</code>, plus Postgres JSONB ops <code>$contains</code>, <code>$contained</code>, <code>$overlap</code>, <code>$hasKey</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F576;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">Filters = Restricted Stacks</div>
+            <div class="layer-desc">Soft-delete, multi-tenant, archived &mdash; define the rule once, enforce automatically, override per query when you need to.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F50C;</div>
+            <div class="layer-name" style="color: var(--orange);">Repositories</div>
+            <div class="layer-desc">Optional. Pay off when QB chains repeat across your codebase. Same authority as the EM, just typed and entity-scoped.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x26A0;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--red);">execute() vs getResult()</div>
+            <div class="layer-desc">Raw rows skip the catalog; hydrated rows go through it. Choose deliberately. Mutating <code>.execute()</code> output and calling <code>flush</code> is a silent no-op.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 7:</strong> Migrations, schema generation, and seeding. We turn the entity changes you've been making into versioned, reviewable migration files &mdash; the kind of artifact your prod environment can actually trust.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Add <code>softDelete</code> filter + <code>ArticleRepository</code></strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Define <code>Article</code> as in Part 5 with the <code>softDelete</code> filter (<code>default: true</code>).</li>
+                    <li>Add <code>ArticleRepository</code> with two methods: <code>findHotArticles(minViews)</code> and <code>searchByTitle(q)</code>.</li>
+                    <li>Wire it into <code>defineEntity</code> via the <code>repository</code> option.</li>
+                    <li>Open a PR on <code>mikroorm-course-yourname</code> with these changes. Submit the PR URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Filter on/off SQL diff &mdash; screenshot</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Run the demo from Part 7 with <code>debug: true</code>. Capture a screenshot of the terminal showing the two queries side-by-side: one with <code>where "deleted_at" is null</code> and one without.</li>
+                    <li>Submit the screenshot.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong><code>execute()</code> vs <code>getResult()</code> &mdash; elaborative interrogation</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 4&ndash;6 sentences: <em>why</em> does <code>qb.execute()</code> skip the Identity Map while <code>qb.getResult()</code> registers in it? Then give one concrete bug each behavior helps you avoid (so two bugs total). Use the Library analogy if it helps.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Multi-tenant filter via <code>AsyncLocalStorage</code></strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Build a global <code>tenant</code> filter that scopes every query by <code>tenantId</code>, where the <code>tenantId</code> comes from a Node <code>AsyncLocalStorage</code> context. Wire it through a fake middleware function that takes a <code>tenantId</code> and runs a callback inside <code>RequestContext.create</code>. Demonstrate that two parallel calls with different <code>tenantId</code>s see disjoint datasets. Add the script to your repo with a brief <code>README.md</code> note explaining how it emulates what NestJS request scope will give us in Lesson 9.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Window function via QB raw fragments</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Write a QB query that fetches the <em>latest article per author</em>, using a window function (<code>ROW_NUMBER() OVER (PARTITION BY author_id ORDER BY published_at DESC)</code>). Use <code>raw()</code> fragments inside QB. Compare the SQL the ORM produces with the SQL you'd hand-write. Add the query and the produced SQL to your repo's <code>README.md</code>.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 6 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Migrations, Schema Generation, and Seeding</p>
+    </div>
+
+</div>
+
+</body>
+</html>

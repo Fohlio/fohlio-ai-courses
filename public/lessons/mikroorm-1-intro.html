@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 1 of 10</div>
+        <h1>MikroORM Course</h1>
+        <div class="subtitle">DataMapper, Identity Map, and the Library That Tracks Itself</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Understand the difference between Active Record and Data Mapper, and why MikroORM picks the latter</li>
+            <li>Know what the Identity Map and Unit of Work do, and why they are not just &ldquo;a cache&rdquo;</li>
+            <li>Have a mental model (the Records Library) you can use for every lesson ahead</li>
+            <li>Install MikroORM with the PostgreSQL driver and write your first <code>mikro-orm.config.ts</code></li>
+            <li>Define a <code>Book</code> entity, persist it, re-fetch it, and see the Identity Map proof: <code>book1 === book2</code></li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1: THE ACTIVE RECORD HANGOVER -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Active Record Hangover</h2>
+
+    <p>You already met Prisma in the NestJS course. It's fine. It's fast to learn. For a small service, it's plenty. So why are we spending ten lessons on a different ORM?</p>
+
+    <p>Here's the moment most teams hit the wall. You have a request that needs to:</p>
+
+    <ol style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li>Load an <code>Order</code></li>
+        <li>Update three of its <code>OrderItem</code>s</li>
+        <li>Insert two new <code>StockMovement</code>s</li>
+        <li>Mark the customer's loyalty record as <code>tier = 'gold'</code></li>
+        <li>Commit it all atomically, or none of it</li>
+    </ol>
+
+    <p>In a Prisma-style world, you write five queries, wrap them in <code>$transaction([...])</code>, and pray you didn't forget one. In an Active Record world (TypeORM 0.x, Sequelize, Eloquent in PHP), each entity is responsible for saving itself: <code>order.save()</code>, <code>item.save()</code>, <code>item.save()</code>, <code>item.save()</code>, <code>movement.save()</code>... five round trips. Or you batch manually and bypass your own object model.</p>
+
+    <p>There's a third way. You change a few JS objects in memory, then say one word: <code>flush</code>. The ORM figures out what to insert, what to update, what to delete, and what order the foreign keys demand. It batches everything into a single transaction. You write less code, you make fewer mistakes, you don't think about the SQL.</p>
+
+    <p>That's MikroORM. And the reason it can do this is that it implements three patterns from Martin Fowler's <em>Patterns of Enterprise Application Architecture</em> &mdash; patterns most JS-flavored ORMs skip because they're harder to build.</p>
+
+    <h3>Active Record vs Data Mapper &mdash; the philosophical split</h3>
+
+    <p>Every ORM in history sits on one side of this fence.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4DA;</div>
+            <div class="card-title" style="color: var(--orange);">Active Record</div>
+            <div class="card-subtitle" style="color: var(--orange);">The entity saves itself</div>
+            <div class="card-desc">Each model class knows how to talk to the database. <code>user.save()</code>, <code>user.delete()</code>. Cheap to learn. Couples your domain objects to persistence. Hard to unit-test. TypeORM, Sequelize, Eloquent.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--green);">Data Mapper</div>
+            <div class="card-subtitle" style="color: var(--green);">Plain objects, separate manager</div>
+            <div class="card-desc">Entities are plain TypeScript classes. They know nothing about the database. A separate <code>EntityManager</code> handles persistence. Cleaner domain model. Pays back at scale. Hibernate, Doctrine, MikroORM.</div>
+        </div>
+    </div>
+
+    <p>Prisma is its own animal &mdash; not really either, more of a typed query-builder with a code-generated client. It's great at what it does, but it doesn't solve the &ldquo;five-write transaction&rdquo; problem we opened with. You still write the queries; Prisma just types them for you.</p>
+
+    <p>MikroORM is unapologetically Data Mapper. Your <code>Book</code> class doesn't have a <code>save()</code> method. It doesn't have <em>any</em> persistence method. It's a TypeScript class with fields. The framework wraps it in something called a <strong>Unit of Work</strong>, watches what you change, and on <code>flush()</code> writes the diff.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        TypeORM dev: &ldquo;I called <code>user.save()</code>, why didn't my related <code>Order</code>s update?&rdquo;<br>
+        Senior: &ldquo;Did you save them too?&rdquo;<br>
+        TypeORM dev: &ldquo;...there are eighteen.&rdquo;<br>
+        Senior: &ldquo;<code>user.save({cascade: true, deep: 3, ohGodPlease: true})</code>?&rdquo;<br>
+        <em>Active Record at scale becomes a series of save() incantations no one fully trusts.</em>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">If MikroORM's <code>Book</code> class has no <code>save()</code> method, no <code>delete()</code>, no database awareness at all &mdash; how does the ORM know that <code>book.title = 'New Title'</code> needs to become an <code>UPDATE</code> statement? Take ten seconds and write your guess.</div>
+        <div class="recall-hint">There's no wrong answer. Most people guess &ldquo;proxies&rdquo; or &ldquo;getters/setters&rdquo;. The real answer is simpler &mdash; and you'll see it in Part 2.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: THE THREE PATTERNS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: The Three Patterns That Make MikroORM Tick</h2>
+
+    <p>Three patterns. If you understand these three, the rest of the course is naming and configuration.</p>
+
+    <h3>1. Data Mapper</h3>
+
+    <p>You already saw this one. Entities are plain classes. A separate object &mdash; the <code>EntityManager</code> &mdash; handles all persistence. Your domain stays pure.</p>
+
+    <h3>2. Identity Map</h3>
+
+    <p>This is the one that surprises people. The Identity Map is an in-memory dictionary inside the <code>EntityManager</code> keyed by primary key. It guarantees: <strong>within one request, every database row is represented by exactly one object instance</strong>.</p>
+
+    <p>If you load <code>Book#42</code> in a controller, then ten function calls deep someone else loads <code>Book#42</code>, both calls return the <em>same JavaScript object</em>. Not a copy. The same reference. <code>===</code> is true.</p>
+
+    <pre><code><span class="keyword">const</span> book1 = <span class="keyword">await</span> em.<span class="function">findOne</span>(Book, <span class="string">42</span>);
+<span class="keyword">const</span> book2 = <span class="keyword">await</span> em.<span class="function">findOne</span>(Book, <span class="string">42</span>);
+
+<span class="function">console</span>.<span class="function">log</span>(book1 === book2); <span class="comment">// true</span></code></pre>
+
+    <p>Only the first call hits the database. The second sees <code>42</code> already in the Identity Map and returns the cached instance.</p>
+
+    <p>This is not just a performance trick &mdash; it's a correctness guarantee. If two parts of your code modify the &ldquo;same book,&rdquo; they're modifying the literal same object. There's no <em>&ldquo;wait, did the other handler stale-write over my change?&rdquo;</em> ambiguity within one request.</p>
+
+    <div class="info-box orange">
+        <p><strong>Crucial: per-request, not global.</strong> The Identity Map lives inside one <code>EntityManager</code> fork, and that fork lives for one HTTP request. After the response goes out, the fork is garbage-collected. Nothing leaks between users. We'll see how this is wired in Part 4.</p>
+    </div>
+
+    <h3>3. Unit of Work</h3>
+
+    <p>Now the answer to the recall-box question. How does MikroORM know that <code>book.title = 'New Title'</code> needs an <code>UPDATE</code>?</p>
+
+    <p>Trick: it doesn't, until you ask. When the ORM hydrates a row into an entity, it also stores a hidden copy of every property &mdash; a snapshot. When you call <code>em.flush()</code>, MikroORM walks every managed entity, compares its current state against the snapshot, and only emits SQL for the fields that actually changed.</p>
+
+    <p>That walk is called the <strong>Unit of Work</strong>. It does five things, in order, atomically:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--blue);">1. Compute</div>
+            <div class="layer-desc">Diff every managed entity against its snapshot. Build a list of inserts, updates, deletes.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--purple);">2. Order</div>
+            <div class="layer-desc">Topological sort by foreign keys. Insert parents before children. Delete children before parents.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--green);">3. Batch</div>
+            <div class="layer-desc">Group operations: one multi-row INSERT per table, batched UPDATEs, batched DELETEs.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--orange);">4. Transact</div>
+            <div class="layer-desc">Wrap the whole batch in a database transaction. All or nothing.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4F8;</div>
+            <div class="layer-name" style="color: var(--gray-700);">5. Snapshot</div>
+            <div class="layer-desc">After commit, take fresh snapshots of every entity so the next flush diffs against the new baseline.</div>
+        </div>
+    </div>
+
+    <p>The five-write request from Part 1, in MikroORM, is:</p>
+
+    <pre><code><span class="keyword">const</span> order = <span class="keyword">await</span> em.<span class="function">findOne</span>(Order, orderId, { populate: [<span class="string">'items'</span>, <span class="string">'customer'</span>] });
+
+order.items[<span class="string">0</span>].quantity = <span class="string">5</span>;
+order.items[<span class="string">1</span>].quantity = <span class="string">3</span>;
+order.items[<span class="string">2</span>].quantity = <span class="string">1</span>;
+
+em.<span class="function">create</span>(StockMovement, { sku: <span class="string">'A1'</span>, delta: <span class="string">-5</span> });
+em.<span class="function">create</span>(StockMovement, { sku: <span class="string">'A2'</span>, delta: <span class="string">-3</span> });
+
+order.customer.tier = <span class="string">'gold'</span>;
+
+<span class="keyword">await</span> em.<span class="function">flush</span>(); <span class="comment">// one transaction, ordered, batched, atomic</span></code></pre>
+
+    <p>Six lines of business logic. One <code>flush</code>. No transaction wrapper, no manual ordering, no <code>Promise.all</code> footgun. Compare that to the equivalent in raw Prisma or TypeORM Active Record. This is the payoff that makes Lesson 1 through Lesson 10 worth it.</p>
+
+    <div class="info-box blue">
+        <p><strong>The mental shift:</strong> with MikroORM, you stop writing <em>queries</em> and start writing <em>changes to objects</em>. The framework converts your changes into queries when you flush. The cognitive load shifts from &ldquo;which SQL should I run&rdquo; to &ldquo;what should be true after this request.&rdquo;</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DD;</div>
+        Junior: &ldquo;I changed the user's email but the database didn't update.&rdquo;<br>
+        Senior: &ldquo;Did you flush?&rdquo;<br>
+        Junior: &ldquo;The toilet?&rdquo;<br>
+        Senior: &ldquo;<code>em.flush()</code>. Without it, your changes live only in JS memory.&rdquo;<br>
+        Junior: &ldquo;Wait &mdash; so I can change ten things and ship them in one transaction by calling flush once?&rdquo;<br>
+        Senior: &ldquo;Now you get it.&rdquo;<br>
+        <em>The first time the penny drops on Unit of Work, you stop writing five-statement transactions forever.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: THE RECORDS LIBRARY ANALOGY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: The Records Library Analogy</h2>
+
+    <p>One running analogy for the entire course. Memorize this &mdash; every later lesson maps new concepts back to it.</p>
+
+    <h3>Your MikroORM app is a research library</h3>
+
+    <div class="story-box">
+        <p>Imagine a serious research library. The kind with stacks you can't browse yourself &mdash; you fill out a request slip, hand it to the desk, and a few minutes later a clerk brings the volume to your reading carrel.</p>
+        <p>The library has <strong>one master catalog</strong>: every physical book has exactly one catalog card. Two readers asking for the same book don't get two cards &mdash; they get pointed to the same card, and the librarian schedules access. This is not optional; it's how the library guarantees that nobody walks out with a duplicate that nobody can reconcile later.</p>
+        <p>The librarians don't write changes to the master register every time you scribble in a margin or a clerk reshelves a volume. They keep a <strong>working ledger</strong> &mdash; a daily journal of every check-out, return, annotation, and reshelving. At the end of the shift, the head librarian reviews the ledger, applies all the changes to the master register in the right order, signs it, and locks the safe. If anything goes wrong mid-shift, they tear up the ledger and start over &mdash; the master register never saw the half-done work.</p>
+        <p>Each subject has a <strong>specialist</strong> &mdash; the science librarian, the history librarian. They don't have any power the head librarian doesn't have, but if you only need history books, you go to the history desk. It's a typed shortcut, not a separate authority.</p>
+        <div class="tech-note">
+            <strong>The mapping in one line:</strong> Master Catalog = Identity Map. Working Ledger = Unit of Work. Head Librarian = EntityManager. Subject Specialist = Repository. End-of-Shift Sign-Off = <code>em.flush()</code>. That's the whole core.
+        </div>
+    </div>
+
+    <h3>The full mapping</h3>
+
+    <table>
+        <tr>
+            <th>Records Library</th>
+            <th>MikroORM</th>
+            <th>What it does</th>
+        </tr>
+        <tr>
+            <td>&#x1F4D6; Volume / Document</td>
+            <td><strong>Entity</strong></td>
+            <td>A plain TypeScript class instance representing one row. No persistence methods of its own.</td>
+        </tr>
+        <tr>
+            <td>&#x1F464; Head Librarian</td>
+            <td><strong>EntityManager</strong></td>
+            <td>The orchestrator. <code>find</code>, <code>persist</code>, <code>remove</code>, <code>flush</code>. Every operation goes through them.</td>
+        </tr>
+        <tr>
+            <td>&#x1F5C3;&#xFE0F; Master Catalog</td>
+            <td><strong>Identity Map</strong></td>
+            <td>One card per real volume. Within a request, every <code>findOne(Book, 42)</code> returns the exact same JS object.</td>
+        </tr>
+        <tr>
+            <td>&#x1F4D2; Working Ledger</td>
+            <td><strong>Unit of Work</strong></td>
+            <td>Tracks changes across the request. Computes the diff. Orders, batches, and commits everything in one transaction on flush.</td>
+        </tr>
+        <tr>
+            <td>&#x1F50D; Subject Specialist</td>
+            <td><strong>Repository</strong></td>
+            <td>Typed shortcut for one entity type. <code>em.getRepository(Book)</code> returns a typed handle. Same powers, narrower interface.</td>
+        </tr>
+        <tr>
+            <td>&#x1F517; Cross-References</td>
+            <td><strong>Relations (1:1, 1:M, M:1, M:M)</strong></td>
+            <td>How one entity points to another. Owning side holds the foreign key; inverse side mirrors it.</td>
+        </tr>
+        <tr>
+            <td>&#x1F39F;&#xFE0F; Request Slip</td>
+            <td><strong>QueryBuilder / FilterQuery</strong></td>
+            <td>How you describe what you want. <code>{ author: { name: 'Tolstoy' } }</code> turns into a JOIN and WHERE.</td>
+        </tr>
+        <tr>
+            <td>&#x1F4E6; Cart on Wheels</td>
+            <td><strong>Loading Strategy</strong></td>
+            <td>Bring everything in one trip (joined) or by department (select-in)? Different strategies for different shapes of data.</td>
+        </tr>
+        <tr>
+            <td>&#x1F3D7;&#xFE0F; Reorganization Plan</td>
+            <td><strong>Migration</strong></td>
+            <td>A versioned, reviewable change to the building itself: new shelves, new wings, retired sections.</td>
+        </tr>
+        <tr>
+            <td>&#x1F576;&#xFE0F; Restricted Stacks</td>
+            <td><strong>Filter</strong></td>
+            <td>Volumes that exist but don't show up in normal searches. Soft-delete, multi-tenant scoping, archived records.</td>
+        </tr>
+        <tr>
+            <td>&#x1F4DD; Standing Procedure</td>
+            <td><strong>Lifecycle Hook / Subscriber</strong></td>
+            <td>&ldquo;Before any new volume is registered, stamp today's date.&rdquo; Code that runs at fixed entity-lifecycle moments.</td>
+        </tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>You don't need all of this on day one.</strong> Lessons 2 through 4 cover entities, the EntityManager, and relations &mdash; that's enough to build a real CRUD service. Repositories arrive in Lesson 6, migrations in Lesson 7. By the capstone, you'll have used every row in this table.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Lock the analogy in</div>
+        <div class="recall-question">Without scrolling up, match these three: <strong>(a)</strong> guarantees one JS object per database row, <strong>(b)</strong> collects changes during a request and applies them all on flush, <strong>(c)</strong> the orchestrator that you actually call methods on. Which is the Identity Map, which is the Unit of Work, which is the EntityManager?</div>
+        <div class="recall-hint">3/3: ready for hands-on. 1-2/3: re-read the table once. The first time you build something, it'll feel arbitrary; by Lesson 4 it'll feel obvious.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: YOUR FIRST MIKROORM PROJECT -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Your First MikroORM Project</h2>
+
+    <p>Theory's done. From here on, every concept is grounded in code you can actually run. This is the project you'll grow across all 10 lessons.</p>
+
+    <h3>Prerequisites</h3>
+
+    <p>You'll need:</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li><strong>Node.js 20+</strong> (LTS). Check with <code>node --version</code>.</li>
+        <li><strong>PostgreSQL 14+</strong> running locally. Easiest path: <code>docker run --name pg -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16</code>.</li>
+        <li><strong>A database called <code>archive</code></strong>. Create it with <code>createdb archive</code>, or via the Postgres CLI: <code>CREATE DATABASE archive;</code>.</li>
+    </ul>
+
+    <h3>Scaffold the project</h3>
+
+    <pre><code><span class="comment"># create the project folder</span>
+<span class="function">mkdir</span> archive-api &amp;&amp; <span class="function">cd</span> archive-api
+
+<span class="comment"># initialize npm + TypeScript</span>
+<span class="function">npm</span> init -y
+<span class="function">npm</span> install --save-dev typescript @types/node ts-node
+<span class="function">npx</span> tsc --init
+
+<span class="comment"># install MikroORM core, the Postgres driver, and the CLI</span>
+<span class="function">npm</span> install @mikro-orm/core @mikro-orm/postgresql
+<span class="function">npm</span> install --save-dev @mikro-orm/cli</code></pre>
+
+    <p>Three packages. <code>@mikro-orm/core</code> is database-agnostic (EntityManager, Unit of Work, Identity Map). <code>@mikro-orm/postgresql</code> is the driver (it brings <code>pg</code> with it). <code>@mikro-orm/cli</code> is the dev tool you'll use for migrations and schema diffing in Lesson 7.</p>
+
+    <div class="info-box orange">
+        <p><strong>Driver versions must match.</strong> All three packages must be the exact same MikroORM version. Mixing <code>@mikro-orm/core@7.0.1</code> with <code>@mikro-orm/postgresql@6.4.0</code> produces obscure runtime errors. If you upgrade one, upgrade them all in lockstep.</p>
+    </div>
+
+    <h3>Project structure</h3>
+
+    <p>Create this layout. We'll build it up over the next ten lessons.</p>
+
+    <div class="file-tree">
+archive-api/
+├── <span class="dir">src/</span>
+│   ├── <span class="dir">entities/</span>
+│   │   └── <span class="highlight">Book.ts</span>             <span class="comment">← our first entity</span>
+│   ├── <span class="highlight">mikro-orm.config.ts</span>     <span class="comment">← ORM configuration (read by the CLI too)</span>
+│   └── <span class="highlight">main.ts</span>                  <span class="comment">← entry point for this lesson's demo</span>
+├── <span class="file">package.json</span>
+└── <span class="file">tsconfig.json</span>
+    </div>
+
+    <h3>Define the Book entity</h3>
+
+    <p>Open <code>src/entities/Book.ts</code> and write your first entity. We'll use the <code>defineEntity</code> helper &mdash; it's the modern, decorator-free, fully type-inferred way. (Decorators still work; we'll mention them in Lesson 2.)</p>
+
+    <pre><code><span class="comment">// src/entities/Book.ts</span>
+<span class="keyword">import</span> { defineEntity, p, <span class="type">InferEntity</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">export const</span> Book = <span class="function">defineEntity</span>({
+  name: <span class="string">'Book'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    author: p.<span class="function">string</span>(),
+    publishedYear: p.<span class="function">integer</span>().<span class="function">nullable</span>(),
+    createdAt: p.<span class="function">datetime</span>().<span class="function">onCreate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>()),
+  },
+});
+
+<span class="keyword">export type</span> <span class="type">IBook</span> = InferEntity&lt;<span class="keyword">typeof</span> Book&gt;;</code></pre>
+
+    <p>Five properties. <code>id</code> is the primary key, a bigint that Postgres auto-generates. <code>title</code> and <code>author</code> are required strings. <code>publishedYear</code> is an optional integer (nullable in the DB). <code>createdAt</code> is a timestamp the ORM fills in for us on insert.</p>
+
+    <p>Notice: no <code>save()</code>, no <code>delete()</code>, no <code>find()</code>. The entity is just a shape. Persistence will live in the EntityManager.</p>
+
+    <h3>Configure the ORM</h3>
+
+    <p>Open <code>src/mikro-orm.config.ts</code>:</p>
+
+    <pre><code><span class="comment">// src/mikro-orm.config.ts</span>
+<span class="keyword">import</span> { defineConfig } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'./entities/Book'</span>;
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  entities: [Book],
+  dbName: <span class="string">'archive'</span>,
+  user: <span class="string">'postgres'</span>,
+  password: <span class="string">'postgres'</span>,
+  host: <span class="string">'localhost'</span>,
+  port: <span class="string">5432</span>,
+  debug: <span class="keyword">true</span>, <span class="comment">// log every SQL query — invaluable for learning</span>
+});</code></pre>
+
+    <p>That's it. The <code>defineConfig</code> import comes from <code>/postgresql</code>, which means MikroORM infers the driver automatically &mdash; no separate <code>driver:</code> line needed. <code>debug: true</code> is what makes this lesson teach itself: every query the ORM fires will print to your console, and you'll see exactly when the Identity Map saves you a round trip.</p>
+
+    <h3>Write the &ldquo;Hello, librarian&rdquo; demo</h3>
+
+    <p>Open <code>src/main.ts</code>:</p>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> { MikroORM } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'./mikro-orm.config'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'./entities/Book'</span>;
+
+<span class="keyword">async function</span> <span class="function">main</span>() {
+  <span class="keyword">const</span> orm = <span class="keyword">await</span> MikroORM.<span class="function">init</span>(config);
+
+  <span class="comment">// 1. create the schema (we'll switch to migrations in Lesson 7)</span>
+  <span class="keyword">await</span> orm.schema.<span class="function">refreshDatabase</span>();
+
+  <span class="comment">// 2. fork the EM — one map, one ledger, scoped to this script</span>
+  <span class="keyword">const</span> em = orm.em.<span class="function">fork</span>();
+
+  <span class="comment">// 3. create two books — pure JS objects, no SQL fired yet</span>
+  em.<span class="function">create</span>(Book, { title: <span class="string">'War and Peace'</span>, author: <span class="string">'Tolstoy'</span>, publishedYear: <span class="string">1869</span> });
+  em.<span class="function">create</span>(Book, { title: <span class="string">'Anna Karenina'</span>, author: <span class="string">'Tolstoy'</span>, publishedYear: <span class="string">1877</span> });
+
+  <span class="comment">// 4. flush — single transaction, two INSERTs, ordered correctly</span>
+  <span class="keyword">await</span> em.<span class="function">flush</span>();
+
+  <span class="comment">// 5. read both books back</span>
+  <span class="keyword">const</span> book1 = <span class="keyword">await</span> em.<span class="function">findOne</span>(Book, <span class="string">1</span>);
+  <span class="keyword">const</span> book2 = <span class="keyword">await</span> em.<span class="function">findOne</span>(Book, <span class="string">1</span>);
+
+  <span class="comment">// 6. the Identity Map proof</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'same instance?'</span>, book1 === book2); <span class="comment">// true</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'title:'</span>, book1?.title); <span class="comment">// War and Peace</span>
+
+  <span class="keyword">await</span> orm.<span class="function">close</span>();
+}
+
+<span class="function">main</span>().<span class="function">catch</span>(<span class="function">console</span>.error);</code></pre>
+
+    <h3>Run it</h3>
+
+    <p>Add a <code>start</code> script to your <code>package.json</code>:</p>
+
+    <pre><code><span class="string">"scripts"</span>: {
+  <span class="string">"start"</span>: <span class="string">"ts-node src/main.ts"</span>
+}</code></pre>
+
+    <p>Then:</p>
+
+    <pre><code><span class="function">npm</span> start</code></pre>
+
+    <p>You'll see something like:</p>
+
+    <pre><code><span class="comment">[query] begin</span>
+<span class="comment">[query] insert into "book" ("title", "author", "published_year", "created_at")
+        values ('War and Peace', 'Tolstoy', 1869, '...'),
+               ('Anna Karenina', 'Tolstoy', 1877, '...') returning "id"</span>
+<span class="comment">[query] commit</span>
+<span class="comment">[query] select "b0".* from "book" as "b0" where "b0"."id" = 1 limit 1</span>
+same instance? true
+title: War and Peace</code></pre>
+
+    <p>Read those query logs carefully. Three things to notice:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2728;</div>
+            <div class="layer-name" style="color: var(--green);">Single batched INSERT</div>
+            <div class="layer-desc">Both books went in via one <code>insert ... values (...), (...)</code> — that's the Unit of Work batching.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--blue);">Implicit transaction</div>
+            <div class="layer-desc"><code>begin</code> ... <code>commit</code> wrapped the whole flush, even though we never wrote <code>BEGIN</code> ourselves.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Identity Map at work</div>
+            <div class="layer-desc">Two <code>findOne(Book, 1)</code> calls produced exactly one <code>select</code>. The second hit the map and returned the cached instance.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>You just experienced everything Part 2 promised.</strong> Plain object changes turned into batched, ordered, transactional SQL on a single <code>flush()</code> call. And duplicate reads of the same primary key cost zero round trips. This is the core ergonomic win of MikroORM in one 30-line script.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict the next experiment</div>
+        <div class="recall-question">If you change one line in <code>main.ts</code> &mdash; <code>book1!.title = 'New Title'</code> right after the second <code>findOne</code>, then call <code>await em.flush()</code> &mdash; how many SQL statements will print? And why?</div>
+        <div class="recall-hint">Try it in your editor before continuing. Remember: snapshots, change-set computation, single transaction. The answer is satisfying.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: WHAT HAPPENS UNDER THE HOOD -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: What Happens When You Call flush()</h2>
+
+    <p>You've used <code>flush()</code>. Now let's trace exactly what it does, end-to-end. This diagram is the most important picture in the whole course.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="480" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Anatomy of em.flush()</text>
+
+            <defs>
+                <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+                <marker id="arrGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <!-- Step 1: collect managed entities -->
+            <rect x="30" y="50" width="700" height="48" rx="8" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="55" y="72" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">1. Collect</text>
+            <text x="155" y="72" font-family="Inter" font-size="12" fill="#6B7280">Walk every managed entity in the Identity Map. New, modified, removed — all candidates.</text>
+            <line x1="380" y1="98" x2="380" y2="118" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Step 2: compute change-sets -->
+            <rect x="30" y="122" width="700" height="48" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="55" y="144" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">2. Diff</text>
+            <text x="155" y="144" font-family="Inter" font-size="12" fill="#6B7280">For each entity, compare current state vs the snapshot. Build INSERT / UPDATE / DELETE change-sets.</text>
+            <line x1="380" y1="170" x2="380" y2="190" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Step 3: topological sort -->
+            <rect x="30" y="194" width="700" height="48" rx="8" fill="#FFE4E6" stroke="#FDA4AF" stroke-width="2"/>
+            <text x="55" y="216" font-family="Inter" font-weight="600" font-size="13" fill="#BE123C">3. Order</text>
+            <text x="155" y="216" font-family="Inter" font-size="12" fill="#6B7280">Topological sort by foreign keys. Insert parents before children. Delete children before parents.</text>
+            <line x1="380" y1="242" x2="380" y2="262" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Step 4: batch + transaction -->
+            <rect x="30" y="266" width="700" height="48" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="55" y="288" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">4. Execute</text>
+            <text x="155" y="288" font-family="Inter" font-size="12" fill="#6B7280">BEGIN. Fire batched INSERT/UPDATE/DELETEs in dependency order. All in one transaction.</text>
+            <line x1="380" y1="314" x2="380" y2="334" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Step 5: snapshot -->
+            <rect x="30" y="338" width="700" height="48" rx="8" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="55" y="360" font-family="Inter" font-weight="600" font-size="13" fill="#1A8F5C">5. Snapshot</text>
+            <text x="155" y="360" font-family="Inter" font-size="12" fill="#6B7280">COMMIT. Refresh internal snapshots so the next flush diffs against the new baseline.</text>
+            <line x1="380" y1="386" x2="380" y2="406" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrGreen)"/>
+
+            <!-- Final state -->
+            <rect x="200" y="410" width="360" height="36" rx="8" fill="#1A8F5C"/>
+            <text x="380" y="432" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="white">Database is consistent. Identity Map is up to date.</text>
+        </svg>
+        <div class="diagram-caption">Five phases. One transaction. The whole point of an ORM, in one round trip.</div>
+    </div>
+
+    <h3>Why &ldquo;forking&rdquo; matters</h3>
+
+    <p>You saw <code>orm.em.fork()</code> in the demo. That's the part of MikroORM most people miss on day one, and it's what makes the framework safe to use in a real web server.</p>
+
+    <p><code>orm.em</code> is the global EntityManager &mdash; one per ORM instance for the life of the process. If you used it directly inside an HTTP handler, every request would share one Identity Map. Two users editing the same record would step on each other. The map would grow forever. Memory would leak. Welcome to production debugging at 2am.</p>
+
+    <p>Instead: at the start of every request, you call <code>orm.em.fork()</code> to get a fresh EntityManager with its own clean Identity Map and Unit of Work. That fork lives for one request, gets thrown away at the end, and never sees another user's data.</p>
+
+    <p>In an Express or NestJS app, this is wired up by middleware:</p>
+
+    <pre><code><span class="keyword">import</span> { RequestContext } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+app.<span class="function">use</span>((req, res, next) <span class="keyword">=&gt;</span> {
+  RequestContext.<span class="function">create</span>(orm.em, next);
+});</code></pre>
+
+    <p>Under the hood that uses Node's <code>AsyncLocalStorage</code> to scope the forked EM to the current request &mdash; so anywhere in your code, <code>orm.em.find(...)</code> automatically routes to the right fork. We'll see the NestJS version of this in Lesson 9. For now, just know: <strong>the global <code>orm.em</code> is a factory; the request-scoped fork is what you actually use</strong>.</p>
+
+    <div class="info-box red">
+        <p><strong>Common mistake:</strong> sharing <code>orm.em</code> directly across requests, or holding entities loaded by one request in a module-level variable. Both poison the Identity Map. MikroORM 7 actively detects this and throws unless you set <code>allowGlobalContext: true</code> &mdash; which you should only ever set in unit tests.</p>
+    </div>
+
+    <h3>Where the SQL actually lives</h3>
+
+    <p>One conceptual lock-in: in MikroORM, you almost never write SQL strings yourself in normal flows. <code>em.find</code>, <code>em.persist</code>, <code>em.remove</code>, <code>em.flush</code> together cover ~85% of a typical CRUD service. For the other 15% &mdash; reports, complex joins, raw window functions &mdash; you'll meet the QueryBuilder in Lesson 6. Even there, you can lift the result into the Identity Map with <code>.getResult()</code>.</p>
+
+    <p>The mental rule from Day 1: <strong>describe the change you want as JS objects, then flush.</strong> If that's not enough, escalate to the QueryBuilder. If <em>that's</em> not enough, drop to raw SQL with <code>em.execute(...)</code>. In practice, most teams never need the third escape hatch.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up, answer:<br><br>
+        1. What three Fowler patterns does MikroORM implement?<br>
+        2. Why must you fork the EntityManager per request?<br>
+        3. What does the Unit of Work actually compare against to detect changes?<br>
+        4. In the analogy: who is the Head Librarian, who is the Master Catalog, who is the Working Ledger?</div>
+        <div class="recall-hint">4/4: ready for Lesson 2. 2-3/4: re-read Parts 2 and 3. 0-1/4: take a break, come back tomorrow, and start from Part 2 &mdash; this is the conceptual core of the entire course and there's no shame in needing two passes.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Here's what you learned in Lesson 1:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DA;</div>
+            <div class="layer-name" style="color: var(--blue);">The split</div>
+            <div class="layer-desc">Active Record entities save themselves; Data Mapper entities are pure objects with a separate manager. MikroORM is unapologetically Data Mapper.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">The three patterns</div>
+            <div class="layer-desc">Data Mapper (pure entities), Identity Map (one JS object per row), Unit of Work (collect changes, flush atomically).</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F464;</div>
+            <div class="layer-name" style="color: var(--green);">The analogy</div>
+            <div class="layer-desc">Records Library. Head Librarian = EntityManager. Master Catalog = Identity Map. Working Ledger = Unit of Work. Sign-off = flush.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x2699;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">The setup</div>
+            <div class="layer-desc">Three packages, one config file, one entity, one <code>main.ts</code>. <code>em.fork()</code> per request. <code>em.flush()</code> per business operation.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 2:</strong> We go deep on entities. <code>defineEntity</code> versus decorators, every property type and modifier you'll use, primary keys (bigint vs UUID), the difference between <code>nullable</code> and optional, custom types, naming strategy. By the end of Lesson 2, you'll be able to model any real-world table without looking it up.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Scaffold and run <code>archive-api</code></strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Follow Part 4 step by step. Local Postgres, <code>archive</code> database, three packages installed.</li>
+                    <li>Run <code>npm start</code>. You should see the batched INSERT, the <code>begin</code>/<code>commit</code>, the single SELECT, and <code>same instance? true</code>.</li>
+                    <li>Submit a <strong>screenshot</strong> of your terminal output showing all of those.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Push <code>archive-api</code> to GitHub</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Create a public repo named <code>mikroorm-course-yourname</code>.</li>
+                    <li>Push your <code>archive-api</code> project there. Add a brief <code>README.md</code> with the local-Postgres setup steps.</li>
+                    <li>Submit the repo URL &mdash; we'll keep growing this same repo for every lesson.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why is the Identity Map per-request, not global? (Elaborative interrogation)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 3&ndash;5 sentences: name two concrete bad things that would happen if the Identity Map were shared across all requests in a web server. Use the library analogy if it helps.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Prove change-tracking is snapshot-based</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Modify <code>main.ts</code> so that after the second <code>findOne</code>, you do <code>book1.title = 'War &amp; Peace (revised)'</code>, then <code>await em.flush()</code> a second time. Confirm: exactly one <code>UPDATE</code> statement is fired, and only the <code>title</code> column appears in its SET clause. Capture the query log and add it to your repo's <code>README.md</code>.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Break it on purpose: shared global EM</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Replace <code>const em = orm.em.fork()</code> with <code>const em = orm.em</code>. Run again. What error do you get, and at which line? Read the error message carefully &mdash; it tells you exactly which config flag would suppress it (and why you'd never want to). Write a one-paragraph note in your repo's <code>README.md</code> explaining what you saw.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 1 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Defining Entities &mdash; Properties, Primary Keys, and the Modeling Toolbox</p>
+    </div>
+
+</div>
+
+</body>
+</html>

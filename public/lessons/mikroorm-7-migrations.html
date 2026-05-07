@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 7</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 7 of 10</div>
+        <h1>MikroORM Course</h1>
+        <div class="subtitle">Migrations, Schema Generation, and Seeding</div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Tell the difference between <code>schema:update</code> (dev) and <code>migration:create</code> (prod) and reach for the right one without thinking</li>
+            <li>Set up the migrations module, run <code>migration:up</code> / <code>migration:down</code>, and read the <code>mikro_orm_migrations</code> bookkeeping table</li>
+            <li>Read a generated migration file: <code>up()</code>, <code>down()</code>, <code>this.addSql</code>, transactions, when to hand-edit</li>
+            <li>Understand <em>why</em> MikroORM compares against a snapshot file rather than the live DB &mdash; and what that buys you in CI</li>
+            <li>Write a <code>Seeder</code> with a <code>Factory</code> + Faker, and seed your <code>archive-api</code> with realistic data on demand</li>
+            <li>Run the production-shaped flow end-to-end: change entity &rarr; <code>migration:create</code> &rarr; review SQL &rarr; <code>migration:up</code> &rarr; commit both files in one PR</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3 style="margin-top: 40px;">Where we are in the course</h3>
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4DA;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L1 &mdash; Intro</div>
+            <div class="layer-desc">Data Mapper, Identity Map, Unit of Work, Records Library analogy.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F9F1;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L2 &mdash; Entities</div>
+            <div class="layer-desc"><code>defineEntity</code>, properties, primary keys, custom types.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L3 &mdash; Relations</div>
+            <div class="layer-desc">M:1, 1:M, M:M, owning vs inverse side, cascades.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F464;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L4 &mdash; EntityManager</div>
+            <div class="layer-desc"><code>find</code>, <code>persist</code>, <code>remove</code>, <code>flush</code>, transactions, forks.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L5 &mdash; Loading</div>
+            <div class="layer-desc">Populate, joined vs select-in, partial loading, N+1 traps.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--gray-700);">L6 &mdash; QB &amp; Filters</div>
+            <div class="layer-desc">QueryBuilder, FilterQuery operators, soft-delete via <code>@Filter</code>, custom Repositories.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3D7;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--blue);">L7 &mdash; Migrations</div>
+            <div class="layer-desc"><strong>Today.</strong> Reorganization plans for the building itself.</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: SCHEMA GENERATION VS MIGRATIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Schema Generation vs Migrations &mdash; Two Different Tools</h2>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before you read on</div>
+        <div class="recall-question">If you change a column type from <code>int</code> to <code>bigint</code> in your entity and let MikroORM auto-generate a migration, will the resulting <code>ALTER TABLE</code> be safe? Or could it cause data loss / a long table-rewrite lock? Take 30 seconds and write your guess.</div>
+        <div class="recall-hint">If your answer is &ldquo;the framework will handle it,&rdquo; you'll have a bad week. The honest answer is &ldquo;sometimes&rdquo; &mdash; and that's exactly why migrations exist as a separate, reviewable step.</div>
+    </div>
+
+    <p>Up to now, every demo started with <code>orm.schema.refreshDatabase()</code>. That nukes the schema and rebuilds it from the entity metadata. Great for tutorials. Catastrophic in production.</p>
+
+    <p>MikroORM gives you two paths to keeping your database schema in sync with your entities. They're not competitors &mdash; they're for two different jobs.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x270F;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--orange);">schema:update</div>
+            <div class="card-subtitle" style="color: var(--orange);">Dev shortcut</div>
+            <div class="card-desc">Compute the diff between entities and live DB, run the <code>ALTER</code>s. Idempotent. Fast. Zero ceremony. Has a <code>--safe</code> mode that won't drop columns. <strong>Never run on prod</strong> &mdash; no audit trail, no rollback, no peer review.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4DC;</div>
+            <div class="card-title" style="color: var(--green);">migration:create</div>
+            <div class="card-subtitle" style="color: var(--green);">Versioned plan</div>
+            <div class="card-desc">Generate a TypeScript file with explicit <code>up()</code> and <code>down()</code> SQL. Commit to git. Reviewed in a PR like any other code. Run with <code>migration:up</code> in CI/prod. Reversible. Diffable. Auditable.</div>
+        </div>
+    </div>
+
+    <div class="story-box">
+        <p>Back in the Records Library: <code>schema:update</code> is the architect walking through the building with a sketch pad, deciding to add a shelf here, move a bookcase there, and immediately telling the maintenance crew to make the changes. Useful when you're prototyping the floor plan in an empty wing.</p>
+        <p><strong>Migrations are the signed reorganization plans.</strong> Every wall change is drawn up, dated, signed by the architect, signed by the head librarian, filed in the building's archive. The construction crew reads only the signed plan &mdash; not the architect's sketch pad. If the new wing causes problems, the archive contains the exact plan that built it, and the rollback plan that takes it back.</p>
+        <div class="tech-note">
+            <strong>Mapping:</strong> Migration = Reorganization Plan, versioned, signed, archived. <code>migration:up</code> = construction crew executing the plan. <code>migration:down</code> = the rollback section of that same plan. <code>mikro_orm_migrations</code> table = the archive ledger of which plans have been applied.
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F525;</div>
+        Junior, 3am Slack message: &ldquo;hey I ran <code>schema:update --run</code> on prod to fix that column real quick.&rdquo;<br>
+        Senior, waking up: &ldquo;You did <em>what</em>?&rdquo;<br>
+        Junior: &ldquo;The diff looked fine in dev.&rdquo;<br>
+        Senior: &ldquo;Dev had three rows. Prod has 40 million. It dropped <code>legacy_status</code> because your branch removed the property. We have a 4-hour <code>ALTER TABLE</code> running, and the column had data we hadn't backfilled yet.&rdquo;<br>
+        Junior: &ldquo;...is that bad?&rdquo;<br>
+        <em>Migrations exist exactly so the dev workflow can't leak into prod. The signed plan would have shown the <code>DROP COLUMN</code> in PR review and someone would have stopped it.</em>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>Hard rule, write it on the wall:</strong> <code>schema:update --run</code> never touches a database that has real users. It's a dev-loop tool. If you find yourself reaching for it on staging or prod, stop &mdash; you want <code>migration:create</code> followed by <code>migration:up</code>.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: SETTING UP THE MIGRATIONS MODULE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Setting Up the Migrations Module</h2>
+
+    <p>Migrations are an opt-in extension. Install the package, register it in the ORM config, and the CLI gets a new family of commands.</p>
+
+    <pre><code><span class="function">npm</span> install @mikro-orm/migrations</code></pre>
+
+    <p>Then in your config:</p>
+
+    <pre><code><span class="comment">// src/mikro-orm.config.ts</span>
+<span class="keyword">import</span> { defineConfig } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Migrator } <span class="keyword">from</span> <span class="string">'@mikro-orm/migrations'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'./entities/Article'</span>;
+<span class="keyword">import</span> { Author }  <span class="keyword">from</span> <span class="string">'./entities/Author'</span>;
+<span class="keyword">import</span> { Tag }     <span class="keyword">from</span> <span class="string">'./entities/Tag'</span>;
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  entities: [Article, Author, Tag],
+  dbName: <span class="string">'archive'</span>,
+  user: <span class="string">'postgres'</span>,
+  password: <span class="string">'postgres'</span>,
+  host: <span class="string">'localhost'</span>,
+  port: <span class="string">5432</span>,
+  debug: <span class="keyword">true</span>,
+  extensions: [Migrator],
+  migrations: {
+    path: <span class="string">'./migrations'</span>,
+    pathTs: <span class="string">'./migrations'</span>, <span class="comment">// dev: run TS source via tsx</span>
+    emit: <span class="string">'ts'</span>,                <span class="comment">// generated files are TypeScript</span>
+    snapshot: <span class="keyword">true</span>,            <span class="comment">// keep the .snapshot file under version control</span>
+  },
+});</code></pre>
+
+    <h3>The CLI command alphabet</h3>
+
+    <table>
+        <tr>
+            <th>Command</th>
+            <th>What it does</th>
+        </tr>
+        <tr>
+            <td><code>migration:create</code></td>
+            <td>Diff entities against the snapshot, emit a new migration file with the SQL needed to bring the schema into line.</td>
+        </tr>
+        <tr>
+            <td><code>migration:create --initial</code></td>
+            <td>First migration ever. Dumps the full <code>schema:create</code> SQL, marks itself as already applied.</td>
+        </tr>
+        <tr>
+            <td><code>migration:create --blank</code></td>
+            <td>Empty migration. For data migrations or hand-written SQL.</td>
+        </tr>
+        <tr>
+            <td><code>migration:up</code></td>
+            <td>Apply all pending migrations in order. Each runs in its own transaction; the whole batch wraps in a master transaction.</td>
+        </tr>
+        <tr>
+            <td><code>migration:down</code></td>
+            <td>Roll back the most recent migration (or down to a specific version).</td>
+        </tr>
+        <tr>
+            <td><code>migration:list</code></td>
+            <td>Show what's been applied. Reads from <code>mikro_orm_migrations</code>.</td>
+        </tr>
+        <tr>
+            <td><code>migration:pending</code></td>
+            <td>Show what's been generated but not yet applied. Useful in CI as a guard.</td>
+        </tr>
+        <tr>
+            <td><code>migration:check</code></td>
+            <td>Exit code 0 if schema matches entities, non-zero otherwise. Drop into CI to fail PRs that change entities without adding a migration.</td>
+        </tr>
+        <tr>
+            <td><code>migration:fresh</code></td>
+            <td>Drop everything and re-apply from scratch. Test environments only.</td>
+        </tr>
+    </table>
+
+    <h3>The bookkeeping table</h3>
+
+    <p>The first time you run <code>migration:up</code>, MikroORM creates a table called <code>mikro_orm_migrations</code>. It tracks which migrations have been applied:</p>
+
+    <pre><code><span class="comment">-- approximate shape</span>
+<span class="keyword">CREATE TABLE</span> <span class="string">mikro_orm_migrations</span> (
+  id         <span class="type">serial</span>      <span class="keyword">PRIMARY KEY</span>,
+  name       <span class="type">varchar</span>     <span class="keyword">NOT NULL</span>,
+  executed_at <span class="type">timestamptz</span> <span class="keyword">NOT NULL DEFAULT</span> <span class="function">now</span>()
+);</code></pre>
+
+    <p>Every time <code>migration:up</code> runs a file, it inserts a row. Every time <code>migration:down</code> runs, it deletes the row. The table is the source of truth for &ldquo;has this migration run on this database?&rdquo; &mdash; not the file system.</p>
+
+    <div class="info-box blue">
+        <p><strong>Configurable name.</strong> Change <code>migrations.tableName</code> in the config if you want it called something else (some teams prefix with <code>_</code> to hide it from app queries). The default is fine for most projects.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: ANATOMY OF A MIGRATION FILE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Anatomy of a Migration File</h2>
+
+    <p>Every migration is a TypeScript class extending <code>Migration</code>, with two methods: <code>up()</code> for applying, <code>down()</code> for rolling back. Here's a real generated file from <code>archive-api</code> after we add a <code>slug</code> property to <code>Book</code>:</p>
+
+    <pre><code><span class="comment">// migrations/Migration20260507142301_add_slug_to_book.ts</span>
+<span class="keyword">import</span> { Migration } <span class="keyword">from</span> <span class="string">'@mikro-orm/migrations'</span>;
+
+<span class="keyword">export class</span> Migration20260507142301_add_slug_to_book <span class="keyword">extends</span> Migration {
+
+  <span class="keyword">override async</span> <span class="function">up</span>(): <span class="type">Promise</span>&lt;<span class="keyword">void</span>&gt; {
+    <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" add column "slug" varchar(255) null;`</span>);
+    <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`update "book" set "slug" = lower(regexp_replace("title", '[^a-zA-Z0-9]+', '-', 'g'));`</span>);
+    <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" alter column "slug" set not null;`</span>);
+    <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" add constraint "book_slug_unique" unique ("slug");`</span>);
+  }
+
+  <span class="keyword">override async</span> <span class="function">down</span>(): <span class="type">Promise</span>&lt;<span class="keyword">void</span>&gt; {
+    <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" drop constraint "book_slug_unique";`</span>);
+    <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" drop column "slug";`</span>);
+  }
+
+}</code></pre>
+
+    <p>Three things to notice:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DC;</div>
+            <div class="layer-name" style="color: var(--blue);">addSql is queued</div>
+            <div class="layer-desc">Each <code>this.addSql(&hellip;)</code> appends to a list. The migrator runs the whole list in one transaction. They aren't fired one-by-one as you call them.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--purple);">down() is real, not a comment</div>
+            <div class="layer-desc">If you don't write <code>down()</code>, the default implementation throws. That's intentional &mdash; an unrollback-able prod migration is a foot-gun. Take 30 seconds at PR time to read it.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--green);">Implicit transaction</div>
+            <div class="layer-desc">Each migration runs in its own transaction by default (<code>transactional: true</code>). The whole batch wraps in a master transaction (<code>allOrNothing: true</code>). One failure = clean rollback.</div>
+        </div>
+    </div>
+
+    <h3>When to hand-edit a generated migration</h3>
+
+    <p>Generated migrations are correct for schema changes. They are <em>not always correct</em> for the data implications of those changes. Three cases where you need to edit before merging:</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Adding a non-null column to a populated table</span>
+        <div class="step-desc">The auto-generated SQL will be <code>add column "slug" varchar not null</code> &mdash; which fails on row 1 because existing rows have no <code>slug</code>. You must edit it to: add nullable, backfill via <code>UPDATE</code>, then alter to <code>SET NOT NULL</code>. The example above shows exactly this pattern.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Renaming a column</span>
+        <div class="step-desc">MikroORM diffing sees a removed column and a new column. The auto migration will <em>drop the old one and create the new one</em> &mdash; losing all data. You need to manually replace it with <code>ALTER TABLE &hellip; RENAME COLUMN</code>.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Type changes that need a cast</span>
+        <div class="step-desc">Going from <code>varchar</code> to <code>integer</code>? Postgres won't auto-cast. The generated SQL needs a <code>USING column_name::integer</code> clause appended.</div>
+    </div>
+
+    <h3>Helpers on the Migration class</h3>
+
+    <pre><code><span class="keyword">export class</span> MyMigration <span class="keyword">extends</span> Migration {
+  <span class="keyword">override async</span> <span class="function">up</span>() {
+    <span class="comment">// queue SQL &mdash; runs in this migration's transaction</span>
+    <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "article" add column "view_count" int default 0;`</span>);
+
+    <span class="comment">// execute SQL inline &mdash; runs immediately, useful for control flow</span>
+    <span class="keyword">await this</span>.<span class="function">execute</span>(<span class="string">`select count(*) from "article"`</span>);
+
+    <span class="comment">// access the EM if you really need to (discouraged &mdash; see warning)</span>
+    <span class="keyword">const</span> em = <span class="keyword">this</span>.<span class="function">getEntityManager</span>();
+  }
+
+  <span class="comment">// override to skip the per-migration transaction (rare)</span>
+  <span class="keyword">override</span> <span class="function">isTransactional</span>(): <span class="type">boolean</span> { <span class="keyword">return false</span>; }
+}</code></pre>
+
+    <div class="info-box orange">
+        <p><strong>Don't use entity classes inside migration files.</strong> Migration <code>20240301</code> imports the <code>User</code> entity from your codebase. Six months later, the <code>User</code> entity has new fields. The old migration file now references a definition that no longer matches the schema at the time it was written. Your CI tries to re-run it on a fresh DB and explodes. Always use raw SQL via <code>this.addSql</code> &mdash; the SQL is locked at write time, the entity is not.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: SNAPSHOT DIFFING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Snapshot Diffing &mdash; Why MikroORM Looks at a File, Not the Live DB</h2>
+
+    <p>Here's the part that surprises people. When you change an entity and run <code>migration:create</code>, MikroORM does <strong>not</strong> diff against the live database. It diffs against a JSON file checked into your repo &mdash; the snapshot.</p>
+
+    <p>Look in your <code>migrations/</code> folder after the first <code>migration:create</code> and you'll see a file like <code>.snapshot-archive.json</code>. It's a serialized form of the schema as MikroORM understood it the last time you generated a migration. It's meant to be committed.</p>
+
+    <h3>The lifecycle of the snapshot</h3>
+
+    <pre><code><span class="comment">Step 1: you change entity Book &mdash; add `slug`</span>
+<span class="comment">Step 2: you run `npx mikro-orm migration:create --name=add_slug`</span>
+
+  &darr; MikroORM reads `.snapshot-archive.json` (the previous schema)
+  &darr; computes the diff against your current entity metadata
+  &darr; emits `Migration20260507142301_add_slug.ts` with the up/down SQL
+  &darr; rewrites `.snapshot-archive.json` to reflect the NEW schema
+
+<span class="comment">Step 3: you commit BOTH files in the same PR.</span>
+<span class="comment">Step 4: CI runs `migration:up` against staging.</span>
+
+  &darr; Migrator reads <span class="string">mikro_orm_migrations</span> table
+  &darr; sees `Migration20260507142301_add_slug` is not there yet
+  &darr; runs the SQL inside this.addSql(...) calls
+  &darr; inserts a row into mikro_orm_migrations</code></pre>
+
+    <h3>Why the indirection?</h3>
+
+    <div class="story-box">
+        <p>Imagine the architect of the Records Library is asked &ldquo;what does the building look like right now?&rdquo; She has two ways to answer:</p>
+        <p><strong>(a)</strong> Walk through every wing, measure every wall. Today's answer depends on what the cleaning crew rearranged overnight, what construction is half-finished in wing C, what shelves a librarian moved without filing paperwork.</p>
+        <p><strong>(b)</strong> Read the master blueprint in the archive. The blueprint is the canonical answer. If the building has drifted from the blueprint, that drift is itself a bug to fix &mdash; but the blueprint is what the next reorganization plan diffs against.</p>
+        <p>MikroORM picks (b). The snapshot file is the master blueprint. Every developer's CI box, staging server, prod replica sees the same blueprint, computes the same diff, gets the same migration. Even if their local databases are in slightly different states.</p>
+    </div>
+
+    <p>Concretely: this matters because of CI determinism. If MikroORM diffed the live DB, then:</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li>Two developers running <code>migration:create</code> on different local DBs would generate different migrations.</li>
+        <li>A developer with old data still around would see &ldquo;phantom&rdquo; columns in the diff.</li>
+        <li>CI would refuse to generate a stable migration because its DB is fresh, while staging's isn't.</li>
+        <li>You'd never get to a state where the same entity change produces the same migration file.</li>
+    </ul>
+
+    <p>The snapshot decouples migration generation from any specific database state. The migration file is the artifact; the snapshot is its compile-time input. Together they're enough to reproduce the schema on any database, anywhere.</p>
+
+    <div class="info-box blue">
+        <p><strong>The PR convention that makes this work:</strong> when you change an entity, your PR contains three files: (1) the entity change, (2) the new <code>MigrationXXXX.ts</code> file, (3) the updated <code>.snapshot-*.json</code> file. Reviewers check all three. CI verifies <code>migration:check</code> passes. If only (1) is in the PR, CI fails.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: SEEDERS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Seeders &mdash; Bootstrapping the Catalog</h2>
+
+    <p>Migrations change the building. Seeders fill it with books. Different jobs, different lifecycles, different audiences.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F3D7;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--blue);">Migrations</div>
+            <div class="card-subtitle" style="color: var(--blue);">Schema (DDL)</div>
+            <div class="card-desc">Tables, columns, indexes, foreign keys, constraints. Run once per database, in version order. Auditable, reversible. Run in prod.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F33E;</div>
+            <div class="card-title" style="color: var(--green);">Seeders</div>
+            <div class="card-subtitle" style="color: var(--green);">Data (DML)</div>
+            <div class="card-desc">Inserts of rows you want pre-populated: dev fixtures, demo accounts, default tag set, initial admin user. Re-runnable in dev/test. Rarely run in prod.</div>
+        </div>
+    </div>
+
+    <p>The package is <code>@mikro-orm/seeder</code>, plus <code>@faker-js/faker</code> for generating realistic fake data. Install both, register the extension:</p>
+
+    <pre><code><span class="function">npm</span> install @mikro-orm/seeder @faker-js/faker</code></pre>
+
+    <pre><code><span class="comment">// mikro-orm.config.ts (additions)</span>
+<span class="keyword">import</span> { SeedManager } <span class="keyword">from</span> <span class="string">'@mikro-orm/seeder'</span>;
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  <span class="comment">// &hellip; existing config</span>
+  extensions: [Migrator, SeedManager],
+  seeder: {
+    path: <span class="string">'./seeders'</span>,
+    pathTs: <span class="string">'./seeders'</span>,
+    defaultSeeder: <span class="string">'DatabaseSeeder'</span>,
+    emit: <span class="string">'ts'</span>,
+  },
+});</code></pre>
+
+    <h3>The Seeder class</h3>
+
+    <p>A seeder is a class with one method: <code>run(em)</code>. Inside it, use the EntityManager you already know &mdash; <code>em.create</code>, <code>em.flush</code>. The seed manager runs each seeder in a forked EM and flushes automatically when <code>run</code> resolves.</p>
+
+    <pre><code><span class="comment">// seeders/ArticleSeeder.ts</span>
+<span class="keyword">import</span> { EntityManager } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Seeder } <span class="keyword">from</span> <span class="string">'@mikro-orm/seeder'</span>;
+<span class="keyword">import</span> { faker } <span class="keyword">from</span> <span class="string">'@faker-js/faker'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'../src/entities/Article'</span>;
+<span class="keyword">import</span> { Tag } <span class="keyword">from</span> <span class="string">'../src/entities/Tag'</span>;
+
+<span class="keyword">export class</span> ArticleSeeder <span class="keyword">extends</span> Seeder {
+  <span class="keyword">async</span> <span class="function">run</span>(em: EntityManager): <span class="type">Promise</span>&lt;<span class="keyword">void</span>&gt; {
+    <span class="comment">// build a small tag pool</span>
+    <span class="keyword">const</span> tagNames = [<span class="string">'fiction'</span>, <span class="string">'history'</span>, <span class="string">'science'</span>, <span class="string">'philosophy'</span>, <span class="string">'biography'</span>];
+    <span class="keyword">const</span> tags = tagNames.<span class="function">map</span>(name <span class="keyword">=&gt;</span> em.<span class="function">create</span>(Tag, { name }));
+
+    <span class="comment">// 50 fake articles, each with 1–3 random tags</span>
+    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="string">0</span>; i &lt; <span class="string">50</span>; i++) {
+      <span class="keyword">const</span> picked = faker.helpers.<span class="function">arrayElements</span>(tags, { min: <span class="string">1</span>, max: <span class="string">3</span> });
+      em.<span class="function">create</span>(Article, {
+        title: faker.lorem.<span class="function">sentence</span>(<span class="string">5</span>),
+        slug: faker.lorem.<span class="function">slug</span>(),
+        viewCount: faker.number.<span class="function">int</span>({ min: <span class="string">0</span>, max: <span class="string">10000</span> }),
+        publishedAt: faker.date.<span class="function">past</span>({ years: <span class="string">2</span> }),
+        tags: picked,
+      });
+    }
+    <span class="comment">// SeedManager flushes automatically when run() resolves</span>
+  }
+}</code></pre>
+
+    <h3>The DatabaseSeeder &mdash; one entry point</h3>
+
+    <p>Convention: <code>DatabaseSeeder</code> is the orchestrator. It calls all the others. <code>npx mikro-orm seeder:run</code> runs <code>DatabaseSeeder</code> by default.</p>
+
+    <pre><code><span class="comment">// seeders/DatabaseSeeder.ts</span>
+<span class="keyword">import</span> { EntityManager } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Seeder } <span class="keyword">from</span> <span class="string">'@mikro-orm/seeder'</span>;
+<span class="keyword">import</span> { ArticleSeeder } <span class="keyword">from</span> <span class="string">'./ArticleSeeder'</span>;
+
+<span class="keyword">export class</span> DatabaseSeeder <span class="keyword">extends</span> Seeder {
+  <span class="function">run</span>(em: EntityManager): <span class="type">Promise</span>&lt;<span class="keyword">void</span>&gt; {
+    <span class="keyword">return this</span>.<span class="function">call</span>(em, [ArticleSeeder]);
+  }
+}</code></pre>
+
+    <h3>Factories &mdash; reusable fake-data builders</h3>
+
+    <p>For repeated entity shapes, a <code>Factory</code> is cleaner than inline <code>faker</code> calls:</p>
+
+    <pre><code><span class="comment">// seeders/ArticleFactory.ts</span>
+<span class="keyword">import</span> { Factory } <span class="keyword">from</span> <span class="string">'@mikro-orm/seeder'</span>;
+<span class="keyword">import</span> { faker } <span class="keyword">from</span> <span class="string">'@faker-js/faker'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'../src/entities/Article'</span>;
+
+<span class="keyword">export class</span> ArticleFactory <span class="keyword">extends</span> Factory&lt;<span class="keyword">typeof</span> Article&gt; {
+  model = Article;
+
+  <span class="function">definition</span>() {
+    <span class="keyword">return</span> {
+      title: faker.lorem.<span class="function">sentence</span>(<span class="string">5</span>),
+      slug: faker.lorem.<span class="function">slug</span>(),
+      viewCount: faker.number.<span class="function">int</span>({ min: <span class="string">0</span>, max: <span class="string">10000</span> }),
+      publishedAt: faker.date.<span class="function">past</span>(),
+    };
+  }
+}
+
+<span class="comment">// then in a seeder:</span>
+<span class="keyword">new</span> <span class="function">ArticleFactory</span>(em).<span class="function">make</span>(<span class="string">100</span>); <span class="comment">// 100 articles, persisted</span></code></pre>
+
+    <h3>Running seeders</h3>
+
+    <pre><code><span class="comment"># run the default seeder</span>
+<span class="function">npx</span> mikro-orm seeder:run
+
+<span class="comment"># pick a specific one</span>
+<span class="function">npx</span> mikro-orm seeder:run --class=ArticleSeeder
+
+<span class="comment"># common dev workflow: drop, re-migrate, re-seed</span>
+<span class="function">npx</span> mikro-orm migration:fresh --seed</code></pre>
+
+    <div class="info-box green">
+        <p><strong>Use the same machinery in tests.</strong> Inside Vitest/Jest, call <code>orm.seeder.seed(DatabaseSeeder)</code> after <code>orm.schema.refresh()</code> in a <code>beforeAll</code> hook. Every test starts with a known dataset, no fixtures by hand.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: HANDS-ON FLOW -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Hands-On &mdash; The Production-Shaped Migration Flow</h2>
+
+    <p>Time to run the whole loop end-to-end on <code>archive-api</code>. By the end of this section you'll have committed an initial migration, generated a diff migration for a real entity change, rolled it back, rolled it forward, and seeded 20 articles.</p>
+
+    <h3>Step 1 &mdash; the initial migration</h3>
+
+    <p>This is a one-time bootstrap. Your repo currently has entities but no migrations folder. The initial migration captures the current schema as the starting point.</p>
+
+    <pre><code><span class="function">npx</span> mikro-orm migration:create --initial</code></pre>
+
+    <p>This creates two files: <code>migrations/Migration2026&hellip;_initial.ts</code> with all the <code>create table</code> statements your entities imply, and <code>migrations/.snapshot-archive.json</code> with the schema dump. Both go in your PR.</p>
+
+    <p>The migrator marks the initial migration as already applied if it created the schema, so a fresh checkout running <code>migration:up</code> on an existing DB won't try to <code>CREATE TABLE</code> again. Read the file before committing &mdash; you should recognize every <code>CREATE TABLE</code> from your entity definitions.</p>
+
+    <h3>Step 2 &mdash; make a real entity change</h3>
+
+    <p>Add a <code>slug</code> property to <code>Book</code>. We did this conceptually in Part 3; now do it for real.</p>
+
+    <pre><code><span class="comment">// src/entities/Book.ts</span>
+<span class="keyword">export const</span> Book = <span class="function">defineEntity</span>({
+  name: <span class="string">'Book'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    slug: p.<span class="function">string</span>().<span class="function">unique</span>(), <span class="comment">// &lt;-- new</span>
+    author: p.<span class="function">string</span>(),
+    publishedYear: p.<span class="function">integer</span>().<span class="function">nullable</span>(),
+    createdAt: p.<span class="function">datetime</span>().<span class="function">onCreate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>()),
+  },
+});</code></pre>
+
+    <h3>Step 3 &mdash; generate the diff</h3>
+
+    <pre><code><span class="function">npx</span> mikro-orm migration:create --name=add_slug_to_book</code></pre>
+
+    <p>Open the generated file. The auto-generated <code>up()</code> will look something like:</p>
+
+    <pre><code><span class="keyword">override async</span> <span class="function">up</span>(): <span class="type">Promise</span>&lt;<span class="keyword">void</span>&gt; {
+  <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" add column "slug" varchar(255) not null;`</span>);
+  <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" add constraint "book_slug_unique" unique ("slug");`</span>);
+}</code></pre>
+
+    <div class="info-box red">
+        <p><strong>Stop. This will fail on a populated table.</strong> The generated SQL adds <code>not null</code> immediately, but existing rows have no slug. On a fresh DB it works; on prod with rows it explodes. This is exactly the case Part 3 warned about. Before merging, edit it to backfill safely:</p>
+    </div>
+
+    <pre><code><span class="keyword">override async</span> <span class="function">up</span>(): <span class="type">Promise</span>&lt;<span class="keyword">void</span>&gt; {
+  <span class="comment">// 1. add nullable</span>
+  <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" add column "slug" varchar(255);`</span>);
+  <span class="comment">// 2. backfill from title</span>
+  <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`update "book" set "slug" = lower(regexp_replace("title", '[^a-zA-Z0-9]+', '-', 'g'));`</span>);
+  <span class="comment">// 3. now safe to enforce</span>
+  <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" alter column "slug" set not null;`</span>);
+  <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" add constraint "book_slug_unique" unique ("slug");`</span>);
+}
+
+<span class="keyword">override async</span> <span class="function">down</span>(): <span class="type">Promise</span>&lt;<span class="keyword">void</span>&gt; {
+  <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" drop constraint "book_slug_unique";`</span>);
+  <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" drop column "slug";`</span>);
+}</code></pre>
+
+    <h3>Step 4 &mdash; apply, roll back, roll forward</h3>
+
+    <pre><code><span class="comment"># apply</span>
+<span class="function">npx</span> mikro-orm migration:up
+
+<span class="comment"># confirm</span>
+<span class="function">npx</span> mikro-orm migration:list
+
+<span class="comment"># roll back the last migration</span>
+<span class="function">npx</span> mikro-orm migration:down
+
+<span class="comment"># confirm slug is gone</span>
+psql archive -c <span class="string">'\d book'</span>
+
+<span class="comment"># roll forward again</span>
+<span class="function">npx</span> mikro-orm migration:up</code></pre>
+
+    <h3>Step 5 &mdash; the seeder</h3>
+
+    <p>Drop in <code>seeders/ArticleSeeder.ts</code> from Part 5, lower the count to 20 for this exercise:</p>
+
+    <pre><code><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="string">0</span>; i &lt; <span class="string">20</span>; i++) { <span class="comment">/* &hellip; */</span> }</code></pre>
+
+    <p>And the <code>DatabaseSeeder</code>. Then:</p>
+
+    <pre><code><span class="comment"># start fresh: drop everything, re-run all migrations, then seed</span>
+<span class="function">npx</span> mikro-orm migration:fresh --seed
+
+<span class="comment"># or seed against the current DB without dropping</span>
+<span class="function">npx</span> mikro-orm seeder:run</code></pre>
+
+    <p>Connect with <code>psql archive</code> and check: <code>select count(*) from article</code> &mdash; you should have 20 rows. Each with a fake-but-plausible title, slug, view count, and 1&ndash;3 tags.</p>
+
+    <div class="info-box green">
+        <p><strong>You now have the full prod-shaped loop.</strong> Entity change &rarr; <code>migration:create</code> &rarr; review the generated SQL &rarr; hand-edit if data implications need it &rarr; commit migration + snapshot + entity change in one PR &rarr; CI runs <code>migration:check</code> &rarr; staging runs <code>migration:up</code> &rarr; prod runs <code>migration:up</code>. Same files, same SQL, deterministic.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: SVG DIAGRAM -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: The Migration Lifecycle, End to End</h2>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 580" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="580" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">From Entity Change to Production Database</text>
+
+            <defs>
+                <marker id="arr7" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+                <marker id="arr7Green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+                <marker id="arr7Blue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#3451B2"/>
+                </marker>
+            </defs>
+
+            <!-- Step 1: entity change -->
+            <rect x="30" y="50" width="700" height="56" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="55" y="74" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">1. Developer changes entity</text>
+            <text x="55" y="92" font-family="JetBrains Mono" font-size="12" fill="#6B7280">edit src/entities/Book.ts &mdash; add `slug: p.string().unique()`</text>
+            <line x1="380" y1="106" x2="380" y2="126" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr7)"/>
+
+            <!-- Step 2: migration:create -->
+            <rect x="30" y="130" width="700" height="56" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="55" y="154" font-family="Inter" font-weight="600" font-size="13" fill="#3451B2">2. Run `migration:create --name=add_slug`</text>
+            <text x="55" y="172" font-family="Inter" font-size="12" fill="#6B7280">Diff entity vs `.snapshot-archive.json` &rarr; emit MigrationXXXX.ts &rarr; rewrite snapshot</text>
+            <line x1="380" y1="186" x2="380" y2="206" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr7)"/>
+
+            <!-- Step 3: review -->
+            <rect x="30" y="210" width="700" height="56" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="55" y="234" font-family="Inter" font-weight="600" font-size="13" fill="#E8790C">3. Read the generated SQL</text>
+            <text x="55" y="252" font-family="Inter" font-size="12" fill="#6B7280">Hand-edit if needed (backfills, renames, type casts). Verify down() is real.</text>
+            <line x1="380" y1="266" x2="380" y2="286" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr7)"/>
+
+            <!-- Step 4: PR -->
+            <rect x="30" y="290" width="700" height="56" rx="8" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="55" y="314" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">4. Commit + open PR &mdash; three files together</text>
+            <text x="55" y="332" font-family="JetBrains Mono" font-size="12" fill="#6B7280">src/entities/Book.ts &nbsp;&middot;&nbsp; migrations/Migration&hellip;ts &nbsp;&middot;&nbsp; migrations/.snapshot-archive.json</text>
+            <line x1="380" y1="346" x2="380" y2="366" stroke="#3451B2" stroke-width="2" marker-end="url(#arr7Blue)"/>
+
+            <!-- Step 5: CI -->
+            <rect x="30" y="370" width="700" height="56" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="55" y="394" font-family="Inter" font-weight="600" font-size="13" fill="#3451B2">5. CI: `migration:check` + tests against fresh DB</text>
+            <text x="55" y="412" font-family="Inter" font-size="12" fill="#6B7280">If schema and entities drift, fail. If tests against migrated schema fail, fail.</text>
+            <line x1="380" y1="426" x2="380" y2="446" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arr7Green)"/>
+
+            <!-- Step 6: staging migration:up -->
+            <rect x="30" y="450" width="700" height="56" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="55" y="474" font-family="Inter" font-weight="600" font-size="13" fill="#1A8F5C">6. Deploy &rarr; `migration:up` runs against staging, then prod</text>
+            <text x="55" y="492" font-family="Inter" font-size="12" fill="#6B7280">Migrator reads `mikro_orm_migrations`, runs only what's not there yet, inserts a new row.</text>
+            <line x1="380" y1="506" x2="380" y2="526" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arr7Green)"/>
+
+            <!-- Final state -->
+            <rect x="200" y="530" width="360" height="40" rx="8" fill="#1A8F5C"/>
+            <text x="380" y="554" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="white">Schema in sync everywhere. Audit trail in archive.</text>
+        </svg>
+        <div class="diagram-caption">Six steps. One PR. Same SQL on every database. The bookkeeping table is the source of truth for &ldquo;has this run?&rdquo;</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SELF-TEST -->
+    <!-- ============================================ -->
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up, answer:<br><br>
+        1. Why does <code>migration:create</code> read a snapshot file rather than diffing against the live database? Give one concrete CI scenario the snapshot prevents.<br>
+        2. When should seeders run vs migrations? Which one is for schema, which for data?<br>
+        3. Why should <code>down()</code> be reviewed at PR time, not written-and-forgotten? Give a real scenario.<br>
+        4. You add a non-null column to a table with 5 million rows. The auto-generated migration is one line: <code>add column &hellip; not null</code>. What's wrong, and what do you change?</div>
+        <div class="recall-hint">4/4: ready for the capstone lessons. 2-3/4: re-skim Parts 3 and 4. 0-1/4: do the hands-on first &mdash; the concepts click much faster after running <code>migration:up</code> and <code>migration:down</code> once.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x270F;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">schema:update is dev-only</div>
+            <div class="layer-desc">Sketch pad. Idempotent. Fast. Never hits a database with real users.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F3D7;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">migrations are signed plans</div>
+            <div class="layer-desc">Versioned, reviewable, reversible. <code>up()</code>, <code>down()</code>, <code>this.addSql</code>, transactions. Run via <code>migration:up</code>; tracked in <code>mikro_orm_migrations</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4F8;</div>
+            <div class="layer-name" style="color: var(--purple);">snapshots make CI deterministic</div>
+            <div class="layer-desc">Diffing happens against a JSON file in your repo, not the live DB. Same entity change &rarr; same migration on every developer's machine, every CI run, every staging server.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F33E;</div>
+            <div class="layer-name" style="color: var(--blue);">seeders fill the catalog</div>
+            <div class="layer-desc"><code>Seeder</code> classes, optional <code>Factory</code> + Faker, dev/test fixtures or default prod data. Different lifecycle from migrations &mdash; re-runnable, not versioned.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x26A0;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--red);">hand-edit when the data implies it</div>
+            <div class="layer-desc">Non-null adds, renames, type casts &mdash; the framework can't know you have 40M rows. Three-step backfill is the safe pattern.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 8:</strong> Hooks, subscribers, and event-driven side effects. The &ldquo;standing procedures&rdquo; from the Library analogy &mdash; rules that fire automatically before/after entity lifecycle moments. Audit logs, denormalized counters, search-index updates, the works.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Generate the initial migration for <code>archive-api</code></strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Install <code>@mikro-orm/migrations</code>, register the <code>Migrator</code> extension, set up <code>migrations/</code>.</li>
+                    <li>Run <code>npx mikro-orm migration:create --initial</code>.</li>
+                    <li>Open a PR on <code>mikroorm-course-yourname</code> with the new migration file <em>and</em> the <code>.snapshot-*.json</code> file. Submit the PR URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Add <code>slug</code> to <code>Book</code> &mdash; screenshot the generated SQL</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add <code>slug: p.string().unique()</code> to <code>Book</code>.</li>
+                    <li>Run <code>npx mikro-orm migration:create --name=add_slug_to_book</code>.</li>
+                    <li>Take a screenshot of the generated <code>up()</code> method.</li>
+                    <li>Submit the screenshot.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why a snapshot file? &mdash; elaborative interrogation</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 5&ndash;7 sentences: <em>why</em> does MikroORM keep a separate <code>.snapshot-*.json</code> file rather than diffing against the live database directly? Reference team workflows (multiple developers running <code>migration:create</code>) and CI determinism (the same entity change must produce the same migration on every machine). Use the Library analogy if it helps.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Faker-powered <code>ArticleSeeder</code> with relations</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Install <code>@mikro-orm/seeder</code> and <code>@faker-js/faker</code>. Write an <code>ArticleSeeder</code> that uses a <code>Factory</code> to generate 100 articles with realistic titles and slugs, each with 1&ndash;3 randomly chosen tags from a pool of 5 (fiction, history, science, philosophy, biography). Wire it into <code>DatabaseSeeder</code>. Confirm <code>npx mikro-orm migration:fresh --seed</code> produces 100 articles in a clean DB. Add the seeder file to your repo.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Hand-edit a backfill migration</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add a <code>readingTimeMinutes</code> non-null integer column to <code>Article</code>, default 0 in dev but in your migration <em>compute it</em> from the existing data: estimate as <code>greatest(1, length(title) / 5)</code>. Keep all three artifacts side by side in your repo's <code>README.md</code>: (a) the entity diff, (b) the auto-generated migration MikroORM produced, (c) your hand-edited version with the backfill <code>UPDATE</code>. In 2&ndash;3 sentences explain why the auto version would have failed against a populated table.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 7 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Hooks, Subscribers, and Event-Driven Side Effects</p>
+    </div>
+
+</div>
+
+</body>
+</html>

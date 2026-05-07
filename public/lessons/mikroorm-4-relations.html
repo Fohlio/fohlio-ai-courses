@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 4</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 4 of 10</div>
+        <h1>Relationships</h1>
+        <div class="subtitle">Owning Sides, Inverse Sides, and Collections</div>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h2 class="part-header">Where We Are</h2>
+
+    <p>Four lessons in. Before we open the next door, a quick reorientation &mdash; the patterns from earlier lessons are about to do real work.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4DA;</div>
+            <div class="card-title" style="color: var(--blue);">Lesson 1</div>
+            <div class="card-subtitle" style="color: var(--blue);">Three patterns + analogy</div>
+            <div class="card-desc">Data Mapper, Identity Map, Unit of Work. Records Library: Head Librarian = EntityManager, Master Catalog = Identity Map, Working Ledger = Unit of Work.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4D0;</div>
+            <div class="card-title" style="color: var(--green);">Lesson 2</div>
+            <div class="card-subtitle" style="color: var(--green);">Entity definitions</div>
+            <div class="card-desc"><code>defineEntity</code>, primary keys, property types, naming strategy. The shape of a row, but no persistence methods on the entity itself.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F464;</div>
+            <div class="card-title" style="color: var(--orange);">Lesson 3</div>
+            <div class="card-subtitle" style="color: var(--orange);">EM, Identity Map, FilterQuery</div>
+            <div class="card-desc"><code>em.find</code>, <code>em.persist</code>, <code>em.flush</code>, the request-scoped fork, and the <code>FilterQuery</code> object that turns into WHERE clauses.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F517;</div>
+            <div class="card-title" style="color: var(--purple);">Lesson 4 (today)</div>
+            <div class="card-subtitle" style="color: var(--purple);">Relationships</div>
+            <div class="card-desc">1:1, 1:M, M:1, M:M. Owning vs inverse sides. Collections. Cascading. The wiring that turns a flat schema into a graph.</div>
+        </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Identify the four relationship cardinalities &mdash; 1:1, 1:M, M:1, M:M &mdash; and which side owns the foreign key</li>
+            <li>Define every relation type with <code>defineEntity</code> and <code>p.manyToOne / p.oneToMany / p.manyToMany / p.oneToOne</code></li>
+            <li>Read and write <code>Collection&lt;T&gt;</code> safely, knowing when it's initialized and when it's not</li>
+            <li>Configure cascade persist, cascade remove, and orphan removal &mdash; and predict their SQL effects</li>
+            <li>Extend <code>archive-api</code> with <code>Author</code> and <code>Tag</code> and persist a complete object graph in one flush</li>
+        </ul>
+    </div>
+
+    <p>The opening hook: any non-trivial domain has cross-references. <code>Order</code> has <code>OrderItem</code>s, <code>Customer</code> has <code>Address</code>es, <code>Book</code> has an <code>Author</code> and a pile of <code>Tag</code>s. Mis-modeling those references is the #1 source of confusing N+1 query bugs and FK-violation surprises in production. This lesson gets that right.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: THE FOUR CARDINALITIES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Four Relationship Cardinalities</h2>
+
+    <p>There are exactly four shapes a relationship can take. Memorize them &mdash; every relational schema you'll ever model is some combination.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F465;</div>
+            <div class="card-title" style="color: var(--blue);">1:1</div>
+            <div class="card-subtitle" style="color: var(--blue);">User &harr; Profile</div>
+            <div class="card-desc">Each user has at most one profile, each profile belongs to exactly one user. FK lives on one side (usually <code>profile.user_id</code>) with a <code>UNIQUE</code> constraint.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4DA;</div>
+            <div class="card-title" style="color: var(--green);">1:M / M:1</div>
+            <div class="card-subtitle" style="color: var(--green);">Author &harr; Book</div>
+            <div class="card-desc">An author has many books; a book has one author. The FK <code>book.author_id</code> lives on the M:1 side (Book). Author's <code>books</code> is a virtual collection &mdash; no FK column on the author table.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F3F7;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--orange);">M:M</div>
+            <div class="card-subtitle" style="color: var(--orange);">Book &harr; Tag</div>
+            <div class="card-desc">A book has many tags; a tag belongs to many books. Neither table holds the FK &mdash; a third <strong>pivot table</strong> (<code>book_tags</code>) holds two FKs, one to each side.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F501;</div>
+            <div class="card-title" style="color: var(--purple);">Self-ref</div>
+            <div class="card-subtitle" style="color: var(--purple);">Article &harr; Article</div>
+            <div class="card-desc">Same entity on both sides &mdash; e.g. an article that replies to another article. FK column points back into the same table (<code>article.parent_article_id</code>).</div>
+        </div>
+    </div>
+
+    <h3>Owning side and inverse side &mdash; the single most important rule</h3>
+
+    <p>Every bidirectional relation has two sides. Exactly one is the <strong>owning side</strong>: it holds the foreign key in the database. The other is the <strong>inverse side</strong>: it doesn't store anything new, it just mirrors the relation back so you can navigate from the other direction.</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li><strong>M:1</strong> is always the owning side &mdash; the &ldquo;many&rdquo; row holds the FK to the &ldquo;one&rdquo;.</li>
+        <li><strong>1:M</strong> is always the inverse side &mdash; declared with <code>mappedBy</code> pointing at the M:1 property.</li>
+        <li><strong>1:1</strong> &mdash; you choose. The side marked with <code>owner: true</code> (or the one without <code>mappedBy</code>) gets the FK column.</li>
+        <li><strong>M:M</strong> &mdash; you choose, but only one side may own. The owning side controls the pivot table.</li>
+    </ul>
+
+    <div class="story-box">
+        <p>Back to the Records Library. A volume might be cross-referenced from many catalog cards &mdash; a history monograph cited in three philosophy bibliographies, four religion essays, and one cookbook. But only <em>one</em> side of each cross-reference actually stamps the call number into the catalog. The other side just lists the back-references for convenience.</p>
+        <p>If both sides tried to stamp the call number independently, you'd have two sources of truth that could disagree. The library decided long ago: every cross-reference has one canonical author, one inscription. That's the owning side. The other end of the line is the inverse &mdash; it lists the relationship for browsing, but the truth is somewhere else.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Owning side = the table whose row holds the FK column. Inverse side = the property that says <code>mappedBy: 'theOtherProperty'</code> and stores nothing in its own table.
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">In a <code>Book</code> &rarr; <code>Author</code> M:1 relation, which physical table has the foreign key column &mdash; the <code>book</code> table or the <code>author</code> table? Answer in three seconds, then keep reading.</div>
+        <div class="recall-hint">Hint: an author can have many books. If the FK lived on the author side, where would you store the second one? Right &mdash; you can't. The &ldquo;many&rdquo; side always holds the FK.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: DEFINING RELATIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Defining Relations with defineEntity</h2>
+
+    <p>Now the syntax. We'll build the canonical MikroORM trio &mdash; <code>Author</code>, <code>Book</code>, <code>Tag</code> &mdash; and use it as the running example for the rest of the lesson. Three entities cover all four cardinalities you'll meet in 95% of real schemas.</p>
+
+    <h3>Author (the &ldquo;one&rdquo; side of 1:M)</h3>
+
+    <pre><code><span class="comment">// src/entities/Author.ts</span>
+<span class="keyword">import</span> { defineEntity, p, <span class="type">InferEntity</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'./Book'</span>;
+
+<span class="keyword">export const</span> Author = <span class="function">defineEntity</span>({
+  name: <span class="string">'Author'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    name: p.<span class="function">string</span>(),
+    <span class="comment">// inverse side: no FK column on `author` table</span>
+    books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany</span>(Book).<span class="function">mappedBy</span>(<span class="string">'author'</span>),
+  },
+});
+
+<span class="keyword">export type</span> <span class="type">IAuthor</span> = InferEntity&lt;<span class="keyword">typeof</span> Author&gt;;</code></pre>
+
+    <p>Notice three things. The <code>books</code> property is wrapped in <code>() =&gt;</code> &mdash; that lazy callback breaks the circular import between <code>Author</code> and <code>Book</code>. <code>mappedBy('author')</code> is required on the inverse side: it tells MikroORM &ldquo;the FK lives on the <code>author</code> property of <code>Book</code>.&rdquo; And there is <em>no</em> <code>author_books_id</code> column on the author table &mdash; nothing about this property hits the schema.</p>
+
+    <h3>Book (the M:1 owning side, plus M:M to Tag)</h3>
+
+    <pre><code><span class="comment">// src/entities/Book.ts</span>
+<span class="keyword">import</span> { defineEntity, p, <span class="type">InferEntity</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> { Author } <span class="keyword">from</span> <span class="string">'./Author'</span>;
+<span class="keyword">import</span> { Tag } <span class="keyword">from</span> <span class="string">'./Tag'</span>;
+
+<span class="keyword">export const</span> Book = <span class="function">defineEntity</span>({
+  name: <span class="string">'Book'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    publishedYear: p.<span class="function">integer</span>().<span class="function">nullable</span>(),
+    <span class="comment">// owning side of 1:M with Author &mdash; FK column `author_id` on `book`</span>
+    author: () <span class="keyword">=&gt;</span> p.<span class="function">manyToOne</span>(Author),
+    <span class="comment">// owning side of M:M with Tag &mdash; pivot table `book_tags` is created automatically</span>
+    tags: () <span class="keyword">=&gt;</span> p.<span class="function">manyToMany</span>(Tag),
+  },
+});
+
+<span class="keyword">export type</span> <span class="type">IBook</span> = InferEntity&lt;<span class="keyword">typeof</span> Book&gt;;</code></pre>
+
+    <p><code>p.manyToOne(Author)</code> creates an <code>author_id</code> bigint column on <code>book</code>, with a foreign key constraint to <code>author.id</code>. This is the owning side &mdash; the database row physically references its parent.</p>
+
+    <p><code>p.manyToMany(Tag)</code> creates a pivot table named <code>book_tags</code> with two columns: <code>book_id</code> and <code>tag_id</code>, both with their own FK constraints, both forming a composite primary key. You don't write that table by hand; MikroORM generates it from the relation declaration. By default the side that <em>doesn't</em> declare <code>mappedBy</code> is the owning one.</p>
+
+    <h3>Tag (the inverse side of M:M)</h3>
+
+    <pre><code><span class="comment">// src/entities/Tag.ts</span>
+<span class="keyword">import</span> { defineEntity, p, <span class="type">InferEntity</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'./Book'</span>;
+
+<span class="keyword">export const</span> Tag = <span class="function">defineEntity</span>({
+  name: <span class="string">'Tag'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    name: p.<span class="function">string</span>().<span class="function">unique</span>(),
+    <span class="comment">// inverse side &mdash; points back to Book.tags via mappedBy</span>
+    books: () <span class="keyword">=&gt;</span> p.<span class="function">manyToMany</span>(Book).<span class="function">mappedBy</span>(<span class="string">'tags'</span>),
+  },
+});
+
+<span class="keyword">export type</span> <span class="type">ITag</span> = InferEntity&lt;<span class="keyword">typeof</span> Tag&gt;;</code></pre>
+
+    <p>Same pattern as <code>Author.books</code>: <code>mappedBy</code> tells MikroORM &ldquo;the truth lives on <code>Book.tags</code>; this side just mirrors it.&rdquo; If you defined the relation on both sides without <code>mappedBy</code>, MikroORM would try to create <em>two</em> pivot tables and fail loudly. There is exactly one source of truth per relation.</p>
+
+    <h3>1:1, briefly</h3>
+
+    <p>Same vocabulary, smaller scope:</p>
+
+    <pre><code><span class="keyword">export const</span> User = <span class="function">defineEntity</span>({
+  name: <span class="string">'User'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    email: p.<span class="function">string</span>().<span class="function">unique</span>(),
+    <span class="comment">// owning side: FK `profile_id` on `user` table, with UNIQUE</span>
+    profile: () <span class="keyword">=&gt;</span> p.<span class="function">oneToOne</span>(Profile).<span class="function">owner</span>(),
+  },
+});</code></pre>
+
+    <p>The <code>.owner()</code> call (or its options-object equivalent <code>{ owner: true }</code>) is what marks this side as the FK holder. The inverse side, on the <code>Profile</code> entity, would use <code>p.oneToOne(User).mappedBy('profile')</code> &mdash; same shape as 1:M's inverse.</p>
+
+    <h3>The four-relation cardinality diagram</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="420" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Four cardinalities &mdash; where the FK lives</text>
+
+            <defs>
+                <marker id="arrBlue" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#3451B2"/>
+                </marker>
+                <marker id="arrGreen" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+                <marker id="arrOrange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#E8790C"/>
+                </marker>
+                <marker id="arrPurple" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#7C3AED"/>
+                </marker>
+            </defs>
+
+            <!-- 1:1 quadrant (top-left) -->
+            <text x="40" y="60" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">1:1 &mdash; User &harr; Profile</text>
+            <rect x="40" y="72" width="120" height="46" rx="8" fill="#E8EDFF" stroke="#3451B2"/>
+            <text x="100" y="92" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">user</text>
+            <text x="100" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">id, profile_id (FK, UNIQUE)</text>
+            <line x1="160" y1="95" x2="220" y2="95" stroke="#3451B2" stroke-width="2" marker-end="url(#arrBlue)"/>
+            <rect x="220" y="72" width="120" height="46" rx="8" fill="white" stroke="#3451B2"/>
+            <text x="280" y="92" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">profile</text>
+            <text x="280" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">id, bio</text>
+
+            <!-- 1:M / M:1 quadrant (top-right) -->
+            <text x="420" y="60" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">1:M &mdash; Author &harr; Book</text>
+            <rect x="420" y="72" width="120" height="46" rx="8" fill="white" stroke="#1A8F5C"/>
+            <text x="480" y="92" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">author</text>
+            <text x="480" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">id, name</text>
+            <line x1="600" y1="95" x2="540" y2="95" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arrGreen)"/>
+            <rect x="600" y="72" width="120" height="46" rx="8" fill="#E6F9F0" stroke="#1A8F5C"/>
+            <text x="660" y="92" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">book</text>
+            <text x="660" y="108" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">id, author_id (FK)</text>
+
+            <!-- M:M quadrant (bottom-left) -->
+            <text x="40" y="200" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">M:M &mdash; Book &harr; Tag</text>
+            <rect x="40" y="212" width="100" height="46" rx="8" fill="white" stroke="#E8790C"/>
+            <text x="90" y="232" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">book</text>
+            <text x="90" y="248" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">id, title</text>
+
+            <rect x="160" y="212" width="120" height="46" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-dasharray="4 2"/>
+            <text x="220" y="232" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">book_tags (pivot)</text>
+            <text x="220" y="248" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">book_id, tag_id</text>
+
+            <rect x="300" y="212" width="100" height="46" rx="8" fill="white" stroke="#E8790C"/>
+            <text x="350" y="232" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">tag</text>
+            <text x="350" y="248" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">id, name</text>
+
+            <line x1="140" y1="235" x2="160" y2="235" stroke="#E8790C" stroke-width="2" marker-end="url(#arrOrange)"/>
+            <line x1="300" y1="235" x2="280" y2="235" stroke="#E8790C" stroke-width="2" marker-end="url(#arrOrange)"/>
+
+            <!-- Self-ref quadrant (bottom-right) -->
+            <text x="420" y="200" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">Self-ref &mdash; Article &harr; Article</text>
+            <rect x="500" y="212" width="160" height="60" rx="8" fill="#EDE9FE" stroke="#7C3AED"/>
+            <text x="580" y="232" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#7C3AED">article</text>
+            <text x="580" y="250" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#6B7280">id, parent_article_id (FK)</text>
+            <path d="M 660 230 Q 720 230 720 260 Q 720 290 580 280 Q 500 280 500 260 Q 500 230 540 230" stroke="#7C3AED" stroke-width="2" fill="none" marker-end="url(#arrPurple)"/>
+
+            <!-- Caption / legend -->
+            <text x="380" y="350" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Solid border = side that holds the FK column (owning side)</text>
+            <text x="380" y="370" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Dashed border = a generated pivot table, not declared in your code</text>
+            <text x="380" y="390" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Arrow = direction of the foreign key reference</text>
+        </svg>
+        <div class="diagram-caption">Four shapes. The FK direction tells you which side is owning &mdash; and which side is just a virtual collection in JavaScript.</div>
+    </div>
+
+    <h3>Decorator equivalents</h3>
+
+    <p>If you prefer decorators or you're maintaining an older codebase, the same relations exist:</p>
+
+    <pre><code><span class="decorator">@Entity</span>()
+<span class="keyword">export class</span> Book {
+  <span class="decorator">@PrimaryKey</span>()
+  id!: <span class="type">number</span>;
+
+  <span class="decorator">@ManyToOne</span>(() <span class="keyword">=&gt;</span> Author)
+  author!: Author;
+
+  <span class="decorator">@ManyToMany</span>(() <span class="keyword">=&gt;</span> Tag)
+  tags = <span class="keyword">new</span> <span class="function">Collection</span>&lt;Tag&gt;(<span class="keyword">this</span>);
+}</code></pre>
+
+    <p>The semantics are identical. We use <code>defineEntity</code> through the course because circular imports between related entities &ldquo;just work&rdquo; without the <code>Rel&lt;T&gt;</code> wrapper, and TypeScript inference is sharper.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: COLLECTIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Collections &mdash; Not a Plain Array</h2>
+
+    <p>Every 1:M and M:M relation in MikroORM materializes as a <code>Collection&lt;T&gt;</code>. Look at the type signature: it's not <code>Tag[]</code>, it's <code>Collection&lt;Tag&gt;</code>. That distinction is load-bearing.</p>
+
+    <p>A Collection is a <strong>lazy-loaded wrapper</strong>. When you fetch a Book without populating its tags, <code>book.tags</code> is a Collection object that exists, but its internal items array is empty and its <code>initialized</code> flag is <code>false</code>. The database has not been queried for tags. Trying to iterate it the wrong way will silently lie to you.</p>
+
+    <h3>The two states of a Collection</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6AB;</div>
+            <div class="layer-name" style="color: var(--red);">Uninitialized</div>
+            <div class="layer-desc">Collection exists, but items have never been loaded. <code>isInitialized()</code> returns <code>false</code>. Iterating returns nothing in SQL drivers (silent), or throws in MongoDB.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2705;</div>
+            <div class="layer-name" style="color: var(--green);">Initialized</div>
+            <div class="layer-desc">Items array is populated from the DB. <code>isInitialized()</code> returns <code>true</code>. Iterating, <code>.length</code>, <code>.contains()</code>, <code>.getItems()</code> all work correctly.</div>
+        </div>
+    </div>
+
+    <h3>Operations on a Collection</h3>
+
+    <p>The full toolbox you'll actually use:</p>
+
+    <pre><code><span class="comment">// adding / removing</span>
+book.tags.<span class="function">add</span>(tag1, tag2);     <span class="comment">// add one or many</span>
+book.tags.<span class="function">remove</span>(tag1);         <span class="comment">// disconnect (does not delete row by default)</span>
+book.tags.<span class="function">set</span>([tag1, tag3]);    <span class="comment">// replace entire collection</span>
+book.tags.<span class="function">removeAll</span>();          <span class="comment">// disconnect everything</span>
+
+<span class="comment">// inspecting</span>
+book.tags.<span class="function">contains</span>(tag1);       <span class="comment">// boolean &mdash; only valid if initialized</span>
+book.tags.<span class="function">count</span>();              <span class="comment">// items.length when initialized</span>
+book.tags.<span class="function">isInitialized</span>();      <span class="comment">// THE check you should run if uncertain</span>
+book.tags.<span class="function">getItems</span>();           <span class="comment">// throws if not initialized</span>
+
+<span class="comment">// loading</span>
+<span class="keyword">await</span> book.tags.<span class="function">init</span>();          <span class="comment">// always reloads from DB</span>
+<span class="keyword">await</span> book.tags.<span class="function">load</span>();          <span class="comment">// no-op if already initialized</span>
+<span class="keyword">const</span> tags = <span class="keyword">await</span> book.tags.<span class="function">loadItems</span>(); <span class="comment">// load + return Tag[]</span>
+<span class="keyword">const</span> n = <span class="keyword">await</span> book.tags.<span class="function">loadCount</span>(); <span class="comment">// SELECT COUNT(*) &mdash; no entities loaded</span></code></pre>
+
+    <p>The most important method is <code>isInitialized()</code>. The most common bug in MikroORM apps is treating a Collection as if it were already loaded when it isn't. We'll come back to this in Part 5 and especially in Lesson 5.</p>
+
+    <div class="info-box orange">
+        <p><strong>Important: <code>collection.remove(item)</code> is not <code>em.remove(item)</code>.</strong> The first only disconnects the relation &mdash; e.g. removes a row from the pivot table, or sets the FK to <code>NULL</code>. It does <em>not</em> delete the entity itself unless you also enable <code>orphanRemoval: true</code> (Part 4). The second deletes the row entirely. Mixing them up is how people accidentally delete production data.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">You write <code>const book = await em.findOne(Book, 1)</code> and then <code>for (const tag of book.tags) { console.log(tag.name); }</code>. The book has 5 tags in the database. How many <code>console.log</code> calls fire? And how many SQL queries did MikroORM run for the tags?</div>
+        <div class="recall-hint">Trick: zero <code>console.log</code> calls. Zero tag queries. <code>book.tags</code> is uninitialized. The for-loop iterates an empty items array silently. This is why <code>populate</code> exists &mdash; and why Lesson 5 spends so much time on it.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: CASCADING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Cascading persist & remove</h2>
+
+    <p>When you persist or remove an entity, MikroORM can automatically propagate the operation through its relations. This is <em>application-level</em> cascading &mdash; it's the ORM walking the object graph, not the database firing <code>ON DELETE CASCADE</code>. Both exist; both have different rules.</p>
+
+    <h3>Cascade persist (the default)</h3>
+
+    <p>By default, <code>Cascade.PERSIST</code> is enabled on every relation. Translation: if you persist an Author with new Books in <code>author.books</code>, the Books are persisted automatically without a separate <code>em.persist(book)</code> call.</p>
+
+    <pre><code><span class="keyword">const</span> author = em.<span class="function">create</span>(Author, { name: <span class="string">'Tolstoy'</span> });
+em.<span class="function">create</span>(Book, { title: <span class="string">'War and Peace'</span>, author });
+em.<span class="function">create</span>(Book, { title: <span class="string">'Anna Karenina'</span>, author });
+
+<span class="keyword">await</span> em.<span class="function">flush</span>(); <span class="comment">// 1 author + 2 books, all inserted in one transaction, FK order respected</span></code></pre>
+
+    <p>Notice we never wrote <code>em.persist(book1)</code>. The Books were created with <code>em.create</code> (which registers them in the Identity Map) and they reference the Author, so cascade persist picks them up at flush time.</p>
+
+    <h3>Cascade remove (opt-in)</h3>
+
+    <p>The mirror operation is <em>not</em> default. To make <code>em.remove(author)</code> also delete the Books, you must opt in:</p>
+
+    <pre><code>books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany</span>(Book).<span class="function">mappedBy</span>(<span class="string">'author'</span>).<span class="function">cascade</span>([Cascade.PERSIST, Cascade.REMOVE]),
+<span class="comment">// or shorthand:</span>
+books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany</span>(Book).<span class="function">mappedBy</span>(<span class="string">'author'</span>).<span class="function">cascade</span>([Cascade.ALL]),</code></pre>
+
+    <p>This is conservative on purpose. Auto-deleting children when a parent goes away is the kind of thing that, when wrong, takes out a slice of production. The default is &ldquo;don't&rdquo;.</p>
+
+    <h3>Orphan removal &mdash; more aggressive than Cascade.REMOVE</h3>
+
+    <p><code>Cascade.REMOVE</code> only fires when you remove the parent entity. <strong>Orphan removal</strong> additionally fires when a child is <em>disconnected</em> from the collection, even if the parent is still alive:</p>
+
+    <pre><code>books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany</span>(Book).<span class="function">mappedBy</span>(<span class="string">'author'</span>).<span class="function">orphanRemoval</span>(),
+
+<span class="comment">// later:</span>
+author.books.<span class="function">remove</span>(book1); <span class="comment">// disconnected from collection</span>
+<span class="keyword">await</span> em.<span class="function">flush</span>();         <span class="comment">// with orphanRemoval → DELETE FROM book WHERE id = ...</span>
+                          <span class="comment">// without it → just UPDATE book SET author_id = NULL (if nullable)</span></code></pre>
+
+    <p>Orphan removal makes sense when a child entity has no meaningful existence outside its parent &mdash; a comment without an article, an order item without an order. Use it deliberately.</p>
+
+    <h3>Database-level FK behavior &mdash; updateRule and deleteRule</h3>
+
+    <p>Separate from ORM cascading, you can configure the actual SQL foreign key constraint:</p>
+
+    <pre><code>author: () <span class="keyword">=&gt;</span> p.<span class="function">manyToOne</span>(Author)
+            .<span class="function">deleteRule</span>(<span class="string">'cascade'</span>)   <span class="comment">// ON DELETE CASCADE in SQL DDL</span>
+            .<span class="function">updateRule</span>(<span class="string">'cascade'</span>),  <span class="comment">// ON UPDATE CASCADE in SQL DDL</span></code></pre>
+
+    <p>This is the database itself enforcing the rule, regardless of whether the ORM is involved. <code>cascade: [Cascade.REMOVE]</code> works at flush time inside one transaction, with the ORM's knowledge of loaded entities. <code>deleteRule: 'cascade'</code> works at the SQL layer, even when something else (a migration, a manual <code>psql</code> session) deletes a row.</p>
+
+    <div class="info-box blue">
+        <p><strong>Rule of thumb:</strong> use <code>Cascade.REMOVE</code> / <code>orphanRemoval</code> when you want the ORM to walk the loaded object graph and emit DELETEs in dependency order. Use <code>deleteRule</code> when you want the database to enforce referential integrity even when the ORM isn't in the loop. They aren't mutually exclusive &mdash; production systems often use both.</p>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>Watch out: cascade remove on M:1 is dangerous.</strong> If <code>Book.publisher</code> has <code>Cascade.REMOVE</code> and you remove a single book, the publisher gets deleted &mdash; but other books that share that publisher (and aren't currently loaded) are now pointing at a deleted row. Cascade remove is safe on 1:M (parent &rarr; children) and risky on M:1 (child &rarr; shared parent). Avoid it on the M:1 side unless you're certain about ownership.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: REFERENCES vs POPULATED RELATIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: References vs Populated Relations</h2>
+
+    <p>When you load an Author from the database without populating anything, what's actually in <code>author.books</code>? An uninitialized <code>Collection&lt;Book&gt;</code>. What's in <code>book.author</code> if you load a Book without populating? A <strong>reference</strong> &mdash; a Book-shaped object that contains only the primary key, with all other fields being lazy-loaded if you ever touch them.</p>
+
+    <pre><code><span class="keyword">const</span> book = <span class="keyword">await</span> em.<span class="function">findOne</span>(Book, <span class="string">1</span>);
+<span class="comment">// book.author exists, but it's a reference &mdash; only `id` is populated</span>
+
+<span class="function">console</span>.<span class="function">log</span>(book.author.id);    <span class="comment">// 42 (always available, it's just the FK column)</span>
+<span class="function">console</span>.<span class="function">log</span>(book.author.name);  <span class="comment">// undefined &mdash; not loaded yet</span></code></pre>
+
+    <p>This is intentional. If every <code>findOne</code> eagerly loaded every relation, the simplest query would explode into dozens of joins. MikroORM gives you the relation <em>handle</em> for free, and asks you to be explicit about when you want the data behind it.</p>
+
+    <p>Two ways to populate. At query time:</p>
+
+    <pre><code><span class="keyword">const</span> book = <span class="keyword">await</span> em.<span class="function">findOne</span>(Book, <span class="string">1</span>, { populate: [<span class="string">'author'</span>, <span class="string">'tags'</span>] });
+<span class="function">console</span>.<span class="function">log</span>(book.author.name);     <span class="comment">// 'Tolstoy' &mdash; fully loaded</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> tag <span class="keyword">of</span> book.tags) {  <span class="comment">// works &mdash; initialized</span>
+  <span class="function">console</span>.<span class="function">log</span>(tag.name);
+}</code></pre>
+
+    <p>Or after the fact, on entities you already have:</p>
+
+    <pre><code><span class="keyword">const</span> books = <span class="keyword">await</span> em.<span class="function">find</span>(Book, {});
+<span class="keyword">await</span> em.<span class="function">populate</span>(books, [<span class="string">'author'</span>, <span class="string">'tags'</span>]);
+<span class="comment">// now every book in the array has author and tags loaded</span></code></pre>
+
+    <p>We're racing past this because Lesson 5 is entirely about populating &mdash; the three loading strategies, partial loading, the N+1 problem and how to spot it, and dataloaders. For now, internalize the distinction: <strong>a relation handle exists by default; the data behind it must be requested.</strong></p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DA;</div>
+        Junior: &ldquo;I added the book to <code>author.books</code> AND I set <code>book.author = author</code>. Do I need both?&rdquo;<br>
+        Senior: &ldquo;Either is fine, the propagation handles it.&rdquo;<br>
+        Junior: &ldquo;Then why does the docs example show both?&rdquo;<br>
+        Senior: &ldquo;Bidirectional convenience. But only one side is the source of truth &mdash; the owning side. The inverse side is a JS-level mirror.&rdquo;<br>
+        Junior: &ldquo;...so the FK column only flips when I write to the owning side?&rdquo;<br>
+        Senior: &ldquo;Now you get it. Try this next: <code>book.author.save()</code>.&rdquo;<br>
+        Junior: &ldquo;Wait. Entities don't have <code>save()</code>.&rdquo;<br>
+        Senior: &ldquo;Now you really get it.&rdquo;<br>
+        <em>The first time you internalize that only the owning side stamps the database is the moment relations stop feeling magic.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: HANDS-ON -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Extending archive-api with Relations</h2>
+
+    <p>Time to grow our <code>archive-api</code> repo. We'll add <code>Author</code>, refactor <code>Book</code>, add <code>Tag</code>, and update <code>Article</code> (from Lesson 2) so it has tags too. Then we'll persist a complete graph &mdash; one author, two books, one article, three tags &mdash; in a single <code>flush</code>.</p>
+
+    <h3>1. The new entity files</h3>
+
+    <div class="file-tree">
+archive-api/src/entities/
+├── <span class="highlight">Article.ts</span>           <span class="comment">← updated: add tags M:M, parentArticle self-ref optional</span>
+├── <span class="highlight">Author.ts</span>            <span class="comment">← new</span>
+├── <span class="highlight">Book.ts</span>              <span class="comment">← updated: add author M:1, tags M:M</span>
+└── <span class="highlight">Tag.ts</span>               <span class="comment">← new</span>
+    </div>
+
+    <p>Use the entity files exactly as shown in Part 2 for <code>Author</code>, <code>Book</code>, <code>Tag</code>. Update <code>Article</code> to add a M:M with <code>Tag</code>:</p>
+
+    <pre><code><span class="comment">// src/entities/Article.ts (updated)</span>
+<span class="keyword">import</span> { defineEntity, p, <span class="type">InferEntity</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> { Tag } <span class="keyword">from</span> <span class="string">'./Tag'</span>;
+
+<span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    body: p.<span class="function">string</span>(),
+    tags: () <span class="keyword">=&gt;</span> p.<span class="function">manyToMany</span>(Tag),
+  },
+});
+
+<span class="keyword">export type</span> <span class="type">IArticle</span> = InferEntity&lt;<span class="keyword">typeof</span> Article&gt;;</code></pre>
+
+    <p>Then add <code>Tag</code>'s inverse side for articles too &mdash; same pattern as for books:</p>
+
+    <pre><code><span class="comment">// src/entities/Tag.ts (final)</span>
+<span class="keyword">export const</span> Tag = <span class="function">defineEntity</span>({
+  name: <span class="string">'Tag'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    name: p.<span class="function">string</span>().<span class="function">unique</span>(),
+    books: () <span class="keyword">=&gt;</span> p.<span class="function">manyToMany</span>(Book).<span class="function">mappedBy</span>(<span class="string">'tags'</span>),
+    articles: () <span class="keyword">=&gt;</span> p.<span class="function">manyToMany</span>(Article).<span class="function">mappedBy</span>(<span class="string">'tags'</span>),
+  },
+});</code></pre>
+
+    <p>Two M:M inverse relations on the same Tag &mdash; that's fine. They become two separate pivot tables (<code>book_tags</code>, <code>article_tags</code>) with no conflict.</p>
+
+    <h3>2. Update mikro-orm.config.ts</h3>
+
+    <pre><code><span class="keyword">import</span> { Author } <span class="keyword">from</span> <span class="string">'./entities/Author'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'./entities/Book'</span>;
+<span class="keyword">import</span> { Tag } <span class="keyword">from</span> <span class="string">'./entities/Tag'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'./entities/Article'</span>;
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  entities: [Author, Book, Tag, Article],
+  <span class="comment">// ...rest unchanged</span>
+});</code></pre>
+
+    <h3>3. Inspect the schema</h3>
+
+    <p>From the project root:</p>
+
+    <pre><code><span class="function">npx</span> mikro-orm schema:update --dump</code></pre>
+
+    <p>Read the output. You should see:</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li>A <code>book</code> table with <code>author_id bigint</code> and a foreign key to <code>author.id</code></li>
+        <li>A <code>book_tags</code> pivot table with <code>book_id</code> and <code>tag_id</code>, both PKs and both FKs</li>
+        <li>An <code>article_tags</code> pivot table with the same shape</li>
+        <li>A <code>tag</code> table with a unique constraint on <code>name</code></li>
+    </ul>
+
+    <h3>4. Persist a full graph in one flush</h3>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">async function</span> <span class="function">main</span>() {
+  <span class="keyword">const</span> orm = <span class="keyword">await</span> MikroORM.<span class="function">init</span>(config);
+  <span class="keyword">await</span> orm.schema.<span class="function">refreshDatabase</span>();
+  <span class="keyword">const</span> em = orm.em.<span class="function">fork</span>();
+
+  <span class="comment">// 1. one author</span>
+  <span class="keyword">const</span> tolstoy = em.<span class="function">create</span>(Author, { name: <span class="string">'Lev Tolstoy'</span> });
+
+  <span class="comment">// 2. three tags</span>
+  <span class="keyword">const</span> classic = em.<span class="function">create</span>(Tag, { name: <span class="string">'classic'</span> });
+  <span class="keyword">const</span> russian = em.<span class="function">create</span>(Tag, { name: <span class="string">'russian'</span> });
+  <span class="keyword">const</span> longRead = em.<span class="function">create</span>(Tag, { name: <span class="string">'long-read'</span> });
+
+  <span class="comment">// 3. two books &mdash; both wired to the author and a couple of tags</span>
+  em.<span class="function">create</span>(Book, {
+    title: <span class="string">'War and Peace'</span>,
+    publishedYear: <span class="string">1869</span>,
+    author: tolstoy,
+    tags: [classic, russian, longRead],
+  });
+  em.<span class="function">create</span>(Book, {
+    title: <span class="string">'Anna Karenina'</span>,
+    publishedYear: <span class="string">1877</span>,
+    author: tolstoy,
+    tags: [classic, russian],
+  });
+
+  <span class="comment">// 4. one article with tags</span>
+  em.<span class="function">create</span>(Article, {
+    title: <span class="string">'On Tolstoy and the long form'</span>,
+    body: <span class="string">'...essay text...'</span>,
+    tags: [classic, longRead],
+  });
+
+  <span class="comment">// 5. flush &mdash; single transaction</span>
+  <span class="keyword">await</span> em.<span class="function">flush</span>();
+
+  <span class="keyword">await</span> orm.<span class="function">close</span>();
+}</code></pre>
+
+    <p>Run it. With <code>debug: true</code> in your config, you'll see the query log. Five things to watch for:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--blue);">One BEGIN, one COMMIT</div>
+            <div class="layer-desc">Everything happens inside a single transaction. If any insert fails, all of them roll back.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--green);">Topological order</div>
+            <div class="layer-desc">authors INSERT first, then tags, then books (which need <code>author_id</code>), then article, then pivot rows. The Unit of Work computed dependency order from the FKs.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--orange);">Batched INSERTs</div>
+            <div class="layer-desc">All three tags in one multi-row INSERT. Both books in another. The pivot rows in two more.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x2728;</div>
+            <div class="layer-name" style="color: var(--purple);">Cascade persist at work</div>
+            <div class="layer-desc">We never wrote <code>em.persist(book)</code> &mdash; the books were registered via <code>em.create</code> and pulled into the unit of work via the relation graph.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Pivot rows</div>
+            <div class="layer-desc">The <code>book_tags</code> and <code>article_tags</code> pivot tables get their rows in dedicated INSERTs, after the books and tags exist.</div>
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- RECALL & SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Lock It In</h2>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up, answer:<br><br>
+        1. For each of 1:1, 1:M, M:1, M:M &mdash; which side is the owning side, and where does the FK live?<br>
+        2. What does <code>mappedBy: 'author'</code> on <code>Author.books</code> tell MikroORM?<br>
+        3. You call <code>em.remove(author)</code> and <code>cascade</code> on <code>author.books</code> is <code>[]</code>. What happens to the books? What happens to the FK in their rows?<br>
+        4. What's the difference between <code>collection.remove(item)</code> and <code>em.remove(item)</code>?</div>
+        <div class="recall-hint">4/4: ready for Lesson 5. 2-3/4: re-read Parts 1, 3, and 4. 0-1/4: walk away, come back tomorrow, re-read Part 1 first &mdash; the owning side concept is the foundation of everything else.</div>
+    </div>
+
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--blue);">Four shapes</div>
+            <div class="layer-desc">1:1, 1:M, M:1, M:M. M:1 always owns; 1:M is always inverse; 1:1 and M:M let you choose.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--green);">Collections are lazy</div>
+            <div class="layer-desc"><code>Collection&lt;T&gt;</code> wraps to-many relations. Always check <code>isInitialized()</code> if you didn't <code>populate</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x21B3;</div>
+            <div class="layer-name" style="color: var(--orange);">Cascading</div>
+            <div class="layer-desc"><code>Cascade.PERSIST</code> default; <code>Cascade.REMOVE</code> opt-in. <code>orphanRemoval</code> deletes when items are disconnected. <code>deleteRule</code> is database-level, separate from ORM cascade.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--purple);">References</div>
+            <div class="layer-desc">A relation handle exists by default; only the FK is populated. To read the rest, <code>populate</code> at query time or <code>em.populate</code> after the fact.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 5:</strong> Now that we have a graph, we have to load slices of it efficiently. The N+1 problem, <code>populate</code> in depth, the three loading strategies (<code>SELECT_IN</code>, <code>JOINED</code>, <code>BALANCED</code>), partial loading with <code>fields</code>, and dataloaders. By the end you'll be able to read a query log and tell whether your route is doing 1, 2, or 100 round trips &mdash; and fix it.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Add Author and Tag with full bidirectional relations</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In your <code>archive-api</code> repo, add <code>Author</code> and <code>Tag</code> entities exactly as shown in Part 2 and Part 6.</li>
+                    <li>Update <code>Book</code> to add the M:1 to <code>Author</code> and the M:M to <code>Tag</code>.</li>
+                    <li>Update <code>Article</code> from Lesson 2 to add a M:M to <code>Tag</code>.</li>
+                    <li>Run the Part 6 main.ts script and confirm the full graph (1 author + 2 books + 1 article + 3 tags + pivot rows) persists in one transaction.</li>
+                    <li>Open a PR titled <code>lesson-4: relations</code> and submit the PR URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Schema dump screenshot</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Run <code>npx mikro-orm schema:update --dump</code>.</li>
+                    <li>Submit a screenshot showing the <code>book_tags</code> pivot table DDL with both <code>book_id</code> and <code>tag_id</code> columns and their foreign key constraints visible.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why exactly one owning side in M:M? (Elaborative interrogation)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 4&ndash;6 sentences, answer: <em>Why does MikroORM require an explicit owning side in M:M relations, and what would happen if both sides claimed ownership?</em> Reference how the pivot table is generated and which side controls inserts/deletes into it.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Demonstrate orphan removal</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Configure <code>orphanRemoval: true</code> on <code>Author.books</code>. Add a script that loads an author with populated books, calls <code>author.books.remove(books[0])</code>, then <code>flush</code>. Capture the query log showing the <code>DELETE FROM book WHERE id = ...</code> statement. Add the log snippet to your <code>README.md</code>.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Self-referencing Article</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add a self-ref to <code>Article</code>: <code>parentArticle: () =&gt; p.manyToOne(Article).nullable()</code> for the M:1 side, and <code>replies: () =&gt; p.oneToMany(Article).mappedBy('parentArticle')</code> for the inverse 1:M. Run <code>schema:update --dump</code> and confirm the schema generates without circular FK errors. Persist a parent article with two replies and capture the inserts.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 4 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Populating Relations and Loading Strategies</p>
+    </div>
+
+</div>
+
+</body>
+</html>

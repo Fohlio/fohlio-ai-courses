@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 5</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 5 of 10</div>
+        <h1>Loading Strategies</h1>
+        <div class="subtitle">Populating Relations Without Drowning the Database</div>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h2 class="part-header">Where We Are</h2>
+
+    <p>Five lessons in. The graph exists; now we need to load slices of it without firing 100 queries per request.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4DA;</div>
+            <div class="card-title" style="color: var(--blue);">Lesson 1</div>
+            <div class="card-subtitle" style="color: var(--blue);">Three patterns + analogy</div>
+            <div class="card-desc">Data Mapper, Identity Map, Unit of Work. Records Library. <code>em.flush()</code> as the end-of-shift sign-off.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4D0;</div>
+            <div class="card-title" style="color: var(--green);">Lesson 2</div>
+            <div class="card-subtitle" style="color: var(--green);">Entity definitions</div>
+            <div class="card-desc"><code>defineEntity</code>, primary keys, properties. Plain shapes, no save() methods.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F464;</div>
+            <div class="card-title" style="color: var(--orange);">Lesson 3</div>
+            <div class="card-subtitle" style="color: var(--orange);">EM, Identity Map, FilterQuery</div>
+            <div class="card-desc">Forking the EM, finding entities, filtering with object syntax. The orchestrator.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F517;</div>
+            <div class="card-title" style="color: var(--purple);">Lesson 4</div>
+            <div class="card-subtitle" style="color: var(--purple);">Relations</div>
+            <div class="card-desc">1:1, 1:M, M:1, M:M. Owning vs inverse. Collections. Cascading. Author/Book/Tag wired up.</div>
+        </div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Lesson 5 (today): Loading Strategies.</strong> The N+1 problem, <code>populate</code> in depth, the three strategies (<code>SELECT_IN</code>, <code>JOINED</code>, <code>BALANCED</code>), partial loading, dataloaders. This is in the L5&ndash;L7 heaviest cognitive-load band of the course. Take it slow; the payoff is enormous.</p>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Recognize an N+1 query pattern in a log within five seconds</li>
+            <li>Use <code>populate</code> with single relations, nested paths, and the <code>'*'</code> wildcard</li>
+            <li>Choose between <code>SELECT_IN</code>, <code>JOINED</code>, and <code>BALANCED</code> strategies based on relation shape, not just round-trip count</li>
+            <li>Use partial loading (<code>fields</code>, <code>exclude</code>) without breaking populated relations</li>
+            <li>Reach for a dataloader when <code>populate</code> isn't the right tool</li>
+            <li>Tune <code>archive-api</code> from 11 queries down to 1 or 2, and capture the proof in the query log</li>
+        </ul>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: THE N+1 PROBLEM -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The N+1 Problem, Briefly</h2>
+
+    <p>The most common ORM bug, in the most innocent-looking code:</p>
+
+    <pre><code><span class="keyword">const</span> authors = <span class="keyword">await</span> em.<span class="function">find</span>(Author, {});  <span class="comment">// 1 query</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> author <span class="keyword">of</span> authors) {
+  <span class="function">console</span>.<span class="function">log</span>(author.name, author.books.<span class="function">loadCount</span>());
+  <span class="comment">// each iteration → 1 SQL query (SELECT COUNT(*) FROM book WHERE author_id = ?)</span>
+}</code></pre>
+
+    <p>100 authors? 101 queries. One for the parents, then one for each child collection. The route runs in 800ms instead of 8ms, and you can't tell from the code that anything's wrong &mdash; it looks like a normal for-loop.</p>
+
+    <p>The pattern has a name: <strong>N+1</strong>. One query for N parents, then N additional queries for the N children. It's not specific to MikroORM &mdash; every ORM has this trap. The difference is whether you can see it (turn on query logging) and whether the framework gives you a clean fix.</p>
+
+    <div class="story-box">
+        <p>You're at the Records Library. You ask the head librarian for a list of all 100 authors in their collection. They walk to the catalog, pull the list in one trip, hand it over. Good.</p>
+        <p>Then you ask: &ldquo;and how many books did each one publish?&rdquo; The librarian shrugs and walks back into the stacks. Returns with the count for author #1. You ask about author #2. They walk back. You ask about author #3. They walk back. By the time you get to author #100, the librarian has made 100 round trips and is no longer speaking to you.</p>
+        <p>The fix &mdash; and this is the entire point of Lesson 5 &mdash; is to ask once: &ldquo;bring me all 100 authors and the book count for each.&rdquo; One trip, one cart, all the data on one journey. The ORM has to know in advance what you want; that's what <code>populate</code> tells it.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Cart on Wheels = Loading Strategy. Loading 100 books one trip at a time is the SQL equivalent of refusing the cart and carrying volumes one by one.
+        </div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: POPULATE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: <code>populate</code> &mdash; The Explicit Fix</h2>
+
+    <p>Tell MikroORM, at query time, which relations you intend to use. It will prefetch them in a controlled number of queries instead of one-per-iteration:</p>
+
+    <pre><code><span class="keyword">const</span> authors = <span class="keyword">await</span> em.<span class="function">find</span>(Author, {}, {
+  populate: [<span class="string">'books'</span>],
+});
+
+<span class="keyword">for</span> (<span class="keyword">const</span> author <span class="keyword">of</span> authors) {
+  <span class="function">console</span>.<span class="function">log</span>(author.name, author.books.length);
+  <span class="comment">// books are already initialized &mdash; no extra queries</span>
+}</code></pre>
+
+    <p>With the default <code>BALANCED</code> strategy on an SQL driver, that's two queries total: one for the authors, one <code>SELECT ... FROM book WHERE author_id IN (...)</code> covering all of them at once. Not 101.</p>
+
+    <h3>Nested paths</h3>
+
+    <p>Relations are dot-paths. Need books, plus each book's tags, plus each book's author's profile? Easy:</p>
+
+    <pre><code><span class="keyword">const</span> authors = <span class="keyword">await</span> em.<span class="function">find</span>(Author, {}, {
+  populate: [<span class="string">'books'</span>, <span class="string">'books.tags'</span>, <span class="string">'profile'</span>],
+});</code></pre>
+
+    <p>TypeScript will autocomplete the available paths. The return type is enhanced to <code>Loaded&lt;Author, 'books' | 'books.tags' | 'profile'&gt;</code>, which means the typed-relation accessor (<code>author.books.$</code>) only compiles when the relation was actually populated &mdash; you can't accidentally read uninitialized data.</p>
+
+    <h3>The <code>'*'</code> wildcard</h3>
+
+    <p>Populate everything one level deep:</p>
+
+    <pre><code><span class="keyword">const</span> authors = <span class="keyword">await</span> em.<span class="function">find</span>(Author, {}, {
+  populate: [<span class="string">'*'</span>], <span class="comment">// every relation, top-level only</span>
+});</code></pre>
+
+    <p>Convenient for a small entity. Dangerous for a fat one with seven relations &mdash; you might be loading data nobody on the route will ever read. Use it for serializing a single entity at the boundary of an admin tool, not for hot routes.</p>
+
+    <div class="info-box orange">
+        <p><strong><code>'*'</code> always uses select-in.</strong> The wildcard forces the <code>SELECT_IN</code> strategy because joining every relation in one query risks unbounded cartesian products. If you want a wildcard with joined-strategy semantics, list the paths explicitly.</p>
+    </div>
+
+    <h3><code>populateWhere</code> &mdash; filter what gets populated</h3>
+
+    <p>By default, populating loads the <em>full</em> related collection, not just the rows that matched your outer where:</p>
+
+    <pre><code><span class="comment">// load books with tag 'classic', and populate ALL their tags (not just classic)</span>
+<span class="keyword">const</span> books = <span class="keyword">await</span> em.<span class="function">find</span>(Book, { tags: { name: <span class="string">'classic'</span> } }, {
+  populate: [<span class="string">'tags'</span>],
+});
+<span class="comment">// books[0].tags includes ALL tags on the book &mdash; 'classic', 'russian', 'long-read'</span></code></pre>
+
+    <p>If you wanted only the matched tags, use <code>populateWhere: 'infer'</code> (or <code>PopulateHint.INFER</code>):</p>
+
+    <pre><code><span class="keyword">const</span> books = <span class="keyword">await</span> em.<span class="function">find</span>(Book, { tags: { name: <span class="string">'classic'</span> } }, {
+  populate: [<span class="string">'tags'</span>],
+  populateWhere: <span class="string">'infer'</span>, <span class="comment">// books[0].tags now contains ONLY 'classic'</span>
+});</code></pre>
+
+    <p>Both behaviors are useful in different situations. Knowing the default is &ldquo;all&rdquo; saves you from a class of confusing bugs when you assume populated collections respect your outer filter.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: THE THREE STRATEGIES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: The Three Loading Strategies</h2>
+
+    <p>Once you've said &ldquo;populate this,&rdquo; MikroORM has to actually fetch the data. There are three different SQL shapes it can use, and they have radically different performance characteristics.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">You're loading 100 Authors with their Books (avg 5 books each) and a 1:1 Profile. Which combination of loading strategies will be the fastest? <strong>(a)</strong> all in one big <code>JOIN</code>, <strong>(b)</strong> one query for authors, one big <code>JOIN</code> for books and tags, <strong>(c)</strong> three separate <code>SELECT ... WHERE id IN (...)</code> queries, <strong>(d)</strong> joined for the 1:1, select-in for the 1:M.</div>
+        <div class="recall-hint">Spoiler: (d). And it's the default. Read on for why.</div>
+    </div>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4E5;</div>
+            <div class="card-title" style="color: var(--blue);">SELECT_IN</div>
+            <div class="card-subtitle" style="color: var(--blue);">Two trips, no cartesian</div>
+            <div class="card-desc">One query for parents. One <code>SELECT ... WHERE parent_id IN (?, ?, ?)</code> for all children. Avoids row-multiplication. Best for to-many relations with high fan-out.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F517;</div>
+            <div class="card-title" style="color: var(--green);">JOINED</div>
+            <div class="card-subtitle" style="color: var(--green);">One trip, one big SQL</div>
+            <div class="card-desc">Single SQL with <code>LEFT JOIN</code>s. Best for to-one relations (M:1, 1:1) where there's no fan-out. Hydrator deduplicates the result.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x2696;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--purple);">BALANCED</div>
+            <div class="card-subtitle" style="color: var(--purple);">Sane default</div>
+            <div class="card-desc">Joined for to-one relations, select-in for to-many relations. Combines both wins. The default in MikroORM 7 onward.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4DD;</div>
+            <div class="card-title" style="color: var(--orange);">When you'd override</div>
+            <div class="card-subtitle" style="color: var(--orange);">Per-query / per-relation</div>
+            <div class="card-desc">Set <code>strategy</code> in <code>FindOptions</code>, or use <code>populateHints</code> to override per relation path. Property-level wins over query-level wins over global config.</div>
+        </div>
+    </div>
+
+    <h3>What the SQL actually looks like</h3>
+
+    <p>Concrete query: 100 Authors, each with their Books. With <code>SELECT_IN</code>:</p>
+
+    <pre><code><span class="comment">-- query 1: load all authors</span>
+SELECT * FROM author;
+
+<span class="comment">-- query 2: load all their books in one shot</span>
+SELECT * FROM book WHERE author_id IN (1, 2, 3, ..., 100);</code></pre>
+
+    <p>Two queries, ~600 rows total (100 + ~500). Hydrator groups them by <code>author_id</code> and assigns to each <code>Author.books</code> collection.</p>
+
+    <p>With <code>JOINED</code>:</p>
+
+    <pre><code><span class="comment">-- query 1: one big SQL with a LEFT JOIN</span>
+SELECT a.id <span class="keyword">AS</span> a__id, a.name <span class="keyword">AS</span> a__name,
+       b.id <span class="keyword">AS</span> b__id, b.title <span class="keyword">AS</span> b__title, b.author_id <span class="keyword">AS</span> b__author_id
+FROM author a
+LEFT JOIN book b ON b.author_id = a.id;</code></pre>
+
+    <p>One query. Result set: ~500 rows (one per book), but each row carries a duplicated copy of the author columns. The hydrator de-duplicates by <code>a__id</code>. For 1:M with 5 children each, this is fine. For 1:M with 1000 children each, you've shipped a lot of duplicated parent data over the wire.</p>
+
+    <p>With <code>JOINED</code> on M:M (the trap): each book has 5 tags, each book has 3 reviews, each book has 4 chapters. Joining all three together produces <code>5 &times; 3 &times; 4 = 60</code> rows per book, 6000 rows for 100 books, of which 5900 are redundant. This is the <strong>cartesian explosion</strong>. The query is fast to write and slow to run.</p>
+
+    <h3>The strategies side-by-side</h3>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="400" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Three loading strategies for: Author + Author.books + Author.profile</text>
+
+            <defs>
+                <marker id="arr5" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
+                </marker>
+            </defs>
+
+            <!-- SELECT_IN column -->
+            <rect x="20" y="50" width="230" height="320" rx="12" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="135" y="76" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#3451B2">SELECT_IN</text>
+            <text x="135" y="94" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">3 queries, no cartesian</text>
+
+            <rect x="40" y="110" width="190" height="40" rx="6" fill="white" stroke="#3451B2"/>
+            <text x="135" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#3451B2">SELECT * FROM author</text>
+            <text x="135" y="142" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">100 rows</text>
+
+            <line x1="135" y1="150" x2="135" y2="170" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+            <rect x="40" y="172" width="190" height="50" rx="6" fill="white" stroke="#3451B2"/>
+            <text x="135" y="190" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3451B2">SELECT * FROM book</text>
+            <text x="135" y="204" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3451B2">WHERE author_id IN (1..100)</text>
+            <text x="135" y="218" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">~500 rows</text>
+
+            <line x1="135" y1="222" x2="135" y2="242" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+            <rect x="40" y="244" width="190" height="50" rx="6" fill="white" stroke="#3451B2"/>
+            <text x="135" y="262" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3451B2">SELECT * FROM profile</text>
+            <text x="135" y="276" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#3451B2">WHERE user_id IN (1..100)</text>
+            <text x="135" y="290" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">100 rows</text>
+
+            <text x="135" y="330" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C" font-weight="600">Total: ~700 rows, 3 round trips</text>
+            <text x="135" y="346" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">No row duplication</text>
+
+            <!-- JOINED column -->
+            <rect x="265" y="50" width="230" height="320" rx="12" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="380" y="76" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#1A8F5C">JOINED</text>
+            <text x="380" y="94" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">1 query, cartesian risk</text>
+
+            <rect x="285" y="110" width="190" height="160" rx="6" fill="white" stroke="#1A8F5C"/>
+            <text x="380" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1A8F5C">SELECT a.*, b.*, p.*</text>
+            <text x="380" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1A8F5C">FROM author a</text>
+            <text x="380" y="158" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1A8F5C">LEFT JOIN book b</text>
+            <text x="380" y="172" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1A8F5C">  ON b.author_id=a.id</text>
+            <text x="380" y="186" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1A8F5C">LEFT JOIN profile p</text>
+            <text x="380" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#1A8F5C">  ON p.user_id=a.id</text>
+            <text x="380" y="226" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">~500 rows</text>
+            <text x="380" y="244" text-anchor="middle" font-family="Inter" font-size="10" fill="#DC2626">(author cols x5)</text>
+            <text x="380" y="260" text-anchor="middle" font-family="Inter" font-size="10" fill="#DC2626">(profile cols x5)</text>
+
+            <text x="380" y="330" text-anchor="middle" font-family="Inter" font-size="11" fill="#E8790C" font-weight="600">Total: ~500 rows, 1 round trip</text>
+            <text x="380" y="346" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Heavy duplication on to-many</text>
+
+            <!-- BALANCED column -->
+            <rect x="510" y="50" width="230" height="320" rx="12" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="625" y="76" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#7C3AED">BALANCED</text>
+            <text x="625" y="94" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">2 queries, sane default</text>
+
+            <rect x="530" y="110" width="190" height="80" rx="6" fill="white" stroke="#7C3AED"/>
+            <text x="625" y="128" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7C3AED">SELECT a.*, p.*</text>
+            <text x="625" y="142" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7C3AED">FROM author a</text>
+            <text x="625" y="156" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7C3AED">LEFT JOIN profile p</text>
+            <text x="625" y="170" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7C3AED">  ON p.user_id=a.id</text>
+            <text x="625" y="184" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">100 rows</text>
+
+            <line x1="625" y1="192" x2="625" y2="212" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arr5)"/>
+
+            <rect x="530" y="214" width="190" height="60" rx="6" fill="white" stroke="#7C3AED"/>
+            <text x="625" y="232" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7C3AED">SELECT * FROM book</text>
+            <text x="625" y="246" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#7C3AED">WHERE author_id IN (1..100)</text>
+            <text x="625" y="262" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">~500 rows</text>
+
+            <text x="625" y="330" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C" font-weight="600">Total: ~600 rows, 2 round trips</text>
+            <text x="625" y="346" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Joined to-one + select-in to-many</text>
+        </svg>
+        <div class="diagram-caption">Same query, three strategies. BALANCED is the default for a reason &mdash; it picks the right tool per relation shape.</div>
+    </div>
+
+    <h3>How to set the strategy</h3>
+
+    <p>Three places, in priority order (top wins):</p>
+
+    <pre><code><span class="comment">// 1. per-relation, in defineEntity (highest priority)</span>
+books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany</span>(Book).<span class="function">mappedBy</span>(<span class="string">'author'</span>).<span class="function">strategy</span>(<span class="string">'select-in'</span>),
+
+<span class="comment">// 2. per-query, in FindOptions</span>
+<span class="keyword">await</span> em.<span class="function">find</span>(Author, {}, {
+  populate: [<span class="string">'books'</span>],
+  strategy: <span class="string">'joined'</span>,
+});
+
+<span class="comment">// 3. globally, in mikro-orm.config.ts (lowest priority)</span>
+<span class="function">defineConfig</span>({
+  loadStrategy: <span class="string">'select-in'</span>,
+  <span class="comment">// ...</span>
+});</code></pre>
+
+    <p>For one specific path, use <code>populateHints</code>:</p>
+
+    <pre><code><span class="keyword">await</span> em.<span class="function">find</span>(Author, {}, {
+  populate: [<span class="string">'books.tags'</span>, <span class="string">'profile'</span>],
+  strategy: <span class="string">'joined'</span>,
+  populateHints: {
+    <span class="string">'books.tags'</span>: { strategy: <span class="string">'select-in'</span> }, <span class="comment">// override just this path</span>
+  },
+});</code></pre>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F60C;</div>
+        Junior, day 1: &ldquo;JOINED is always faster, right? Fewer queries.&rdquo;<br>
+        Senior: &ldquo;Show me your route.&rdquo;<br>
+        Junior: &ldquo;100 books, populate tags + reviews + chapters. Joined strategy. One query!&rdquo;<br>
+        Senior: &ldquo;How many rows came back?&rdquo;<br>
+        Junior: &ldquo;Uhh... let me check.&rdquo;<br>
+        <em>(EXPLAIN ANALYZE rolls in)</em><br>
+        Junior: &ldquo;...one thousand five hundred rows. Per book.&rdquo;<br>
+        Senior: &ldquo;5 tags &times; 3 reviews &times; 100 chapters cartesian. 1500 rows per book, 150,000 rows total, of which 99% are duplicate parent columns the hydrator throws away. Try BALANCED.&rdquo;<br>
+        Junior: &ldquo;Two queries instead of one?&rdquo;<br>
+        Senior: &ldquo;Two queries returning 600 rows total, instead of one returning 150,000.&rdquo;<br>
+        <em>Strategy is about the shape of data on the wire, not the count of round trips.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: PARTIAL LOADING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Partial Loading with <code>fields</code></h2>
+
+    <p>Sometimes you don't need every column. A list endpoint that shows author name and book title doesn't need the 4kb biography blob or the book's full-text contents. Drop them with <code>fields</code>:</p>
+
+    <pre><code><span class="keyword">const</span> authors = <span class="keyword">await</span> em.<span class="function">find</span>(Author, {}, {
+  fields: [<span class="string">'id'</span>, <span class="string">'name'</span>, <span class="string">'books.id'</span>, <span class="string">'books.title'</span>],
+  populate: [<span class="string">'books'</span>],
+});</code></pre>
+
+    <p>Mirror operation: <code>exclude: ['biography']</code> drops one column without listing the rest.</p>
+
+    <h3>The FK gotcha</h3>
+
+    <p>Here is the trap. To populate <code>author.books</code>, MikroORM needs the FK column on the Book side &mdash; namely <code>book.author_id</code>. If your <code>fields</code> array doesn't include it, the relation can't link, and the populated collection will be silently empty or wrong:</p>
+
+    <pre><code><span class="comment">// WRONG &mdash; book.author_id is excluded, populated relation breaks</span>
+<span class="keyword">const</span> books = <span class="keyword">await</span> em.<span class="function">find</span>(Book, {}, {
+  fields: [<span class="string">'id'</span>, <span class="string">'title'</span>, <span class="string">'author.name'</span>], <span class="comment">// no 'author' or 'author.id'!</span>
+  populate: [<span class="string">'author'</span>],
+});
+<span class="comment">// books[0].author may be undefined &mdash; the FK was filtered out</span>
+
+<span class="comment">// RIGHT &mdash; include the FK column or the relation field path</span>
+<span class="keyword">const</span> books = <span class="keyword">await</span> em.<span class="function">find</span>(Book, {}, {
+  fields: [<span class="string">'id'</span>, <span class="string">'title'</span>, <span class="string">'author'</span>, <span class="string">'author.name'</span>],
+  populate: [<span class="string">'author'</span>],
+});</code></pre>
+
+    <p>Including the relation property name in <code>fields</code> (e.g. <code>'author'</code>) tells MikroORM &ldquo;keep the FK column.&rdquo; Then <code>'author.name'</code> picks which child columns to actually load. Both are needed.</p>
+
+    <h3><code>em.populate</code> &mdash; ad-hoc population</h3>
+
+    <p>If you've already loaded entities and need to populate later (e.g. inside a service that didn't know upfront what would be needed):</p>
+
+    <pre><code><span class="keyword">const</span> books = <span class="keyword">await</span> em.<span class="function">find</span>(Book, {});
+
+<span class="comment">// later, conditionally:</span>
+<span class="keyword">if</span> (req.user.role === <span class="string">'admin'</span>) {
+  <span class="keyword">await</span> em.<span class="function">populate</span>(books, [<span class="string">'author'</span>, <span class="string">'tags'</span>]);
+}</code></pre>
+
+    <p>Same loading strategies apply, same nested-paths syntax. Slightly more flexible at the cost of one extra logical step in your code.</p>
+
+    <h3>Type-safe relations &mdash; a brief mention</h3>
+
+    <p>When you populate, the return type is enriched. <code>em.find(Author, {}, { populate: ['books'] })</code> returns <code>Loaded&lt;Author, 'books'&gt;[]</code>. The <code>$</code> accessor on a populated collection becomes typed:</p>
+
+    <pre><code><span class="keyword">function</span> <span class="function">listTitles</span>(author: Loaded&lt;Author, <span class="string">'books'</span>&gt;): <span class="type">string</span>[] {
+  <span class="keyword">return</span> author.books.$.<span class="function">map</span>(b <span class="keyword">=&gt;</span> b.title);  <span class="comment">// $ proves it's loaded</span>
+}</code></pre>
+
+    <p>If you forget to populate, <code>author.books.$</code> is a TypeScript compile error. We'll lean on this in the project work in later lessons; for now, just know it exists.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: DATALOADERS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Dataloaders &mdash; Fine-Grained Batching</h2>
+
+    <p><code>populate</code> works when you know upfront what you'll need. But sometimes you don't &mdash; especially in GraphQL resolvers or per-item pipelines where each iteration may or may not touch a relation.</p>
+
+    <pre><code><span class="comment">// resolver-style: each book may load its author independently</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> book <span class="keyword">of</span> books) {
+  <span class="keyword">if</span> (<span class="function">shouldShowAuthor</span>(book, ctx)) {
+    <span class="keyword">await</span> book.author.<span class="function">load</span>();   <span class="comment">// each call → one SELECT</span>
+  }
+}</code></pre>
+
+    <p>That's another N+1, but you can't simply <code>populate: ['author']</code> earlier &mdash; you'd be loading authors for books that don't need them. The fix is a <strong>dataloader</strong>: a tiny scheduler that batches all <code>load()</code> calls within a single tick of the event loop into one <code>SELECT ... WHERE id IN (...)</code>.</p>
+
+    <pre><code><span class="comment">// enable per-call</span>
+<span class="keyword">await</span> book.author.<span class="function">load</span>({ dataloader: <span class="keyword">true</span> });
+
+<span class="comment">// or globally in config</span>
+<span class="function">defineConfig</span>({
+  dataloader: DataloaderType.ALL, <span class="comment">// REFERENCE | COLLECTION | ALL | true | false</span>
+});
+
+<span class="comment">// or on em.populate</span>
+<span class="keyword">await</span> em.<span class="function">populate</span>(items, [<span class="string">'author'</span>], { dataloader: <span class="keyword">true</span> });</code></pre>
+
+    <p>How the magic works: each <code>load({ dataloader: true })</code> call doesn't fire a query immediately. It registers a request and returns a Promise. At the end of the current microtask tick, the dataloader collects every registered ID, fires <em>one</em> batched query, and resolves all the Promises.</p>
+
+    <div class="info-box purple">
+        <p><strong>Trade-off:</strong> dataloaders add one extra microtask of latency per batch (negligible) in exchange for collapsing N queries into 1 (huge). They shine in GraphQL where the query shape isn't known statically. Outside GraphQL, prefer <code>populate</code> &mdash; it's clearer and uses the same machinery without the indirection.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: HANDS-ON -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Tuning archive-api</h2>
+
+    <p>Time to feel this in code. We'll reproduce N+1 on the <code>archive-api</code> repo from Lesson 4, then fix it four different ways and capture the query log each time.</p>
+
+    <h3>Setup: seed some data</h3>
+
+    <p>Make sure your <code>main.ts</code> from Lesson 4 has run, so you have at least 10 articles each with a few tags. If you only have 1 article, loop the create calls 10 times with different titles before continuing. Then add a script:</p>
+
+    <pre><code><span class="comment">// src/scripts/loading-experiments.ts</span>
+<span class="keyword">import</span> { MikroORM, LoadStrategy } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'../mikro-orm.config'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'../entities/Article'</span>;
+
+<span class="keyword">async function</span> <span class="function">run</span>() {
+  <span class="keyword">const</span> orm = <span class="keyword">await</span> MikroORM.<span class="function">init</span>(config);
+  <span class="keyword">const</span> em = orm.em.<span class="function">fork</span>();
+
+  <span class="comment">// ---------------------- experiment 1: N+1 ----------------------</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'\n=== N+1 ==='</span>);
+  <span class="keyword">const</span> articles1 = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {});
+  <span class="keyword">for</span> (<span class="keyword">const</span> a <span class="keyword">of</span> articles1) {
+    <span class="keyword">const</span> n = <span class="keyword">await</span> a.tags.<span class="function">loadCount</span>(); <span class="comment">// fires one COUNT per article</span>
+    <span class="function">console</span>.<span class="function">log</span>(a.title, n);
+  }
+
+  em.<span class="function">clear</span>(); <span class="comment">// reset the identity map between experiments</span>
+
+  <span class="comment">// ---------------------- experiment 2: populate ----------------------</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'\n=== populate (BALANCED default) ==='</span>);
+  <span class="keyword">const</span> articles2 = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {}, { populate: [<span class="string">'tags'</span>] });
+  <span class="keyword">for</span> (<span class="keyword">const</span> a <span class="keyword">of</span> articles2) {
+    <span class="function">console</span>.<span class="function">log</span>(a.title, a.tags.length);
+  }
+
+  em.<span class="function">clear</span>();
+
+  <span class="comment">// ---------------------- experiment 3: JOINED ----------------------</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'\n=== JOINED ==='</span>);
+  <span class="keyword">const</span> articles3 = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {}, {
+    populate: [<span class="string">'tags'</span>],
+    strategy: <span class="string">'joined'</span>,
+  });
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'count:'</span>, articles3.length);
+
+  em.<span class="function">clear</span>();
+
+  <span class="comment">// ---------------------- experiment 4: SELECT_IN ----------------------</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'\n=== SELECT_IN ==='</span>);
+  <span class="keyword">const</span> articles4 = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {}, {
+    populate: [<span class="string">'tags'</span>],
+    strategy: <span class="string">'select-in'</span>,
+  });
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'count:'</span>, articles4.length);
+
+  <span class="keyword">await</span> orm.<span class="function">close</span>();
+}
+
+<span class="function">run</span>().<span class="function">catch</span>(<span class="function">console</span>.error);</code></pre>
+
+    <h3>Read the four logs</h3>
+
+    <p>Run with <code>npx tsx src/scripts/loading-experiments.ts</code>. You should see:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x274C;</div>
+            <div class="layer-name" style="color: var(--red);">Experiment 1: N+1</div>
+            <div class="layer-desc">1 SELECT for the articles, then N additional SELECT COUNTs &mdash; one per iteration. For 10 articles, 11 queries total.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x2696;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Experiment 2: populate (BALANCED)</div>
+            <div class="layer-desc">2 queries: one for articles, one <code>SELECT FROM article_tags ... WHERE article_id IN (...)</code> joined to <code>tag</code>. Default behavior.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--green);">Experiment 3: JOINED</div>
+            <div class="layer-desc">1 query with a LEFT JOIN through the pivot table. Watch the row count balloon if you have many tags per article &mdash; M:M is exactly where JOINED hurts most.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4E5;</div>
+            <div class="layer-name" style="color: var(--blue);">Experiment 4: SELECT_IN</div>
+            <div class="layer-desc">2 or 3 queries (article, pivot rows, tag rows) with no row duplication. Often the best choice for M:M with high fan-out.</div>
+        </div>
+    </div>
+
+    <p>Pull a sample of each log into your homework write-up. The point of the exercise is calibration: you want the visceral feel of &ldquo;this many queries for this many entities, with this strategy, equals this latency.&rdquo;</p>
+
+
+    <!-- ============================================ -->
+    <!-- RECALL & SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Lock It In</h2>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up, answer:<br><br>
+        1. What's the trade-off between <code>SELECT_IN</code> and <code>JOINED</code> &mdash; one sentence on each side?<br>
+        2. When is <code>populate</code> the wrong tool, and what should you use instead?<br>
+        3. You set <code>fields: ['id', 'title']</code> on a Book query and <code>populate: ['author']</code>. What happens, and why?<br>
+        4. The default strategy is <code>BALANCED</code>. What does it actually do?</div>
+        <div class="recall-hint">4/4: ready for Lesson 6 (QueryBuilder + Repositories). 2-3/4: re-read Parts 3 and 4. 0-1/4: re-read Part 3, then run the four experiments from Part 6 and watch the query logs side by side &mdash; nothing teaches loading strategies like watching them in your terminal.</div>
+    </div>
+
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--red);">N+1 = 1 + N round trips</div>
+            <div class="layer-desc">Iterating a list and touching an unpopulated relation per item. The default mode of any ORM if you don't tell it otherwise.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--blue);">populate</div>
+            <div class="layer-desc">Tell MikroORM upfront what you'll need. Nested paths, the <code>'*'</code> wildcard, and <code>populateWhere</code> for filtering populated rows.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x2696;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Three strategies</div>
+            <div class="layer-desc"><code>SELECT_IN</code> (separate queries, no cartesian), <code>JOINED</code> (one query, cartesian risk on to-many), <code>BALANCED</code> (joined to-one + select-in to-many; default).</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x2702;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">Partial loading</div>
+            <div class="layer-desc"><code>fields</code> drops columns. Always include the FK or the relation property name when you populate &mdash; otherwise the join silently breaks.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--green);">Dataloaders</div>
+            <div class="layer-desc">Microtask-batched <code>load()</code> calls. Use when populate doesn't fit (GraphQL resolvers, conditional per-item loads).</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 6:</strong> Repositories and the QueryBuilder. When the FilterQuery object isn't expressive enough &mdash; window functions, recursive CTEs, complex aggregations &mdash; you drop down to <code>em.createQueryBuilder()</code> and write SQL through a typed fluent API. Plus custom repositories for encapsulating common queries per entity.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Reproduce the four experiments</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add the <code>src/scripts/loading-experiments.ts</code> file from Part 6.</li>
+                    <li>Make sure you have at least 10 articles each with 2&ndash;5 tags. If your seed only creates 1 article, loop the <code>em.create(Article, ...)</code> calls.</li>
+                    <li>Run the script. Capture the four query logs (N+1, populate, JOINED, SELECT_IN) and paste them into the PR description (or <code>experiments.md</code>).</li>
+                    <li>Open a PR titled <code>lesson-5: loading strategies</code>.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>JOINED SQL screenshot</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Submit a screenshot of the actual SQL generated by experiment 3 (JOINED), showing the full <code>LEFT JOIN</code> through the <code>article_tags</code> pivot table.</li>
+                    <li>Highlight or annotate the part of the query that produces the cartesian product (the joined rows).</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why is JOINED a poor default for to-many relations? (Elaborative interrogation)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 4&ndash;6 sentences: <em>Why is JOINED a poor default for to-many relations even though it produces a single query?</em> Reference cartesian explosion, row counts on the wire, and result hydration in your answer.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Dataloader-backed populate</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Install the <code>dataloader</code> package. Add a script that loads articles individually inside a <code>for</code> loop (e.g. <code>for (const id of [1, 2, 3, 4, 5]) { await em.findOne(Article, id, { populate: ['tags'], dataloader: true }); }</code>). Capture the query log and prove it batches into a single <code>SELECT ... WHERE id IN (...)</code> for the tags. Add the log snippet to your PR description.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Break partial loading on purpose</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Write a query that uses <code>fields: ['title', 'author.name']</code> on Article (or Book) <em>without</em> including the FK or the relation property name. Populate the author. Observe what happens to <code>article.author</code> in the result. Then fix it by including the FK and document the before/after in your <code>README.md</code>. The point is to make the silent failure mode visceral.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 5 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Repositories and the QueryBuilder</p>
+    </div>
+
+</div>
+
+</body>
+</html>
