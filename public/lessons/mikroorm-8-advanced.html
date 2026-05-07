@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 8</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 8 of 10</div>
+        <h1>Embeddables, Inheritance &amp; JSON</h1>
+        <div class="subtitle">When one row needs to hold a small universe</div>
+    </div>
+
+    <!-- RECAP -->
+    <div class="goals-box">
+        <h3>Where we are in the catalog</h3>
+        <ul>
+            <li><strong>L1</strong> &mdash; DataMapper, Identity Map, Unit of Work; the Records Library analogy</li>
+            <li><strong>L2</strong> &mdash; Defining entities; properties, primary keys, custom types primer</li>
+            <li><strong>L3</strong> &mdash; Relations; 1:1, 1:M, M:1, M:M; owning vs inverse side</li>
+            <li><strong>L4</strong> &mdash; EntityManager API; persist, find, populate, references</li>
+            <li><strong>L5</strong> &mdash; Loading strategies; joined vs select-in; the N+1 trap</li>
+            <li><strong>L6</strong> &mdash; Repositories &amp; QueryBuilder; FilterQuery operators</li>
+            <li><strong>L7</strong> &mdash; Migrations; <code>schema:update</code>, snapshot files, naming strategy</li>
+            <li><strong>Lesson 8 (today)</strong> &mdash; Embeddables, inheritance, JSON, virtual entities, lifecycle hooks, custom types</li>
+        </ul>
+    </div>
+
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Use embeddables to compose value objects (Address, Money, DateRange) into entities without separate tables</li>
+            <li>Pick between Single Table Inheritance, Class Table Inheritance (TPT), and the mapped superclass strategy</li>
+            <li>Type a JSONB column with <code>p.json&lt;Shape&gt;()</code> and know exactly when JSON is the wrong choice</li>
+            <li>Tell virtual entities (in-memory expression) apart from view entities (real DB view)</li>
+            <li>Wire lifecycle hooks via <code>@BeforeCreate</code> / <code>addHook</code>; know when a subscriber is the better answer</li>
+            <li>Write a custom <code>Type</code> that stores cents in DB and exposes a <code>Money</code> value object in JS</li>
+            <li>Add an <code>Address</code> embeddable, a typed <code>metadata</code> JSONB column, and a slugify hook to <code>archive-api</code></li>
+        </ul>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: EMBEDDABLES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Embeddables &mdash; Composition Without a Separate Table</h2>
+
+    <p>Until now, every entity in your library has lived in its own table. Author in <code>author</code>, Article in <code>article</code>, Tag in <code>tag</code>. That works right up until you hit the address.</p>
+
+    <p>An author has a postal address. So does the publisher, the contributor, and the customer who orders the bound volume. Five entities, five copies of the same four columns: <code>street</code>, <code>postalCode</code>, <code>city</code>, <code>country</code>. And the day the postal service renames <em>zip</em> to <em>postalCode</em>, you write five identical migrations.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4EE;</div>
+        Junior: &ldquo;I added the address to the User table. Five new columns: <code>address_street</code>, <code>address_zip</code>...&rdquo;<br>
+        Senior: &ldquo;Now do Customer.&rdquo;<br>
+        Junior: &ldquo;Five more columns.&rdquo;<br>
+        Senior: &ldquo;Now Vendor.&rdquo;<br>
+        Junior: &ldquo;...five more.&rdquo;<br>
+        Senior: &ldquo;Now product owner says rename <code>zip</code> to <code>postalCode</code>.&rdquo;<br>
+        Junior: &ldquo;Three migrations, three pull requests, three failed deploys.&rdquo;<br>
+        Senior: &ldquo;Or one embeddable.&rdquo;<br>
+        <em>Embeddables exist for exactly this. The address is a value object, not an entity.</em>
+    </div>
+
+    <h3>Cards inside cards</h3>
+
+    <div class="story-box">
+        <p>Back in the Records Library: every author has a master catalog card. Pinned to the front of that card is a smaller index card with the author's contact details &mdash; address, phone, email. The contact card is not its own filing cabinet. It has no independent identity. It belongs to the author and travels with the author. If the author leaves the library, the contact card leaves too.</p>
+        <p>That's an embeddable. It's a value object glued to the entity that owns it. No primary key of its own, no separate table by default, no independent existence.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Embeddable = sub-card on the front of the master catalog card. Same handwriting, same drawer, lives and dies with the host record.
+        </div>
+    </div>
+
+    <h3>Defining an embeddable</h3>
+
+    <p>Add the <code>embeddable: true</code> flag in <code>defineEntity</code>, then reference it from the host with <code>p.embedded(...)</code>:</p>
+
+    <pre><code><span class="comment">// src/entities/Address.ts</span>
+<span class="keyword">export const</span> Address = <span class="function">defineEntity</span>({
+  name: <span class="string">'Address'</span>,
+  embeddable: <span class="keyword">true</span>,
+  properties: {
+    street: p.<span class="function">string</span>(),
+    postalCode: p.<span class="function">string</span>(),
+    city: p.<span class="function">string</span>(),
+    country: p.<span class="function">string</span>(),
+  },
+});
+
+<span class="comment">// src/entities/Author.ts</span>
+<span class="keyword">export const</span> Author = <span class="function">defineEntity</span>({
+  name: <span class="string">'Author'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    name: p.<span class="function">string</span>(),
+    address: () <span class="keyword">=&gt;</span> p.<span class="function">embedded</span>(Address),
+  },
+});</code></pre>
+
+    <p>Don't forget to register <code>Address</code> alongside <code>Author</code> in your config's <code>entities: [...]</code> array. Embeddables go through discovery just like real entities.</p>
+
+    <h3>Two storage modes &mdash; inline columns vs JSON column</h3>
+
+    <p>Here is the part that surprises people. The same embeddable definition can be persisted two different ways depending on a single flag.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--green);">Inline (default)</div>
+            <div class="card-subtitle" style="color: var(--green);">Flattened columns</div>
+            <div class="card-desc">Each embeddable property becomes its own column on the host table, prefixed with the property name: <code>address_street</code>, <code>address_postal_code</code>, <code>address_city</code>, <code>address_country</code>. Indexable, queryable like any column, fully relational.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F4E6;</div>
+            <div class="card-title" style="color: var(--purple);">JSON object</div>
+            <div class="card-subtitle" style="color: var(--purple);">Single jsonb column</div>
+            <div class="card-desc">Whole embeddable serialized into one <code>jsonb</code> column. Use <code>p.embedded(Address).object()</code>. Compact, schema-flexible, easy to add fields without migration. Heavier to query, harder to index, JSONB updates rewrite the whole field.</div>
+        </div>
+    </div>
+
+    <p>The default &mdash; inline &mdash; is what you want most of the time. You get real columns, real indexes, real query plans. The DDL <code>schema:update</code> generates for our <code>Author</code> looks like this:</p>
+
+    <pre><code><span class="comment">create table "author" (
+  "id" bigserial primary key,
+  "name" varchar(255) not null,
+  "address_street" varchar(255) not null,
+  "address_postal_code" varchar(255) not null,
+  "address_city" varchar(255) not null,
+  "address_country" varchar(255) not null
+);</span></code></pre>
+
+    <p>Switch to JSON storage by chaining <code>.object()</code>. The same definition then produces a single <code>address jsonb</code> column instead of four flattened ones &mdash; same JS shape, very different physical layout.</p>
+
+    <p>Querying still works in both modes. <code>em.find(Author, { address: { city: <span class="string">'Stuttgart'</span> } })</code> generates an indexable WHERE in inline mode, and a JSONB path expression (<code>"address"-&gt;&gt;'city' = 'Stuttgart'</code>) in JSON mode. The query is the same JS; the SQL is not.</p>
+
+    <h3>When to pick which</h3>
+
+    <p><strong>Pick inline columns when</strong> you query individual fields often, need indexes on them, the shape is stable, or disk size matters. <strong>Pick JSON storage when</strong> you almost always read the embeddable as a whole, the shape is genuinely flexible per row, or you expect to add optional fields without migrations.</p>
+
+    <div class="info-box orange">
+        <p><strong>Array embeddables are always JSON.</strong> If you write <code>p.embedded(Address).array()</code> &mdash; an author with multiple addresses &mdash; MikroORM has to use JSON regardless of <code>.object()</code>. There is no relational way to flatten an arbitrary-length array of structs into columns.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: INHERITANCE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Inheritance &mdash; STI vs JOINED vs Mapped Superclass</h2>
+
+    <p>The next compositional question. The library catalogs <em>documents</em>: books, journals, manuscripts. They share a title, an author, a publication year. They diverge: a book has an ISBN, a journal has a volume and issue, a manuscript has a folio shelf number. How do you model that?</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">Suppose you put every <code>Book</code>, <code>Journal</code>, and <code>Manuscript</code> row into one shared <code>document</code> table with a <code>type</code> column. Then you ask: <em>find all Books with publishedYear &gt; 2000</em>. Does Postgres scan the entire <code>document</code> table, or does the WHERE narrow it efficiently? Take ten seconds and write your guess.</div>
+        <div class="recall-hint">Hint: think about what an index on <code>(type, published_year)</code> would do. The answer determines whether STI is fast or catastrophic at your scale.</div>
+    </div>
+
+    <h3>Three strategies</h3>
+
+    <p>MikroORM gives you three ways to model an inheritance hierarchy. Each has a clear winner for a clear scenario; pick wrong and you pay forever.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4DA;</div>
+            <div class="layer-name" style="color: var(--orange);">Mapped Superclass</div>
+            <div class="layer-desc">Base class is just shared property definitions. Each subclass has its own table, fully independent. No polymorphic queries.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">Single Table (STI)</div>
+            <div class="layer-desc">One table holds every subtype. A <code>discriminator</code> column says which row is which. Subtype-specific columns are nullable.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--blue);">Class Table (TPT / JOINED)</div>
+            <div class="layer-desc">One table per concrete subtype, plus a parent table. Child rows reference the parent by primary key. Every read JOINs.</div>
+        </div>
+    </div>
+
+    <h3>Single Table Inheritance &mdash; STI</h3>
+
+    <p>One table for the whole hierarchy. A discriminator column tells the ORM how to hydrate each row.</p>
+
+    <pre><code><span class="comment">// src/entities/Document.ts</span>
+<span class="keyword">export const</span> Document = <span class="function">defineEntity</span>({
+  name: <span class="string">'Document'</span>,
+  abstract: <span class="keyword">true</span>,
+  discriminatorColumn: <span class="string">'type'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    type: p.<span class="function">enum</span>([<span class="string">'book'</span>, <span class="string">'journal'</span>, <span class="string">'manuscript'</span>] <span class="keyword">as const</span>),
+    title: p.<span class="function">string</span>(),
+    publishedYear: p.<span class="function">integer</span>().<span class="function">nullable</span>(),
+  },
+});
+
+<span class="keyword">export const</span> Book = <span class="function">defineEntity</span>({
+  name: <span class="string">'Book'</span>, extends: Document, discriminatorValue: <span class="string">'book'</span>,
+  properties: { isbn: p.<span class="function">string</span>().<span class="function">nullable</span>() },
+});
+
+<span class="keyword">export const</span> Journal = <span class="function">defineEntity</span>({
+  name: <span class="string">'Journal'</span>, extends: Document, discriminatorValue: <span class="string">'journal'</span>,
+  properties: {
+    volume: p.<span class="function">integer</span>().<span class="function">nullable</span>(),
+    issue: p.<span class="function">integer</span>().<span class="function">nullable</span>(),
+  },
+});
+
+<span class="comment">// Manuscript follows the same pattern with folioShelf.</span></code></pre>
+
+    <p>The generated DDL is one table with all the columns:</p>
+
+    <pre><code><span class="comment">create table "document" (
+  "id" bigserial primary key,
+  "type" varchar(255) not null,
+  "title" varchar(255) not null,
+  "published_year" int null,
+  "isbn" varchar(255) null,
+  "volume" int null,
+  "issue" int null,
+  "folio_shelf" varchar(255) null
+);
+/* type is the discriminator; isbn is only set on books;
+   volume/issue only on journals; folio_shelf only on manuscripts */</span></code></pre>
+
+    <p>Notice that every subtype-specific column is nullable. It has to be &mdash; a journal row has no ISBN. This is the architectural cost of STI.</p>
+
+    <p>Querying is fast. <code>em.find(Book, { publishedYear: { $gt: <span class="string">2000</span> } })</code> becomes:</p>
+
+    <pre><code><span class="keyword">select</span> * <span class="keyword">from</span> <span class="string">"document"</span> <span class="keyword">where</span> <span class="string">"type"</span> = <span class="string">'book'</span> <span class="keyword">and</span> <span class="string">"published_year"</span> &gt; <span class="string">2000</span>;</code></pre>
+
+    <p>Single table, single index scan. Polymorphic queries (<code>em.find(Document, ...)</code>) work too &mdash; same table, no JOIN, hydrate to the right subclass based on the discriminator.</p>
+
+    <h3>Table-Per-Type &mdash; TPT (also called JOINED)</h3>
+
+    <p>One table per concrete type, plus a base table. The base table holds the shared columns. Each child table has the same primary key and a foreign key to the base.</p>
+
+    <pre><code><span class="comment">// same definitions, but on the base:</span>
+<span class="keyword">export const</span> Document = <span class="function">defineEntity</span>({
+  name: <span class="string">'Document'</span>,
+  abstract: <span class="keyword">true</span>,
+  inheritance: <span class="string">'tpt'</span>,  <span class="comment">// the only change</span>
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    publishedYear: p.<span class="function">integer</span>().<span class="function">nullable</span>(),
+  },
+});</code></pre>
+
+    <p>The DDL becomes three normalized tables: a base <code>document(id, title, published_year)</code>, plus <code>book(id, isbn)</code> and <code>journal(id, volume, issue)</code> &mdash; each child's <code>id</code> is both its primary key and a foreign key to <code>document(id)</code> with <code>ON DELETE CASCADE</code>.</p>
+
+    <p>Each column is properly typed and properly NOT NULL where it should be. But every read of <code>Book</code> JOINs to <code>document</code>; every insert of a <code>Book</code> writes to two tables; <code>em.find(Document, {})</code> LEFT JOINs all child tables to figure out the concrete type.</p>
+
+    <p>The full STI vs TPT trade-off is summarized in the four-quadrant diagram further below. The headline: STI is one table with nullable subtype columns and zero JOINs; TPT is N+1 normalized tables with mandatory JOINs on every read.</p>
+
+    <div class="info-box blue">
+        <p><strong>Default heuristic:</strong> reach for STI first. The hidden cost (nullable subtype columns) is real but predictable. The cost of TPT (JOIN on every read) tends to surprise people in production. Switch to TPT only when subtype divergence makes STI's nullable column count embarrassing &mdash; rule of thumb, more than ~6 unique columns per subtype, or when a subtype has its own large indexes.</p>
+    </div>
+
+    <h3>Mapped superclass &mdash; the &ldquo;just share fields&rdquo; option</h3>
+
+    <p>If you don't actually need polymorphic queries &mdash; if <code>Book</code>, <code>Journal</code>, and <code>Manuscript</code> are independent entities that just happen to share <code>title</code> and <code>publishedYear</code> &mdash; mark the base as <code>abstract: true</code> without a discriminator. Each subclass gets its own table with the inherited fields inlined. There is no <code>document</code> table at all. Useful for shared timestamp/audit fields (<code>createdAt</code>, <code>updatedAt</code>, <code>tenantId</code>) across unrelated entities.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: JSON PROPERTIES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: JSON Properties &mdash; Typed Bags of Stuff</h2>
+
+    <p>Sometimes the data is genuinely unstructured. An article has a <em>metadata</em> blob: feature flags set by the editor, a free-form list of related links, a per-article SEO override, an experimental analytics ping. None of this fits a relational column. JSON is the right answer.</p>
+
+    <h3>Defining a typed JSON column</h3>
+
+    <pre><code><span class="comment">// src/entities/Article.ts</span>
+<span class="keyword">import</span> { defineEntity, p } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">export type</span> <span class="type">ArticleMetadata</span> = {
+  featured: <span class="type">boolean</span>;
+  seoTitle?: <span class="type">string</span>;
+  relatedLinks: { href: <span class="type">string</span>; label: <span class="type">string</span> }[];
+  experimentBucket?: <span class="string">'a'</span> | <span class="string">'b'</span> | <span class="string">'c'</span>;
+};
+
+<span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    slug: p.<span class="function">string</span>().<span class="function">unique</span>(),
+    metadata: p.<span class="function">json</span>&lt;<span class="type">ArticleMetadata</span>&gt;().<span class="function">nullable</span>(),
+  },
+});</code></pre>
+
+    <p>The <code>p.json&lt;Shape&gt;()</code> helper gives you compile-time type safety on reads and writes, while persisting to a real Postgres <code>jsonb</code> column.</p>
+
+    <h3>Querying inside JSONB</h3>
+
+    <p>MikroORM lets you traverse JSON paths in <code>FilterQuery</code> just like nested objects:</p>
+
+    <pre><code><span class="keyword">const</span> featured = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {
+  metadata: { featured: <span class="keyword">true</span> },
+});
+
+<span class="comment">// Postgres: where ("metadata"-&gt;&gt;'featured')::bool = true</span></code></pre>
+
+    <p>For more complex shape-based predicates, JSONB has its own operator family that maps directly: <code>$contains</code> (<code>@&gt;</code>), <code>$contained</code> (<code>&lt;@</code>), <code>$exists</code> / <code>?</code> (top-level key exists), <code>?&amp;</code> (all listed keys exist), <code>?|</code> (any of the listed keys exist). MikroORM passes them straight through to Postgres.</p>
+
+    <h3>Indexing JSONB</h3>
+
+    <p>A JSONB column without an index is just a slow blob of bytes. Two patterns matter:</p>
+
+    <ol style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li><strong>Path index</strong> &mdash; index a single field you query often. <code>create index on article ((metadata-&gt;&gt;'featured'))</code>. Cheap, surgical.</li>
+        <li><strong>GIN index</strong> &mdash; covers any <code>@&gt;</code> / <code>?</code> / <code>?&amp;</code> query. <code>create index on article using gin (metadata)</code>. Bigger, slower to maintain, but a single index covers many query shapes.</li>
+    </ol>
+
+    <p>You declare these in MikroORM via the entity-level <code>@Index</code> hint or in a hand-written migration. For the path-index variant the helper is concise:</p>
+
+    <pre><code>properties: {
+  metadata: p.<span class="function">json</span>&lt;<span class="type">ArticleMetadata</span>&gt;().<span class="function">nullable</span>(),
+},
+indexes: [{ properties: <span class="string">'metadata.featured'</span> }],</code></pre>
+
+    <h3>The JSON trap &mdash; concurrent counters</h3>
+
+    <div class="info-box red">
+        <p><strong>Never put a counter inside JSONB.</strong> Postgres updates JSONB by rewriting the whole field. There is no native &ldquo;increment this number&rdquo; SQL for a JSON path. So if two requests both do <code>metadata.viewCount++</code> at the same time, one of them wins and the other is silently overwritten. With a plain <code>int</code> column you can use <code>UPDATE ... SET view_count = view_count + 1</code> and Postgres serializes it for you at the row level. Read-modify-write inside JSONB has no such guarantee.</p>
+    </div>
+
+    <p>The same warning applies to any field where the new value depends on the old value &mdash; toggles, accumulators, last-seen timestamps that must monotonically increase. JSONB is for shape-flexible reference data, not for hot counters.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: VIRTUAL & VIEW ENTITIES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Virtual &amp; View Entities</h2>
+
+    <p>Two read-only escape hatches for when your entity should be backed by a query, not a table.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4D1;</div>
+            <div class="card-title" style="color: var(--blue);">Virtual entity</div>
+            <div class="card-subtitle" style="color: var(--blue);">In-memory expression</div>
+            <div class="card-desc">A SQL string or QueryBuilder callback. Evaluated at query time. No database object created. No primary key. Use for ad-hoc denormalized read models.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F3DB;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--purple);">View entity</div>
+            <div class="card-subtitle" style="color: var(--purple);">Real DB view</div>
+            <div class="card-desc">Generates <code>CREATE VIEW</code> in your migrations. Has a primary key. Tracked by schema diff. Use for stable reporting views you want versioned with the schema.</div>
+        </div>
+    </div>
+
+    <h3>Virtual entity &mdash; example</h3>
+
+    <pre><code><span class="keyword">export const</span> AuthorStats = <span class="function">defineEntity</span>({
+  name: <span class="string">'AuthorStats'</span>,
+  expression: <span class="string">`
+    select a.id as author_id, a.name, count(b.id) as book_count
+    from author a
+    left join book b on b.author_id = a.id
+    group by a.id, a.name
+  `</span>,
+  properties: {
+    authorId: p.<span class="function">bigint</span>(),
+    name: p.<span class="function">string</span>(),
+    bookCount: p.<span class="function">integer</span>(),
+  },
+});
+
+<span class="keyword">const</span> stats = <span class="keyword">await</span> em.<span class="function">find</span>(AuthorStats, { bookCount: { $gt: <span class="string">5</span> } });</code></pre>
+
+    <p>Notice: no primary key. No table is created. The <code>where</code> clause from your <code>find()</code> is appended to the expression at query time.</p>
+
+    <h3>View entity &mdash; example</h3>
+
+    <p>Same shape, but add <code>view: <span class="keyword">true</span></code> and a primary key. Now <code>schema:update</code> emits a <code>CREATE VIEW</code>:</p>
+
+    <pre><code><span class="keyword">export const</span> AuthorStats = <span class="function">defineEntity</span>({
+  name: <span class="string">'AuthorStats'</span>,
+  tableName: <span class="string">'author_stats_view'</span>,
+  view: <span class="keyword">true</span>,
+  expression: <span class="string">'select ...'</span>,
+  properties: {
+    authorId: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    name: p.<span class="function">string</span>(),
+    bookCount: p.<span class="function">integer</span>(),
+  },
+});</code></pre>
+
+    <div class="info-box blue">
+        <p><strong>Both are read-only.</strong> Modifying a property and calling <code>flush()</code> is a silent no-op. If you want write-through behavior, you need a real entity backed by a real table.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: LIFECYCLE HOOKS & SUBSCRIBERS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Lifecycle Hooks &amp; Subscribers</h2>
+
+    <h3>Standing procedures, written on the entity</h3>
+
+    <div class="story-box">
+        <p>The library has standing procedures. Before any new volume gets registered, the clerk stamps today's date on the back. Before any volume goes out for binding, the catalog is updated. Before any volume is destroyed, a final entry is added to the destruction ledger.</p>
+        <p>These are not optional. They run every time, automatically, no matter who initiates the action. They live next to the operation they wrap.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Lifecycle hook = standing procedure attached to the entity. Subscriber = department-wide procedure that watches every entity. Same idea, different scope.
+        </div>
+    </div>
+
+    <h3>The hook menu</h3>
+
+    <p>MikroORM fires hooks at well-defined points in an entity's lifecycle. Every hook receives an <code>EventArgs</code> with the entity and the EntityManager.</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700); font-size: 14px;">
+        <li><code>@OnInit</code> &mdash; entity constructed via <code>em.create()</code> or hydrated from a row (synchronous only)</li>
+        <li><code>@OnLoad</code> &mdash; fully loaded from the database, not for unhydrated references (async)</li>
+        <li><code>@BeforeCreate</code> / <code>@AfterCreate</code> &mdash; around the INSERT for a new entity</li>
+        <li><code>@BeforeUpdate</code> / <code>@AfterUpdate</code> &mdash; around the UPDATE for a changed entity</li>
+        <li><code>@BeforeUpsert</code> / <code>@AfterUpsert</code> &mdash; around <code>em.upsert()</code>, the dedicated pair because upsert doesn't know its fate</li>
+        <li><code>@BeforeDelete</code> / <code>@AfterDelete</code> &mdash; around the DELETE</li>
+        <li><code>beforeFlush</code> / <code>onFlush</code> / <code>afterFlush</code> &mdash; subscriber-only, full access to the change-set list</li>
+        <li><code>beforeTransactionStart</code> / commit / rollback &mdash; subscriber-only, around the transaction boundaries</li>
+    </ul>
+
+    <h3>The canonical example &mdash; auto-slugify</h3>
+
+    <p>Every Article needs a URL slug. We could ask every caller to set it. We won't &mdash; we'll attach a standing procedure.</p>
+
+    <pre><code><span class="comment">// src/entities/Article.ts &mdash; same Article from Part 3, plus a hook</span>
+<span class="keyword">import</span> { <span class="keyword">type</span> <span class="type">EventArgs</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+Article.<span class="function">addHook</span>(<span class="string">'beforeCreate'</span>, (args: <span class="type">EventArgs</span>&lt;<span class="type">IArticle</span>&gt;) <span class="keyword">=&gt;</span> {
+  <span class="keyword">const</span> a = args.entity;
+  <span class="keyword">if</span> (!a.slug) {
+    a.slug = a.title.<span class="function">toLowerCase</span>().<span class="function">replace</span>(/[^a-z0-9]+/g, <span class="string">'-'</span>).<span class="function">replace</span>(/^-|-$/g, <span class="string">''</span>);
+  }
+});</code></pre>
+
+    <p>Now any code path that creates an Article &mdash; controller, queue handler, seed script &mdash; gets the slug for free, before the INSERT is fired. The hook runs inside the Unit of Work commit phase, after change-set computation, just before the SQL goes to the wire.</p>
+
+    <h3>@BeforeCreate hook vs the onCreate property modifier</h3>
+
+    <p>Way back in Lesson 2, you saw <code>p.datetime().onCreate(() =&gt; new Date())</code>. That's the <em>property-level</em> onCreate, not a hook. Both fire at insert time. Use which?</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li><strong><code>onCreate</code> property modifier</strong> &mdash; one field, computed from a closure that doesn't see the entity. Perfect for <code>createdAt: new Date()</code>. Local, declarative.</li>
+        <li><strong><code>@BeforeCreate</code> hook</strong> &mdash; needs access to other fields on the entity. Slug-from-title, derived totals, normalization. The hook receives the whole entity instance.</li>
+    </ul>
+
+    <h3>Subscribers &mdash; the department-wide procedure</h3>
+
+    <p>A subscriber is a separate class that listens to events from many entities. Use it when:</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li>You want the same logic applied to many entity types (audit log, soft-delete, change broadcast)</li>
+        <li>You need the change-set list across the whole flush (not one entity at a time)</li>
+        <li>You want event logic out of the entity definition for testability</li>
+    </ul>
+
+    <pre><code><span class="comment">// src/subscribers/AuditSubscriber.ts</span>
+<span class="keyword">import</span> { <span class="type">EventArgs</span>, <span class="type">EventSubscriber</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">export class</span> AuditSubscriber <span class="keyword">implements</span> <span class="type">EventSubscriber</span> {
+  <span class="keyword">async</span> <span class="function">afterCreate</span>(args: <span class="type">EventArgs</span>&lt;<span class="type">unknown</span>&gt;) {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">'created'</span>, args.changeSet?.name, args.changeSet?.entity);
+  }
+  <span class="keyword">async</span> <span class="function">afterUpdate</span>(args: <span class="type">EventArgs</span>&lt;<span class="type">unknown</span>&gt;) {
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">'updated'</span>, args.changeSet?.name, <span class="function">Object</span>.<span class="function">keys</span>(args.changeSet?.payload ?? {}));
+  }
+}
+<span class="comment">// register in mikro-orm.config.ts: subscribers: [new AuditSubscriber()]</span></code></pre>
+
+    <div class="info-box orange">
+        <p><strong>Hooks fire inside the flush. Don't call <code>em.flush()</code> from inside a hook.</strong> It throws. Don't call <code>em.persist()</code> either &mdash; you can cause undefined behavior because the change-set has already been computed. If you need to create new entities reactively, use the subscriber-level <code>beforeFlush</code> event, which fires <em>before</em> change-set computation.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: CUSTOM TYPES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Custom Types &mdash; Money, Email, Encrypted Columns</h2>
+
+    <p>Sometimes the column type and the JS type are not the same shape. Money is the canonical case: stored as <code>bigint</code> cents in the database (no float weirdness), exposed as a <code>Money { amount, currency }</code> value object in JS. <code>Email</code> stored as <code>varchar</code>, exposed as an <code>Email</code> class with validation. An encrypted column stored as <code>bytea</code>, exposed as a plain string.</p>
+
+    <p>The escape hatch is a custom <code>Type</code>. You extend the abstract <code>Type&lt;RuntimeType, RawType&gt;</code> class and implement two methods:</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li><code>convertToDatabaseValue(value, platform)</code> &mdash; JS to DB on the way in</li>
+        <li><code>convertToJSValue(value, platform)</code> &mdash; DB to JS on the way out</li>
+    </ul>
+
+    <h3>The MoneyType</h3>
+
+    <pre><code><span class="comment">// src/types/MoneyType.ts</span>
+<span class="keyword">import</span> { Type } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">export class</span> Money {
+  <span class="function">constructor</span>(<span class="keyword">public readonly</span> cents: <span class="type">bigint</span>, <span class="keyword">public readonly</span> currency: <span class="type">string</span>) {}
+  <span class="function">format</span>() { <span class="keyword">return</span> <span class="string">`${(<span class="type">Number</span>(<span class="keyword">this</span>.cents) / <span class="string">100</span>).<span class="function">toFixed</span>(<span class="string">2</span>)} ${<span class="keyword">this</span>.currency}`</span>; }
+}
+
+<span class="keyword">export class</span> MoneyType <span class="keyword">extends</span> Type&lt;Money | <span class="type">null</span>, <span class="type">string</span> | <span class="type">null</span>&gt; {
+  <span class="function">convertToDatabaseValue</span>(value: Money | <span class="type">null</span> | <span class="type">undefined</span>) {
+    <span class="keyword">return</span> value == <span class="type">null</span> ? <span class="type">null</span> : <span class="string">`${value.cents}:${value.currency}`</span>;
+  }
+  <span class="function">convertToJSValue</span>(value: <span class="type">string</span>): Money {
+    <span class="keyword">const</span> [cents, currency] = value.<span class="function">split</span>(<span class="string">':'</span>);
+    <span class="keyword">return</span> <span class="keyword">new</span> <span class="function">Money</span>(<span class="function">BigInt</span>(cents), currency);
+  }
+  <span class="function">getColumnType</span>() { <span class="keyword">return</span> <span class="string">'varchar(64)'</span>; }
+}</code></pre>
+
+    <p>Use it on a property:</p>
+
+    <pre><code>price: p.<span class="function">type</span>(MoneyType).<span class="function">$type</span>&lt;Money, <span class="type">string</span>&gt;().<span class="function">nullable</span>(),</code></pre>
+
+    <p>Now <code>article.price</code> is a <code>Money</code> instance with a <code>format()</code> method, but the database holds a humble varchar. The conversion is automatic and the type is symmetric &mdash; the same <code>Type</code> handles both directions of the round trip.</p>
+
+    <div class="info-box green">
+        <p><strong>Property validation is a related lighter-weight pattern.</strong> If you only need to reject bad input (not transform shape), use <code>p.string().check(...)</code> or a property-level setter. Custom types are for when the in-memory shape genuinely differs from the on-disk shape.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 7: HANDS-ON -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7: Hands-On &mdash; Wiring It Into archive-api</h2>
+
+    <p>Time to put four of these patterns into your existing project. By the end of this section your <code>archive-api</code> repo has an embeddable, a typed JSONB column, an STI hierarchy, and a slugify hook.</p>
+
+    <p>You'll add four files under <code>src/entities/</code>: <code>Address.ts</code>, <code>Document.ts</code>, <code>Book.ts</code>, <code>Journal.ts</code>. <code>Author.ts</code> and <code>Article.ts</code> get updated. The patterns are already shown in Parts 1, 3, 5 &mdash; each step below is just the line you change:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">1</div>
+            <div class="layer-name" style="color: var(--green);">Address on Author</div>
+            <div class="layer-desc">Create <code>src/entities/Address.ts</code> with <code>embeddable: true</code>. Add <code>address: () =&gt; p.embedded(Address)</code> to <code>Author</code>. Register <code>Address</code> in the config's <code>entities: [...]</code> list.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">2</div>
+            <div class="layer-name" style="color: var(--purple);">metadata on Article</div>
+            <div class="layer-desc">Define <code>ArticleMetadata</code> as a TS type. Add <code>metadata: p.json&lt;ArticleMetadata&gt;().nullable()</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">3</div>
+            <div class="layer-name" style="color: var(--orange);">slugify hook</div>
+            <div class="layer-desc">Use <code>Article.addHook('beforeCreate', ...)</code> to auto-generate slug from title when slug is missing.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">4</div>
+            <div class="layer-name" style="color: var(--blue);">Document/Book/Journal STI</div>
+            <div class="layer-desc">Abstract <code>Document</code> with <code>discriminatorColumn: 'type'</code>; <code>Book</code> and <code>Journal</code> extend it with their own properties and <code>discriminatorValue</code>.</div>
+        </div>
+    </div>
+
+    <h3>Verify the schema</h3>
+
+    <pre><code><span class="function">npx</span> mikro-orm schema:update --dump</code></pre>
+
+    <p>You should see one <code>document</code> table with <code>type</code>, <code>isbn</code>, <code>volume</code>, <code>issue</code> all in it; an <code>author</code> table with <code>address_street</code>, <code>address_postal_code</code>, <code>address_city</code>, <code>address_country</code> inlined; an <code>article</code> table with a <code>metadata jsonb</code> column. No <code>book</code> or <code>journal</code> table &mdash; STI puts everything in <code>document</code>. No <code>address</code> table &mdash; embeddable inlined.</p>
+
+
+    <!-- ============================================ -->
+    <!-- DIAGRAM: STORAGE STRATEGIES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">The Storage-Strategy Map</h2>
+
+    <p>One picture summarizing the four storage shapes you've seen in this lesson. Same business question (how do we store related data?), four different physical layouts, four different trade-offs.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 460" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="460" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Four ways to store related data, four trade-offs</text>
+            <defs>
+                <marker id="arr8" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1D4ED8"/>
+                </marker>
+            </defs>
+
+            <!-- Quadrant 1: Embeddable inline -->
+            <rect x="30" y="50" width="340" height="180" rx="12" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="50" y="76" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">Embeddable &mdash; inline columns</text>
+            <text x="50" y="94" font-family="JetBrains Mono" font-size="11" fill="#374151">p.embedded(Address)</text>
+            <rect x="50" y="108" width="300" height="76" rx="6" fill="white" stroke="#86EFAC"/>
+            <text x="60" y="126" font-family="JetBrains Mono" font-size="10" fill="#6B7280">author: id name addr_street addr_city</text>
+            <line x1="55" y1="132" x2="345" y2="132" stroke="#E5E7EB"/>
+            <text x="60" y="148" font-family="JetBrains Mono" font-size="10" fill="#374151">1 Tolstoy Yasnaya 1   Tula</text>
+            <text x="60" y="166" font-family="JetBrains Mono" font-size="10" fill="#374151">2 Goethe  Frauenplan  Weimar</text>
+            <text x="50" y="206" font-family="Inter" font-size="10" fill="#1A8F5C">+ indexable, queryable, fast WHERE</text>
+            <text x="50" y="220" font-family="Inter" font-size="10" fill="#DC2626">&minus; rigid shape, every change is a migration</text>
+
+            <!-- Quadrant 2: Embeddable JSON -->
+            <rect x="390" y="50" width="340" height="180" rx="12" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="410" y="76" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">Embeddable &mdash; JSON object</text>
+            <text x="410" y="94" font-family="JetBrains Mono" font-size="11" fill="#374151">p.embedded(Address).object()</text>
+            <rect x="410" y="108" width="300" height="76" rx="6" fill="white" stroke="#C4B5FD"/>
+            <text x="420" y="126" font-family="JetBrains Mono" font-size="10" fill="#6B7280">author: id name address(jsonb)</text>
+            <line x1="415" y1="132" x2="705" y2="132" stroke="#E5E7EB"/>
+            <text x="420" y="148" font-family="JetBrains Mono" font-size="10" fill="#374151">1 Tolstoy {city:Tula,...}</text>
+            <text x="420" y="166" font-family="JetBrains Mono" font-size="10" fill="#374151">2 Goethe  {city:Weimar,...}</text>
+            <text x="410" y="206" font-family="Inter" font-size="10" fill="#7C3AED">+ flexible shape, no migration to add fields</text>
+            <text x="410" y="220" font-family="Inter" font-size="10" fill="#DC2626">&minus; whole field rewrites; no atomic counters</text>
+
+            <!-- Quadrant 3: STI -->
+            <rect x="30" y="244" width="340" height="200" rx="12" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="50" y="270" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">Inheritance &mdash; STI</text>
+            <text x="50" y="288" font-family="JetBrains Mono" font-size="11" fill="#374151">discriminatorColumn: 'type'</text>
+            <rect x="50" y="302" width="300" height="92" rx="6" fill="white" stroke="#FCD34D"/>
+            <text x="60" y="320" font-family="JetBrains Mono" font-size="10" fill="#6B7280">document: id type title isbn vol issue</text>
+            <line x1="55" y1="326" x2="345" y2="326" stroke="#E5E7EB"/>
+            <text x="60" y="342" font-family="JetBrains Mono" font-size="10" fill="#374151">1 book    Faust  978-.. NULL NULL</text>
+            <text x="60" y="360" font-family="JetBrains Mono" font-size="10" fill="#374151">2 journal Lancet NULL   321  9</text>
+            <text x="60" y="378" font-family="JetBrains Mono" font-size="10" fill="#374151">3 book    W&amp;P    978-.. NULL NULL</text>
+            <text x="50" y="416" font-family="Inter" font-size="10" fill="#1A8F5C">+ single scan, no JOIN, fast polymorphic queries</text>
+            <text x="50" y="430" font-family="Inter" font-size="10" fill="#DC2626">&minus; subtype columns are forced nullable</text>
+
+            <!-- Quadrant 4: TPT -->
+            <rect x="390" y="244" width="340" height="200" rx="12" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+            <text x="410" y="270" font-family="Inter" font-weight="700" font-size="13" fill="#1D4ED8">Inheritance &mdash; TPT (JOINED)</text>
+            <text x="410" y="288" font-family="JetBrains Mono" font-size="11" fill="#374151">inheritance: 'tpt'</text>
+            <rect x="410" y="302" width="140" height="44" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="418" y="318" font-family="JetBrains Mono" font-size="9" fill="#6B7280">document</text>
+            <text x="418" y="332" font-family="JetBrains Mono" font-size="9" fill="#374151">id title</text>
+            <rect x="570" y="302" width="140" height="44" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="578" y="318" font-family="JetBrains Mono" font-size="9" fill="#6B7280">book</text>
+            <text x="578" y="332" font-family="JetBrains Mono" font-size="9" fill="#374151">id isbn</text>
+            <rect x="410" y="354" width="140" height="44" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="418" y="370" font-family="JetBrains Mono" font-size="9" fill="#6B7280">document</text>
+            <text x="418" y="384" font-family="JetBrains Mono" font-size="9" fill="#374151">id title</text>
+            <rect x="570" y="354" width="140" height="44" rx="6" fill="white" stroke="#93C5FD"/>
+            <text x="578" y="370" font-family="JetBrains Mono" font-size="9" fill="#6B7280">journal</text>
+            <text x="578" y="384" font-family="JetBrains Mono" font-size="9" fill="#374151">id vol issue</text>
+            <line x1="550" y1="324" x2="570" y2="324" stroke="#1D4ED8" stroke-width="1.5" marker-end="url(#arr8)"/>
+            <line x1="550" y1="376" x2="570" y2="376" stroke="#1D4ED8" stroke-width="1.5" marker-end="url(#arr8)"/>
+            <text x="410" y="416" font-family="Inter" font-size="10" fill="#1A8F5C">+ normalized, proper NOT NULL constraints</text>
+            <text x="410" y="430" font-family="Inter" font-size="10" fill="#DC2626">&minus; every read is a JOIN; every insert is two writes</text>
+        </svg>
+        <div class="diagram-caption">Same Records Library data, four physical layouts. Pick by query shape and write frequency, not by aesthetics.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- RECALL & SUMMARY -->
+    <!-- ============================================ -->
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up, answer these:<br><br>
+        1. Why is putting an integer counter inside a JSONB column dangerous, while putting it in a plain <code>int</code> column is safe?<br>
+        2. When does STI beat TPT, and when does TPT beat STI?<br>
+        3. What's the difference between the property-level <code>p.datetime().onCreate(...)</code> modifier and a <code>@BeforeCreate</code> hook? When would you pick which?<br>
+        4. Inline-column embeddable vs JSON-object embeddable &mdash; which one lets you put a B-tree index on <code>address.city</code>?</div>
+        <div class="recall-hint">4/4: ready for Lesson 9. 2-3/4: re-read Parts 3 and 5. The JSONB vs int counter answer is the most important one in this lesson; if it didn't click, find a senior and ask them about MVCC.</div>
+    </div>
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4C7;</div>
+            <div class="layer-name" style="color: var(--green);">Embeddables</div>
+            <div class="layer-desc">Value objects glued to a host entity. Inline columns by default; <code>.object()</code> switches to JSONB. Same JS shape, two physical layouts.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">Inheritance</div>
+            <div class="layer-desc">STI: one table, discriminator column, fast scans, nullable subtype columns. TPT: one table per type, JOINs on every read, normalized. Mapped superclass: just shared properties, no polymorphism.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--purple);">JSON properties</div>
+            <div class="layer-desc"><code>p.json&lt;Shape&gt;()</code> for typed JSONB. Index with path or GIN. Never put a counter inside &mdash; whole-field rewrites lose updates.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4D1;</div>
+            <div class="layer-name" style="color: var(--blue);">Virtual &amp; view entities</div>
+            <div class="layer-desc">Virtual: in-memory expression evaluated at query time. View: real CREATE VIEW tracked by schema. Both read-only.</div>
+        </div>
+        <div class="layer-item" style="background: #FFFBEB;">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: #D97706;">Hooks &amp; subscribers</div>
+            <div class="layer-desc">Hooks live on the entity for entity-specific procedures. Subscribers live separately for cross-entity logic and flush-level events. Don't call <code>flush()</code> from inside a hook.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4B0;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Custom types</div>
+            <div class="layer-desc">Extend <code>Type&lt;Runtime, Raw&gt;</code> when the JS shape and DB shape differ. Money, Email, encrypted columns. Two methods: <code>convertToDatabaseValue</code>, <code>convertToJSValue</code>.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 9:</strong> we plug the Records Library into the airport. <code>@mikro-orm/nestjs</code>, <code>MikroOrmModule.forRoot</code> / <code>forFeature</code>, request-scoped EntityManager, <code>@CreateRequestContext</code> for queue handlers and cron jobs, and the <code>@Transactional</code> decorator. By the end of L9, your <code>archive-api</code> is a NestJS service.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Add the Address embeddable, the typed metadata jsonb, and the slugify hook</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add <code>Address</code> as <code>embeddable: true</code> and embed it on <code>Author</code> in inline mode (default).</li>
+                    <li>Add a typed <code>metadata: jsonb</code> column to <code>Article</code> using <code>p.json&lt;ArticleMetadata&gt;()</code>.</li>
+                    <li>Add a <code>beforeCreate</code> hook on <code>Article</code> that auto-generates <code>slug</code> from <code>title</code>.</li>
+                    <li>Push to your <code>mikroorm-course-yourname</code> repo. Submit the PR URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Screenshot the generated DDL</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Run <code>npx mikro-orm schema:update --dump</code>.</li>
+                    <li>Capture the <code>create table "author"</code> portion. The screenshot should show the four <code>address_*</code> columns inlined directly into the authors table &mdash; proof that the embeddable was flattened, not put into a separate table.</li>
+                    <li>Submit the screenshot.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why is a counter inside JSONB dangerous? (Elaborative interrogation)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 4&ndash;6 sentences: explain why putting an integer counter inside a JSONB column is dangerous under concurrent writes, while putting the same counter in a plain <code>int</code> column is safe.</li>
+                    <li>Reference how Postgres updates JSONB internally (whole-field rewrite vs in-place column update) and why that matters for read-modify-write.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Implement a MoneyType custom type</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Write a <code>MoneyType</code> that stores cents as a <code>bigint</code> in the database and exposes a <code>Money { amount: bigint, currency: string }</code> value object in JS. Add it to a new <code>Article.priceCents</code> property. Confirm via the generated SQL that the column is a real <code>bigint</code>, not a varchar. Add a small demo in <code>main.ts</code> that creates an Article with a price, flushes, re-reads it, and asserts the value object survives the round trip. Capture the query log and add it to the repo's <code>README.md</code>.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Build the STI Document hierarchy</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add an STI inheritance hierarchy: abstract <code>Document</code> base with <code>title</code> and <code>publishedYear</code>, and three concrete subclasses &mdash; <code>Book</code> (with <code>isbn</code>), <code>Journal</code> (with <code>volume</code>, <code>issue</code>), <code>Manuscript</code> (with <code>folioShelf</code>). Insert one row of each. Then write one polymorphic query: <code>em.find(Document, {})</code> should return all three rows correctly typed as <code>Book | Journal | Manuscript</code>. Capture the generated SQL (it should be a single SELECT, no JOINs) and add it to your <code>README.md</code>.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 8 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: MikroORM in NestJS &mdash; Modules, Request Scope, and Transactions</p>
+    </div>
+
+</div>
+
+</body>
+</html>

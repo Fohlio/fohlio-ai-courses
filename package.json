@@ -17,7 +17,8 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx scripts/create-admin.ts",
     "db:backfill": "tsx scripts/backfill-legacy-course.ts",
-    "db:nestjs": "tsx scripts/create-nestjs-course.ts"
+    "db:nestjs": "tsx scripts/create-nestjs-course.ts",
+    "db:mikroorm": "tsx scripts/create-mikroorm-course.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.3.0",

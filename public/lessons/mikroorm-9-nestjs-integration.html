@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 9</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 9 of 10</div>
+        <h1>MikroORM in NestJS</h1>
+        <div class="subtitle">Modules, Request Scope, and Transactions</div>
+    </div>
+
+    <!-- RECAP -->
+    <div class="goals-box">
+        <h3>Where we are in the catalog</h3>
+        <ul>
+            <li><strong>L1</strong> &mdash; DataMapper, Identity Map, Unit of Work; the Records Library</li>
+            <li><strong>L2</strong> &mdash; Defining entities; properties, primary keys</li>
+            <li><strong>L3</strong> &mdash; Relations; owning vs inverse</li>
+            <li><strong>L4</strong> &mdash; EntityManager API; persist, find, populate</li>
+            <li><strong>L5</strong> &mdash; Loading strategies; joined vs select-in</li>
+            <li><strong>L6</strong> &mdash; Repositories &amp; QueryBuilder</li>
+            <li><strong>L7</strong> &mdash; Migrations &amp; schema diff</li>
+            <li><strong>L8</strong> &mdash; Embeddables, inheritance, JSON, hooks, custom types</li>
+            <li><strong>Lesson 9 (today)</strong> &mdash; Plug the Records Library into NestJS</li>
+        </ul>
+    </div>
+
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Wire <code>MikroOrmModule.forRoot()</code> and <code>forFeature()</code> into a NestJS app</li>
+            <li>Inject <code>EntityManager</code> and <code>EntityRepository&lt;T&gt;</code> from the DI container with full request isolation</li>
+            <li>Use <code>@CreateRequestContext()</code> for queue handlers, cron jobs, and other code outside the HTTP cycle</li>
+            <li>Pick between <code>@Transactional()</code>, <code>em.transactional()</code>, and the implicit transaction in <code>flush()</code></li>
+            <li>Implement a Transactional Outbox so domain events can never get lost between commit and broker publish</li>
+            <li>Convert <code>archive-api</code> into a real NestJS service with a Book controller, service, and atomic create</li>
+        </ul>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 1: THE INTEGRATION PACKAGE -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Integration Package</h2>
+
+    <p>Back in the NestJS course we said modules are terminals at an airport. Each terminal owns a piece of the operation; you walk between them through controlled gates. Today we equip a terminal with a Records Library &mdash; a records desk inside the terminal where every counter agent can request, modify, and file documents.</p>
+
+    <div class="story-box">
+        <p>Imagine a terminal at the airport that handles passport renewals. It needs a records library: every passport application has a paper trail, every renewal updates the master catalog, every batch of renewals at end of shift gets signed off. We don't want each agent to walk to a city-wide archive every time. We want a desk inside the terminal, with the same library protocols, scoped to that terminal's traffic.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> NestJS module = terminal. <code>MikroOrmModule.forRoot()</code> = installing the records desk. <code>forFeature([Book])</code> = the specialist clerk who only handles books. <code>RequestContext</code> middleware = a fresh ledger handed to every passenger as they walk in.
+        </div>
+    </div>
+
+    <h3>Install</h3>
+
+    <pre><code><span class="function">npm</span> install @mikro-orm/core @mikro-orm/nestjs @mikro-orm/postgresql
+<span class="function">npm</span> install @nestjs/common @nestjs/core @nestjs/platform-express
+<span class="function">npm</span> install reflect-metadata rxjs</code></pre>
+
+    <p>Three groups. <code>@mikro-orm/nestjs</code> is the bridge package &mdash; it provides <code>MikroOrmModule</code>, the DI-aware <code>@InjectRepository</code> decorator, and the request-scope middleware. The Nest packages are standard. <code>reflect-metadata</code> is required for Nest's own decorators (it's not used by MikroORM <code>defineEntity</code>, but Nest wants it).</p>
+
+    <h3>The forRoot / forFeature pattern</h3>
+
+    <p>You'll recognize this shape if you've used <code>TypeOrmModule</code>. Two methods, two responsibilities.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F3DB;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--blue);">forRoot(config)</div>
+            <div class="card-subtitle" style="color: var(--blue);">Once, in AppModule</div>
+            <div class="card-desc">Boots the ORM, opens the Postgres pool, registers the request-context middleware, exposes the global <code>EntityManager</code> and <code>MikroORM</code> providers.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F50D;</div>
+            <div class="card-title" style="color: var(--green);">forFeature([Book])</div>
+            <div class="card-subtitle" style="color: var(--green);">Per feature module</div>
+            <div class="card-desc">Registers <code>EntityRepository&lt;Book&gt;</code> in the DI container so a service in this module can <code>@InjectRepository(Book)</code>. No new connection, just typed handles.</div>
+        </div>
+    </div>
+
+    <h3>Wiring the AppModule</h3>
+
+    <pre><code><span class="comment">// src/app.module.ts</span>
+<span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { MikroOrmModule } <span class="keyword">from</span> <span class="string">'@mikro-orm/nestjs'</span>;
+<span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'./mikro-orm.config'</span>;
+<span class="keyword">import</span> { BookModule } <span class="keyword">from</span> <span class="string">'./book/book.module'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [
+    MikroOrmModule.<span class="function">forRoot</span>(config),
+    BookModule,
+  ],
+})
+<span class="keyword">export class</span> AppModule {}</code></pre>
+
+    <pre><code><span class="comment">// src/book/book.module.ts</span>
+<span class="keyword">import</span> { Module } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { MikroOrmModule } <span class="keyword">from</span> <span class="string">'@mikro-orm/nestjs'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'../entities/Book'</span>;
+<span class="keyword">import</span> { BookController } <span class="keyword">from</span> <span class="string">'./book.controller'</span>;
+<span class="keyword">import</span> { BookService } <span class="keyword">from</span> <span class="string">'./book.service'</span>;
+
+<span class="decorator">@Module</span>({
+  imports: [MikroOrmModule.<span class="function">forFeature</span>([Book])],
+  controllers: [BookController],
+  providers: [BookService],
+})
+<span class="keyword">export class</span> BookModule {}</code></pre>
+
+    <p>Note: <code>forRoot</code> takes the same config object you've been using since Lesson 1 &mdash; the <code>defineConfig</code> result from <code>mikro-orm.config.ts</code>. Nothing about your entity definitions changes.</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 2: REQUEST-SCOPED ENTITY MANAGER -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: The Request-Scoped EntityManager</h2>
+
+    <p>Now the part that quietly does the most work. Remember Lesson 1: the global <code>orm.em</code> is a factory; you must <code>fork()</code> per request or you poison the Identity Map across users. In Express we wired this with <code>RequestContext.create</code> in middleware. In Nest, the <code>@mikro-orm/nestjs</code> package wires it for you, automatically, on every HTTP request.</p>
+
+    <h3>How it works under the hood</h3>
+
+    <ol style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li>An HTTP request arrives. Nest's HTTP layer dispatches to your controller.</li>
+        <li>Before the route handler, the <code>MikroOrmMiddleware</code> calls <code>RequestContext.create(orm.em, next)</code>.</li>
+        <li><code>RequestContext.create</code> wraps the rest of the request inside an <code>AsyncLocalStorage</code> frame containing a fresh <code>em.fork()</code>.</li>
+        <li>Anywhere downstream &mdash; controller, service, repository, even helper modules &mdash; injecting <code>EntityManager</code> resolves to <em>that</em> fork.</li>
+        <li>The response is sent. The fork is dropped. Garbage collection reclaims the Identity Map.</li>
+    </ol>
+
+    <h3>Injecting EntityManager and EntityRepository</h3>
+
+    <pre><code><span class="comment">// src/book/book.service.ts</span>
+<span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { InjectRepository } <span class="keyword">from</span> <span class="string">'@mikro-orm/nestjs'</span>;
+<span class="keyword">import</span> { EntityManager, EntityRepository } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'../entities/Book'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> BookService {
+  <span class="function">constructor</span>(
+    <span class="keyword">private readonly</span> em: EntityManager,
+    <span class="decorator">@InjectRepository</span>(Book)
+    <span class="keyword">private readonly</span> bookRepo: EntityRepository&lt;Book&gt;,
+  ) {}
+
+  <span class="keyword">async</span> <span class="function">findAll</span>() {
+    <span class="keyword">return</span> <span class="keyword">this</span>.bookRepo.<span class="function">findAll</span>();
+  }
+}</code></pre>
+
+    <p>Notice both options work side-by-side. Inject the bare <code>EntityManager</code> for general use; inject a typed <code>EntityRepository&lt;Book&gt;</code> when you want a typed handle scoped to one entity. They share the same fork &mdash; the repository is a thin wrapper around the EM.</p>
+
+    <div class="info-box orange">
+        <p><strong>Import the EntityManager from your driver package</strong> &mdash; <code>@mikro-orm/postgresql</code>, not <code>@mikro-orm/core</code>. The driver package re-exports a more specific type that includes <code>createQueryBuilder</code> and other Postgres-specific methods. Import from core and you'll lose those at compile time.</p>
+    </div>
+
+    <h3>The injected EM is a fork, not the global</h3>
+
+    <p>This is the cognitive trap most TypeORM refugees hit. When you write <code>private readonly em: EntityManager</code>, what you actually receive is a proxy. Internally, every method call (<code>find</code>, <code>persist</code>, <code>flush</code>) routes through <code>orm.em.getContext()</code>, which checks the AsyncLocalStorage and returns the request-scoped fork. So the BookService class is a singleton, but each method call resolves to a different fork depending on which request is in flight.</p>
+
+    <p>Two consequences:</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li><strong>Don't hold entities in class fields</strong>. <code>this.cachedBook = await em.findOne(Book, 1)</code> in a singleton service is a leak. The next request gets a stale entity from a closed fork.</li>
+        <li><strong>Don't pass EM instances to other services through method arguments</strong> when they could just inject their own. Each service should resolve to the contextual fork on its own. Passing the EM around bypasses the contextual lookup and can pin you to the wrong fork.</li>
+    </ul>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DD;</div>
+        TypeORM dev: &ldquo;I cached the User entity on the service for performance.&rdquo;<br>
+        Senior: &ldquo;On a singleton service?&rdquo;<br>
+        TypeORM dev: &ldquo;Yes! It's the same user every time.&rdquo;<br>
+        Senior: &ldquo;...for which request?&rdquo;<br>
+        TypeORM dev: &ldquo;Why would that&hellip; oh.&rdquo;<br>
+        <em>Request scope is the answer; <code>@CreateRequestContext</code> is the patch when you're outside a request.</em>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 3: BACKGROUND WORKERS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Background Workers &mdash; @CreateRequestContext</h2>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">A Bull queue handler in your Nest app calls <code>em.find(Book, 1)</code>. There is no HTTP request in flight, no middleware ever ran, no AsyncLocalStorage frame was opened. Predict: does it work, throw, or silently use the wrong scope?</div>
+        <div class="recall-hint">There's a config flag (<code>allowGlobalContext</code>) that changes the answer. Without it, MikroORM 7 detects the missing fork. With it, you get worse than an error &mdash; you get cross-request bleed. The decorator we're about to introduce is the right answer.</div>
+    </div>
+
+    <h3>Outside the request, there's no fork</h3>
+
+    <p>The Nest middleware runs only on HTTP traffic. Three places where you do not have a request:</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li><strong>Queue handlers</strong> (Bull, BullMQ, RabbitMQ consumers, SQS) &mdash; the message arrives in a worker loop, not via HTTP</li>
+        <li><strong>Scheduled tasks</strong> (<code>@Cron</code>, setInterval, any timer) &mdash; the runtime fires the callback on its own thread of control</li>
+        <li><strong>App lifecycle hooks</strong> (<code>OnModuleInit</code>, bootstrap scripts, seed runners)</li>
+    </ul>
+
+    <p>In all three, calling <code>em.find()</code> on the injected EM with no fork would either throw (with <code>allowGlobalContext: false</code>, the safe default in v7+) or silently return an entity from the global EM, which is exactly the cross-request bleed scenario.</p>
+
+    <h3>The fix: @CreateRequestContext</h3>
+
+    <p>Decorate the top-level method that owns the work. The decorator wraps the method body in <code>RequestContext.create(orm.em, ...)</code> &mdash; identical to what the HTTP middleware does, just triggered by the decorator instead.</p>
+
+    <pre><code><span class="comment">// src/jobs/cleanup.consumer.ts</span>
+<span class="keyword">import</span> { Process, Processor } <span class="keyword">from</span> <span class="string">'@nestjs/bull'</span>;
+<span class="keyword">import</span> { CreateRequestContext, MikroORM } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> { EntityManager } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'../entities/Book'</span>;
+
+<span class="decorator">@Processor</span>(<span class="string">'cleanup'</span>)
+<span class="keyword">export class</span> CleanupConsumer {
+  <span class="function">constructor</span>(
+    <span class="comment">// MikroORM is required by the decorator</span>
+    <span class="keyword">private readonly</span> orm: MikroORM,
+    <span class="keyword">private readonly</span> em: EntityManager,
+  ) {}
+
+  <span class="decorator">@Process</span>(<span class="string">'archive-stale-books'</span>)
+  <span class="keyword">async</span> <span class="function">handleJob</span>(job: { data: { cutoff: <span class="type">string</span> } }) {
+    <span class="keyword">await</span> <span class="keyword">this</span>.<span class="function">archiveStale</span>(<span class="keyword">new</span> <span class="function">Date</span>(job.data.cutoff));
+  }
+
+  <span class="decorator">@CreateRequestContext</span>()
+  <span class="keyword">async</span> <span class="function">archiveStale</span>(cutoff: <span class="type">Date</span>) {
+    <span class="keyword">const</span> stale = <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">find</span>(Book, { lastSeen: { $lt: cutoff } });
+    <span class="keyword">for</span> (<span class="keyword">const</span> b <span class="keyword">of</span> stale) b.archived = <span class="keyword">true</span>;
+    <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">flush</span>();
+  }
+}</code></pre>
+
+    <p>Two subtle things:</p>
+
+    <ol style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li>The decorator goes on a separate method (<code>archiveStale</code>), not on <code>handleJob</code>. <code>@Process</code> from Bull and <code>@CreateRequestContext</code> can fight over the function reference; the safe pattern is one wrapper method that the queue calls, which then calls the decorated worker method.</li>
+        <li>You must inject <code>MikroORM</code> on the constructor &mdash; the decorator looks it up by reflection. Without it, you get a runtime error the first time the job fires.</li>
+    </ol>
+
+    <h3>@EnsureRequestContext &mdash; the lighter-touch sibling</h3>
+
+    <p><code>@CreateRequestContext()</code> always creates a new fork, even if one already exists. <code>@EnsureRequestContext()</code> reuses the existing context if one is in scope, only creating a new fork when there isn't one. Use it on helper methods that might be called from both HTTP handlers (already have a fork) and queue handlers (don't).</p>
+
+
+    <!-- ============================================ -->
+    <!-- PART 4: TRANSACTIONS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Transactions in NestJS</h2>
+
+    <p>You already use a transaction every time you call <code>flush()</code>. By default MikroORM wraps the change-set in <code>BEGIN ... COMMIT</code> implicitly. But there are three escalation levels for when implicit isn't enough.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2728;</div>
+            <div class="layer-name" style="color: var(--green);">1. Implicit (default)</div>
+            <div class="layer-desc"><code>em.flush()</code> opens its own transaction. One business operation = one flush = one transaction. Good for simple writes.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--blue);">2. <code>@Transactional()</code></div>
+            <div class="layer-desc">Decorator on a service method. Wraps the whole method in <code>em.transactional()</code>. Use when one method spans multiple flushes that must be atomic.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4D1;</div>
+            <div class="layer-name" style="color: var(--purple);">3. <code>em.transactional(...)</code></div>
+            <div class="layer-desc">Explicit callback. Use when the transaction boundary doesn't align with a method boundary, or you want isolation level / propagation control.</div>
+        </div>
+    </div>
+
+    <h3>The @Transactional decorator</h3>
+
+    <pre><code><span class="comment">// src/book/book.service.ts</span>
+<span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Transactional } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> { EntityManager } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'../entities/Book'</span>;
+<span class="keyword">import</span> { AuditLog } <span class="keyword">from</span> <span class="string">'../entities/AuditLog'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> BookService {
+  <span class="function">constructor</span>(<span class="keyword">private readonly</span> em: EntityManager) {}
+
+  <span class="decorator">@Transactional</span>()
+  <span class="keyword">async</span> <span class="function">createWithLog</span>(dto: { title: <span class="type">string</span>; author: <span class="type">string</span> }) {
+    <span class="keyword">const</span> book = <span class="keyword">this</span>.em.<span class="function">create</span>(Book, dto);
+    <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">flush</span>();   <span class="comment">// gets the new id</span>
+
+    <span class="keyword">this</span>.em.<span class="function">create</span>(AuditLog, {
+      action: <span class="string">'book.created'</span>,
+      bookId: book.id,
+      ts: <span class="keyword">new</span> <span class="function">Date</span>(),
+    });
+    <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">flush</span>();   <span class="comment">// part of the same transaction</span>
+
+    <span class="keyword">return</span> book;
+  }
+}</code></pre>
+
+    <p>Both flushes happen inside the same <code>BEGIN ... COMMIT</code>. If the second one throws (constraint violation, network blip), the book insert rolls back too &mdash; even though it had already been flushed to the database. That's the difference between flushed and committed.</p>
+
+    <h3>Why not put @Transactional on a controller?</h3>
+
+    <div class="info-box red">
+        <p><strong>Anti-pattern: <code>@Transactional</code> on a controller method.</strong> Controllers are responsible for HTTP shape &mdash; parsing requests, authn/authz, response codes, content negotiation. They are not responsible for business invariants. The transaction boundary belongs to the unit of business work, which lives in the service. Putting it on the controller couples HTTP concerns to database concerns and means a unit-test of the service can't see the transactional behavior. Always push it down one layer.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 5: TRANSACTIONAL OUTBOX -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: The Transactional Outbox Pattern</h2>
+
+    <p>One particular kind of multi-step work is so common and so easy to get wrong that it deserves its own pattern. You have an HTTP handler that does two things: <em>write a row to the database</em>, and <em>publish an event to Kafka / RabbitMQ / SNS / a webhook</em>. Both must happen, or neither should.</p>
+
+    <h3>The naive approach is wrong</h3>
+
+    <pre><code><span class="comment">// DON'T DO THIS</span>
+<span class="keyword">async</span> <span class="function">createBook</span>(dto) {
+  <span class="keyword">const</span> book = <span class="keyword">this</span>.em.<span class="function">create</span>(Book, dto);
+  <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">flush</span>();
+  <span class="keyword">await</span> <span class="keyword">this</span>.kafka.<span class="function">publish</span>(<span class="string">'book.created'</span>, book);  <span class="comment">// crash window!</span>
+}</code></pre>
+
+    <p>Flush succeeds. Then the process crashes (OOM kill, deploy rollover, network partition). The Kafka publish never happens. The book exists in your database, but no downstream service ever hears about it. The system is forever inconsistent and there's no audit trail of what was lost.</p>
+
+    <p>Flipping the order doesn't help &mdash; publish first, write second is just as bad in the opposite direction (Kafka has the event but the book never got persisted).</p>
+
+    <h3>The pattern: write the event into a row, in the same transaction</h3>
+
+    <div class="story-box">
+        <p>The library has a "pending publication" tray. Whenever a record gets sealed at the end of shift, anything that needs to leave the building (an outgoing letter, a notice to another archive, a press release) is dropped into the tray as part of the same sign-off. The head librarian's signature commits both the master register entry and the pending-publication slip together &mdash; or neither, if the shift is rolled back.</p>
+        <p>A separate clerk &mdash; the dispatcher &mdash; runs a loop on a different schedule. They walk the tray, send everything in it, mark each item as sent, repeat. If they miss a beat, the items wait. If they crash mid-walk, the next dispatcher picks up the unprocessed items.</p>
+        <div class="tech-note">
+            <strong>The mapping:</strong> Pending-publication tray = <code>outbox</code> table. Sign-off = the same transaction that wrote the business row. Dispatcher = a cron worker draining the outbox. Idempotency = the dispatcher always marks rows as processed, never republishes the same row.
+        </div>
+    </div>
+
+    <h3>The Outbox entity</h3>
+
+    <pre><code><span class="comment">// src/entities/OutboxEvent.ts</span>
+<span class="keyword">import</span> { defineEntity, p } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">export const</span> OutboxEvent = <span class="function">defineEntity</span>({
+  name: <span class="string">'OutboxEvent'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    eventType: p.<span class="function">string</span>(),
+    payload: p.<span class="function">json</span>&lt;<span class="type">Record</span>&lt;<span class="type">string</span>, <span class="type">unknown</span>&gt;&gt;(),
+    createdAt: p.<span class="function">datetime</span>().<span class="function">onCreate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>()),
+    processed: p.<span class="function">boolean</span>().<span class="function">default</span>(<span class="keyword">false</span>),
+  },
+});</code></pre>
+
+    <h3>Writing inside the same flush</h3>
+
+    <pre><code><span class="decorator">@Transactional</span>()
+<span class="keyword">async</span> <span class="function">createBook</span>(dto: { title: <span class="type">string</span>; author: <span class="type">string</span> }) {
+  <span class="keyword">const</span> book = <span class="keyword">this</span>.em.<span class="function">create</span>(Book, dto);
+  <span class="keyword">this</span>.em.<span class="function">create</span>(OutboxEvent, {
+    eventType: <span class="string">'book.created'</span>,
+    payload: { title: dto.title, author: dto.author },
+  });
+  <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">flush</span>();
+  <span class="keyword">return</span> book;
+}</code></pre>
+
+    <p>One flush, one transaction, two rows. They commit or roll back together &mdash; the database itself enforces atomicity.</p>
+
+    <h3>The dispatcher</h3>
+
+    <pre><code><span class="comment">// src/jobs/outbox.dispatcher.ts</span>
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> OutboxDispatcher {
+  <span class="function">constructor</span>(
+    <span class="keyword">private readonly</span> orm: MikroORM,
+    <span class="keyword">private readonly</span> em: EntityManager,
+  ) {}
+
+  <span class="decorator">@Cron</span>(<span class="string">'*/5 * * * * *'</span>)  <span class="comment">// every 5 seconds</span>
+  <span class="decorator">@CreateRequestContext</span>()
+  <span class="keyword">async</span> <span class="function">drain</span>() {
+    <span class="keyword">const</span> events = <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">find</span>(
+      OutboxEvent,
+      { processed: <span class="keyword">false</span> },
+      { orderBy: { createdAt: <span class="string">'ASC'</span> }, limit: <span class="string">100</span> },
+    );
+
+    <span class="keyword">for</span> (<span class="keyword">const</span> e <span class="keyword">of</span> events) {
+      <span class="function">console</span>.<span class="function">log</span>(<span class="string">'publishing'</span>, e.eventType, e.payload);
+      <span class="comment">// real implementation: await broker.publish(e.eventType, e.payload);</span>
+      e.processed = <span class="keyword">true</span>;
+    }
+
+    <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">flush</span>();
+  }
+}</code></pre>
+
+    <div class="info-box orange">
+        <p><strong>At-least-once, not exactly-once.</strong> If the dispatcher crashes after publishing but before the flush that marks rows processed, those events get re-published next run. Consumers must be idempotent. With multiple dispatchers, use <code>FOR UPDATE SKIP LOCKED</code> (<code>lockMode: LockMode.PESSIMISTIC_PARTIAL_WRITE</code>) so two workers don't race for the same row.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- DIAGRAM: REQUEST FLOW -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">The Request-Flow Picture</h2>
+
+    <p>One picture for the whole life of an HTTP request through a NestJS app with MikroORM wired in. This is the diagram to internalize for L9.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 540" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="540" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Life of one HTTP request through a NestJS + MikroORM app</text>
+
+            <defs>
+                <marker id="arr9" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+                <marker id="arr9g" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <!-- Step 1: HTTP request -->
+            <rect x="30" y="50" width="700" height="44" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="55" y="78" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">1. HTTP request arrives</text>
+            <text x="240" y="78" font-family="Inter" font-size="12" fill="#6B7280">POST /books { title, author } &mdash; Nest's HTTP adapter accepts it</text>
+            <line x1="380" y1="94" x2="380" y2="110" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr9)"/>
+
+            <!-- Step 2: middleware -->
+            <rect x="30" y="114" width="700" height="44" rx="8" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="55" y="142" font-family="Inter" font-weight="600" font-size="13" fill="#D97706">2. MikroOrmMiddleware</text>
+            <text x="240" y="142" font-family="Inter" font-size="12" fill="#6B7280">Calls RequestContext.create(orm.em, next) &mdash; opens AsyncLocalStorage</text>
+            <line x1="380" y1="158" x2="380" y2="174" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr9)"/>
+
+            <!-- Step 3: forked EM -->
+            <rect x="30" y="178" width="700" height="44" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="55" y="206" font-family="Inter" font-weight="600" font-size="13" fill="#7C3AED">3. Forked EntityManager</text>
+            <text x="240" y="206" font-family="Inter" font-size="12" fill="#6B7280">Fresh Identity Map + Unit of Work, scoped to this request only</text>
+            <line x1="380" y1="222" x2="380" y2="238" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr9)"/>
+
+            <!-- Step 4: controller -->
+            <rect x="30" y="242" width="700" height="44" rx="8" fill="#E6F9F0" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="55" y="270" font-family="Inter" font-weight="600" font-size="13" fill="#1A8F5C">4. BookController.create</text>
+            <text x="240" y="270" font-family="Inter" font-size="12" fill="#6B7280">Validates DTO, delegates to BookService &mdash; never owns the transaction</text>
+            <line x1="380" y1="286" x2="380" y2="302" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr9)"/>
+
+            <!-- Step 5: service -->
+            <rect x="30" y="306" width="700" height="44" rx="8" fill="#FFF3E5" stroke="#FCD34D" stroke-width="2"/>
+            <text x="55" y="334" font-family="Inter" font-weight="600" font-size="13" fill="#E8790C">5. BookService.createBook</text>
+            <text x="240" y="334" font-family="Inter" font-size="12" fill="#6B7280">@Transactional &mdash; em.create(Book), em.create(OutboxEvent), em.flush()</text>
+            <line x1="380" y1="350" x2="380" y2="366" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr9)"/>
+
+            <!-- Step 6: flush -->
+            <rect x="30" y="370" width="700" height="44" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="55" y="398" font-family="Inter" font-weight="600" font-size="13" fill="#1D4ED8">6. flush() inside the transaction</text>
+            <text x="240" y="398" font-family="Inter" font-size="12" fill="#6B7280">BEGIN, batched INSERTs, COMMIT &mdash; both rows or neither</text>
+            <line x1="380" y1="414" x2="380" y2="430" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr9)"/>
+
+            <!-- Step 7: response -->
+            <rect x="30" y="434" width="700" height="44" rx="8" fill="#E6F9F0" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="55" y="462" font-family="Inter" font-weight="600" font-size="13" fill="#1A8F5C">7. Response sent</text>
+            <text x="240" y="462" font-family="Inter" font-size="12" fill="#6B7280">Controller returns the book &mdash; Nest serializes &mdash; 201 to the client</text>
+            <line x1="380" y1="478" x2="380" y2="494" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arr9g)"/>
+
+            <!-- Step 8: GC -->
+            <rect x="200" y="498" width="360" height="32" rx="8" fill="#1A8F5C"/>
+            <text x="380" y="518" text-anchor="middle" font-family="Inter" font-weight="600" font-size="13" fill="white">8. AsyncLocalStorage frame closes &mdash; fork is GC'd</text>
+        </svg>
+        <div class="diagram-caption">Eight steps. One forked EntityManager. One transaction. Zero cross-request bleed.</div>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- PART 6: HANDS-ON -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Hands-On &mdash; Convert archive-api to NestJS</h2>
+
+    <h3>Install Nest into the existing repo</h3>
+
+    <pre><code><span class="function">npm</span> install @nestjs/common @nestjs/core @nestjs/platform-express @mikro-orm/nestjs
+<span class="function">npm</span> install reflect-metadata rxjs</code></pre>
+
+    <h3>The new file tree</h3>
+
+    <div class="file-tree">
+archive-api/
+&#x251C;&#x2500;&#x2500; <span class="dir">src/</span>
+&#x2502;   &#x251C;&#x2500;&#x2500; <span class="dir">entities/</span>
+&#x2502;   &#x2502;   &#x251C;&#x2500;&#x2500; <span class="file">Book.ts</span>
+&#x2502;   &#x2502;   &#x2514;&#x2500;&#x2500; <span class="highlight">AuditLog.ts</span>            <span class="comment">&#x2190; new, for atomic-write demo</span>
+&#x2502;   &#x251C;&#x2500;&#x2500; <span class="dir">book/</span>
+&#x2502;   &#x2502;   &#x251C;&#x2500;&#x2500; <span class="highlight">book.module.ts</span>
+&#x2502;   &#x2502;   &#x251C;&#x2500;&#x2500; <span class="highlight">book.controller.ts</span>
+&#x2502;   &#x2502;   &#x2514;&#x2500;&#x2500; <span class="highlight">book.service.ts</span>
+&#x2502;   &#x251C;&#x2500;&#x2500; <span class="highlight">app.module.ts</span>
+&#x2502;   &#x251C;&#x2500;&#x2500; <span class="highlight">main.ts</span>                    <span class="comment">&#x2190; replaces the script entry</span>
+&#x2502;   &#x2514;&#x2500;&#x2500; <span class="file">mikro-orm.config.ts</span>
+&#x2514;&#x2500;&#x2500; <span class="file">package.json</span>
+    </div>
+
+    <h3>main.ts &mdash; the bootstrap</h3>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> <span class="string">'reflect-metadata'</span>;
+<span class="keyword">import</span> { NestFactory } <span class="keyword">from</span> <span class="string">'@nestjs/core'</span>;
+<span class="keyword">import</span> { AppModule } <span class="keyword">from</span> <span class="string">'./app.module'</span>;
+
+<span class="keyword">async function</span> <span class="function">bootstrap</span>() {
+  <span class="keyword">const</span> app = <span class="keyword">await</span> NestFactory.<span class="function">create</span>(AppModule);
+  app.<span class="function">enableShutdownHooks</span>();   <span class="comment">// makes MikroORM close the pool on SIGTERM</span>
+  <span class="keyword">await</span> app.<span class="function">listen</span>(<span class="string">3000</span>);
+}
+<span class="function">bootstrap</span>();</code></pre>
+
+    <h3>BookController and BookService</h3>
+
+    <pre><code><span class="comment">// src/book/book.controller.ts</span>
+<span class="keyword">import</span> { Body, Controller, Get, Post } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { BookService } <span class="keyword">from</span> <span class="string">'./book.service'</span>;
+
+<span class="decorator">@Controller</span>(<span class="string">'books'</span>)
+<span class="keyword">export class</span> BookController {
+  <span class="function">constructor</span>(<span class="keyword">private readonly</span> books: BookService) {}
+
+  <span class="decorator">@Get</span>()
+  <span class="function">list</span>() {
+    <span class="keyword">return</span> <span class="keyword">this</span>.books.<span class="function">findAll</span>();
+  }
+
+  <span class="decorator">@Post</span>()
+  <span class="function">create</span>(<span class="decorator">@Body</span>() dto: { title: <span class="type">string</span>; author: <span class="type">string</span> }) {
+    <span class="keyword">return</span> <span class="keyword">this</span>.books.<span class="function">createWithLog</span>(dto);
+  }
+}</code></pre>
+
+    <pre><code><span class="comment">// src/book/book.service.ts</span>
+<span class="keyword">import</span> { Injectable } <span class="keyword">from</span> <span class="string">'@nestjs/common'</span>;
+<span class="keyword">import</span> { Transactional } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> { EntityManager } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'../entities/Book'</span>;
+<span class="keyword">import</span> { AuditLog } <span class="keyword">from</span> <span class="string">'../entities/AuditLog'</span>;
+
+<span class="decorator">@Injectable</span>()
+<span class="keyword">export class</span> BookService {
+  <span class="function">constructor</span>(<span class="keyword">private readonly</span> em: EntityManager) {
+    <span class="comment">// log the EM identity per request to prove fork-per-request</span>
+    <span class="function">console</span>.<span class="function">log</span>(<span class="string">'BookService got EM:'</span>, (em <span class="keyword">as</span> <span class="type">any</span>).id ?? <span class="string">'no-id'</span>);
+  }
+
+  <span class="function">findAll</span>() {
+    <span class="keyword">return</span> <span class="keyword">this</span>.em.<span class="function">findAll</span>(Book);
+  }
+
+  <span class="decorator">@Transactional</span>()
+  <span class="keyword">async</span> <span class="function">createWithLog</span>(dto: { title: <span class="type">string</span>; author: <span class="type">string</span> }) {
+    <span class="keyword">const</span> book = <span class="keyword">this</span>.em.<span class="function">create</span>(Book, dto);
+    <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">flush</span>();
+    <span class="keyword">this</span>.em.<span class="function">create</span>(AuditLog, { action: <span class="string">'book.created'</span>, bookId: book.id });
+    <span class="keyword">await</span> <span class="keyword">this</span>.em.<span class="function">flush</span>();
+    <span class="keyword">return</span> book;
+  }
+}</code></pre>
+
+    <h3>Run it &amp; demonstrate request scope</h3>
+
+    <pre><code><span class="function">npm</span> run start
+<span class="comment"># in another terminal</span>
+<span class="function">curl</span> -X POST localhost:3000/books -H <span class="string">'content-type: application/json'</span> -d <span class="string">'{"title":"Faust","author":"Goethe"}'</span>
+<span class="function">curl</span> -X POST localhost:3000/books -H <span class="string">'content-type: application/json'</span> -d <span class="string">'{"title":"War and Peace","author":"Tolstoy"}'</span></code></pre>
+
+    <p>Watch the server logs. The <code>BookService got EM:</code> line should print a different identity for each request. Same singleton service, different forks. That's request scope at the ORM layer doing exactly what you'd want.</p>
+
+
+    <!-- ============================================ -->
+    <!-- RECALL & SUMMARY -->
+    <!-- ============================================ -->
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling up, answer:<br><br>
+        1. What does <code>forRoot</code> register, and what does <code>forFeature</code> register? When do you call which?<br>
+        2. When should a method be <code>@Transactional()</code>, vs use the implicit transaction in <code>flush()</code>?<br>
+        3. Why is holding an entity reference in a service class field across requests dangerous?<br>
+        4. Name two places where you need <code>@CreateRequestContext()</code> and explain why the HTTP middleware doesn't cover them.</div>
+        <div class="recall-hint">4/4: ready for the capstone in L10. 2-3/4: re-read Parts 1 and 3. The fork-per-request mental model is the load-bearing piece here.</div>
+    </div>
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3DB;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--blue);">The bridge package</div>
+            <div class="layer-desc"><code>@mikro-orm/nestjs</code> ships <code>MikroOrmModule.forRoot(config)</code> for the AppModule and <code>forFeature([Book])</code> for feature modules. <code>EntityManager</code> and typed <code>EntityRepository&lt;T&gt;</code> are auto-injected.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Request scope &mdash; automatic</div>
+            <div class="layer-desc">Middleware opens an AsyncLocalStorage frame with a fresh fork on every HTTP request. The injected EM is a proxy that resolves to the current frame. Singleton services, per-request forks.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--green);">@CreateRequestContext</div>
+            <div class="layer-desc">Decorator for queue handlers, cron jobs, lifecycle hooks &mdash; anywhere there's no HTTP middleware to do the fork for you. Inject <code>MikroORM</code> on the constructor.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--orange);">@Transactional &amp; outbox</div>
+            <div class="layer-desc"><code>@Transactional()</code> on services for multi-flush atomicity; never on controllers. The outbox pattern co-commits a row to <code>outbox</code> with the business write so cross-system events can never be lost.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 10 (the capstone):</strong> we put it all together. Multi-tenancy via filters, soft-delete, identity caching strategy, performance budgets, observability. By the end you'll have a service shaped like every real Fohlio backend.</p>
+    </div>
+
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Convert archive-api to a NestJS shape</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add <code>app.module.ts</code> with <code>MikroOrmModule.forRoot(config)</code>, plus a <code>BookModule</code> that <code>forFeature([Book])</code>.</li>
+                    <li>Build <code>BookController</code> with <code>GET /books</code> and <code>POST /books</code>.</li>
+                    <li>Build <code>BookService</code> with a <code>@Transactional()</code> <code>createWithLog</code> that creates a Book and an AuditLog atomically.</li>
+                    <li>Push to your <code>mikroorm-course-yourname</code> repo. Submit the PR URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Prove fork-per-request</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Add a <code>console.log</code> in <code>BookService</code> that prints the EntityManager's internal identity (<code>(em as any).id</code>) on every controller-triggered call.</li>
+                    <li>Send two consecutive <code>POST /books</code> requests via <code>curl</code> or HTTPie.</li>
+                    <li>Capture a screenshot of your server logs showing two different EM identities for the two requests.</li>
+                    <li>Submit the screenshot.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why is @Transactional on a controller wrong? (Elaborative interrogation)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 4&ndash;6 sentences: explain why <code>@Transactional()</code> on a controller method is an anti-pattern, while on a service method it's idiomatic.</li>
+                    <li>Reference separation of concerns &mdash; what controllers should and shouldn't own, and what kind of code lives in a service.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Add a Bull queue worker decorated with @CreateRequestContext()</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Install <code>@nestjs/bull</code> and <code>bull</code>. Create a <code>cleanup-archive</code> queue with a single processor that scans for Books with <code>publishedYear &lt; 1900</code> and marks them <code>archived = true</code>. Decorate the processing method with <code>@CreateRequestContext()</code>. In the repo's <code>README.md</code>, write 3&ndash;4 sentences explaining why the decorator is needed (reference: middleware doesn't run in workers; AsyncLocalStorage; <code>allowGlobalContext</code> is unsafe).</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Implement a minimal Transactional Outbox</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add an <code>OutboxEvent</code> entity. Modify <code>BookService.createWithLog</code> so every successful book creation also persists an <code>OutboxEvent</code> with <code>eventType: 'book.created'</code> in the same transaction. Add an <code>OutboxDispatcher</code> service with a <code>@Cron('*/5 * * * * *')</code> method (decorated with <code>@CreateRequestContext()</code>) that drains unprocessed events, prints them to <code>console.log</code> (no real broker), and marks them processed. Capture the server log of one drain cycle and add it to the <code>README.md</code>.</p>
+            </li>
+        </ol>
+    </div>
+
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 9 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Capstone &mdash; Multi-Tenancy, Soft Delete, Performance, and Observability</p>
+    </div>
+
+</div>
+
+</body>
+</html>

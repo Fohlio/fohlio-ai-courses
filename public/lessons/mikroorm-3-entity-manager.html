@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 3 of 10</div>
+        <h1>The EntityManager</h1>
+        <div class="subtitle">persist, find, and the Unit of Work in action</div>
+    </div>
+
+    <!-- RECAP GRID -->
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--gray-100);">
+            <div class="card-icon">&#x1F4DA;</div>
+            <div class="card-title" style="color: var(--gray-700);">Lesson 1</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">DataMapper + Identity Map + Unit of Work</div>
+            <div class="card-desc">Three Fowler patterns. Pure entities. <code>em.flush()</code> turns object changes into batched, ordered, transactional SQL.</div>
+        </div>
+        <div class="concept-card" style="background: var(--gray-100);">
+            <div class="card-icon">&#x1F3F7;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--gray-700);">Lesson 2</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Entities &amp; properties</div>
+            <div class="card-desc">Three definition styles. Type chains, modifiers, primary keys, naming strategy. Article entity wired into <code>archive-api</code>.</div>
+        </div>
+    </div>
+
+    <div class="concept-grid" style="grid-template-columns: 1fr;">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F464;</div>
+            <div class="card-title" style="color: var(--blue);">Lesson 3 (today)</div>
+            <div class="card-subtitle" style="color: var(--blue);">EntityManager &mdash; persist, find, lifecycle</div>
+            <div class="card-desc">The four entity states. The full <code>FilterQuery</code> operator set. References vs hydrated entities. The Identity Map you can <em>watch</em> in the query log.</div>
+        </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Name the four entity lifecycle states (New / Managed / Detached / Removed) and the transitions between them</li>
+            <li>Explain the difference between <code>em.create()</code>, <code>em.persist()</code>, and <code>new Entity()</code></li>
+            <li>Build any reasonable <code>WHERE</code> clause from the FilterQuery operator set: <code>$gt</code>, <code>$in</code>, <code>$or</code>, <code>$like</code>, plus nested-relation lookups</li>
+            <li>Use <code>em.getReference()</code> to update a row without first <code>SELECT</code>ing it</li>
+            <li>Read the query log and prove the Identity Map is doing its job</li>
+            <li>Build a small CRUD flow against <code>archive-api</code>: create, find, update, remove, all in one transaction</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1: FOUR ENTITY STATES -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: The Four Entity States</h2>
+
+    <p>Every entity instance in your code is in exactly one of four states at any moment. The state determines what the EntityManager will do with it on the next <code>flush()</code>. If you internalise this picture, half the surprises in MikroORM go away.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 440" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="440" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Entity lifecycle &mdash; the four states and their transitions</text>
+
+            <defs>
+                <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
+                </marker>
+                <marker id="arrRed" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#DC2626"/>
+                </marker>
+            </defs>
+
+            <!-- New (top-left) -->
+            <rect x="60" y="80" width="220" height="90" rx="12" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="170" y="110" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#D97706">New</text>
+            <text x="170" y="132" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Built in JS, no PK,</text>
+            <text x="170" y="148" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">tracked but not yet</text>
+            <text x="170" y="164" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">in the database.</text>
+
+            <!-- Managed (top-right) -->
+            <rect x="480" y="80" width="220" height="90" rx="12" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="590" y="110" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#1A8F5C">Managed</text>
+            <text x="590" y="132" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">In Identity Map, has PK,</text>
+            <text x="590" y="148" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">change-tracked, snapshot</text>
+            <text x="590" y="164" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">on file.</text>
+
+            <!-- Detached (bottom-left) -->
+            <rect x="60" y="280" width="220" height="90" rx="12" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="170" y="310" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#7C3AED">Detached</text>
+            <text x="170" y="332" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Was managed, now isn't.</text>
+            <text x="170" y="348" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Edits to it are silent</text>
+            <text x="170" y="364" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">no-ops on flush.</text>
+
+            <!-- Removed (bottom-right) -->
+            <rect x="480" y="280" width="220" height="90" rx="12" fill="#FFE4E6" stroke="#FDA4AF" stroke-width="2"/>
+            <text x="590" y="310" text-anchor="middle" font-family="Inter" font-weight="700" font-size="16" fill="#BE123C">Removed</text>
+            <text x="590" y="332" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Marked for DELETE.</text>
+            <text x="590" y="348" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Stays in the map until</text>
+            <text x="590" y="364" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">flush, then it's gone.</text>
+
+            <!-- Arrows -->
+            <!-- New -> Managed (after flush) -->
+            <line x1="280" y1="125" x2="478" y2="125" stroke="#6B7280" stroke-width="2" marker-end="url(#arr)"/>
+            <text x="380" y="115" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">em.flush() &mdash; INSERT, gets PK</text>
+
+            <!-- Managed -> Removed -->
+            <line x1="590" y1="170" x2="590" y2="278" stroke="#DC2626" stroke-width="2" marker-end="url(#arrRed)"/>
+            <text x="600" y="225" font-family="Inter" font-size="11" fill="#BE123C">em.remove(entity)</text>
+
+            <!-- Managed -> Detached -->
+            <line x1="478" y1="160" x2="282" y2="278" stroke="#6B7280" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr)"/>
+            <text x="380" y="220" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">em.clear() / fork dies</text>
+
+            <!-- Detached -> Managed (merge) -->
+            <line x1="282" y1="298" x2="478" y2="105" stroke="#6B7280" stroke-width="2" stroke-dasharray="3,2" marker-end="url(#arr)"/>
+            <text x="380" y="395" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">em.merge(entity) &mdash; rare; usually you re-find()</text>
+        </svg>
+        <div class="diagram-caption">All entity transitions. The two big ones to remember: <code>em.create()</code> takes you to New; <code>em.flush()</code> takes you to Managed.</div>
+    </div>
+
+    <h3>The four states, concretely</h3>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F195;</div>
+            <div class="layer-name" style="color: var(--orange);">New</div>
+            <div class="layer-desc">Created with <code>em.create(Article, {...})</code>. Tracked. Will be inserted on flush.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2705;</div>
+            <div class="layer-name" style="color: var(--green);">Managed</div>
+            <div class="layer-desc">In the Identity Map, has a PK, has a snapshot. Mutations are diffed on flush.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x270C;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Detached</div>
+            <div class="layer-desc">No EM owns it. <code>em.flush()</code> ignores its mutations. Happens after <code>em.clear()</code> or when a forked EM is GC'd.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x274C;</div>
+            <div class="layer-name" style="color: var(--red);">Removed</div>
+            <div class="layer-desc">Marked via <code>em.remove(entity)</code>. Will be DELETEd on the next flush, then disappears from the map.</div>
+        </div>
+    </div>
+
+    <p>One subtle point that catches people: a <code>new Article()</code> with the <code>new</code> keyword and <em>no</em> <code>em.create()</code> or <code>em.persist()</code> isn't in any of these states. It's just a JS object that the ORM doesn't know about. To get it tracked, you call <code>em.persist(entity)</code>, which moves it to the New state.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2: PERSIST & FLUSH -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Persist &amp; Flush Mechanics</h2>
+
+    <p>Three ways to put a new entity into the New state. They look interchangeable; they're not.</p>
+
+    <h3>em.create() &mdash; the 95% case</h3>
+
+    <pre><code><span class="keyword">const</span> article = em.<span class="function">create</span>(Article, {
+  title: <span class="string">'On Long Novels'</span>,
+  slug: <span class="string">'on-long-novels'</span>,
+  body: <span class="string">'...'</span>,
+});
+<span class="comment">// `article` is now in the New state. No SQL fired yet.</span>
+<span class="keyword">await</span> em.<span class="function">flush</span>();
+<span class="comment">// INSERT goes out, `article` becomes Managed, gets its PK.</span></code></pre>
+
+    <p>Since v6, <code>em.create()</code> auto-persists. You don't need a separate <code>em.persist()</code> call. It also runs the <code>onCreate</code> hooks, fires the <code>beforeCreate</code> events, and registers the entity in the Identity Map. This is the path you should reach for by default.</p>
+
+    <h3>new Entity() + em.persist() &mdash; when you need the constructor</h3>
+
+    <pre><code><span class="keyword">const</span> article = <span class="keyword">new</span> Article();
+article.title = <span class="string">'On Long Novels'</span>;
+article.slug = <span class="string">'on-long-novels'</span>;
+article.body = <span class="string">'...'</span>;
+
+em.<span class="function">persist</span>(article);
+<span class="keyword">await</span> em.<span class="function">flush</span>();</code></pre>
+
+    <p>Two extra lines for the same outcome. The reason this path exists: if you used the <code>defineEntity</code> + class style and your class has a real constructor with required arguments, <code>em.create()</code> calls don't run the constructor &mdash; they assign properties directly. So if you <em>need</em> constructor logic to fire (validation, derived fields), you're doing <code>new Article(...)</code> and then <code>em.persist()</code>.</p>
+
+    <h3>cascade-persist on relations &mdash; the freebie</h3>
+
+    <p>Say you create an <code>Article</code> and assign a freshly-created <code>Tag</code> to it:</p>
+
+    <pre><code><span class="keyword">const</span> tag = em.<span class="function">create</span>(Tag, { name: <span class="string">'classics'</span> });
+<span class="keyword">const</span> article = em.<span class="function">create</span>(Article, {
+  title: <span class="string">'On Long Novels'</span>,
+  tags: [tag],
+});
+<span class="keyword">await</span> em.<span class="function">flush</span>();
+<span class="comment">// Both INSERTs go out, in the right order, in one transaction.</span></code></pre>
+
+    <p>You don't have to <code>em.persist(tag)</code> separately. The relation tells the Unit of Work to cascade. Lesson 4 covers cascading rules in full; for now just know it works for the obvious case.</p>
+
+    <h3>Why flush only writes the diff</h3>
+
+    <p>You saw this in Lesson 1 in the abstract. Here's what it looks like in code:</p>
+
+    <pre><code><span class="keyword">const</span> article = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, <span class="string">1</span>);
+
+article.title = <span class="string">'New title'</span>;
+<span class="comment">// `viewCount`, `body`, `slug`, etc &mdash; unchanged</span>
+
+<span class="keyword">await</span> em.<span class="function">flush</span>();
+<span class="comment">// SQL: update "article" set "title" = 'New title', "updated_at" = ... where "id" = 1</span>
+<span class="comment">// Note: only `title` and `updated_at` (via onUpdate) appear in SET.</span></code></pre>
+
+    <p>The Unit of Work compares your current article object against the snapshot it took when you loaded the row. Only changed columns end up in the <code>UPDATE</code>. This isn't an optimization &mdash; it's a correctness property. If two requests both touch the same row and only the columns they each modified, neither overwrites the other's columns. (Real concurrent safety still needs locking; we'll get there in Lesson 5.)</p>
+
+    <!-- ============================================ -->
+    <!-- PART 3: FILTERQUERY DSL -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Finding Entities &mdash; The FilterQuery DSL</h2>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">You want articles where <code>viewCount &gt; 100</code> AND (<code>author = 'Tolstoy'</code> OR <code>publishedYear &gt; 2000</code>). Without scrolling, take 30 seconds and write your guess for what the FilterQuery object looks like.</div>
+        <div class="recall-hint">If you've used Mongoose or Prisma, your guess is probably 80% right. The operators MikroORM uses (<code>$gt</code>, <code>$or</code>, <code>$and</code>) borrow the MongoDB convention. The answer is at the end of this section &mdash; check yours against it.</div>
+    </div>
+
+    <h3>The five fetch methods</h3>
+
+    <table>
+        <tr>
+            <th>Method</th>
+            <th>Returns</th>
+            <th>When to use</th>
+        </tr>
+        <tr>
+            <td><code>em.find(Entity, where, options?)</code></td>
+            <td><code>Entity[]</code></td>
+            <td>You expect 0+ matches. The workhorse list query.</td>
+        </tr>
+        <tr>
+            <td><code>em.findOne(Entity, where, options?)</code></td>
+            <td><code>Entity | null</code></td>
+            <td>You expect 0 or 1. <code>null</code> on miss.</td>
+        </tr>
+        <tr>
+            <td><code>em.findOneOrFail(Entity, where)</code></td>
+            <td><code>Entity</code></td>
+            <td>Miss is an error condition (e.g. lookup by URL slug in a controller).</td>
+        </tr>
+        <tr>
+            <td><code>em.findAll(Entity, options?)</code></td>
+            <td><code>Entity[]</code></td>
+            <td>No <code>where</code>. Convenience for &ldquo;everything in this table&rdquo;.</td>
+        </tr>
+        <tr>
+            <td><code>em.findAndCount(Entity, where, options?)</code></td>
+            <td><code>[Entity[], number]</code></td>
+            <td>Paginated UI: page of rows + total count, in one call.</td>
+        </tr>
+    </table>
+
+    <h3>The conditions object</h3>
+
+    <p>A FilterQuery is just a plain object. Equality is the simple case:</p>
+
+    <pre><code><span class="keyword">const</span> drafts = <span class="keyword">await</span> em.<span class="function">find</span>(Article, { publishedAt: <span class="keyword">null</span> });
+<span class="keyword">const</span> tolstoy = <span class="keyword">await</span> em.<span class="function">find</span>(Book, { author: <span class="string">'Tolstoy'</span> });</code></pre>
+
+    <p>For anything beyond equality, you reach for the operator set. Every operator is a key starting with <code>$</code>:</p>
+
+    <table>
+        <tr><th>Operator</th><th>SQL</th><th>Example</th></tr>
+        <tr><td><code>$gt</code> / <code>$gte</code></td><td><code>&gt;</code> / <code>&gt;=</code></td><td><code>{ viewCount: { $gt: 100 } }</code></td></tr>
+        <tr><td><code>$lt</code> / <code>$lte</code></td><td><code>&lt;</code> / <code>&lt;=</code></td><td><code>{ publishedAt: { $lt: new Date() } }</code></td></tr>
+        <tr><td><code>$ne</code></td><td><code>!=</code></td><td><code>{ status: { $ne: 'archived' } }</code></td></tr>
+        <tr><td><code>$in</code> / <code>$nin</code></td><td><code>IN</code> / <code>NOT IN</code></td><td><code>{ id: { $in: [1, 2, 3] } }</code></td></tr>
+        <tr><td><code>$like</code></td><td><code>LIKE</code></td><td><code>{ title: { $like: '%Tolstoy%' } }</code></td></tr>
+        <tr><td><code>$re</code></td><td><code>~</code> (regex)</td><td><code>{ slug: { $re: '^draft-' } }</code></td></tr>
+        <tr><td><code>$and</code></td><td><code>AND</code></td><td><code>{ $and: [{...}, {...}] }</code></td></tr>
+        <tr><td><code>$or</code></td><td><code>OR</code></td><td><code>{ $or: [{...}, {...}] }</code></td></tr>
+    </table>
+
+    <p>And here's the answer to the recall-box prediction:</p>
+
+    <pre><code><span class="keyword">const</span> hits = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {
+  $and: [
+    { viewCount: { $gt: <span class="string">100</span> } },
+    {
+      $or: [
+        { author: <span class="string">'Tolstoy'</span> },
+        { publishedYear: { $gt: <span class="string">2000</span> } },
+      ],
+    },
+  ],
+});</code></pre>
+
+    <p>The top-level keys are AND'd implicitly, so a flat object works for the common AND case. You only need <code>$and</code> when you want to combine multiple conditions on the same property &mdash; e.g. <code>{ $and: [{ viewCount: { $gt: 10 } }, { viewCount: { $lt: 100 } }] }</code>.</p>
+
+    <h3>Searching by relation fields &mdash; the JOIN trick</h3>
+
+    <p>This is the feature that makes the DSL feel ergonomic. You can nest a relation in the WHERE and MikroORM auto-joins:</p>
+
+    <pre><code><span class="comment">// find articles whose author's name is 'Tolstoy'</span>
+<span class="keyword">const</span> articles = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {
+  author: { name: <span class="string">'Tolstoy'</span> },
+});
+<span class="comment">// SQL: select "a0".* from "article" as "a0"</span>
+<span class="comment">//      left join "author" as "a1" on "a0"."author_id" = "a1"."id"</span>
+<span class="comment">//      where "a1"."name" = 'Tolstoy'</span></code></pre>
+
+    <p>One important caveat: the JOIN here is for filtering, not for loading. The returned <code>Article</code> objects will have an <em>unhydrated reference</em> for <code>author</code> &mdash; not the full author entity. To actually load the author too, pass <code>populate: ['author']</code>. We cover populate strategies in Lesson 4.</p>
+
+    <h3>Cursor pagination &mdash; brief mention</h3>
+
+    <p>For large lists, offset-pagination breaks once the list shifts under you. <code>em.findByCursor</code> gives you keyset pagination via opaque cursor strings. We touch on this in the advanced homework; for now just know the seam exists:</p>
+
+    <pre><code><span class="keyword">const</span> page = <span class="keyword">await</span> em.<span class="function">findByCursor</span>(Article, {
+  first: <span class="string">10</span>,
+  after: previousCursor,
+  orderBy: { id: <span class="string">'desc'</span> },
+});
+<span class="comment">// page.items, page.endCursor, page.hasNextPage</span></code></pre>
+
+    <!-- ============================================ -->
+    <!-- PART 4: REFERENCES, PARTIAL LOADING, WRAP -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: References, Partial Loading, and wrap()</h2>
+
+    <p>Sometimes you want to <em>refer</em> to an entity without loading its row. Two scenarios:</p>
+
+    <ul style="margin: 12px 0 16px 32px; color: var(--gray-700);">
+        <li>Setting a foreign key: <code>article.author = ???</code>. You don't need the author's name; you just need its ID.</li>
+        <li>Deleting by ID: <code>em.remove(???)</code>. You don't need to load the row first; you have the ID.</li>
+    </ul>
+
+    <p>The escape hatch is <code>em.getReference</code>:</p>
+
+    <pre><code><span class="keyword">const</span> authorRef = em.<span class="function">getReference</span>(Author, <span class="string">42</span>);
+<span class="comment">// authorRef looks like (Author) { id: 42 } &mdash; unhydrated</span>
+
+article.author = authorRef;
+<span class="keyword">await</span> em.<span class="function">flush</span>();
+<span class="comment">// SQL: insert into article ... values (..., 42)</span>
+<span class="comment">// No SELECT was ever fired against the author table.</span></code></pre>
+
+    <p>The reference is a real entity instance &mdash; it just doesn't have its non-PK properties loaded. If you read <code>authorRef.name</code>, you get <code>undefined</code>. If you actually need the data, you call <code>wrap(authorRef).init()</code> to fire a lazy SELECT.</p>
+
+    <h3>The wrap() helper &mdash; meta-API for any entity</h3>
+
+    <pre><code><span class="keyword">import</span> { wrap } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">const</span> ref = em.<span class="function">getReference</span>(Author, <span class="string">42</span>);
+<span class="function">wrap</span>(ref).<span class="function">isInitialized</span>();    <span class="comment">// false</span>
+<span class="keyword">await</span> <span class="function">wrap</span>(ref).<span class="function">init</span>();          <span class="comment">// fires SELECT</span>
+<span class="function">wrap</span>(ref).<span class="function">isInitialized</span>();    <span class="comment">// true now</span>
+
+<span class="function">wrap</span>(article).<span class="function">toObject</span>();      <span class="comment">// plain JS object copy</span>
+<span class="function">wrap</span>(article).<span class="function">toJSON</span>();        <span class="comment">// for HTTP responses</span></code></pre>
+
+    <p>Every managed entity has a hidden <code>__helper</code> property that <code>wrap()</code> exposes type-safely. You'll reach for it most often when you need to know &ldquo;is this entity hydrated yet?&rdquo; or &ldquo;serialise this for an HTTP response&rdquo;.</p>
+
+    <h3>Partial loading with fields and exclude</h3>
+
+    <p>By default <code>em.find</code> selects every column. For wide tables you can narrow:</p>
+
+    <pre><code><span class="comment">// only id + title &mdash; body, metadata, etc are skipped</span>
+<span class="keyword">const</span> articles = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {}, {
+  fields: [<span class="string">'title'</span>, <span class="string">'slug'</span>],
+});
+<span class="function">console</span>.<span class="function">log</span>(articles[<span class="string">0</span>].title);    <span class="comment">// ok</span>
+<span class="function">console</span>.<span class="function">log</span>(articles[<span class="string">0</span>].body);     <span class="comment">// undefined</span></code></pre>
+
+    <p><code>fields</code> is an allowlist; primary keys are always selected. There's also <code>exclude</code> for the inverse: select everything except the listed columns.</p>
+
+    <div class="info-box red">
+        <p><strong>Footgun:</strong> if you use <code>fields</code> and forget to include the FK column for a relation, that relation can't be linked properly when you populate. Example: loading <code>{ fields: ['title'] }</code> on Article and then trying to populate <code>author</code> &mdash; the <code>author_id</code> wasn't selected, so the join can't happen. Either include the FK explicitly (<code>'author'</code> in <code>fields</code>) or skip <code>fields</code> for that query.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5: IDENTITY MAP PROOF -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Identity Map Proof-of-Life</h2>
+
+    <p>Lesson 1 promised the Identity Map saves round trips. Now we'll see it in action with the query log open.</p>
+
+    <h3>Same primary key, twice</h3>
+
+    <pre><code><span class="keyword">const</span> a1 = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, <span class="string">1</span>);
+<span class="keyword">const</span> a2 = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, <span class="string">1</span>);
+<span class="function">console</span>.<span class="function">log</span>(a1 === a2); <span class="comment">// true</span></code></pre>
+
+    <p>Query log:</p>
+
+    <pre><code><span class="comment">[query] select "a0".* from "article" as "a0" where "a0"."id" = 1 limit 1
+&lt;-- second findOne fires no SQL --&gt;</span></code></pre>
+
+    <p>One SELECT. The second <code>findOne</code> looked up <code>id = 1</code> in the Identity Map, found a hit, and returned the cached instance. <code>a1 === a2</code> is true because they're literally the same object reference.</p>
+
+    <h3>Same row, different lookup &mdash; the surprising case</h3>
+
+    <pre><code><span class="keyword">const</span> b1 = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, { slug: <span class="string">'on-long-novels'</span> });
+<span class="keyword">const</span> b2 = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, { slug: <span class="string">'on-long-novels'</span> });
+<span class="function">console</span>.<span class="function">log</span>(b1 === b2); <span class="comment">// true!</span></code></pre>
+
+    <p>Query log:</p>
+
+    <pre><code><span class="comment">[query] select "a0".* from "article" as "a0" where "a0"."slug" = 'on-long-novels' limit 1
+[query] select "a0".* from "article" as "a0" where "a0"."slug" = 'on-long-novels' limit 1</span></code></pre>
+
+    <p>Two SELECTs &mdash; <strong>but</strong> <code>b1 === b2</code>. Why? Because the Identity Map is keyed by primary key, not by query. MikroORM still has to issue the SELECT (it can't know without asking the DB whether the row exists), but once Postgres returns row id <code>1</code>, MikroORM looks up <code>id = 1</code> in the Identity Map, finds the cached instance from the first query, and returns <em>that</em> &mdash; not a freshly hydrated copy. The second SELECT does fire, but the JS object you get back is the same reference.</p>
+
+    <div class="info-box blue">
+        <p><strong>Two takeaways from this:</strong> (1) The Identity Map prevents <em>duplicate object instances</em>, not <em>duplicate queries</em>. To deduplicate by-slug queries, you cache the slug yourself. (2) Because the same instance is returned, any in-memory mutations a previous handler made are still visible &mdash; which is the correctness property the map exists to protect.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DD;</div>
+        Junior: &ldquo;I called <code>em.findOne(Book, 1)</code> in a loop, 100 times. The query log only shows one SELECT. Is the database broken?&rdquo;<br>
+        Senior: &ldquo;That's the Identity Map.&rdquo;<br>
+        Junior: &ldquo;So... I just got 99 free database calls?&rdquo;<br>
+        Senior: &ldquo;You got zero database calls. That's better than free.&rdquo;<br>
+        Junior: &ldquo;What about <code>findOne(Book, &#123; title: 'War and Peace' &#125;)</code> twice?&rdquo;<br>
+        Senior: &ldquo;Two SELECTs, same JS object. The map keys on PK, not on query.&rdquo;<br>
+        <em>The day this clicks is the day you stop wrapping every read in a hand-rolled cache.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6: HANDS-ON CRUD -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Hands-on &mdash; CRUD against archive-api</h2>
+
+    <p>Time to stitch all of this into one runnable script. Open <code>archive-api</code> from Lesson 2 and replace <code>src/main.ts</code> with the following. We'll create five articles, find the popular ones, increment view counts, remove a draft, and watch the query log.</p>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> { MikroORM, wrap } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+<span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'./mikro-orm.config'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'./entities/Article'</span>;
+
+<span class="keyword">async function</span> <span class="function">main</span>() {
+  <span class="keyword">const</span> orm = <span class="keyword">await</span> MikroORM.<span class="function">init</span>(config);
+  <span class="keyword">await</span> orm.schema.<span class="function">refreshDatabase</span>();
+  <span class="keyword">const</span> em = orm.em.<span class="function">fork</span>();
+
+  <span class="comment">// 1. CREATE &mdash; five articles, mix of published and drafts</span>
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="string">1</span>; i &lt;= <span class="string">5</span>; i++) {
+    em.<span class="function">create</span>(Article, {
+      title: <span class="string">`Article #${i}`</span>,
+      slug: <span class="string">`article-${i}`</span>,
+      body: <span class="string">`Body of article ${i}.`</span>,
+      viewCount: i * <span class="string">50</span>, <span class="comment">// 50, 100, 150, 200, 250</span>
+      publishedAt: i % <span class="string">2</span> === <span class="string">0</span> ? <span class="keyword">null</span> : <span class="keyword">new</span> <span class="function">Date</span>(),
+    });
+  }
+  <span class="keyword">await</span> em.<span class="function">flush</span>();
+  <span class="comment">// One INSERT, five rows. One transaction.</span>
+
+  <span class="comment">// 2. FIND &mdash; all articles with viewCount &gt; 100</span>
+  <span class="keyword">const</span> popular = <span class="keyword">await</span> em.<span class="function">find</span>(Article, {
+    viewCount: { $gt: <span class="string">100</span> },
+  });
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">`popular: ${popular.<span class="function">map</span>(a =&gt; a.title).join(', ')}`</span>);
+
+  <span class="comment">// 3. UPDATE &mdash; bump every popular article's viewCount by 1</span>
+  <span class="keyword">for</span> (<span class="keyword">const</span> a <span class="keyword">of</span> popular) {
+    a.viewCount += <span class="string">1</span>;
+  }
+  <span class="comment">// no flush yet &mdash; changes pile up in the Unit of Work</span>
+
+  <span class="comment">// 4. DELETE BY REFERENCE &mdash; remove article #2 (a draft) without loading it</span>
+  <span class="keyword">const</span> draftRef = em.<span class="function">getReference</span>(Article, <span class="string">2n</span>);
+  em.<span class="function">remove</span>(draftRef);
+
+  <span class="comment">// 5. SINGLE FLUSH &mdash; UPDATEs and DELETE go out together</span>
+  <span class="keyword">await</span> em.<span class="function">flush</span>();
+  <span class="comment">// One BEGIN, one batched UPDATE (CASE expression), one DELETE, one COMMIT.</span>
+
+  <span class="comment">// 6. PROVE THE IDENTITY MAP &mdash; read the same article twice</span>
+  <span class="keyword">const</span> first = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, <span class="string">1n</span>);
+  <span class="keyword">const</span> again = <span class="keyword">await</span> em.<span class="function">findOne</span>(Article, <span class="string">1n</span>);
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">`same instance? ${first === again}`</span>); <span class="comment">// true &mdash; no second SELECT</span>
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">`hydrated? ${<span class="function">wrap</span>(first!).<span class="function">isInitialized</span>()}`</span>); <span class="comment">// true</span>
+
+  <span class="keyword">await</span> orm.<span class="function">close</span>();
+}
+
+<span class="function">main</span>().<span class="function">catch</span>(<span class="function">console</span>.error);</code></pre>
+
+    <p>Run <code>npm start</code> and watch the log. You should see roughly:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2728;</div>
+            <div class="layer-name" style="color: var(--green);">5 inserts in 1 SQL</div>
+            <div class="layer-desc">A single multi-row INSERT, wrapped in <code>begin</code>/<code>commit</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--blue);">1 SELECT for the popular query</div>
+            <div class="layer-desc">A <code>where "view_count" &gt; 100</code> with no JOIN.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--orange);">1 batched UPDATE + 1 DELETE</div>
+            <div class="layer-desc">In the same <code>begin</code>/<code>commit</code>. The <code>update</code> uses a <code>CASE</code> expression to set per-row values.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--purple);">Identity Map cache hit</div>
+            <div class="layer-desc">Two <code>findOne(Article, 1n)</code> calls, one SELECT in the log.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>That's a real CRUD slice in 30 lines, with one transaction, exactly the queries you'd want, and a free Identity Map cache.</strong> The mental shift Lesson 1 promised &mdash; describe changes as object mutations, then flush &mdash; is no longer abstract. From here, Lesson 4 wires up relations and Lesson 5 takes us into request-scoped EMs, transactions, and concurrency.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-test before the summary</div>
+        <div class="recall-question">Without scrolling: (1) Name the four entity states and one transition between each pair. (2) What's the difference between <code>em.create(Article, {...})</code> and <code>new Article()</code>? (3) What does <code>em.getReference(Author, 42)</code> return? (4) Why does the second <code>findOne(Article, 1)</code> not fire a SELECT, but the second <code>findOne(Article, &#123; slug: 'x' &#125;)</code> does?</div>
+        <div class="recall-hint">4/4: ready for Lesson 4 (relations). 2-3/4: re-skim Parts 1 and 5. 0-1/4: redo the Part 6 hands-on with the query log open and answer each question by reading the log.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4CD;</div>
+            <div class="layer-name" style="color: var(--blue);">Four states</div>
+            <div class="layer-desc">New, Managed, Detached, Removed. Every entity is in exactly one. Transitions are driven by <code>create</code>, <code>flush</code>, <code>remove</code>, <code>clear</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--purple);">Persist &amp; flush</div>
+            <div class="layer-desc"><code>em.create()</code> auto-persists. <code>flush</code> writes only the diff. Cascade-persist comes free for relations of New entities.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--green);">FilterQuery DSL</div>
+            <div class="layer-desc">Equality at the top level is implicit AND. Operators (<code>$gt</code>, <code>$in</code>, <code>$or</code>, <code>$like</code>) cover the rest. Nested-relation lookups auto-JOIN.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--orange);">References &amp; Identity Map</div>
+            <div class="layer-desc"><code>em.getReference(E, id)</code> avoids a SELECT. Identity Map is keyed by PK &mdash; same row always means same JS object inside one EM fork.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 4:</strong> Relations &mdash; one-to-one, one-to-many, many-to-many, and the inverse-side tax. Owning side vs inverse side. The <code>Collection&lt;T&gt;</code> wrapper. Cascading rules in detail. By the end of L4 your <code>archive-api</code> will have <code>Author</code>, <code>Article</code>, and <code>Tag</code> linked, with proper joins, populated as needed.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Build the CRUD demo</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Replace <code>src/main.ts</code> with the Part 6 script. Run <code>npm start</code>.</li>
+                    <li>Push to your <code>mikroorm-course-yourname</code> repo as a new commit on a fresh branch. Submit the PR URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Capture the Identity Map cache hit</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>From the run above, screenshot the section of the query log that covers steps 5 and 6 of the Part 6 script.</li>
+                    <li>The screenshot must show: the batched UPDATE + DELETE in one transaction, then exactly <em>one</em> SELECT for both <code>findOne(Article, 1n)</code> calls.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why the by-slug query still fires SQL (Elaborative interrogation)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 4&ndash;6 sentences: why does MikroORM still issue a SELECT when you call <code>em.findOne(Book, &#123; title: 'War and Peace' &#125;)</code> twice in a row, even though it returns the same JS instance both times? What does the Identity Map use as its key, and why is that the right design?</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Cursor-based pagination</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Add 20 articles to the seed loop. Use <code>em.findByCursor(Article, &#123; first: 5, orderBy: &#123; id: 'desc' &#125; &#125;)</code> to fetch the first page. Then call it again with <code>after: page.endCursor</code> for the next page. Document the opaque cursor string round-trip in your repo's README &mdash; show what the string looks like and what each call returns.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Update via reference, no SELECT</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Imagine an <code>Author</code> entity exists (you can stub one with just <code>id</code> and <code>name</code>). Use <code>em.getReference(Author, someId)</code> + assignment to set an Article's author without ever loading the author from the DB. Capture the query log proving no SELECT against the <code>author</code> table fires &mdash; only the INSERT/UPDATE on <code>article</code>. Add the log to the README.</p>
+            </li>
+        </ol>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 3 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: Relations &mdash; OneToMany, ManyToOne, ManyToMany, and the inverse-side tax</p>
+    </div>
+
+</div>
+
+</body>
+</html>

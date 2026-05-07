@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MikroORM Course - Lesson 2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .concept-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 2 of 10</div>
+        <h1>Defining Entities</h1>
+        <div class="subtitle">Properties, Primary Keys, and the Modeling Toolbox</div>
+    </div>
+
+    <!-- RECAP GRID -->
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--gray-100);">
+            <div class="card-icon">&#x1F4DA;</div>
+            <div class="card-title" style="color: var(--gray-700);">Lesson 1</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">DataMapper + Identity Map + Unit of Work</div>
+            <div class="card-desc">Pure entities, one JS object per row, one batched transactional flush. The Records Library analogy locked in.</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F3F7;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--blue);">Lesson 2 (today)</div>
+            <div class="card-subtitle" style="color: var(--blue);">Entities &amp; properties</div>
+            <div class="card-desc">Three ways to define entities, every property type and modifier, primary keys, naming strategy, defaults vs onCreate.</div>
+        </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>Learning Goals</h3>
+        <p>By the end of this lesson you will:</p>
+        <ul>
+            <li>Know the three ways to define a MikroORM entity, and which one we use in this course (and why)</li>
+            <li>Have memorised the property types and modifiers you'll reach for 95% of the time</li>
+            <li>Pick the right primary key shape (<code>bigint</code>, <code>uuid</code>, composite) for a given table</li>
+            <li>Understand the difference between TypeScript-optional <code>?:</code> and database-nullable <code>NOT NULL</code></li>
+            <li>Know when to use <code>default(...)</code> vs <code>onCreate(...)</code> &mdash; database default vs ORM-side default</li>
+            <li>Have an <code>Article</code> entity wired into <code>archive-api</code>, with two articles and one book persisted in a single flush</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1: THREE WAYS TO DEFINE AN ENTITY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1: Three Ways to Define an Entity</h2>
+
+    <p>In Lesson 1 we wrote our first entity with <code>defineEntity</code>. That wasn't the only option. MikroORM 7 ships three different ways to declare an entity, and they all produce the same metadata at runtime. The shape you pick is a code-style choice, not a runtime choice.</p>
+
+    <p>Here's the same <code>Article</code> entity written all three ways. Skim them first; we'll dissect the trade-offs after.</p>
+
+    <h3>Option A &mdash; <code>defineEntity</code> + class extension</h3>
+
+    <pre><code><span class="comment">// src/entities/Article.ts</span>
+<span class="keyword">import</span> { defineEntity, p } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">const</span> ArticleSchema = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    slug: p.<span class="function">string</span>().<span class="function">unique</span>(),
+  },
+});
+
+<span class="keyword">export class</span> <span class="type">Article</span> <span class="keyword">extends</span> ArticleSchema.class {
+  <span class="comment">// you can add domain methods here, e.g.</span>
+  <span class="function">isPublished</span>(): <span class="type">boolean</span> {
+    <span class="keyword">return</span> <span class="keyword">this</span>.publishedAt != <span class="keyword">null</span>;
+  }
+}
+ArticleSchema.<span class="function">setClass</span>(<span class="type">Article</span>);</code></pre>
+
+    <h3>Option B &mdash; <code>defineEntity</code> standalone</h3>
+
+    <pre><code><span class="comment">// src/entities/Article.ts</span>
+<span class="keyword">import</span> { defineEntity, p, <span class="type">InferEntity</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>(),
+    slug: p.<span class="function">string</span>().<span class="function">unique</span>(),
+  },
+});
+
+<span class="keyword">export type</span> <span class="type">IArticle</span> = InferEntity&lt;<span class="keyword">typeof</span> Article&gt;;</code></pre>
+
+    <h3>Option C &mdash; decorators (legacy)</h3>
+
+    <pre><code><span class="comment">// src/entities/Article.ts</span>
+<span class="keyword">import</span> { Entity, PrimaryKey, Property } <span class="keyword">from</span> <span class="string">'@mikro-orm/decorators/legacy'</span>;
+
+<span class="decorator">@Entity</span>()
+<span class="keyword">export class</span> <span class="type">Article</span> {
+  <span class="decorator">@PrimaryKey</span>()
+  id!: <span class="keyword">bigint</span>;
+
+  <span class="decorator">@Property</span>()
+  title!: <span class="type">string</span>;
+
+  <span class="decorator">@Property</span>({ unique: <span class="keyword">true</span> })
+  slug!: <span class="type">string</span>;
+}</code></pre>
+
+    <h3>So which do I pick?</h3>
+
+    <p>All three produce identical SQL. The differences are ergonomic and cultural. Here's how we frame it on the team:</p>
+
+    <table>
+        <tr>
+            <th>Style</th>
+            <th>Pick when</th>
+            <th>Watch out for</th>
+        </tr>
+        <tr>
+            <td><strong><code>defineEntity</code> standalone</strong></td>
+            <td>Most cases. Pure data classes, no domain methods, you want the shortest possible file.</td>
+            <td>Hover types are noisy (an intersection of generics). You can't add instance methods.</td>
+        </tr>
+        <tr>
+            <td><strong><code>defineEntity</code> + class</strong></td>
+            <td>You want clean hover types, you need domain methods (<code>fullName()</code>, <code>isPublished()</code>), or you want to extend a base class.</td>
+            <td>Two extra lines of boilerplate. Must remember <code>setClass()</code> before <code>MikroORM.init()</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>Decorators</strong></td>
+            <td>You're porting a TypeORM codebase, or your team strongly prefers the decorator look.</td>
+            <td>Requires <code>experimentalDecorators</code> + <code>emitDecoratorMetadata</code>. Doesn't play with esbuild/swc without plugins.</td>
+        </tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>Course default:</strong> we use <strong><code>defineEntity</code> standalone</strong> &mdash; the same shape you saw for <code>Book</code> in Lesson 1. It's the most compact, requires zero TypeScript config, and is the recommended modern path in the MikroORM v7 docs. If you find yourself adding domain methods often, switch to the class variant. Both are first-class.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F914;</div>
+        Junior: &ldquo;I added <code>experimentalDecorators: true</code>, why does the build still scream about decorator metadata?&rdquo;<br>
+        Senior: &ldquo;You also need <code>emitDecoratorMetadata</code>. And <code>import 'reflect-metadata'</code>. And it has to be the <em>first</em> import in your entry file.&rdquo;<br>
+        Junior: &ldquo;Three knobs to write a class field?&rdquo;<br>
+        Senior: &ldquo;That's why we use <code>defineEntity</code>.&rdquo;<br>
+        <em>Decorators work; they just bring three TypeScript flags to a one-property fight.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 2: PROPERTY TYPES & MODIFIERS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2: Property Types &amp; Modifiers</h2>
+
+    <p>Every property in <code>defineEntity</code> is a chain: a <strong>type</strong> followed by zero or more <strong>modifiers</strong>. Both halves come from the <code>p</code> helper (which is just an alias for <code>defineEntity.properties</code>).</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="760" height="320" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Anatomy of a property declaration</text>
+
+            <defs>
+                <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#D1D5DB"/>
+                </marker>
+            </defs>
+
+            <!-- Code line -->
+            <rect x="60" y="60" width="640" height="56" rx="10" fill="#111827"/>
+            <text x="80" y="95" font-family="JetBrains Mono" font-size="16" fill="#86EFAC">slug:</text>
+            <text x="135" y="95" font-family="JetBrains Mono" font-size="16" fill="#FCD34D">p.string()</text>
+            <text x="245" y="95" font-family="JetBrains Mono" font-size="16" fill="#93C5FD">.unique()</text>
+            <text x="345" y="95" font-family="JetBrains Mono" font-size="16" fill="#93C5FD">.length(255)</text>
+            <text x="475" y="95" font-family="JetBrains Mono" font-size="16" fill="#93C5FD">.nullable()</text>
+
+            <!-- pointers -->
+            <line x1="170" y1="120" x2="170" y2="160" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+            <line x1="280" y1="120" x2="280" y2="160" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+            <line x1="395" y1="120" x2="395" y2="160" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+            <line x1="510" y1="120" x2="510" y2="160" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- type box -->
+            <rect x="100" y="170" width="140" height="56" rx="8" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+            <text x="170" y="192" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#D97706">TYPE</text>
+            <text x="170" y="212" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">JS &harr; SQL mapping</text>
+
+            <!-- modifier boxes -->
+            <rect x="220" y="170" width="120" height="56" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="280" y="192" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#1D4ED8">CONSTRAINT</text>
+            <text x="280" y="212" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">unique index</text>
+
+            <rect x="340" y="170" width="120" height="56" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="400" y="192" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#1D4ED8">DDL HINT</text>
+            <text x="400" y="212" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">varchar(255)</text>
+
+            <rect x="460" y="170" width="120" height="56" rx="8" fill="#DBEAFE" stroke="#93C5FD" stroke-width="2"/>
+            <text x="520" y="192" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#1D4ED8">NULLABILITY</text>
+            <text x="520" y="212" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">drops NOT NULL</text>
+
+            <!-- bottom row: SQL output -->
+            <rect x="60" y="248" width="640" height="48" rx="8" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2"/>
+            <text x="80" y="270" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">Postgres column:</text>
+            <text x="220" y="270" font-family="JetBrains Mono" font-size="12" fill="#1A8F5C">slug varchar(255) NULL UNIQUE</text>
+            <text x="80" y="288" font-family="Inter" font-size="11" fill="#6B7280">Generated by the schema-diff engine. You never write this DDL by hand.</text>
+        </svg>
+        <div class="diagram-caption">A property = type chain. Each modifier adds metadata; the schema generator reads the metadata and builds DDL.</div>
+    </div>
+
+    <h3>The types you'll use 95% of the time</h3>
+
+    <table>
+        <tr>
+            <th><code>p.&lt;type&gt;()</code></th>
+            <th>Postgres column</th>
+            <th>JS type</th>
+            <th>When to reach for it</th>
+        </tr>
+        <tr>
+            <td><code>p.string()</code></td>
+            <td><code>varchar(255)</code></td>
+            <td><code>string</code></td>
+            <td>Names, titles, short text. Override length with <code>.length(n)</code>.</td>
+        </tr>
+        <tr>
+            <td><code>p.text()</code></td>
+            <td><code>text</code></td>
+            <td><code>string</code></td>
+            <td>Long-form bodies, descriptions. No length cap.</td>
+        </tr>
+        <tr>
+            <td><code>p.integer()</code></td>
+            <td><code>int4</code></td>
+            <td><code>number</code></td>
+            <td>Counts, view counts, small IDs. Range &plusmn;2.1B.</td>
+        </tr>
+        <tr>
+            <td><code>p.bigint()</code></td>
+            <td><code>int8</code></td>
+            <td><code>bigint</code></td>
+            <td>Primary keys for production tables. We default to this.</td>
+        </tr>
+        <tr>
+            <td><code>p.boolean()</code></td>
+            <td><code>boolean</code></td>
+            <td><code>boolean</code></td>
+            <td>Flags, soft-delete markers, feature toggles.</td>
+        </tr>
+        <tr>
+            <td><code>p.datetime()</code></td>
+            <td><code>timestamptz</code></td>
+            <td><code>Date</code></td>
+            <td><code>createdAt</code>, <code>publishedAt</code>, anything with timezone.</td>
+        </tr>
+        <tr>
+            <td><code>p.uuid()</code></td>
+            <td><code>uuid</code></td>
+            <td><code>string</code></td>
+            <td>Public-facing IDs you don't want to leak row counts.</td>
+        </tr>
+        <tr>
+            <td><code>p.float()</code></td>
+            <td><code>real</code></td>
+            <td><code>number</code></td>
+            <td>Inexact numerics &mdash; ratings, sensor data.</td>
+        </tr>
+        <tr>
+            <td><code>p.decimal()</code></td>
+            <td><code>numeric</code></td>
+            <td><code>string</code></td>
+            <td>Money. Always money. Never <code>float</code> for money.</td>
+        </tr>
+        <tr>
+            <td><code>p.json&lt;T&gt;()</code></td>
+            <td><code>jsonb</code></td>
+            <td><code>T</code></td>
+            <td>Schemaless metadata, settings blobs. Pass a TS shape.</td>
+        </tr>
+        <tr>
+            <td><code>p.enum(...)</code></td>
+            <td><code>text</code> + check constraint</td>
+            <td>your enum</td>
+            <td>Status fields, roles. Use <code>.nativeEnumName()</code> for a real Postgres enum.</td>
+        </tr>
+    </table>
+
+    <h3>The modifiers</h3>
+
+    <p>Modifiers chain. Order doesn't matter for the schema; pick whatever reads best. The most-used set:</p>
+
+    <pre><code><span class="comment">// the workhorse modifiers</span>
+p.<span class="function">string</span>().<span class="function">primary</span>()              <span class="comment">// add to PK</span>
+p.<span class="function">string</span>().<span class="function">unique</span>()               <span class="comment">// unique index</span>
+p.<span class="function">string</span>().<span class="function">nullable</span>()             <span class="comment">// drops NOT NULL</span>
+p.<span class="function">string</span>().<span class="function">length</span>(<span class="string">512</span>)            <span class="comment">// varchar(512) instead of (255)</span>
+p.<span class="function">integer</span>().<span class="function">default</span>(<span class="string">0</span>)            <span class="comment">// DB-side DEFAULT 0</span>
+p.<span class="function">datetime</span>().<span class="function">defaultRaw</span>(<span class="string">'now()'</span>) <span class="comment">// DB-side DEFAULT now()</span>
+p.<span class="function">datetime</span>().<span class="function">onCreate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>())   <span class="comment">// ORM-side, on insert</span>
+p.<span class="function">datetime</span>().<span class="function">onUpdate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>())   <span class="comment">// ORM-side, on update</span>
+p.<span class="function">string</span>().<span class="function">index</span>()                <span class="comment">// btree index</span>
+p.<span class="function">text</span>().<span class="function">lazy</span>()                   <span class="comment">// excluded from default SELECT</span>
+p.<span class="function">integer</span>().<span class="function">version</span>()              <span class="comment">// optimistic locking column</span></code></pre>
+
+    <h3>Nullable vs optional &mdash; the gotcha that bites everyone once</h3>
+
+    <p>TypeScript-optional (<code>title?: string</code>) and database-nullable (<code>NULL</code> column) are <em>different concerns</em>. Conflating them is the most common bug new MikroORM users ship.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4DD;</div>
+            <div class="card-title" style="color: var(--blue);">.nullable()</div>
+            <div class="card-subtitle" style="color: var(--blue);">Database-level</div>
+            <div class="card-desc">The DDL drops the <code>NOT NULL</code> constraint. The column can hold <code>NULL</code>. Type becomes <code>T | null</code>. This is what you want when the value is genuinely unknown for some rows.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x270F;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--orange);">TS-optional ?:</div>
+            <div class="card-subtitle" style="color: var(--orange);">Input-shape only</div>
+            <div class="card-desc">Just means &ldquo;you may omit this when constructing&rdquo;. Has nothing to do with the database. With <code>defineEntity</code>, this is implicit when you set <code>onCreate</code> or <code>default</code>.</div>
+        </div>
+    </div>
+
+    <p>The cleanest mental model: <strong>if a row could exist without this value, use <code>.nullable()</code>. If a value is always set but the API caller doesn't have to provide it, use <code>.default()</code> or <code>.onCreate()</code>.</strong></p>
+
+    <h3>Default vs onCreate vs onUpdate &mdash; whose hands does the value pass through?</h3>
+
+    <p>Three knobs that all set values automatically. They differ in <strong>who runs them</strong> and <strong>when</strong>.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4BE;</div>
+            <div class="layer-name" style="color: var(--blue);">.default(0)</div>
+            <div class="layer-desc">Postgres-side. <code>DEFAULT 0</code> in the DDL. Even raw SQL inserts get the value. Use for static literals.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F527;</div>
+            <div class="layer-name" style="color: var(--orange);">.defaultRaw('now()')</div>
+            <div class="layer-desc">Postgres-side, but the value is a SQL expression. Use for <code>now()</code>, <code>gen_random_uuid()</code>, server-side defaults.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--purple);">.onCreate(() =&gt; new Date())</div>
+            <div class="layer-desc">ORM-side, on insert. Runs in JS just before the row is sent to Postgres. Use when the value depends on JS context (a config flag, a user ID).</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x270F;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--green);">.onUpdate(() =&gt; new Date())</div>
+            <div class="layer-desc">ORM-side, on update. Runs every time the change-set fires an UPDATE. Classic <code>updatedAt</code> column.</div>
+        </div>
+    </div>
+
+    <div class="info-box orange">
+        <p><strong>Subtle but important:</strong> <code>default('hello')</code> is the database's hello. <code>onCreate(() =&gt; 'hello')</code> is JS's hello. They look the same on a clean insert, but they diverge if a different process inserts a row directly &mdash; only the <code>default</code> survives that path. Audit columns that <em>must</em> be set should always live as DB defaults, not JS hooks.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">You declare <code>publishedAt: p.datetime().nullable()</code>. A reader runs <code>em.create(Article, { title: 'Hi' })</code>. Then they call <code>article.publishedAt</code>. What value comes back &mdash; <code>null</code>, <code>undefined</code>, or a TypeScript error?</div>
+        <div class="recall-hint">Think about it before scrolling. The answer hinges on the difference between &ldquo;not yet flushed&rdquo; and &ldquo;round-tripped from Postgres&rdquo;. Hint: <code>em.create</code> just builds the JS shape; the value you see is whatever JS gives you for an unset property.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3: PRIMARY KEYS -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3: Primary Keys &mdash; bigint, uuid, or composite?</h2>
+
+    <p>Every entity needs a primary key. MikroORM enforces this at boot. The shape you pick determines insert performance, URL look, and how you handle horizontal scale.</p>
+
+    <div class="story-box">
+        <p>In our Records Library, every volume has a unique <strong>call number</strong>. Two questions are different: &ldquo;<em>how</em> does the catalog produce a new call number?&rdquo; and &ldquo;<em>what does it look like</em> when you read it off the spine?&rdquo;</p>
+        <p>Some libraries hand the catalog a sequential number machine: <code>000001</code>, <code>000002</code>, <code>000003</code>. Easy to read, fast to print, but anyone who sees a call number can guess how many volumes you have. Other libraries print a long random-looking code on every spine: <code>9c3e-7f81-…</code>. Nobody can guess your collection size, but the code is awkward to read out loud, and inserting a new volume requires generating that code somewhere first.</p>
+        <p>And occasionally the call number is <em>two pieces</em>: subject code + acquisition number. This is rare, but it shows up for inherently composite records &mdash; say, &ldquo;the third edition of book X&rdquo;.</p>
+        <div class="tech-note">
+            <strong>The MikroORM mapping:</strong> <code>p.bigint().primary()</code> = sequential call number (Postgres SEQUENCE, fast). <code>p.uuid().primary()</code> = random call number (UUID, opaque, distributable). Composite PK = two-part call number.
+        </div>
+    </div>
+
+    <h3>bigint &mdash; the default for production tables</h3>
+
+    <pre><code><span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    <span class="comment">// ...</span>
+  },
+});</code></pre>
+
+    <p>Behind this, Postgres creates an <code>int8</code> column with a sequence. Inserts are fast (one round trip to <code>nextval()</code>), the column is 8 bytes, and indexes on it are tight.</p>
+
+    <p>Why <em>big</em> int and not plain <code>int</code>? An <code>int4</code> tops out at ~2.1 billion. That sounds like a lot until you ship a feature that writes one row per page-view, hit ~250 rows/second, and run out of IDs in two months. <code>bigint</code> tops out at 9.2 quintillion. You will not exhaust it.</p>
+
+    <p>One quirk: in JavaScript, MikroORM v6+ maps Postgres <code>bigint</code> to the native <code>BigInt</code> type, not <code>number</code>. That means <code>article.id</code> has type <code>bigint</code>, and <code>article.id + 1</code> requires <code>article.id + 1n</code>. If that's annoying, you can opt into <code>BigIntType('string')</code> or <code>BigIntType('number')</code> in advanced cases &mdash; but stick with the default unless you have a reason.</p>
+
+    <h3>uuid &mdash; for public-facing IDs</h3>
+
+    <pre><code><span class="keyword">export const</span> Tag = <span class="function">defineEntity</span>({
+  name: <span class="string">'Tag'</span>,
+  properties: {
+    id: p.<span class="function">uuid</span>().<span class="function">primary</span>().<span class="function">defaultRaw</span>(<span class="string">'gen_random_uuid()'</span>),
+    name: p.<span class="function">string</span>(),
+  },
+});</code></pre>
+
+    <p>A 16-byte random ID. Postgres generates it server-side via <code>gen_random_uuid()</code> (built into <code>pgcrypto</code>, available since PG13). It's opaque &mdash; nobody can tell from <code>9c3e7f81-…</code> whether you have ten rows or ten million. It also lets a client generate the ID before the row hits the database, which is sometimes useful for offline-first apps.</p>
+
+    <p>Trade-offs: UUIDs are 2&times; the storage of a bigint, and random insertions fragment the index more than a sequential one. For an internal table you'll only ever hit by FK, that doesn't matter. For a hot append-only table doing 50k inserts/second, it can.</p>
+
+    <h3>Composite primary keys</h3>
+
+    <p>Sometimes the natural key is two columns. The classic example is a join-table for a many-to-many: <code>(book_id, tag_id)</code>. You declare it by marking <em>both</em> columns as <code>.primary()</code>:</p>
+
+    <pre><code><span class="keyword">export const</span> BookTag = <span class="function">defineEntity</span>({
+  name: <span class="string">'BookTag'</span>,
+  properties: {
+    book: () <span class="keyword">=&gt;</span> p.<span class="function">manyToOne</span>(Book).<span class="function">primary</span>(),
+    tag: () <span class="keyword">=&gt;</span> p.<span class="function">manyToOne</span>(Tag).<span class="function">primary</span>(),
+    addedAt: p.<span class="function">datetime</span>().<span class="function">onCreate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>()),
+  },
+});</code></pre>
+
+    <p>MikroORM stores composite PKs internally as ordered tuples. <code>em.findOne(BookTag, [bookId, tagId])</code> looks them up. We won't lean on these in the course &mdash; we'll see explicit M:N tables in Lesson 4 &mdash; but you should know they exist for the day a designer hands you a legacy schema with a real composite key.</p>
+
+    <div class="info-box blue">
+        <p><strong>Course rule of thumb:</strong> use <code>bigint</code> for every primary key by default. Reach for <code>uuid</code> when the ID escapes into the URL bar or the public API and you don't want a competitor to scrape your row counts. Composite PKs are a last resort, and even then mostly for legacy schemas.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4: NAMING STRATEGY & COLUMN MAPPING -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4: Naming Strategy &amp; Column Mapping</h2>
+
+    <p>You may have noticed something in the Lesson 1 logs:</p>
+
+    <pre><code>insert <span class="keyword">into</span> <span class="string">"book"</span> (<span class="string">"title"</span>, <span class="string">"author"</span>, <span class="string">"published_year"</span>, <span class="string">"created_at"</span>) ...</code></pre>
+
+    <p>You wrote <code>publishedYear</code> in TypeScript. Postgres got <code>published_year</code>. You wrote <code>createdAt</code>. Postgres got <code>created_at</code>. Nobody told MikroORM to do that &mdash; that's the default <strong>UnderscoreNamingStrategy</strong> at work.</p>
+
+    <p>The strategy is simple: every <code>camelCase</code> property name is converted to <code>snake_case</code> at the database layer. Same for the table name (<code>BookTag</code> entity becomes <code>book_tag</code> table). The conversion is bidirectional: when MikroORM hydrates a row, it reads <code>published_year</code> back into <code>publishedYear</code>.</p>
+
+    <h3>When (and how) to override</h3>
+
+    <p>Two levels of escape hatch. The narrow one: override the column name for a single property.</p>
+
+    <pre><code><span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    <span class="comment">// snake_case default would be `published_at` &mdash;</span>
+    <span class="comment">// but say a legacy column is called `published_date`</span>
+    publishedAt: p.<span class="function">datetime</span>()
+      .<span class="function">nullable</span>()
+      .<span class="function">fieldName</span>(<span class="string">'published_date'</span>),
+  },
+});</code></pre>
+
+    <p>The wide one: override the table name for the whole entity.</p>
+
+    <pre><code><span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  tableName: <span class="string">'articles'</span>, <span class="comment">// default would be "article" &mdash; pluralise here</span>
+  properties: { <span class="comment">/* ... */</span> },
+});</code></pre>
+
+    <p>The widest: change the naming strategy globally in <code>mikro-orm.config.ts</code>. We won't do that on this course; the underscore strategy is the de-facto Postgres convention and matches what most teams ship.</p>
+
+    <div class="info-box purple">
+        <p><strong>Why this matters in practice:</strong> if you adopt MikroORM into a system that already has tables, you'll either rename your TypeScript identifiers to fit the DB convention (bad &mdash; loud, churn-y) or use <code>fieldName</code>/<code>tableName</code> overrides on every property to map onto the legacy DB (also bad &mdash; verbose). The middle ground is to write a small custom <code>NamingStrategy</code> class that encodes whatever convention the legacy schema uses. It's an afternoon's work and pays back forever.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5: VALIDATION, DEFAULTS, LIFECYCLE PREVIEW -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5: Validation, Defaults &amp; Lifecycle Preview</h2>
+
+    <p>You've seen <code>length</code>, <code>nullable</code>, <code>default</code>, <code>onCreate</code>. Three more pieces complete the per-property toolkit you need before we wire up the <code>Article</code>.</p>
+
+    <h3>Length and string size</h3>
+
+    <p><code>p.string()</code> defaults to <code>varchar(255)</code>. That's an arbitrary historical default. For a column that's clearly a slug (max ~80 chars) or clearly a long blob (a body), be explicit:</p>
+
+    <pre><code>title: p.<span class="function">string</span>().<span class="function">length</span>(<span class="string">200</span>),     <span class="comment">// varchar(200)</span>
+slug:  p.<span class="function">string</span>().<span class="function">length</span>(<span class="string">80</span>).<span class="function">unique</span>(),
+body:  p.<span class="function">text</span>(),                   <span class="comment">// no length, use text type</span></code></pre>
+
+    <p>Why bother? Two reasons. First, the DDL is documentation: someone reading <code>varchar(80)</code> understands &ldquo;this is a slug&rdquo; faster than <code>varchar(255)</code>. Second, Postgres won't enforce more than what you ask &mdash; so a runaway client can shove a 250kB string into a default <code>varchar(255)</code> only if you didn't bound it. Bound your strings.</p>
+
+    <h3>Required vs implied-required</h3>
+
+    <p>By default every property is <code>NOT NULL</code> in the DB. You only opt out with <code>.nullable()</code>. That's the inverse of TypeORM. It catches a class of bugs at boot rather than at the first <code>INSERT</code>.</p>
+
+    <p>If a property has an <code>onCreate</code> or a <code>default</code>, the TypeScript signature treats it as optional in <code>em.create</code> calls (you don't have to pass it), but the column is still <code>NOT NULL</code>. The ORM and the DB agree: the value will be set, just not by your hand.</p>
+
+    <h3>A glimpse of lifecycle hooks</h3>
+
+    <p>Lesson 8 covers hooks in full. For now, the one-line preview: <code>onCreate</code> and <code>onUpdate</code> are <em>per-property</em> hooks that fire during the Unit of Work. There's also a richer system &mdash; <code>beforeCreate</code>, <code>afterCreate</code>, <code>beforeUpdate</code>, <code>afterDelete</code>, etc. &mdash; that fires on the whole entity. You attach them via <code>defineEntity({ hooks: ... })</code> or <code>Article.addHook(...)</code>.</p>
+
+    <pre><code><span class="comment">// teaser &mdash; full coverage in Lesson 8</span>
+Article.<span class="function">addHook</span>(<span class="string">'beforeCreate'</span>, (args) <span class="keyword">=&gt;</span> {
+  <span class="keyword">if</span> (!args.entity.slug) {
+    args.entity.slug = args.entity.title.<span class="function">toLowerCase</span>().<span class="function">replace</span>(<span class="string">/\s+/g</span>, <span class="string">'-'</span>);
+  }
+});</code></pre>
+
+    <p>Don't sweat this now &mdash; just know the seam exists. For Article we'll set timestamps with <code>onCreate</code>/<code>onUpdate</code> and that's enough.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Self-check before the hands-on</div>
+        <div class="recall-question">Without scrolling: (1) what's the difference between <code>.default(0)</code> and <code>.onCreate(() =&gt; 0)</code>? (2) When would you <em>have</em> to use <code>fieldName('foo')</code>? (3) Why does the course default to <code>bigint</code> over <code>integer</code> for primary keys?</div>
+        <div class="recall-hint">3/3: ship it. 2/3: skim Parts 2-4. 0-1/3: take a 5-minute break and reread the &ldquo;default vs onCreate&rdquo; layer-stack &mdash; that's the lock-in concept.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6: HANDS-ON -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6: Hands-on &mdash; Add Article to archive-api</h2>
+
+    <p>Open the <code>archive-api</code> project from Lesson 1. We're going to add a second entity and watch the schema generator handle two tables in one shot.</p>
+
+    <h3>Step 1 &mdash; create the Article entity</h3>
+
+    <p>New file: <code>src/entities/Article.ts</code>.</p>
+
+    <pre><code><span class="comment">// src/entities/Article.ts</span>
+<span class="keyword">import</span> { defineEntity, p, <span class="type">InferEntity</span> } <span class="keyword">from</span> <span class="string">'@mikro-orm/core'</span>;
+
+<span class="keyword">export const</span> Article = <span class="function">defineEntity</span>({
+  name: <span class="string">'Article'</span>,
+  properties: {
+    id: p.<span class="function">bigint</span>().<span class="function">primary</span>(),
+    title: p.<span class="function">string</span>().<span class="function">length</span>(<span class="string">200</span>),
+    slug: p.<span class="function">string</span>().<span class="function">length</span>(<span class="string">120</span>).<span class="function">unique</span>(),
+    body: p.<span class="function">text</span>(),
+    publishedAt: p.<span class="function">datetime</span>().<span class="function">nullable</span>(),
+    viewCount: p.<span class="function">integer</span>().<span class="function">default</span>(<span class="string">0</span>),
+    metadata: p.<span class="function">json</span>&lt;{ source?: <span class="type">string</span>; lang?: <span class="type">string</span> }&gt;().<span class="function">nullable</span>(),
+    createdAt: p.<span class="function">datetime</span>().<span class="function">onCreate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>()),
+    updatedAt: p.<span class="function">datetime</span>()
+      .<span class="function">onCreate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>())
+      .<span class="function">onUpdate</span>(() <span class="keyword">=&gt;</span> <span class="keyword">new</span> <span class="function">Date</span>()),
+  },
+});
+
+<span class="keyword">export type</span> <span class="type">IArticle</span> = InferEntity&lt;<span class="keyword">typeof</span> Article&gt;;</code></pre>
+
+    <p>Eight properties. Notice the deliberate choices: <code>title</code> is <code>varchar(200)</code> not the default 255, <code>slug</code> is <code>varchar(120)</code> + unique, <code>body</code> is <code>text</code> (no length cap), <code>viewCount</code> has a DB-side default of <code>0</code>, <code>publishedAt</code> is genuinely nullable (a draft has no publish date), and <code>updatedAt</code> uses <em>both</em> <code>onCreate</code> and <code>onUpdate</code> so it's set on the first INSERT and refreshed on every UPDATE.</p>
+
+    <h3>Step 2 &mdash; register it in the config</h3>
+
+    <p>Edit <code>src/mikro-orm.config.ts</code>:</p>
+
+    <pre><code><span class="comment">// src/mikro-orm.config.ts</span>
+<span class="keyword">import</span> { defineConfig } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'./entities/Book'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'./entities/Article'</span>; <span class="comment">// ← new</span>
+
+<span class="keyword">export default</span> <span class="function">defineConfig</span>({
+  entities: [Book, Article], <span class="comment">// ← new</span>
+  dbName: <span class="string">'archive'</span>,
+  user: <span class="string">'postgres'</span>,
+  password: <span class="string">'postgres'</span>,
+  host: <span class="string">'localhost'</span>,
+  port: <span class="string">5432</span>,
+  debug: <span class="keyword">true</span>,
+});</code></pre>
+
+    <h3>Step 3 &mdash; preview the SQL the schema generator would emit</h3>
+
+    <p>Before you change anything in the DB, let's <em>look</em> at what the schema generator wants to do. From the project root:</p>
+
+    <pre><code><span class="function">npx</span> mikro-orm schema:create --dump</code></pre>
+
+    <p>You should see two <code>create table</code> statements: the existing <code>book</code> (with the columns from Lesson 1) and the new <code>article</code>. Glance at the article one carefully:</p>
+
+    <pre><code><span class="keyword">create table</span> <span class="string">"article"</span> (
+  <span class="string">"id"</span> <span class="type">bigserial</span> <span class="keyword">primary key</span>,
+  <span class="string">"title"</span> <span class="type">varchar</span>(<span class="string">200</span>) <span class="keyword">not null</span>,
+  <span class="string">"slug"</span> <span class="type">varchar</span>(<span class="string">120</span>) <span class="keyword">not null</span>,
+  <span class="string">"body"</span> <span class="type">text</span> <span class="keyword">not null</span>,
+  <span class="string">"published_at"</span> <span class="type">timestamptz</span> <span class="keyword">null</span>,
+  <span class="string">"view_count"</span> <span class="type">int</span> <span class="keyword">not null default</span> <span class="string">0</span>,
+  <span class="string">"metadata"</span> <span class="type">jsonb</span> <span class="keyword">null</span>,
+  <span class="string">"created_at"</span> <span class="type">timestamptz</span> <span class="keyword">not null</span>,
+  <span class="string">"updated_at"</span> <span class="type">timestamptz</span> <span class="keyword">not null</span>
+);
+<span class="keyword">alter table</span> <span class="string">"article"</span> <span class="keyword">add constraint</span> <span class="string">"article_slug_unique"</span> <span class="keyword">unique</span> (<span class="string">"slug"</span>);</code></pre>
+
+    <p>Read this. Every choice we made in TypeScript shows up here: the <code>length(200)</code> became <code>varchar(200)</code>, <code>nullable()</code> became <code>NULL</code>, <code>default(0)</code> became <code>NOT NULL DEFAULT 0</code>, <code>unique()</code> became a separate <code>unique</code> constraint. The <code>onCreate</code> on <code>created_at</code>/<code>updated_at</code> is <em>not</em> visible here &mdash; that's the ORM-side hook, invisible to the database.</p>
+
+    <h3>Step 4 &mdash; persist a mixed batch</h3>
+
+    <p>Replace <code>src/main.ts</code> with this:</p>
+
+    <pre><code><span class="comment">// src/main.ts</span>
+<span class="keyword">import</span> { MikroORM } <span class="keyword">from</span> <span class="string">'@mikro-orm/postgresql'</span>;
+<span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'./mikro-orm.config'</span>;
+<span class="keyword">import</span> { Book } <span class="keyword">from</span> <span class="string">'./entities/Book'</span>;
+<span class="keyword">import</span> { Article } <span class="keyword">from</span> <span class="string">'./entities/Article'</span>;
+
+<span class="keyword">async function</span> <span class="function">main</span>() {
+  <span class="keyword">const</span> orm = <span class="keyword">await</span> MikroORM.<span class="function">init</span>(config);
+  <span class="keyword">await</span> orm.schema.<span class="function">refreshDatabase</span>();
+  <span class="keyword">const</span> em = orm.em.<span class="function">fork</span>();
+
+  em.<span class="function">create</span>(Book, { title: <span class="string">'War and Peace'</span>, author: <span class="string">'Tolstoy'</span>, publishedYear: <span class="string">1869</span> });
+
+  em.<span class="function">create</span>(Article, {
+    title: <span class="string">'On Long Novels'</span>,
+    slug: <span class="string">'on-long-novels'</span>,
+    body: <span class="string">'War and Peace clocks in at 1,225 pages...'</span>,
+    publishedAt: <span class="keyword">new</span> <span class="function">Date</span>(),
+    metadata: { source: <span class="string">'in-house'</span>, lang: <span class="string">'en'</span> },
+  });
+  em.<span class="function">create</span>(Article, {
+    title: <span class="string">'Draft: A Note on Editing'</span>,
+    slug: <span class="string">'draft-a-note-on-editing'</span>,
+    body: <span class="string">'Editing is the art of removal...'</span>,
+    metadata: { lang: <span class="string">'en'</span> },
+    <span class="comment">// publishedAt omitted &mdash; it's nullable, this is a draft</span>
+  });
+
+  <span class="keyword">await</span> em.<span class="function">flush</span>();
+
+  <span class="keyword">const</span> drafts = <span class="keyword">await</span> em.<span class="function">find</span>(Article, { publishedAt: <span class="keyword">null</span> });
+  <span class="function">console</span>.<span class="function">log</span>(<span class="string">'drafts:'</span>, drafts.<span class="function">map</span>(d <span class="keyword">=&gt;</span> d.title));
+
+  <span class="keyword">await</span> orm.<span class="function">close</span>();
+}
+
+<span class="function">main</span>().<span class="function">catch</span>(<span class="function">console</span>.error);</code></pre>
+
+    <p>Run <code>npm start</code>. Read the logs carefully. You should see:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2728;</div>
+            <div class="layer-name" style="color: var(--green);">One INSERT per table</div>
+            <div class="layer-desc">Books and articles are batched <em>per table</em>. Two SQL statements, both inside the same <code>begin</code>/<code>commit</code>.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F510;</div>
+            <div class="layer-name" style="color: var(--blue);">Single transaction</div>
+            <div class="layer-desc">Both tables, one transaction, atomic. Drop the DB connection mid-flush and you'd get <em>nothing</em>, not partial state.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--purple);">Drafts come back</div>
+            <div class="layer-desc">The <code>find</code> with <code>publishedAt: null</code> returns the unpublished article. <code>NULL</code> is a real, query-able value.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>You just modeled a real schema in TypeScript and watched MikroORM emit production-shaped DDL from it.</strong> Lengths, defaults, uniqueness, nullability, JSON columns, ORM-side timestamps &mdash; all driven from one declaration per entity. From here, every later lesson is wiring (relations, queries, migrations, transactions, hooks, NestJS).</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Summary</h2>
+
+    <p>Four takeaways for Lesson 2:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3F7;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--blue);">Three styles, one runtime</div>
+            <div class="layer-desc"><code>defineEntity</code> standalone (course default), <code>defineEntity</code> + class (when you need methods), decorators (legacy migrations). All produce the same metadata.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--purple);">Type chain &rarr; SQL column</div>
+            <div class="layer-desc"><code>p.&lt;type&gt;().&lt;modifier&gt;()...</code> turns into a single column with constraints. <code>nullable</code> = <code>NULL</code>, <code>default</code> = DB-side, <code>onCreate</code> = ORM-side.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F511;</div>
+            <div class="layer-name" style="color: var(--green);">PK choice is a real decision</div>
+            <div class="layer-desc"><code>bigint</code> for production by default. <code>uuid</code> when the ID escapes into URLs or you need offline ID generation. Composite PKs only for legacy schemas.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F5C2;&#xFE0F;</div>
+            <div class="layer-name" style="color: var(--orange);">camelCase &harr; snake_case for free</div>
+            <div class="layer-desc">UnderscoreNamingStrategy is the default. Override per-column with <code>fieldName</code>, per-table with <code>tableName</code>, globally only if you must.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 3:</strong> we dive into the EntityManager itself: <code>persist</code>, <code>find</code>, the full <code>FilterQuery</code> operator set, the Identity Map in action, references vs hydrated entities, and the lifecycle states (New / Managed / Detached / Removed). It's the lesson where everything you've learned so far finally clicks together.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework</h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Add the Article entity to <code>archive-api</code></strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Follow Part 6 step by step. Add <code>src/entities/Article.ts</code>, register it in the config, run the updated <code>main.ts</code>.</li>
+                    <li>Push to your <code>mikroorm-course-yourname</code> repo as a new commit (or branch + PR).</li>
+                    <li>Submit the PR or commit URL.</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Capture the schema generator output</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Run <code>npx mikro-orm schema:create --dump</code> with both <code>Book</code> and <code>Article</code> in the entities array.</li>
+                    <li>Submit a screenshot of the terminal output. Both <code>create table "book"</code> and <code>create table "article"</code> must be visible, with the right column types (<code>varchar(200)</code>, <code>jsonb</code>, <code>timestamptz</code>, etc.).</li>
+                </ul>
+            </li>
+
+            <li style="margin-top: 16px;">
+                <strong>Why <code>bigint</code>? (Elaborative interrogation)</strong>
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>In 4&ndash;6 sentences: why is <code>bigint</code> a better default than <code>int</code> for production tables, and when does <code>uuid</code> beat both? Be concrete &mdash; cite a scenario, not just a bullet point.</li>
+                    <li>Submit as text in the platform.</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Add a <code>Tag</code> entity with a UUID PK</strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Define a <code>Tag</code> entity with <code>id: p.uuid().primary().defaultRaw('gen_random_uuid()')</code> and a <code>name: p.string().unique()</code>. Register it. Run <code>schema:create --dump</code> and compare the SQL for <code>tag.id</code> (<code>uuid</code>) vs <code>article.id</code> (<code>bigserial</code>). Document the diff in your repo's README.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Override the column name for <code>publishedAt</code></strong>
+                <p style="margin: 8px 0 4px; font-size: 14px;">Use <code>.fieldName('published_date')</code> on the <code>publishedAt</code> property of <code>Article</code>. Re-run <code>schema:create --dump</code> and confirm the column is now <code>published_date</code>, not <code>published_at</code>. Then run <code>main.ts</code> and confirm the <code>find({ publishedAt: null })</code> query in your TypeScript still works &mdash; the JS-side name is unchanged. Capture both before and after SQL in the README.</p>
+            </li>
+        </ol>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>Fohlio MikroORM Course &mdash; Lesson 2 of 10</p>
+        <p>Questions? Ask in the <code>#mikroorm-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next Lesson: The EntityManager &mdash; persist, find, and the Unit of Work in action</p>
+    </div>
+
+</div>
+
+</body>
+</html>
