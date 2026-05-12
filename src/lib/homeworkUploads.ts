@@ -25,7 +25,13 @@ const UploadPayloadSchema = z.object({
 });
 
 const SCREENSHOT_CONSTRAINTS = {
-  allowedContentTypes: ["image/*"],
+  // @vercel/blob does not support MIME wildcards — list explicit types.
+  allowedContentTypes: [
+    "image/png",
+    "image/jpeg",
+    "image/gif",
+    "image/webp",
+  ],
   maximumSizeInBytes: 10 * 1024 * 1024,
 };
 
@@ -86,7 +92,6 @@ export async function handleHomeworkUploadRequest(
         }
 
         return {
-          token: env.BLOB_READ_WRITE_TOKEN,
           addRandomSuffix: true,
           validUntil: Date.now() + TOKEN_TTL_MS,
           tokenPayload: JSON.stringify(parsedPayload),
