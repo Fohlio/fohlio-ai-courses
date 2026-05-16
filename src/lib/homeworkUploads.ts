@@ -36,7 +36,10 @@ const SCREENSHOT_CONSTRAINTS = {
   maximumSizeInBytes: 10 * 1024 * 1024,
 };
 
-const TOKEN_TTL_MS = 1000 * 60 * 5;
+// 1 hour — matches the @vercel/blob SDK default. A short window left no
+// margin for clock skew between the Function and the Blob API, so the
+// client token could be rejected as expired before the upload PUT landed.
+const TOKEN_TTL_MS = 1000 * 60 * 60;
 
 export async function handleHomeworkUploadRequest(
   request: Request,
