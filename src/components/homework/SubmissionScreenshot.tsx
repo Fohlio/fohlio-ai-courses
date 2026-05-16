@@ -7,7 +7,11 @@ import { Input } from "@/components/ui/Input";
 import type { ScreenshotContent } from "@/lib/types";
 
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
-const FILE_NAME_RE = /^[\p{L}\p{N} ._\-()[\]+,]+$/u;
+// Strict pathname charset — letters/digits/dot/dash/underscore only.
+// Spaces and query-unsafe chars ([](),+ …) break the client-upload PUT:
+// the pathname is signed into the token but URL-encoded in ?pathname=,
+// and the two representations must round-trip identically.
+const FILE_NAME_RE = /^[\p{L}\p{N}._-]+$/u;
 
 interface SubmissionScreenshotProps {
   taskId: string;
@@ -24,11 +28,20 @@ function isHttpUrl(value: string): boolean {
 }
 
 function sanitizeFileName(name: string): string {
-  // Strip path traversal segments and trim to 255 chars; replace disallowed chars with "_".
-  const base = name.split(/[\\/]/).pop() ?? name;
-  return Array.from(base.slice(0, 255))
-    .map((ch) => (FILE_NAME_RE.test(ch) ? ch : "_"))
-    .join("");
+  // Strip path-traversal segments, then slugify into a blob-safe pathname:
+  // no spaces, no query-unsafe chars — those make the PUT to blob storage 400.
+  const base = (name.split(/[\\/]/).pop() ?? name).slice(0, 200);
+  const dot = base.lastIndexOf(".");
+  const stem = dot > 0 ? base.slice(0, dot) : base;
+  const ext = dot > 0 ? base.slice(dot + 1) : "";
+  const safeStem =
+    stem
+      .normalize("NFKD")
+      .replace(/[^\p{L}\p{N}]+/gu, "-")
+      .replace(/^-+|-+$/g, "")
+      .toLowerCase() || "screenshot";
+  const safeExt = ext.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return safeExt ? `${safeStem}.${safeExt}` : safeStem;
 }
 
 function extForMime(mime: string): string {
