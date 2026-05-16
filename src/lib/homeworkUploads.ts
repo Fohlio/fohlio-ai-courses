@@ -15,9 +15,10 @@ interface HomeworkUploadError {
   type: "auth" | "validation" | "server";
 }
 
-// Permissive allowlist for screenshot filenames — letters/digits/space/common punctuation.
-// Rejects control chars, RTL overrides, and other display-attack vectors by construction.
-const FILE_NAME_RE = /^[\p{L}\p{N} ._\-()[\]+,]+$/u;
+// Strict allowlist for screenshot filenames — letters/digits/dot/dash/underscore only.
+// The client slugifies before upload; spaces/query-unsafe chars in a blob pathname
+// break the client-upload PUT (400). Rejects control chars / RTL overrides too.
+const FILE_NAME_RE = /^[\p{L}\p{N}._-]+$/u;
 
 const UploadPayloadSchema = z.object({
   taskId: z.string().min(1),
