@@ -1,0 +1,40 @@
+[
+  {
+    "id": "mikroorm-task-4-1",
+    "title": "Persist a full entity graph with relations and capture the pivot DDL",
+    "description": "Add Author and Tag entities to your archive-api project. Author has a 1:M to Book (the Author side is inverse, the Book side owns the FK). Book and Article both have M:M to Tag via a pivot table. Write a script that creates 1 author, 2 books, 1 article, and 3 tags, assigns all relations, and flushes. Then run 'npx mikro-orm schema:update --dump' and submit a screenshot showing the book_tags pivot table DDL — the screenshot must include both book_id and tag_id columns and at least one FOREIGN KEY constraint line. No GitHub repo — submit the screenshot directly.",
+    "category": "required",
+    "submissionType": "screenshot",
+    "order": 1,
+    "modelAnswer": "The screenshot must show a CREATE TABLE book_tags (or the name you gave it) with:\n- book_id bigint NOT NULL REFERENCES book(id)\n- tag_id bigint NOT NULL REFERENCES tag(id)\n- A primary key on (book_id, tag_id) or similar composite constraint.\nIf you see 'book_tags' but with only one column, you likely forgot to declare the inverse side with mappedBy. The pivot table requires both sides to be mapped before MikroORM can generate it.\nIf the dump is empty: the migration snapshot may already exist and schema:update sees no diff. Run 'npx mikro-orm schema:create --dump' instead.",
+    "estimatedMinutes": 30
+  },
+  {
+    "id": "mikroorm-task-4-2",
+    "title": "Owning side, inverse side, and a L2/L3 curveball — schema + query log",
+    "description": "This task combines relations (L4) with Identity Map and entity lifecycle knowledge from L2–L3. Do both parts:\n\nPart A (Relations): Add the M:M between Article and Tag. Run 'npx mikro-orm schema:update --dump'. Confirm article_tags pivot appears. Submit a screenshot.\n\nPart B (Prior lessons callback): Load the Author you inserted in Part A using em.findOne(Author, authorId, { populate: ['books'] }). Immediately call em.findOne(Author, authorId, { populate: ['books'] }) a second time. How many SELECTs fire? Why? (Refer to what you learned in L3 about the Identity Map key.) Submit your answer as text below the screenshot.\n\nSubmit: one screenshot + one short text paragraph.",
+    "category": "required",
+    "submissionType": "screenshot",
+    "order": 2,
+    "modelAnswer": "Part A: article_tags pivot table with article_id and tag_id FKs must be visible.\nPart B: The second findOne still fires a SELECT because the Identity Map is keyed by PK, not by populate hint. MikroORM does not know the first result included populated books unless it tracks the populate spec per-identity (it does not). However: if the books collection was already initialized on the instance, MikroORM may short-circuit. Students who observed zero queries on the second call should check whether their EM was forked between calls — that resets the map. One SELECT is the normal expectation for the same populate hint called twice on the same EM instance because MikroORM re-runs the query to ensure freshness of the collection.",
+    "estimatedMinutes": 30
+  },
+  {
+    "id": "mikroorm-task-4-3",
+    "title": "Demonstrate orphan removal — plan, implement, verify (AI-resilient)",
+    "description": "Before writing code: in 2–3 sentences predict what SQL MikroORM will issue when you remove a Book from author.books with orphanRemoval: true on the collection. Be specific: UPDATE, DELETE, or both? Which table?\n\nThen implement it: configure orphanRemoval: true on Author.books. Write a script that loads an author with populated books, calls author.books.remove(books[0]), then flushes. Capture the query log.\n\nRevision: Was your prediction correct? If not, explain why the actual SQL differed from your expectation. What does 'orphan' mean in MikroORM's model, and how is it different from cascade remove?\n\nMetacognitive memo: What does this exercise reveal about the difference between removing from a collection and deleting an entity? What would an AI summary of orphan removal probably oversimplify?",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 1,
+    "estimatedMinutes": 35
+  },
+  {
+    "id": "mikroorm-task-4-4",
+    "title": "Why must exactly one side own an M:M relation?",
+    "description": "Why does MikroORM require an explicit owning side in M:M relations, and what would happen at the schema and runtime level if both sides declared themselves as the owner? Reference: which side generates the pivot table INSERT/DELETE, and what SQL conflict or duplication would occur if both sides tried. Answer in 4–6 sentences.",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 2,
+    "estimatedMinutes": 15
+  }
+]

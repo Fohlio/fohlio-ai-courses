@@ -1,0 +1,40 @@
+[
+  {
+    "id": "mikroorm-task-8-1",
+    "title": "Add Address embeddable and capture the flattened DDL",
+    "description": "Define an Address embeddable (street, city, country — all strings) and embed it on Author in inline mode (the default). Add a typed metadata jsonb column to Article using p.json<ArticleMetadata>() where ArticleMetadata has readTimeMinutes: number and featuredImageUrl: string | null. Add a beforeCreate hook on Article that auto-generates slug from title (lowercase, replace spaces with hyphens, strip non-alphanumeric). Run 'npx mikro-orm schema:update --dump' and submit a screenshot of the 'create table author' portion — it must show four address_* columns inlined into the author table (address_street, address_city, address_country), proving the embeddable was flattened rather than stored in a separate table.",
+    "category": "required",
+    "submissionType": "screenshot",
+    "order": 1,
+    "modelAnswer": "The screenshot must show author table columns including: address_street varchar not null, address_city varchar not null, address_country varchar not null — all directly in the author table, not in a separate address table.\nIf you see a CREATE TABLE address: you used the entity decorator instead of embeddable. The @Embeddable() decorator (or defineEntity with embeddable: true) is required.\nIf address columns are missing entirely: the embeddable was not registered in the entity's defineEntity block. Confirm the embedded property is present with p.embedded(() => Address).",
+    "estimatedMinutes": 30
+  },
+  {
+    "id": "mikroorm-task-8-2",
+    "title": "JSONB concurrent counter danger + L6/L7 callback",
+    "description": "This task combines embeddables and JSONB (L8) with filters and migrations from L6–L7.\n\nPart A (L8): In 4–6 sentences explain why storing an integer counter inside a JSONB column is dangerous under concurrent writes, while putting the same counter in a plain int column is safe. Reference how Postgres updates JSONB internally (whole-field rewrite) and why that causes lost-update under read-modify-write.\n\nPart B (L6–L7 callback): You decide to extract the counter from JSONB into a dedicated view_count int column. Write the migration up() method in pseudocode or real TypeScript (using this.addColumn and this.addSql) that: (1) adds the view_count column with default 0, (2) backfills it from the JSONB field (you can use raw SQL), and (3) drops the JSONB key. Also: what filter (from L6) would you need to update or re-test after this migration?\n\nSubmit both parts as text.",
+    "category": "required",
+    "submissionType": "text",
+    "order": 2,
+    "modelAnswer": "Part A: Postgres stores JSONB as a binary-parsed blob. To update a single key, Postgres must rewrite the entire column value for that row. Under concurrent writes, two transactions each read the current blob, modify the counter key in memory, and write back — the second write overwrites the first, losing one increment. A plain int column supports atomic UPDATE SET view_count = view_count + 1 which Postgres executes as a single in-place operation with row-level locking — no read-modify-write race is possible.\n\nPart B (pseudocode):\nup(): {\n  this.addColumn('article', { name: 'view_count', type: 'int', default: 0, nullable: false });\n  this.addSql(\"UPDATE article SET view_count = (metadata->>'readTimeMinutes')::int WHERE metadata->>'readTimeMinutes' IS NOT NULL\");\n  // Note: dropping a JSONB key requires updating the column, not dropping it entirely unless metadata only held the counter:\n  // this.addSql(\"UPDATE article SET metadata = metadata - 'readTimeMinutes'\");\n}\nFilter update: if the softDelete filter condition references metadata->'deletedAt', nothing changes. If viewCount was part of a filter condition (e.g. $gt: minViews), update the filter to reference the new column.",
+    "estimatedMinutes": 30
+  },
+  {
+    "id": "mikroorm-task-8-3",
+    "title": "Implement MoneyType custom type — plan, build, critique (AI-resilient)",
+    "description": "Implement a custom MikroORM Type called MoneyType that stores a Money value object (amount: number, currency: string) as 'amount:currency' string in Postgres. It must implement convertToDatabaseValue (object→string) and convertToJSValue (string→object). Apply it to a price property on Book.\n\nThree-stage task:\n1. Plan: before coding, identify the four methods a custom Type must implement and what each does. Write them as stubs with just their signatures and a one-line comment.\n2. Implement: build MoneyType, apply it to Book.price, run schema:update --dump, confirm the price column is stored as varchar. Create a Book with a price, flush, reload it, and verify the JS value is a Money object (not a raw string).\n3. Critique: paste your MoneyType into ChatGPT and ask 'What edge cases does this miss?' Copy the response. Write 3 sentences on what ChatGPT got right and what it missed specifically about the MikroORM Type contract (e.g., getColumnType(), compareAsType()).\n\nMetacognitive memo: What does building a custom Type clarify about how MikroORM's mapping layer works that reading the docs alone does not?",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 1,
+    "estimatedMinutes": 40
+  },
+  {
+    "id": "mikroorm-task-8-4",
+    "title": "Why is storing a counter in JSONB a concurrency trap, not just a style choice?",
+    "description": "Two concurrent HTTP requests each want to increment article.metadata.viewCount by 1. Walk through the exact sequence of operations — read, modify, write — for both requests under optimistic (no row lock) conditions and explain why the final count is 1 instead of 2. Then explain why the same two requests incrementing a plain int view_count column with UPDATE article SET view_count = view_count + 1 WHERE id = $1 do produce a final count of 2. Your answer should reference Postgres row-level locking. Answer in 5–7 sentences.",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 2,
+    "estimatedMinutes": 15
+  }
+]

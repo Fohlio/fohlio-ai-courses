@@ -1032,44 +1032,37 @@ app.<span class="function">use</span>((req, res, next) <span class="keyword">=&g
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Scaffold and run <code>archive-api</code></strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Follow Part 4 step by step. Local Postgres, <code>archive</code> database, three packages installed.</li>
-                    <li>Run <code>npm start</code>. You should see the batched INSERT, the <code>begin</code>/<code>commit</code>, the single SELECT, and <code>same instance? true</code>.</li>
-                    <li>Submit a <strong>screenshot</strong> of your terminal output showing all of those.</li>
-                </ul>
+                <strong>Scaffold archive-api and prove the Identity Map</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Set up a local Postgres database named <code>archive</code>. Install <code>@mikro-orm/core</code>, <code>@mikro-orm/postgresql</code>, and <code>@mikro-orm/reflection</code>. Create <code>mikro-orm.config.ts</code>. Define a <code>Book</code> entity with <code>id</code> (bigint PK), <code>title</code> (string, max 200), and <code>createdAt</code> (datetime). Write <code>main.ts</code> that: (1) calls <code>MikroORM.init()</code>, (2) persists two Book instances in one flush, (3) fetches one by id, and (4) <code>console.log('same instance?', book === fetched)</code>. Run <code>npm start</code> and submit a screenshot of the terminal showing the INSERT log, the SELECT log, and <code>same instance? true</code>.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The terminal must show: (1) a BEGIN followed by batched INSERTs for both books in one transaction, then COMMIT; (2) a single SELECT WHERE id = &lt;n&gt; for the findOne call; (3) "same instance? true" &mdash; confirming the Identity Map returned the already-managed object. If you see two SELECTs, the entity was not registered before the second findOne &mdash; check that you called em.persist() before em.flush(), not em.insert().</p>
+                </details>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Push <code>archive-api</code> to GitHub</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Create a public repo named <code>mikroorm-course-yourname</code>.</li>
-                    <li>Push your <code>archive-api</code> project there. Add a brief <code>README.md</code> with the local-Postgres setup steps.</li>
-                    <li>Submit the repo URL &mdash; we'll keep growing this same repo for every lesson.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Why is the Identity Map per-request, not global? (Elaborative interrogation)</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 3&ndash;5 sentences: name two concrete bad things that would happen if the Identity Map were shared across all requests in a web server. Use the library analogy if it helps.</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+                <strong>Explain the Unit of Work in your own words</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">In 4&ndash;6 sentences answer: what does the Unit of Work pattern do, and why does MikroORM flush all changes in a single transaction rather than one-by-one? Use at least one concrete example tied to the Records Library analogy (the librarian, the catalogue card, the reading room). Submit as text.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A good answer covers three things: (1) the Unit of Work collects every change made to managed entities during the request without touching the database yet; (2) on flush(), MikroORM orders those changes by foreign-key dependency and wraps them in a single transaction; (3) library analogy: the librarian takes notes on every change at the reading-room desk, then at closing time walks to the storeroom once and commits everything in the right order. Watch for: answers that conflate the Identity Map with the Unit of Work &mdash; the Identity Map is about instance uniqueness; the UoW is about deferred write batching.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Prove change-tracking is snapshot-based</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Modify <code>main.ts</code> so that after the second <code>findOne</code>, you do <code>book1.title = 'War &amp; Peace (revised)'</code>, then <code>await em.flush()</code> a second time. Confirm: exactly one <code>UPDATE</code> statement is fired, and only the <code>title</code> column appears in its SET clause. Capture the query log and add it to your repo's <code>README.md</code>.</p>
+                <strong>Why is the Identity Map per-request, not global?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Draft a 3&ndash;5 sentence answer explaining why a shared, global Identity Map would be catastrophic in a multi-request web server. Then test your answer: paste your draft into ChatGPT and ask it to improve it. Identify one thing ChatGPT added or changed that you agree with, and one thing it missed or got wrong. Submit: your original draft, the ChatGPT output, and your one-line verdict on each. (Hint: think about concurrent requests mutating the same in-memory Book instance, and what "stale data" means when 50 HTTP handlers share one map.)</p>
+                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What was hard to articulate? What would an AI summary of this lesson probably miss about why per-request isolation matters?</em></p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Break it on purpose: shared global EM</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Replace <code>const em = orm.em.fork()</code> with <code>const em = orm.em</code>. Run again. What error do you get, and at which line? Read the error message carefully &mdash; it tells you exactly which config flag would suppress it (and why you'd never want to). Write a one-paragraph note in your repo's <code>README.md</code> explaining what you saw.</p>
+                <strong>Why does MikroORM choose Data Mapper over Active Record?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Why does keeping persistence logic out of the entity class make the domain model easier to test, and why doesn't that benefit show up on small projects? Answer in 4&ndash;6 sentences. Consider: what does an Active Record entity need to import to call <code>.save()</code>, and what does that import do to your unit tests?</p>
             </li>
         </ol>
     </div>

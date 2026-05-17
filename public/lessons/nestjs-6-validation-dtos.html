@@ -1231,48 +1231,46 @@ app.<span class="function">enableVersioning</span>({
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Wire validation into your flights API</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Create <code>CreateFlightDto</code> in <code>src/flights/dto/</code> with at minimum: <code>@IsString()</code> on <code>code</code>, <code>@IsInt() @Min(0)</code> on <code>capacity</code>, plus one more validated field of your choice</li>
-                    <li>Wire the global <code>ValidationPipe</code> in <code>main.ts</code> with <code>whitelist: true, forbidNonWhitelisted: true, transform: true</code></li>
-                    <li>POST a body that's missing a required field (or has a wrong type) using Postman / Insomnia / curl</li>
-                    <li>Take a <strong>screenshot</strong> of the 400 response showing the field-by-field error messages</li>
-                    <li>Submit the screenshot</li>
-                </ul>
+                <strong>CreateFlightDto + ValidationPipe errors in the response</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Create <code>src/flights/dto/create-flight.dto.ts</code> with at minimum: <code>@IsString()</code> on <code>code</code>, <code>@IsInt() @Min(0)</code> on <code>capacity</code>, and one additional validated field of your choice (e.g. <code>@IsDateString()</code> on <code>departureDate</code>). Wire the global <code>ValidationPipe</code> in <code>main.ts</code> with <code>whitelist: true, forbidNonWhitelisted: true, transform: true</code>. Submit a screenshot of a <code>POST /flights</code> request missing one required field &mdash; the 400 response body must show the field-level error messages array, not just "400 Bad Request".</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Your 400 body should look like: <code>{ statusCode: 400, message: ['code must be a string', ...], error: 'Bad Request' }</code>. If you see a generic 400 without the message array, the <code>ValidationPipe</code> is not wired globally &mdash; check <code>app.useGlobalPipes(new ValidationPipe({ whitelist: true, ... }))</code> in <code>main.ts</code>. If every request returns 400 even with valid data, check <code>transform: true</code> is set and <code>@IsInt()</code> (not <code>@IsNumber()</code>) is used where an integer is expected.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>Add UpdateFlightDto with PartialType</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Create <code>UpdateFlightDto extends PartialType(CreateFlightDto)</code></li>
-                    <li>Replace your <code>PATCH /flights/:id</code> handler to use it as <code>@Body() dto: UpdateFlightDto</code></li>
-                    <li>Push the commit to your <code>nestjs-course-yourname</code> repo</li>
-                    <li>Submit the commit URL (<code>github.com/&lt;you&gt;/nestjs-course-yourname/commit/&lt;sha&gt;</code>)</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Why whitelist + forbidNonWhitelisted matter</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 2&ndash;3 sentences: explain why <code>whitelist: true</code> and <code>forbidNonWhitelisted: true</code> are critical for production</li>
-                    <li>Name the attack class they prevent</li>
-                    <li>Submit as text in the platform</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>UpdateFlightDto + @Exclude on sensitive fields &mdash; cumulative</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Create <code>UpdateFlightDto extends PartialType(CreateFlightDto)</code> and wire it into <code>PATCH /flights/:id</code>. Then add <code>@Exclude()</code> to the <code>passwordHash</code> field on a User response class (from Lesson 5's User model). Wire <code>ClassSerializerInterceptor</code> globally. Submit a screenshot showing: (1) a <code>PATCH /flights/1</code> request with a partial body returning the updated flight, (2) <code>GET /me</code> (or <code>GET /users/:id</code>) returning a user object with <code>passwordHash</code> absent.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Two things must be visible: (1) PATCH with e.g. <code>{ capacity: 200 }</code> returning the full updated flight. (2) The user response lacking the <code>passwordHash</code> key. If <code>passwordHash</code> still appears, <code>ClassSerializerInterceptor</code> is not global, or the returned object is a plain Prisma result &mdash; you must use <code>plainToInstance(UserDto, user)</code> to trigger <code>@Exclude()</code>.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Strip a sensitive field from your responses</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add a <code>passwordHash</code> field to a <code>User</code> class (or whatever sensitive field exists in your model). Decorate it with <code>@Exclude()</code>. Wire <code>ClassSerializerInterceptor</code> globally. <code>GET /users/:id</code> must <em>not</em> return <code>passwordHash</code> &mdash; screenshot the response.</p>
+                <strong>Design better DTOs &mdash; critique and rebuild</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">You are reviewing a teammate's PR. Their DTO looks like this:</p>
+                <pre style="background:var(--gray-100);padding:12px;border-radius:6px;font-size:13px;margin:8px 0;">export class CreateBookingDto {
+  @IsString() flightId: string;
+  @IsString() passengerId: string;
+  @IsString() seatClass: string;
+  @IsBoolean() isPaid: boolean;
+  @IsString() internalNotes: string;
+  @IsString() createdBy: string;
+  @IsString() updatedBy: string;
+}</pre>
+                <p style="font-size: 14px; color: var(--gray-700);">Identify at least 3 production problems (fields that should never come from the client, missing constraints, missing optionality). Write the corrected DTO. Include a metacognitive memo: what would happen in production if this DTO shipped unchanged, and what would a linter alone not catch?</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Implement URI versioning</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Enable URI versioning. Build <code>/v1/flights</code> and <code>/v2/flights</code> where v2 returns a richer response (e.g. adds <code>formattedDate</code>). Screenshot both responses side by side.</p>
+                <strong>Why whitelist beats manual field stripping &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">A developer argues: "I don't need <code>whitelist: true</code> &mdash; I just destructure the fields I need: <code>const { name, email } = body</code>." Why is this reasoning wrong in a codebase with 30+ endpoints? Think about: what happens when a junior dev calls <code>Object.assign(existingRecord, body)</code>, what "mass assignment" concretely means in a Prisma <code>update</code> call, and what breaks when a new field is added to the DTO but not destructured. Write 4&ndash;6 sentences.</p>
             </li>
         </ol>
     </div>

@@ -102,6 +102,8 @@ export interface HomeworkTask {
   order: number;
   quizQuestions?: string[];
   checklistItems?: string[];
+  modelAnswer?: string | null;
+  estimatedMinutes?: number | null;
 }
 
 export type SubmissionType =

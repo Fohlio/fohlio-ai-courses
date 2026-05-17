@@ -1054,47 +1054,37 @@ archive-api/
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Convert archive-api to a NestJS shape</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add <code>app.module.ts</code> with <code>MikroOrmModule.forRoot(config)</code>, plus a <code>BookModule</code> that <code>forFeature([Book])</code>.</li>
-                    <li>Build <code>BookController</code> with <code>GET /books</code> and <code>POST /books</code>.</li>
-                    <li>Build <code>BookService</code> with a <code>@Transactional()</code> <code>createWithLog</code> that creates a Book and an AuditLog atomically.</li>
-                    <li>Push to your <code>mikroorm-course-yourname</code> repo. Submit the PR URL.</li>
-                </ul>
+                <strong>Wire MikroORM into a NestJS app and prove fork-per-request</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Add <code>app.module.ts</code> with <code>MikroOrmModule.forRoot(config)</code> and a BookModule using <code>MikroOrmModule.forFeature([Book])</code>. Build BookController with GET /books and POST /books. Build BookService that logs <code>(em as any)['id']</code> before each persist. Start the server. Send two consecutive POST /books requests via curl or HTTPie. Submit a screenshot of your server logs showing two different EM IDs for the two requests &mdash; proving MikroORM forked a fresh EM for each HTTP request.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot must show two distinct numeric IDs (e.g., "EM id: 2" and "EM id: 3") logged for two POST requests. If both requests show the same ID: the RequestContext middleware is not wired up, or you injected orm.em directly instead of using the module's injected EntityManager. Check that MikroOrmModule.forRoot is present and that your service receives EntityManager via @InjectEntityManager() or the constructor injection.</p>
+                </details>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Prove fork-per-request</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add a <code>console.log</code> in <code>BookService</code> that prints the EntityManager's internal identity (<code>(em as any).id</code>) on every controller-triggered call.</li>
-                    <li>Send two consecutive <code>POST /books</code> requests via <code>curl</code> or HTTPie.</li>
-                    <li>Capture a screenshot of your server logs showing two different EM identities for the two requests.</li>
-                    <li>Submit the screenshot.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Why is @Transactional on a controller wrong? (Elaborative interrogation)</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 4&ndash;6 sentences: explain why <code>@Transactional()</code> on a controller method is an anti-pattern, while on a service method it's idiomatic.</li>
-                    <li>Reference separation of concerns &mdash; what controllers should and shouldn't own, and what kind of code lives in a service.</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+                <strong>@Transactional on controller vs service + L7/L8 callback</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (L9): In 4&ndash;6 sentences explain why <code>@Transactional()</code> on a controller method is an anti-pattern while on a service method it is idiomatic. Reference separation of concerns. Part B (L7&ndash;L8 callback): Your BookService.createWithLog() is decorated with <code>@Transactional()</code>. A migration later adds a NOT NULL column to AuditLog without a default. Describe step by step what happens to in-flight createWithLog transactions when the migration runs. What does this tell you about the order of migration deployment vs service deployment in production? Submit both parts as text.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: Controllers are HTTP adapters &mdash; they should not own transactional state. @Transactional() on a controller couples the HTTP layer to the database boundary and prevents calling the same logic from a queue handler or cron job. A service decorated with @Transactional() is callable by any client uniformly. Part B: Postgres DDL acquires ACCESS EXCLUSIVE lock, so the migration blocks until active transactions on that table finish. After the migration commits, any new createWithLog call that does not supply the new column will fail with a NOT NULL constraint violation &mdash; until the service code is also deployed. Lesson: always add NOT NULL columns with a DEFAULT first, deploy the service, then remove the default in a follow-up migration.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Add a Bull queue worker decorated with @CreateRequestContext()</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Install <code>@nestjs/bull</code> and <code>bull</code>. Create a <code>cleanup-archive</code> queue with a single processor that scans for Books with <code>publishedYear &lt; 1900</code> and marks them <code>archived = true</code>. Decorate the processing method with <code>@CreateRequestContext()</code>. In the repo's <code>README.md</code>, write 3&ndash;4 sentences explaining why the decorator is needed (reference: middleware doesn't run in workers; AsyncLocalStorage; <code>allowGlobalContext</code> is unsafe).</p>
+                <strong>Transactional Outbox &mdash; design, implement, stress-test</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 45 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Design and implement a minimal Transactional Outbox. When a Book is created, an OutboxEvent entity (eventType, payload JSON, processedAt nullable) must be inserted in the same transaction. A @Cron job decorated with @CreateRequestContext() polls for unprocessed events, logs the payload, and marks processedAt. Three stages: (1) design &mdash; what invariant does this pattern guarantee? What problem does "publish event after flush" not solve? (2) Implement and verify two OutboxEvent rows exist with processedAt filled. (3) Stress test (text only): if the cron crashes between reading and marking processedAt, is the event processed twice or dropped? How would you make processing idempotent?</p>
+                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What does the outbox pattern reveal about the boundary between ORM operations and message broker operations that a typical MikroORM tutorial misses?</em></p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Implement a minimal Transactional Outbox</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add an <code>OutboxEvent</code> entity. Modify <code>BookService.createWithLog</code> so every successful book creation also persists an <code>OutboxEvent</code> with <code>eventType: 'book.created'</code> in the same transaction. Add an <code>OutboxDispatcher</code> service with a <code>@Cron('*/5 * * * * *')</code> method (decorated with <code>@CreateRequestContext()</code>) that drains unprocessed events, prints them to <code>console.log</code> (no real broker), and marks them processed. Capture the server log of one drain cycle and add it to the <code>README.md</code>.</p>
+                <strong>Why does @CreateRequestContext() exist separately from the NestJS middleware?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">The RequestContext middleware automatically forks an EntityManager for every HTTP request. <code>@CreateRequestContext()</code> does the same for non-HTTP execution contexts. Why can't queue handlers and cron jobs simply reuse the EM that the HTTP middleware creates? What is the entity lifecycle state of a "stale" managed entity sitting in a long-lived EM that has not been forked for the current job run? Answer in 4&ndash;6 sentences.</p>
             </li>
         </ol>
     </div>

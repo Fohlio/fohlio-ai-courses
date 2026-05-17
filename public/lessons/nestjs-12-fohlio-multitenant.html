@@ -1645,50 +1645,37 @@ app.<span class="function">enableVersioning</span>({ type: VersioningType.URI })
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Multi-tenancy on the Flight entity</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add a <code>workspaceId: string</code> field to your <code>Flight</code> entity.</li>
-                    <li>Update <code>FlightsRepository</code> so every query (find, findOne, update, delete) filters by <code>workspaceId</code>.</li>
-                    <li>Add an <code>@CurrentUser()</code>-style decorator. Simplification: read <code>X-Workspace-Id</code> from the request headers and return <code>{ workspaceId }</code>.</li>
-                    <li>Push to <code>nestjs-course-yourname</code> and submit the commit URL.</li>
-                </ul>
+                <strong>workspaceId tenant isolation on flights + /me endpoint</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Add <code>workspaceId: string</code> to the <code>Flight</code> entity in <code>schema.prisma</code> and migrate. Update <code>FlightsRepository</code> so every query filters by <code>workspaceId</code> &mdash; no query should return data from a different workspace. Build a <code>@CurrentUser()</code> param decorator that reads <code>X-Workspace-Id</code> from request headers and returns <code>{ workspaceId }</code>. Add <code>GET /me</code> that returns the value from <code>@CurrentUser()</code>. Submit a screenshot showing: (1) <code>GET /me</code> with <code>X-Workspace-Id: ws-001</code> returning <code>{ workspaceId: 'ws-001' }</code>, (2) <code>GET /flights</code> with <code>X-Workspace-Id: ws-001</code> returning only ws-001 flights (create flights under two different workspaceIds first to prove isolation).</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Two things must be visible: (1) GET /me returning <code>{ workspaceId: 'ws-001' }</code>. If it returns undefined, the decorator is not reading from <code>req.headers['x-workspace-id']</code> correctly &mdash; header names are lowercase in Node.js. (2) GET /flights with ws-001 returning only ws-001 flights. If all flights are returned, the repository <code>findAll()</code> is not filtering &mdash; add <code>where: { workspaceId }</code> to every Prisma query. The <code>workspaceId</code> must come from the request context, not a hardcoded value.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>The /me endpoint</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add <code>GET /me</code> that uses the <code>@CurrentUser()</code> decorator from task 1.</li>
-                    <li>Make a request with the <code>X-Workspace-Id</code> header (or a real JWT if you wired one).</li>
-                    <li><strong>Screenshot</strong> the typed user object in the response (Postman/Insomnia/curl, your call).</li>
-                    <li>Submit the screenshot.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Why pure JWT isn't enough</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Read <code>asuncion/src/modules/auth/auth-state.service.ts</code>.</li>
-                    <li>In 4&ndash;6 sentences, explain in your own words: why pure JWT is insufficient for Fohlio's use case, and what tradeoff Redis adds.</li>
-                    <li>Cover at least: the firing scenario, the brute-force lockout, and the per-request cost.</li>
-                    <li>Submit as text on the platform.</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>Why pure JWT is insufficient + Redis authState tradeoff &mdash; cumulative analysis</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Recall the JWT you built in Lesson 5. Answer these questions in 5&ndash;7 sentences: (1) A fired employee's JWT is valid for 24 hours and you cannot invalidate it &mdash; what exactly can they access in your airport-api during those 24 hours? Name specific endpoints. (2) Fohlio adds a Redis AuthState check on every request. What is the cost on a 1000-req/s system &mdash; be specific about where the latency comes from. (3) What happens to every active user's session if Redis goes down, and how would you mitigate that risk without removing the authState check?</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Strong answers cover: (1) The fired employee can access any JWT-protected endpoint &mdash; in airport-api that means GET/POST/PATCH/DELETE /flights, GET /users, etc. for the remaining token lifetime. (2) Each request adds one Redis GET call &mdash; roughly 0.3&ndash;1ms locally, up to 5&ndash;10ms on a remote Redis. At 1000 req/s that is 1000 Redis ops/s, well within Redis capacity but adding to tail latency. (3) If Redis is down and the guard requires a successful authState lookup, every request fails. Mitigations: circuit breaker, fallback mode trusting the JWT if Redis is unreachable (with a risk window), or Redis Sentinel/Cluster for HA.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>RedisIoAdapter cross-instance broadcast</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Wire <code>RedisIoAdapter</code> into your project on a small WebSocket gateway (any event &mdash; <code>flight.delayed</code> works). Spin up TWO instances of your app on different ports (3000 and 3001), both connected to the same Redis. Connect a client to instance A, <em>emit from instance B</em>, confirm the client on A receives it. <strong>Screenshot</strong> both terminals showing the cross-instance broadcast.</p>
-                <p style="font-size: 14px; color: var(--gray-500);">Hint: <code>@socket.io/redis-adapter</code>, two ioredis clients (publisher + subscriber).</p>
+                <strong>RedisIoAdapter cross-instance broadcast &mdash; scaled real-time</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Wire <code>RedisIoAdapter</code> from <code>@socket.io/redis-adapter</code> into your <code>FlightsGateway</code> (from Lesson 9). Spin up TWO instances of airport-api on different ports (PORT=3000 and PORT=3001) &mdash; both connected to the same Redis. Connect two WebSocket clients: one to ws://localhost:3000, one to ws://localhost:3001. PATCH a flight via port 3000. Confirm the client on port 3001 also receives the <code>flight_updated</code> event. Submit a screenshot showing both WS clients with the received event, and the terminal of the instance that did NOT handle the PATCH showing the broadcast was forwarded via Redis.</p>
+                <p style="font-size: 14px; color: var(--gray-500);">Hint: <code>@socket.io/redis-adapter</code> with two ioredis clients (publisher + subscriber).</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Split into two Node entrypoints</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Restructure your project into two entrypoints: <code>apps/api/main.ts</code> and <code>apps/worker/main.ts</code>. The worker should boot its own <code>NestApplication</code> from a <code>WorkerModule</code> with only BullMQ consumers &mdash; no HTTP routes. Add a <code>start:worker</code> script in <code>package.json</code> that points to the worker entry. Push to <code>nestjs-course-yourname</code> and submit the commit URL.</p>
-                <p style="font-size: 14px; color: var(--gray-500);">Bonus: enqueue a job from the API and watch it process in the worker logs.</p>
+                <strong>Why Socket.IO needs Redis for horizontal scaling &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">A single Socket.IO server handles WebSocket connections in memory. When you add a second instance, connections are split. Explain concretely what goes wrong when instance A tries to broadcast to a client connected to instance B &mdash; trace the code path. Then explain what the Redis adapter does to fix it: what data Redis holds and how the two adapter instances coordinate. Finally: why does this problem not exist for REST endpoints, and what does that tell you about the architectural cost of stateful connections? Write 5&ndash;7 sentences.</p>
             </li>
         </ol>
     </div>

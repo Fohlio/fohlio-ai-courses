@@ -1,0 +1,40 @@
+[
+  {
+    "id": "mikroorm-task-3-1",
+    "title": "Build the full CRUD demo and capture the Identity Map cache hit",
+    "description": "Write or update main.ts with this sequence: (1) persist and flush a Book and three Articles, (2) update the Book title and soft-delete one Article by setting deletedAt, (3) flush again, (4) call em.findOne(Article, 1n) twice in a row. Run npm start with debug logging on. Submit a screenshot of the query log covering steps 3 and 4 — it must show: the batched UPDATE + DELETE in one transaction, then exactly one SELECT for both findOne calls (the second call returns the cached instance). No GitHub repo needed — paste the screenshot directly.",
+    "category": "required",
+    "submissionType": "screenshot",
+    "order": 1,
+    "modelAnswer": "The screenshot must show:\n1. A single BEGIN...COMMIT wrapping the UPDATE for the book title and the DELETE (or UPDATE for soft-delete) for the article — both in one flush transaction.\n2. One SELECT WHERE id = 1 after the flush.\n3. No second SELECT for the second findOne call — the Identity Map returns the same in-memory instance.\nIf you see two SELECTs: you likely called em.fork() or cleared the EM between the two findOne calls. The Identity Map is per-EM-instance — a new fork does not share the map.",
+    "estimatedMinutes": 25
+  },
+  {
+    "id": "mikroorm-task-3-2",
+    "title": "Why does a by-title query still fire SQL even when the result is already in the map?",
+    "description": "In 4–6 sentences: why does MikroORM still issue a SELECT when you call em.findOne(Book, { title: 'War and Peace' }) twice in a row, even though it returns the same JS instance both times? What does the Identity Map use as its key, and why is that the right design? Submit as text.",
+    "category": "required",
+    "submissionType": "text",
+    "order": 2,
+    "modelAnswer": "Core answer:\n1. The Identity Map is keyed by primary key, not by arbitrary filter conditions. MikroORM cannot know that '{ title: War and Peace }' resolves to id=42 without asking the database.\n2. After the first SELECT it registers the returned instance under id=42. On the second call, MikroORM sends the query again, receives id=42 in the result row, and then returns the already-managed JS instance instead of constructing a new one. You get the same object reference, but the SQL still fires.\n3. The alternative — caching by arbitrary filter — would require MikroORM to track every possible filter condition and invalidate those caches on every write. That is effectively a query cache, which is a separate, complex feature (and one Postgres already provides at the connection-pool level).\n4. Library analogy: the librarian can look up a book by catalogue number instantly; but 'the red book on the second shelf' requires a shelf walk even if you just asked that same question a minute ago.",
+    "estimatedMinutes": 15
+  },
+  {
+    "id": "mikroorm-task-3-3",
+    "title": "Cursor-based pagination — plan, run, revise (AI-resilient)",
+    "description": "Before writing any code, write a 3-step plan: (1) what SQL you expect findByCursor to generate for the first page, (2) what the opaque cursor string probably encodes, and (3) what happens to the cursor if you change the orderBy field mid-session.\n\nThen implement it: add 20 articles to your seed. Use em.findByCursor(Article, { first: 5, orderBy: { id: 'desc' } }) for page 1, then pass after: page.endCursor for page 2. Run it.\n\nRevision note: Compare the actual SQL and cursor string to your plan. What did you get wrong? What would you change in your plan? Submit: the plan, the actual cursor string (copy-paste), and your revision note (3–5 sentences).\n\nMetacognitive memo: What does cursor-based pagination solve that OFFSET pagination cannot? What would an AI answer about pagination probably miss from this exercise?",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 1,
+    "estimatedMinutes": 35
+  },
+  {
+    "id": "mikroorm-task-3-4",
+    "title": "Why does em.getReference() avoid a SELECT, and when does that backfire?",
+    "description": "em.getReference(Author, 42n) returns a proxy object with only the id populated — no SELECT fires. Why is this safe when you only need to set a foreign-key relation, and when does it produce a silent bug? Describe exactly one scenario where skipping the SELECT is correct and one where it causes a runtime error or data corruption. Answer in 4–6 sentences.",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 2,
+    "estimatedMinutes": 15
+  }
+]

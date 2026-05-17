@@ -16,8 +16,8 @@ export function SubmissionPrLink({
 }: SubmissionPrLinkProps) {
   return (
     <Input
-      label="GitHub PR URL"
-      placeholder="https://github.com/org/repo/pull/123"
+      label="Link (sandbox, deployed demo, or gist)"
+      placeholder="https://stackblitz.com/edit/..."
       value={value?.url ?? ""}
       onChange={(e) => onChange({ type: "pr_link", url: e.target.value })}
       disabled={disabled}

@@ -1,0 +1,40 @@
+[
+  {
+    "id": "mikroorm-task-5-1",
+    "title": "Run all four loading experiments and capture the N+1 vs SELECT_IN comparison",
+    "description": "Seed at least 10 articles, each with 2–5 tags. Write a script with four blocks: (1) N+1 naive loop — load articles, then access .tags on each inside the loop; (2) populate after load — em.find then em.populate; (3) JOINED strategy via LoadStrategy.JOINED in findOptions; (4) SELECT_IN strategy. Run the script with debug logging. Submit a screenshot showing the query counts from experiments 1 and 4 side-by-side (both visible in one terminal window). The N+1 count should be significantly higher than SELECT_IN. No repo — screenshot only.",
+    "category": "required",
+    "submissionType": "screenshot",
+    "order": 1,
+    "modelAnswer": "Expected query counts:\n- Experiment 1 (N+1): 1 SELECT for articles + 1 SELECT per article for tags = 11 SELECTs for 10 articles.\n- Experiment 4 (SELECT_IN): 1 SELECT for articles + 1 SELECT ... WHERE article_id IN (...) for all tags at once = 2 SELECTs total.\nIf you see the same count for both: check that experiment 1 actually accesses article.tags inside the loop (just loading articles does not trigger N+1 — you need to read the collection). MikroORM lazy-loads only when you iterate the collection.",
+    "estimatedMinutes": 35
+  },
+  {
+    "id": "mikroorm-task-5-2",
+    "title": "Loading strategy audit — current-lesson + L3/L4 callback",
+    "description": "This task combines loading strategies (L5) with entity lifecycle and relations from L3–L4.\n\nPart A (L5): Write a query that fetches articles with their author using JOINED strategy, then fetches the same set using SELECT_IN. Compare the actual SQL for each. Which produces more rows on the wire for 10 articles each with 1 author? Why? Submit as text.\n\nPart B (L3–L4 callback): After the JOINED query above, call em.findOne(Article, articles[0].id) without populate. Does MikroORM fire another SELECT? Why or why not? (Think: is the article already in the Identity Map from the JOINED query?) Write 3 sentences.\n\nSubmit both parts as a single text response.",
+    "category": "required",
+    "submissionType": "text",
+    "order": 2,
+    "modelAnswer": "Part A: JOINED produces N rows × M related rows — for a 1:1 relation (article→author) the row count matches SELECT_IN, so neither wins dramatically here. The JOINED advantage disappears and becomes a disadvantage for to-many relations (like tags) where each article row is duplicated once per tag — 10 articles × 3 tags = 30 rows vs SELECT_IN's 10 + 10 rows.\n\nPart B: No SELECT fires. The JOINED query populated and registered all articles into the Identity Map under their PKs. em.findOne with the same id returns the already-managed instance without a round-trip. This is the Identity Map (L1/L3) working in tandem with the loading strategy: once an entity is registered, the EM will not re-fetch by PK alone.",
+    "estimatedMinutes": 30
+  },
+  {
+    "id": "mikroorm-task-5-3",
+    "title": "Break partial loading on purpose — plan, observe, fix (AI-resilient)",
+    "description": "Before writing code, write a 2-sentence prediction: if you use fields: ['title', 'author.name'] on Article without including the FK column (authorId), what will article.author be after the query — a proxy, undefined, or a fully-loaded Author?\n\nThen implement it: query Articles with those exact fields, no FK. Observe the result. Then fix it by adding 'author' (the relation property name) or 'authorId' to the fields array. Capture both the broken and fixed query logs.\n\nRevision note: Was your prediction right? What does this failure mode tell you about how MikroORM resolves relations from a partial result set? When would this bug be silent (no runtime error) but produce wrong data?\n\nMetacognitive memo: What is the most important thing to remember from this exercise that an AI answer about partial loading would not warn you about?",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 1,
+    "estimatedMinutes": 35
+  },
+  {
+    "id": "mikroorm-task-5-4",
+    "title": "Why is JOINED a poor default for to-many relations?",
+    "description": "Why is LoadStrategy.JOINED a poor default when populating to-many relations, even though it produces a single database round-trip? Address three things in your answer: cartesian product expansion of result rows, bytes on the wire, and what MikroORM must do to de-duplicate rows during hydration. Then name one situation where JOINED is actually the right choice despite the row explosion. Answer in 5–7 sentences.",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 2,
+    "estimatedMinutes": 15
+  }
+]

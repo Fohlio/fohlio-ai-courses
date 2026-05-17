@@ -1146,48 +1146,45 @@ nest g service users</code></pre>
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Build POST /auth/register and POST /auth/login</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add the User model to <code>schema.prisma</code> and migrate</li>
-                    <li>Generate the <code>auth</code> and <code>users</code> modules</li>
-                    <li>Implement <code>register</code> (hash with bcrypt, store) and <code>login</code> (compare, sign JWT)</li>
-                    <li>In Postman/Insomnia: register a user, then log in</li>
-                    <li>Take a <strong>screenshot</strong> of the login response showing the JWT in the body</li>
-                </ul>
+                <strong>Full auth flow: register &rarr; login &rarr; protected endpoint</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 45 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Add a <code>User</code> model to <code>schema.prisma</code> (fields: id, email, passwordHash, role) and migrate. Build <code>AuthModule</code> with <code>POST /auth/register</code> (bcrypt hash) and <code>POST /auth/login</code> (compare, sign JWT). Apply <code>@UseGuards(AuthGuard('jwt'))</code> to <code>FlightsController</code>. Submit a screenshot showing all three requests in sequence: (1) <code>POST /auth/register</code> returning 201, (2) <code>POST /auth/login</code> with the JWT in the response body, (3) <code>GET /flights</code> with <code>Authorization: Bearer &lt;token&gt;</code> returning 200.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">All three responses must be visible. Common failures: (1) 401 on GET /flights with a valid token &mdash; check that <code>JwtStrategy</code> is in <code>AuthModule</code> providers and <code>JwtModule.register()</code> uses the same secret for signing and validation. (2) bcrypt compare returns false &mdash; make sure you compare <code>req.body.password</code> against the stored hash, not a re-hashed value.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>Protect FlightsController with AuthGuard('jwt')</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add <code>@UseGuards(AuthGuard('jwt'))</code> to <code>FlightsController</code></li>
-                    <li>Verify unauthenticated requests get <code>401</code></li>
-                    <li>Verify authenticated requests (with <code>Authorization: Bearer &lt;token&gt;</code>) work as before</li>
-                    <li>Push to your <code>nestjs-course-yourname</code> repo</li>
-                    <li>Submit the commit/PR link</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Quick answer: hashing vs encryption</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 2&ndash;3 sentences: why do we hash passwords instead of encrypting them? What's the practical difference between a hash and an encryption?</li>
-                    <li>Submit as text in the platform</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>RolesGuard + Helmet + rate limiting &mdash; cumulative hardening</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Implement <code>RolesGuard</code> + <code>@Roles()</code> decorator. Apply <code>@Roles('admin')</code> to <code>DELETE /flights/:id</code>. Set one user's role to <code>admin</code> in the DB (Prisma Studio or a seed script). In <code>main.ts</code>: add <code>app.use(helmet())</code>, <code>app.enableCors({ origin: 'http://localhost:3000' })</code>, and <code>ThrottlerModule</code> globally with limit 5 req/30s. Submit two screenshots: (1) <code>DELETE /flights/:id</code> with a regular user's JWT getting 403, with an admin JWT getting 204, (2) response headers from any endpoint showing Helmet's <code>Content-Security-Policy</code> and <code>X-Frame-Options</code> headers.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Screenshot 1: two DELETE requests &mdash; 403 response body saying "Forbidden", 204 empty. Screenshot 2: response headers must include <code>Content-Security-Policy</code> (from Helmet) and <code>X-Frame-Options: SAMEORIGIN</code>. If headers are missing, <code>helmet()</code> was called after <code>app.listen()</code> &mdash; it must come first. If RolesGuard always returns 403, check the JWT strategy puts <code>role</code> into <code>req.user</code> and the guard reads from <code>context.switchToHttp().getRequest().user</code>.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Add @Roles('admin') to DELETE /flights/:id</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Implement <code>RolesGuard</code> and the <code>@Roles()</code> decorator from Part 5. Apply <code>@Roles('admin')</code> to the delete endpoint. Manually update one user's role to <code>admin</code> in the database. Verify: a regular user gets <code>403 Forbidden</code>, an admin user gets <code>204 No Content</code>. Submit <strong>two screenshots</strong> &mdash; one of each response.</p>
+                <strong>Audit a broken auth implementation &mdash; critique and improve</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Find every security flaw in this login handler, describe the attack scenario for each, and write the corrected version:</p>
+                <pre style="background:var(--gray-100);padding:12px;border-radius:6px;font-size:13px;margin:8px 0;">@Post('login')
+async login(@Body() body: any) {
+  const user = await this.db.user.findFirst({ where: { email: body.email } });
+  if (user.password === body.password) {
+    return { token: jwt.sign({ userId: user.id }, 'secret', { expiresIn: '100y' }) };
+  }
+  throw new UnauthorizedException();
+}</pre>
+                <p style="font-size: 14px; color: var(--gray-700);">Flaws to find: plaintext password comparison, hardcoded JWT secret, 100-year expiry, no null check on <code>user</code>, body typed as <code>any</code>. End your answer with a metacognitive memo: what did this exercise reveal that a ChatGPT summary of the lesson would not?</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Add Helmet, CORS, and rate limiting</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">In <code>main.ts</code>: <code>app.use(helmet())</code>, <code>app.enableCors({ origin: 'http://localhost:3000' })</code>. Add <code>ThrottlerModule.forRoot([{ ttl: 60_000, limit: 10 }])</code> globally. Submit <strong>two screenshots</strong>: (a) response headers showing Helmet's security headers, (b) a <code>429 Too Many Requests</code> response after firing 11 requests in a minute.</p>
+                <strong>Why hash and not encrypt &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">An attacker has your database dump with hashed passwords. Walk through the attack: what can they do with SHA-256 hashes vs bcrypt hashes, and why does bcrypt's cost factor specifically slow them down where SHA-256 does not? Write 4&ndash;6 sentences. Focus on the concrete attack mechanics, not a definition of what hashing is.</p>
             </li>
         </ol>
     </div>

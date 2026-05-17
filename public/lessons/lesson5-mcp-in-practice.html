@@ -1770,88 +1770,47 @@
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <div class="info-box blue" style="margin-bottom:16px;">
+            <p><strong>Note:</strong> MCP connectors require a Claude Pro/Max/Team plan. If you don't have one, ask Ivan in Slack.</p>
+        </div>
+
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Connect 3 MCP tools and share one insight</strong>
-                <p>Connect at least 3 tools via Settings &rarr; Connectors:</p>
-                <ul>
-                    <li>Notion (<code>https://mcp.notion.com/mcp</code>)</li>
-                    <li>Atlassian (Jira)</li>
-                    <li>One more of your choice (GitHub, Google Drive, Gmail, Slack, etc.)</li>
-                </ul>
-                <p>Send a <strong>screenshot</strong> showing all 3 connected. Then answer: <strong>What surprised you or worked differently than you expected?</strong> (2&ndash;3 sentences. What was easier? What didn't work? What took longer?)</p>
-                <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>Why we ask this:</strong> Reflecting on surprise is how the brain converts &laquo;I did a thing&raquo; into &laquo;I learned a thing.&raquo; The screenshot proves setup. The insight proves understanding.</p>
-                </div>
+                <strong>Connect 3 MCP tools and solve a real work question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin-top:6px;">Connect at least 3 tools in Claude Desktop via Settings &rarr; Connectors (Notion, Atlassian/Jira, plus one more of your choice). Then find a real question from your actual work this week that requires looking at 2+ of those sources. Ask Claude with all tools connected. Send one screenshot showing Claude's answer to your real question. In 2&ndash;3 sentences: what surprised you, and how long would this have taken before MCP?</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A correct screenshot shows Claude answering a genuine work question using data from at least two connected tools &mdash; e.g. cross-referencing a Jira ticket with a Notion spec, or pulling a GitHub PR and its linked issue. The 2&ndash;3 sentence reflection should be specific: "I asked Claude to find all Jira tickets assigned to me and match them to the Notion pages they reference. It took 40 seconds. Manually this would have been 15 minutes of tab-switching." Vague answers ("it was faster than expected") score lower.</p>
+                </details>
             </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Solve a real work question using 2+ MCP tools</strong>
-                <p>Don't use the examples from this lesson &mdash; find a <strong>real question from your actual work</strong> that requires looking at 2 or more sources. Something that was on your mind this week. Ask Claude with your connected tools.</p>
-                <p>Send a <strong>screenshot</strong> of the result and answer: <strong>How long would this have taken you before MCP?</strong> (estimate in minutes)</p>
-                <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>Why your own question matters:</strong> Using examples from the lesson is recognition (&laquo;I've seen this before&raquo;). Using your own problem is transfer (&laquo;I can apply this to anything&raquo;). Transfer is the goal.</p>
-                </div>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Explain API vs MCP to a non-technical friend</strong>
-                <p>In your own words (3&ndash;5 sentences), explain the difference between an API and MCP. The rules:</p>
-                <ul>
-                    <li>Use an analogy that is <strong>NOT from this lesson</strong> (not USB, not restaurants, not waiters)</li>
-                    <li>Your explanation should make a non-technical person say &laquo;ah, got it!&raquo;</li>
-                    <li>If you get stuck &mdash; re-read Part 2 and try again</li>
+            <li style="margin-top:20px;">
+                <strong>Design your MCP workflow &mdash; current vs future state</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin-top:6px;">This is a cumulative task combining Lessons 3 and 5. Think about a repeated weekly task in your role. Write in this exact format:</p>
+                <ul style="margin-top:8px;">
+                    <li><strong>Tool stack:</strong> list 3&ndash;5 MCP tools you would connect</li>
+                    <li><strong>Old way:</strong> describe how you do this task today, step by step</li>
+                    <li><strong>MCP way:</strong> describe how Claude + MCP would handle it</li>
+                    <li><strong>Estimated time saved per week:</strong> your honest estimate in minutes</li>
+                    <li><strong>Architecture note:</strong> in Lesson 3 you learned that fohlio-frontend communicates with the backend via GraphQL. How is MCP's tool protocol similar to or different from that pattern? (2&ndash;3 sentences)</li>
                 </ul>
-                <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>This is the Feynman Technique:</strong> If you can explain it simply with your own analogy, you truly understand it. If you can't &mdash; that's the gap. Re-read the source and fill it.</p>
-                </div>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The architecture note is the key check: a good answer notices that both GraphQL and MCP define a typed interface between a client and a data source. GraphQL queries specific fields from the backend; MCP requests specific tools from a server. The key difference: MCP is designed for AI agents to discover and invoke tools dynamically at runtime, whereas GraphQL is a fixed schema the developer writes against upfront. Answers that just say "both are ways to get data" without noting the dynamic discovery aspect are incomplete.</p>
+                </details>
             </li>
         </ol>
 
-        <div class="info-box blue" style="margin-top: 24px;">
-            <p><strong>Tip:</strong> If you don't have a Claude Pro/Max/Team plan, ask Ivan in Slack. MCP connectors require a paid plan.</p>
-        </div>
-
-        <h3 style="margin-top: 24px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Design your personal MCP workflow</strong>
-                <p>Think about your role and your typical work week. Design a workflow where Claude + MCP saves you the most time:</p>
-                <ul>
-                    <li>Which 3&ndash;5 tools would you connect?</li>
-                    <li>What specific question or task would you automate?</li>
-                    <li>What's the &laquo;old way&raquo; (how you do it now) vs the &laquo;MCP way&raquo;?</li>
-                    <li>How many minutes per day would this save?</li>
-                </ul>
-                <p>Write it up in the format from Part 6 of the lesson: Old way &rarr; MCP way &rarr; Tools used.</p>
+                <strong>Manus vs Claude Desktop &mdash; comparative judgment</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin-top:6px;">Give the same real task to both Manus (<code>manus.im</code>) and Claude Desktop with your connected MCP tools. The task should require research + synthesis (e.g. analyze a competitor, draft an account brief, summarize a set of Jira tickets). Run both. Then write: (a) what each produced, (b) which was better for this task and why, (c) for what type of GTM task would you use Manus vs Claude Desktop going forward? Send a screenshot of whichever result was more interesting. Metacognitive memo: what assumption did you have before this experiment that it changed?</p>
+                <p style="font-size:13px;color:var(--gray-500);margin-top:4px;">Note: harder than the lesson on purpose &mdash; the comparison is the point.</p>
             </li>
-            <li style="margin-top: 16px;">
-                <strong>Try Manus with a real task</strong>
-                <p>Create an account at <code>manus.im</code> and give it a task you'd normally spend 30+ minutes on:</p>
-                <ul>
-                    <li>Research a topic and create a report</li>
-                    <li>Analyze a competitor's website</li>
-                    <li>Create a presentation or spreadsheet from online data</li>
-                </ul>
-                <p>Send the result and answer: <strong>Would you use Manus or Claude Desktop for this task? Why?</strong></p>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Quiz: MCP &amp; Tools (active recall)</strong>
-                <p>Answer <strong>without looking at the lesson</strong>. After answering, check yourself against the lesson &mdash; and note what you got wrong:</p>
-                <ul>
-                    <li>What are the two methods of adding MCP servers to Claude Desktop? When would you use each?</li>
-                    <li>Name 3 MCP connectors and what each does &mdash; from memory.</li>
-                    <li>What is the main difference between Claude Desktop and Manus? Use your own words, not a quote.</li>
-                    <li>Why is MCP compared to USB? What specific problem does it solve?</li>
-                </ul>
-                <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>The self-check matters more than the answers:</strong> The moment you notice &laquo;wait, I couldn't remember this&raquo; is when the real learning happens. That's Active Recall.</p>
-                </div>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Find and pitch a new MCP server</strong>
-                <p>Browse the MCP directories (<code>mcp.so</code>, <code>smithery.ai</code>) and find an MCP server nobody in our team uses yet. Write a 3-sentence pitch: what it connects to, what problem it solves, and who on the team should try it first.</p>
+            <li style="margin-top:20px;">
+                <strong>Why MCP instead of direct API calls &mdash; elaborative interrogation</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin-top:6px;">Answer in your own words: (1) If an AI model can already call APIs directly with the right code, why does MCP exist as a separate standard? What problem does it solve that "just call the API" does not? (2) Why is the standardization aspect of MCP valuable on its own, beyond the ability to connect tools? What breaks without a standard?</p>
             </li>
         </ol>
     </div>

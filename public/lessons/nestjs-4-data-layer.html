@@ -1203,50 +1203,44 @@ curl -X POST http://localhost:3000/flights \
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Set up Postgres + Prisma and run your first migration</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Get Postgres running locally (Docker compose, Postgres.app, or installer)</li>
-                    <li>Run <code>npx prisma init</code> in your <code>airport-api</code> project</li>
-                    <li>Define a <code>Flight</code> model in <code>schema.prisma</code> (use the one from Part 3)</li>
-                    <li>Run <code>npx prisma migrate dev --name init</code></li>
-                    <li>Open <code>prisma/migrations/&lt;timestamp&gt;_init/migration.sql</code></li>
-                    <li>Take a <strong>screenshot</strong> of the generated SQL file</li>
-                </ul>
+                <strong>Prisma migration + persistent FlightsService</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Run Postgres locally (Docker or native). Run <code>npx prisma init</code>, define a <code>Flight</code> model in <code>schema.prisma</code> (fields: id, code, destination, capacity, createdAt). Run <code>prisma migrate dev --name init</code>. Generate <code>PrismaModule</code> + <code>PrismaService</code>, inject <code>PrismaService</code> into <code>FlightsService</code>, rewrite all CRUD methods. Verify persistence: POST a flight, stop the server, restart, GET /flights and confirm it is still there. Submit a screenshot of the generated <code>migration.sql</code> file AND the <code>GET /flights</code> response after restart.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Two things must be visible: (1) the <code>migration.sql</code> file showing a <code>CREATE TABLE</code> with your flight fields, (2) <code>GET /flights</code> returning the flight you created before the restart. Common failure: <code>DATABASE_URL</code> not set in <code>.env</code> &mdash; Prisma errors with "Environment variable not found". Also check: <code>onModuleInit() { await this.$connect() }</code> must be in <code>PrismaService</code>.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>Replace the in-memory FlightsService with Prisma</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Generate <code>PrismaModule</code> + <code>PrismaService</code> as shown in Part 4</li>
-                    <li>Rewrite all CRUD methods of <code>FlightsService</code> to use Prisma</li>
-                    <li>Verify the data persists across server restarts</li>
-                    <li>Push to your <code>nestjs-course-yourname</code> repo</li>
-                    <li>Submit the commit/PR link</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Quick answer: why extend PrismaClient?</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 2&ndash;3 sentences: why does PrismaService extend PrismaClient instead of every service just doing <code>new PrismaClient()</code>?</li>
-                    <li>Use the airport analogy &mdash; think about who manages the records archive.</li>
-                    <li>Submit as text in the platform</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>Airline relation + guard interplay</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Add an <code>Airline</code> model (fields: id, name, iataCode). Each <code>Flight</code> belongs to one Airline (add <code>airlineId</code> foreign key). Migrate. Add <code>findAllByAirline(airlineId: number)</code> to <code>FlightsService</code> using Prisma <code>where</code> + <code>include</code>. Expose as <code>GET /flights?airlineId=X</code>. Protect the endpoint with the <code>ApiKeyGuard</code> from Lesson 3 (pass <code>X-Api-Key</code> header). Submit a screenshot of the JSON response showing nested airline data inside a flight, with the <code>X-Api-Key</code> header visible in the request.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Response should look like: <code>{ id: 1, code: 'AA100', airlineId: 1, airline: { id: 1, name: 'American', iataCode: 'AA' } }</code>. If <code>airline</code> is undefined, you forgot <code>include: { airline: true }</code>. If you get 403, the <code>X-Api-Key</code> header is missing or wrong. If migration errors on foreign keys, make sure the Airline table is created before Flight references it.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Add a relational model: Airline</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add an <code>Airline</code> model to your schema. Each <code>Flight</code> belongs to one Airline (foreign key). Run <code>prisma migrate dev --name add-airline</code>. Add a method <code>findAllByAirline(airlineId: number)</code> to <code>FlightsService</code> using Prisma's <code>where</code> clause and <code>include</code>. Hit the endpoint and screenshot the JSON response showing nested airline data.</p>
+                <strong>Debug a broken PrismaService &mdash; find all bugs</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Here is a deliberately broken PrismaService. Identify every bug and explain why each matters in a running NestJS app:</p>
+                <pre style="background:var(--gray-100);padding:12px;border-radius:6px;font-size:13px;margin:8px 0;">@Injectable()
+export class PrismaService {
+  private client = new PrismaClient();
+  async findAllFlights() {
+    return this.client.flight.findMany();
+  }
+}</pre>
+                <p style="font-size: 14px; color: var(--gray-700);">Bugs to find: (1) new PrismaClient on every instantiation &mdash; what happens under load? (2) no <code>$connect()</code> &mdash; first-request failure mode? (3) no <code>OnModuleDestroy + $disconnect()</code> &mdash; what leaks? Submit as a numbered list with consequences, plus the corrected class as a code snippet.</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Prisma vs TypeORM &mdash; when would you reach for TypeORM?</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Read the NestJS docs sections on TypeORM and Prisma. In <strong>3 bullets</strong>, list specific scenarios where you would actively prefer TypeORM over Prisma. Be concrete (not "TypeORM is more flexible" &mdash; flexible <em>how</em>, for what problem?). Submit as text.</p>
+                <strong>Why Prisma uses code generation &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Prisma generates a typed client from your schema. TypeORM uses decorators on classes. Why does the code-generation approach give stronger type safety than the decorator approach, and what does it trade away? Think about: what happens to types after a migration in each approach, and where type errors surface (compile time vs runtime). Write 4&ndash;6 sentences.</p>
             </li>
         </ol>
     </div>

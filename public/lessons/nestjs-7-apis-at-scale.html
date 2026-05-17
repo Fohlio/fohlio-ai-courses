@@ -1190,47 +1190,36 @@
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Document your flights API with Swagger</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Install <code>@nestjs/swagger</code> and wire <code>SwaggerModule.setup('api', ...)</code> in <code>main.ts</code></li>
-                    <li>Decorate <code>FlightsController</code> with <code>@ApiTags</code>, plus <code>@ApiOperation</code> and <code>@ApiResponse</code> on <em>every</em> endpoint (GET, POST, PATCH, DELETE)</li>
-                    <li>Decorate <code>CreateFlightDto</code> fields with <code>@ApiProperty</code> (with examples)</li>
-                    <li>Open <code>http://localhost:3000/api</code></li>
-                    <li>Take a <strong>screenshot</strong> of the Swagger UI showing all your endpoints expanded</li>
-                    <li>Submit the screenshot</li>
-                </ul>
+                <strong>Swagger UI with every FlightsController endpoint documented</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Install <code>@nestjs/swagger</code> and wire <code>SwaggerModule.setup('api', app, document)</code> in <code>main.ts</code>. Decorate <code>FlightsController</code> with <code>@ApiTags('flights')</code>. Add <code>@ApiOperation</code> and <code>@ApiResponse</code>(s) to every endpoint. Decorate every field in <code>CreateFlightDto</code> with <code>@ApiProperty</code> (include <code>description</code> and <code>example</code>). Submit a screenshot of the <code>/api</code> Swagger UI showing all FlightsController endpoints expanded with their request/response schemas visible.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The Swagger UI should show a "flights" tag group with all endpoints listed. Each endpoint expanded shows the operation description, request body schema with field descriptions, and at least one documented response code. If the UI is blank, <code>SwaggerModule.createDocument()</code> is misconfigured &mdash; verify the <code>NestApplication</code> instance and the <code>DocumentBuilder.build()</code> result are passed correctly. If <code>@ApiProperty</code> fields are missing, you may be decorating an interface instead of a class.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>Push the documented controller</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Push the documented <code>FlightsController</code> + DTO + <code>main.ts</code> changes to your <code>nestjs-course-yourname</code> repo</li>
-                    <li>Submit the commit URL</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Swagger-REST vs GraphQL &mdash; one sentence each</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>One sentence: when would you reach for <strong>Swagger-documented REST</strong>?</li>
-                    <li>One sentence: when would you reach for <strong>GraphQL</strong> instead?</li>
-                    <li>Submit as text in the platform</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>GraphQL field selection + Swagger CLI plugin &mdash; cumulative</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 45 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Install <code>@nestjs/graphql @nestjs/apollo @apollo/server graphql</code>. Build a <code>FlightResolver</code> with a <code>flights()</code> query that calls <code>FlightsService.findAll()</code>. Open <code>/graphql</code> playground, run a query selecting ONLY <code>code</code> and <code>capacity</code> &mdash; screenshot the playground showing the query and the trimmed response. Then add the <code>@nestjs/swagger</code> CLI plugin to <code>nest-cli.json</code> (<code>classValidatorShim: true, introspectComments: true</code>), remove <code>@ApiProperty</code> from one DTO field, rebuild, and screenshot the Swagger UI still showing that field.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Two screenshots required: (1) GraphQL playground showing <code>{ flights { code capacity } }</code> and a response with only those two fields. If you see "Cannot query field", the Flight type is missing <code>@Field()</code> on that property. (2) Swagger UI showing the removed-<code>@ApiProperty</code> field still appearing. If the field disappears, the plugin is not active &mdash; check that <code>plugins</code> is inside <code>compilerOptions</code> in <code>nest-cli.json</code>, not at the top level.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Add a GraphQL FlightResolver</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Install <code>@nestjs/graphql @nestjs/apollo @apollo/server graphql</code>. Build a <code>FlightResolver</code> next to your existing REST controller (both should work). Open the GraphQL playground at <code>/graphql</code>. Run a query that fetches <strong>only</strong> <code>code</code> and <code>capacity</code> &mdash; not the other fields. Screenshot the playground showing the query and the trimmed response.</p>
+                <strong>Design the public API for a Bookings feature &mdash; AI-resilient</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">The airport-api needs a <code>/bookings</code> resource. Before writing any code, design the API surface: list the endpoints (method + path + brief description), which need JWT auth, which need role protection. Decide whether bookings should be REST-only or also exposed via GraphQL and defend your choice in 2&ndash;3 sentences. Write 2 sentences you would add to the Swagger doc to warn a frontend developer about rate limits on booking creation. Your answer must reference your specific airport-api schema and auth setup &mdash; an AI cannot answer this without knowing your current codebase.</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Turn on the Swagger CLI plugin</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add <code>@nestjs/swagger</code> to <code>compilerOptions.plugins</code> in <code>nest-cli.json</code> (with <code>classValidatorShim: true, introspectComments: true</code>). Remove every explicit <code>@ApiProperty</code> from one DTO. Confirm the Swagger UI still shows all the fields. Take <strong>before/after</strong> screenshots of either the DTO file or the Swagger UI.</p>
+                <strong>Why GraphQL does not replace REST &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">GraphQL lets clients fetch exactly the fields they need, eliminating over-fetching. This sounds strictly better than REST. So why do large production systems (GitHub, Shopify, Stripe) keep their REST APIs alongside GraphQL? Identify at least 3 concrete scenarios where REST is the better choice, and explain the technical reason &mdash; not "REST is simpler" but what specific property of the use case makes REST win. Write 5&ndash;7 sentences.</p>
             </li>
         </ol>
     </div>

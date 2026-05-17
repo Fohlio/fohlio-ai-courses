@@ -121,6 +121,8 @@ model HomeworkTask {
   order          Int
   quizQuestions  Json?
   checklistItems Json?
+  modelAnswer    String?
+  estimatedMinutes Int?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
 

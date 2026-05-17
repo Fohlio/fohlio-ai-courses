@@ -1095,45 +1095,37 @@ archive-api/src/entities/
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Add Author and Tag with full bidirectional relations</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In your <code>archive-api</code> repo, add <code>Author</code> and <code>Tag</code> entities exactly as shown in Part 2 and Part 6.</li>
-                    <li>Update <code>Book</code> to add the M:1 to <code>Author</code> and the M:M to <code>Tag</code>.</li>
-                    <li>Update <code>Article</code> from Lesson 2 to add a M:M to <code>Tag</code>.</li>
-                    <li>Run the Part 6 main.ts script and confirm the full graph (1 author + 2 books + 1 article + 3 tags + pivot rows) persists in one transaction.</li>
-                    <li>Open a PR titled <code>lesson-4: relations</code> and submit the PR URL.</li>
-                </ul>
+                <strong>Persist a full entity graph with relations and capture the pivot DDL</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Add Author and Tag entities to archive-api. Author has a 1:M to Book (Author side is inverse, Book side owns the FK). Book and Article both have M:M to Tag. Write a script that creates 1 author, 2 books, 1 article, and 3 tags, assigns all relations, and flushes. Then run <code>npx mikro-orm schema:update --dump</code>. Submit a screenshot of the book_tags pivot table DDL showing both <code>book_id</code> and <code>tag_id</code> columns and at least one FOREIGN KEY constraint line.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot must show a CREATE TABLE book_tags with: book_id bigint NOT NULL REFERENCES book(id), tag_id bigint NOT NULL REFERENCES tag(id), and a primary key on (book_id, tag_id). If you see only one column: you forgot to declare the inverse side with mappedBy. If the dump is empty: schema:update sees no diff because a snapshot already exists &mdash; use schema:create --dump instead.</p>
+                </details>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Schema dump screenshot</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Run <code>npx mikro-orm schema:update --dump</code>.</li>
-                    <li>Submit a screenshot showing the <code>book_tags</code> pivot table DDL with both <code>book_id</code> and <code>tag_id</code> columns and their foreign key constraints visible.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Why exactly one owning side in M:M? (Elaborative interrogation)</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 4&ndash;6 sentences, answer: <em>Why does MikroORM require an explicit owning side in M:M relations, and what would happen if both sides claimed ownership?</em> Reference how the pivot table is generated and which side controls inserts/deletes into it.</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+                <strong>Owning side + Identity Map callback &mdash; schema and query log</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (L4): Add the M:M between Article and Tag. Run schema:update --dump and confirm article_tags pivot appears. Part B (L2&ndash;L3 callback): Load the Author you inserted using <code>em.findOne(Author, authorId, &#123; populate: ['books'] &#125;)</code>. Call it a second time with the same arguments. How many SELECTs fire? Why? (Refer to what you learned in L3 about the Identity Map key and populate hints.) Submit a screenshot of the DDL and a short text paragraph answering Part B.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: article_tags must appear with article_id and tag_id FKs. Part B: the second findOne still fires a SELECT because the Identity Map is keyed by PK, not by populate spec. MikroORM re-runs the query to ensure the collection is fresh. If the books collection was already initialized on the instance, you may see zero queries &mdash; check whether the EM was forked between calls. One SELECT is the normal expectation for the same populate hint called twice on the same EM instance.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Demonstrate orphan removal</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Configure <code>orphanRemoval: true</code> on <code>Author.books</code>. Add a script that loads an author with populated books, calls <code>author.books.remove(books[0])</code>, then <code>flush</code>. Capture the query log showing the <code>DELETE FROM book WHERE id = ...</code> statement. Add the log snippet to your <code>README.md</code>.</p>
+                <strong>Demonstrate orphan removal &mdash; plan, implement, verify</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Before writing code: in 2&ndash;3 sentences predict what SQL MikroORM will issue when you remove a Book from <code>author.books</code> with <code>orphanRemoval: true</code> &mdash; UPDATE, DELETE, or both? Which table? Then implement it, flush, and capture the query log. Was your prediction correct? Explain the difference between orphan removal and cascade remove in your revision note.</p>
+                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What does this reveal about the difference between removing from a collection and deleting an entity? What would an AI summary of orphan removal oversimplify?</em></p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Self-referencing Article</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add a self-ref to <code>Article</code>: <code>parentArticle: () =&gt; p.manyToOne(Article).nullable()</code> for the M:1 side, and <code>replies: () =&gt; p.oneToMany(Article).mappedBy('parentArticle')</code> for the inverse 1:M. Run <code>schema:update --dump</code> and confirm the schema generates without circular FK errors. Persist a parent article with two replies and capture the inserts.</p>
+                <strong>Why must exactly one side own an M:M relation?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Why does MikroORM require an explicit owning side in M:M relations, and what would happen at the schema and runtime level if both sides declared themselves as the owner? Reference which side generates the pivot table INSERT/DELETE, and what SQL conflict or duplication would occur. Answer in 4&ndash;6 sentences.</p>
             </li>
         </ol>
     </div>

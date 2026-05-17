@@ -57,6 +57,8 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
             order: task.order,
             quizQuestions: task.quizQuestions ?? Prisma.JsonNull,
             checklistItems: task.checklistItems ?? Prisma.JsonNull,
+            modelAnswer: task.modelAnswer ?? null,
+            estimatedMinutes: task.estimatedMinutes ?? null,
           })),
         ),
       };
@@ -124,20 +126,10 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
         },
       });
 
+      await tx.homeworkTask.deleteMany({ where: { lessonId: lesson.id } });
       for (const task of lesson.tasks) {
-        await tx.homeworkTask.upsert({
-          where: { id: task.id },
-          update: {
-            lessonId: lesson.id,
-            title: task.title,
-            description: task.description,
-            category: task.category,
-            submissionType: task.submissionType,
-            order: task.order,
-            quizQuestions: task.quizQuestions,
-            checklistItems: task.checklistItems,
-          },
-          create: {
+        await tx.homeworkTask.create({
+          data: {
             id: task.id,
             lessonId: lesson.id,
             title: task.title,
@@ -147,6 +139,8 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
             order: task.order,
             quizQuestions: task.quizQuestions,
             checklistItems: task.checklistItems,
+            modelAnswer: task.modelAnswer ?? null,
+            estimatedMinutes: task.estimatedMinutes ?? null,
           },
         });
       }
@@ -156,7 +150,7 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
       where: { courseId: null },
       data: { courseId: LEGACY_COURSE_ID },
     });
-  });
+  }, { timeout: 60_000, maxWait: 10_000 });
 }
 
 export const legacyCourse = {

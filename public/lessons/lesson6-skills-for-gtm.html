@@ -1915,100 +1915,43 @@ Metrics (if available)
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <div class="info-box blue" style="margin-bottom:16px;">
+            <p><strong>Note:</strong> Tasks use Manus, which most of the GTM team has access to. If you'd rather use Claude Desktop's <code>skill-creator</code>, the format is identical (open standard). If you don't have access to either, ask Ivan in Slack.</p>
+        </div>
+
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Run a Manus Playbook for your role</strong>
-                <p>Open <code>manus.im/playbook</code>. Pick <strong>one</strong> playbook that matches your role:</p>
-                <ul>
-                    <li>Sales: B2B Software Sales Deck Generator, Sales Funnel Builder, or AI Sales Quote Generator</li>
-                    <li>Marketing: YouTube Influencer Finder, Reddit Sentiment Analyzer, or Marketing Presentation Maker</li>
-                    <li>CS: Account Health Analyzer</li>
-                    <li>RevOps: Sales Territory Mapping or Commission Calculator</li>
-                    <li>PMM / Product: PRD Templates or Launch Checklists (under <code>manus.im/solutions/product</code>)</li>
-                </ul>
-                <p>Run it against a <strong>real task</strong> from your week (not a toy example). Send: <strong>screenshot of the result</strong> + <strong>2&ndash;3 sentences</strong> on what worked, what felt off, and how long it would have taken without Manus.</p>
-                <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>Why this first:</strong> Playbooks are the gentlest on-ramp &mdash; click, fill form, run. You'll feel skill-quality output before you build one yourself.</p>
-                </div>
+                <strong>Run a Playbook and build your first Skill</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin-top:6px;"><strong>Part A &mdash; Playbook:</strong> Open <code>manus.im/playbook</code> and pick one matching your role (Sales: B2B Sales Deck Generator / Sales Funnel Builder; Marketing: Reddit Sentiment Analyzer / Marketing Presentation Maker; CS: Account Health Analyzer; RevOps: Commission Calculator; PMM: PRD Templates). Run it on a real task from this week.</p>
+                <p style="margin-top:6px;"><strong>Part B &mdash; Skill:</strong> In Manus, run a repeated weekly task end-to-end, then type "Package this workflow into a Skill." Open the Skill Library, rename to kebab-case, trigger it with <code>/your-skill-name</code> in a fresh chat.</p>
+                <p style="margin-top:6px;">Send one screenshot showing the slash command triggered in a new chat. In 3&ndash;4 sentences: what worked, what surprised you, and how long the manual version takes you normally.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A correct screenshot shows the slash command <code>/your-skill-name</code> typed in a fresh Manus chat and the skill responding with structured output &mdash; not a generic AI response. Key checks: the skill name is in kebab-case, the output is recognizably shaped by the workflow you ran, and the slash command triggered it (not a manual prompt). The 3&ndash;4 sentence reflection should name something specific that surprised you about auto-package &mdash; e.g. "I expected to write YAML but Manus generated the SKILL.md entirely from the conversation" or "The description it auto-wrote was too generic and I had to rewrite it."</p>
+                </details>
             </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Build your first Skill in Manus via auto-package</strong>
-                <p>Use <strong>Path A from Part 5</strong>. Pick a repeated task you do at least weekly (recap email, meeting prep, account brief, follow-up template, status update):</p>
-                <ul>
-                    <li>Run the task in Manus end-to-end until you're happy with the output</li>
-                    <li>In the same conversation type: <strong>&laquo;Package this workflow into a Skill.&raquo;</strong></li>
-                    <li>Manus auto-generates the SKILL.md from the run</li>
-                    <li>Open the Skill Library, rename to kebab-case, review the description</li>
-                    <li>In a fresh chat, trigger the skill with <code>/your-skill-name</code> and run it on new inputs</li>
-                </ul>
-                <p>Send: <strong>screenshot</strong> of the skill activated via slash command in a new chat + <strong>2&ndash;3 sentences</strong> on what surprised you about the auto-package experience.</p>
-                <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>Why we ask this:</strong> The first time Manus packages your real workflow into a one-click slash command &mdash; you understand the model. Reading about it doesn't compare.</p>
-                </div>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Write a great description for your Skill</strong>
-                <p>Open the skill from task #2 in Manus's Skill Library. Rewrite its description applying all four rules from Part 6. Send the description (under 1024 chars) plus <strong>one sentence per rule</strong> explaining how your description applies it:</p>
-                <ul>
-                    <li>Rule 1: WHAT + WHEN + trigger phrases</li>
-                    <li>Rule 2: matchable phrases in the first ~250 chars</li>
-                    <li>Rule 3: pushy language</li>
-                    <li>Rule 4: describe WHEN, not HOW</li>
-                </ul>
-                <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>Self-test:</strong> in a fresh Manus chat, ask <em>&laquo;When would you use the [your-skill] skill?&raquo;</em> If the answer matches your intent &mdash; the description works.</p>
-                </div>
+            <li style="margin-top:20px;">
+                <strong>Write a great Skill description &mdash; and connect it to Lesson 4</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin-top:6px;"><strong>Part A &mdash; Description:</strong> Open your skill from task #1 in the Manus Skill Library. Rewrite its description applying all four rules from Part 6: (1) WHAT + WHEN + trigger phrases; (2) matchable phrases front-loaded in the first 250 chars; (3) pushy trigger language; (4) describe WHEN, not HOW. Submit the description (under 1024 chars) plus one sentence per rule explaining how yours applies it.</p>
+                <p style="margin-top:6px;"><strong>Part B &mdash; L4 connection:</strong> In Lesson 4 you learned the difference between a chatbot and an agent. In 2&ndash;3 sentences: is a Manus Skill closer to a chatbot or an agent behavior? Use the definition from L4 to justify your answer.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: a strong description starts with a trigger phrase like "Use this skill whenever&hellip;" The first 250 characters should contain words a GTM person would naturally type when they need this help. Rule 4 means the description says "when preparing a renewal call brief" &mdash; not "this skill fetches data from Jira and formats it into sections." Part B: a Skill is closer to agent behavior &mdash; it encodes a multi-step workflow with defined inputs and outputs. A chatbot (L4 definition) responds to one prompt; a Skill packages a sequence of steps that run autonomously. However, a Skill without live MCP tool access behaves more like a chatbot &mdash; the distinction depends on what connectors are active.</p>
+                </details>
             </li>
         </ol>
 
-        <div class="info-box blue" style="margin-top: 24px;">
-            <p><strong>Note:</strong> Tasks #2 and #3 use Manus, which most of the GTM team already has access to. If you'd rather use Claude Desktop's <code>skill-creator</code> instead, that's fine &mdash; the format is identical (open standard). Either works. If you don't have access to either, ask Ivan in Slack.</p>
-        </div>
-
-        <h3 style="margin-top: 24px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Compose a Manus Project + Skill</strong>
-                <p>Create a Manus Project for your role (e.g. <em>&laquo;Fohlio Sales&raquo;</em>):</p>
-                <ul>
-                    <li>Write a Master Instruction with your role + ICP + brand voice basics</li>
-                    <li>Upload 2&ndash;3 knowledge files (battlecards, ICP doc, brand guidelines, sales playbook)</li>
-                    <li>Trigger your skill from task #2 inside that Project</li>
-                </ul>
-                <p>Send the output and answer: <strong>how is it different from the same skill running outside the Project?</strong> One paragraph.</p>
+                <strong>Compose a Manus Project + Skill &mdash; with comparison</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin-top:6px;">Create a Manus Project for your role (e.g. "Fohlio Sales" or "Fohlio CS"). Write a Master Instruction with your role, ICP, and 3&ndash;5 brand voice principles. Upload 2&ndash;3 knowledge files. Run your skill from task #1 inside that Project, then run the same skill outside it. Send a screenshot of both outputs. Write one paragraph comparing them: what changed, and why does persistent context change output quality? Metacognitive memo: what assumption about AI context did this experiment update for you?</p>
+                <p style="font-size:13px;color:var(--gray-500);margin-top:4px;">Note: harder than the lesson on purpose &mdash; the comparison is the point.</p>
             </li>
-            <li style="margin-top: 16px;">
-                <strong>Quiz: Skills, MCP, Subagents, Manus (active recall)</strong>
-                <p>Answer <strong>without looking back at the lesson</strong>. After answering, check yourself and note what you got wrong:</p>
-                <ul>
-                    <li>What is progressive disclosure? Name the three levels.</li>
-                    <li>What are the four rules for writing a description?</li>
-                    <li>If a workflow needs live HubSpot data, do you need a Skill, an MCP server, or both? Why?</li>
-                    <li>What's the difference between a Manus Skill and a Manus Project? When would you use which?</li>
-                    <li>Pick one analogy other than the restaurant or USB. Use it to explain Skills vs MCP vs Subagents in three sentences.</li>
-                </ul>
-                <div class="info-box orange" style="margin-top: 8px;">
-                    <p><strong>This is Active Recall:</strong> noticing what you couldn't remember is exactly when learning happens. The gaps are the lesson.</p>
-                </div>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Pitch a custom Skill for your team</strong>
-                <p>Write a 5-sentence pitch for a custom Manus Skill that would help your team specifically:</p>
-                <ul>
-                    <li>What's the workflow it captures?</li>
-                    <li>Who would use it (which role)?</li>
-                    <li>What 3&ndash;5 example outputs would you collect to seed it?</li>
-                    <li>How much time per week would it save (estimate)?</li>
-                    <li>Who else on the team should help build / test it?</li>
-                </ul>
-                <p>Bonus: actually build it via Path A, push it to the Team Skill Library, and announce it in <code>#tech-course</code>.</p>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Find and pitch a new Playbook or community Skill</strong>
-                <p>Browse <code>manus.im/playbook</code>, <code>github.com/anthropics/skills</code>, or <code>awesome-skills.com</code>. Find one nobody on our team uses yet. Write a 3-sentence pitch: what it does, what problem it solves, who on the team should try it first.</p>
+            <li style="margin-top:20px;">
+                <strong>Why the description is the make-or-break field &mdash; elaborative interrogation</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin-top:6px;">Answer in your own words: (1) Why does the skill description determine whether the agent triggers the skill at all? What is the agent actually doing when it decides which skill to use? (2) Why does "describe WHEN not HOW" matter? If the description explains the steps in detail, why would that hurt rather than help?</p>
             </li>
         </ol>
     </div>
