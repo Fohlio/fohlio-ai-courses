@@ -1,0 +1,40 @@
+[
+  {
+    "id": "mikroorm-task-2-1",
+    "title": "Add the Article entity and capture the schema dump",
+    "description": "Add src/entities/Article.ts to your archive-api project. Give Article: a bigint PK (id), title (string, max 200), slug (string, unique), viewCount (integer, default 0), publishedAt (datetime, nullable), and a metadata column typed as jsonb. Register Article in mikro-orm.config.ts. Run 'npx mikro-orm schema:create --dump' with both Book and Article in the entities array. Submit a screenshot showing both 'create table book' and 'create table article' DDL, with column types visible (varchar, bigserial, jsonb, timestamptz).",
+    "category": "required",
+    "submissionType": "screenshot",
+    "order": 1,
+    "modelAnswer": "The schema dump should show:\n- book: id bigserial primary key, title varchar(200) not null, created_at timestamptz not null\n- article: id bigserial primary key, title varchar(200) not null, slug varchar(255) unique not null, view_count int not null default 0, published_at timestamptz null, metadata jsonb null\nCommon mistakes: forgetting .nullable() on publishedAt (it becomes NOT NULL in the dump), or using p.integer() vs p.bigint() for the PK (bigserial vs integer).",
+    "estimatedMinutes": 20
+  },
+  {
+    "id": "mikroorm-task-2-2",
+    "title": "bigint vs uuid — when to pick each",
+    "description": "In 4–6 sentences: why is bigint a better default than int for production tables, and when does uuid beat both? Be concrete — name a real scenario for each choice, not a bullet list. Submit as text.",
+    "category": "required",
+    "submissionType": "text",
+    "order": 2,
+    "modelAnswer": "A good answer covers:\n1. int overflows at ~2.1 billion rows. A high-volume events or audit table can hit that in months. bigint raises the ceiling to 9.2 × 10^18 at zero extra storage cost on modern 64-bit Postgres.\n2. uuid is the right call when you need to generate IDs outside the database — mobile clients, distributed services, or import pipelines where you want a stable id before the INSERT lands. It also prevents enumeration attacks on public APIs (GET /articles/1 reveals you have exactly one article).\n3. The cost of uuid: it is 16 bytes vs 8, index pages hold fewer entries, and random uuid v4 causes index fragmentation on insert-heavy tables (uuid v7 or gen_random_uuid() with a sortable prefix mitigates this).\nWatch for answers that say 'uuid is always safer' without acknowledging the index cost.",
+    "estimatedMinutes": 15
+  },
+  {
+    "id": "mikroorm-task-2-3",
+    "title": "Add a Tag entity with UUID PK and compare DDL (AI-resilient)",
+    "description": "Define a Tag entity with: id as a UUID primary key (p.uuid().primary().defaultRaw('gen_random_uuid()')), and name as a unique string. Register it. Run 'npx mikro-orm schema:create --dump' and compare the SQL for tag.id (uuid) vs article.id (bigserial).\n\nNow comes the AI-resistant part: run the schema:create command a second time on a clean database and compare the output to the first run. Are they identical? Why or why not? If they differ, what does that tell you about snapshot-based diffing (which you will study in Lesson 7)?\n\nMetacognitive memo (3–5 sentences): What surprised you about the DDL diff between uuid and bigserial? What would an AI answer about 'uuid vs bigint' miss that you now know from running the actual schema output?",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 1,
+    "estimatedMinutes": 30
+  },
+  {
+    "id": "mikroorm-task-2-4",
+    "title": "Why does nullable (DB) not imply optional (TypeScript)?",
+    "description": "Why does MikroORM require you to mark a property both .nullable() (for the database column) AND with '?' or '| null' in TypeScript (for the type system) separately — instead of inferring one from the other? What bad thing would happen if MikroORM auto-applied '| null' to every .nullable() column? Answer in 4–5 sentences.",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 2,
+    "estimatedMinutes": 15
+  }
+]

@@ -1439,48 +1439,36 @@ es.<span class="function">onmessage</span> = (e) =&gt; <span class="function">co
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Extract notifications into a microservice (TCP)</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Inside your <code>nestjs-course-yourname</code> repo, scaffold a second NestJS app as a sibling folder (e.g. <code>notifications-service/</code>) or under <code>apps/notifications</code> &mdash; either is fine</li>
-                    <li>Make it a microservice with <code>NestFactory.createMicroservice</code>, transport TCP, port 4000</li>
-                    <li>Add a <code>@EventPattern('flight.created')</code> handler that logs the incoming flight</li>
-                    <li>Wire <code>airport-api</code> with <code>ClientsModule.register</code> and call <code>client.emit('flight.created', flight)</code> after creating a flight</li>
-                    <li>Run both processes. Take a <strong>screenshot</strong> showing both terminals: the main app accepting <code>POST /flights</code> and the microservice logging the event</li>
-                    <li>Submit the screenshot</li>
-                </ul>
+                <strong>TCP notifications microservice receiving flight.created events</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Scaffold a sibling NestJS app (<code>notifications-service/</code> or <code>apps/notifications/</code>). Make it a TCP microservice on port 4000 with a <code>@EventPattern('flight.created')</code> handler that logs the incoming flight id. In <code>airport-api</code>, wire <code>ClientsModule.register()</code> with <code>Transport.TCP</code> pointing to port 4000. After a successful <code>POST /flights</code> (JWT-protected from Lesson 5), call <code>client.emit('flight.created', { id: flight.id })</code>. Run both processes. Submit a screenshot showing both terminal windows: the airport-api terminal accepting POST /flights, and the notifications-service terminal logging the received event.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Both terminals must be visible. The notifications-service should show "Received flight.created: { id: 1 }". Common failures: (1) ECONNREFUSED &mdash; the notifications-service is not running or its TCP port doesn't match. (2) Event never received &mdash; check <code>client.emit()</code> is called after the Prisma create. (3) <code>@EventPattern('flight.created')</code> name must exactly match the string passed to <code>client.emit()</code> &mdash; case-sensitive.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>WebSocket gateway broadcasting flight updates</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add a <code>FlightsGateway</code> (Socket.IO) in <code>airport-api</code></li>
-                    <li>When <code>PATCH /flights/:id</code> succeeds, broadcast <code>flight_updated</code> with the updated flight</li>
-                    <li>Connect to it from a tiny HTML page (or Postman's WebSocket client) and verify you receive the event live</li>
-                    <li>Push to <code>nestjs-course-yourname</code> and submit the commit link</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>WebSocket vs SSE &mdash; 2-3 sentences</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 2&ndash;3 sentences, when would you reach for WebSockets and when for SSE? Use a concrete example for each</li>
-                    <li>Submit as text in the platform</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>WebSocket gateway + Redis transport switch &mdash; cumulative real-time</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 45 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Add a <code>FlightsGateway</code> using <code>@WebSocketGateway()</code> and Socket.IO. When <code>PATCH /flights/:id</code> succeeds (AuthGuard from Lesson 5 required), broadcast a <code>flight_updated</code> event with the updated flight. Test with a simple HTML page or Postman's WebSocket client. Then switch the notifications-service transport from <code>Transport.TCP</code> to <code>Transport.REDIS</code> (same Redis from Lesson 8). Verify <code>emit('flight.created')</code> still works. Submit a screenshot showing the WebSocket client receiving a <code>flight_updated</code> event AND both terminals running with Redis transport.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Your screenshot needs two things: (1) the WebSocket client showing it received <code>flight_updated</code> with the updated flight data, (2) both terminals running with Redis transport active. If the WebSocket event is never received, check that <code>server.emit()</code> is called on the gateway's <code>@WebSocketServer()</code> server instance. If Redis transport fails to connect, verify the host/port in <code>Transport.REDIS</code> options matches your running Redis container.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Switch the microservice transport from TCP to Redis</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Change <code>Transport.TCP</code> to <code>Transport.REDIS</code> in both the microservice's <code>createMicroservice</code> options and the main app's <code>ClientsModule.register</code>. Verify <code>emit('flight.created')</code> still works end-to-end. Take a <strong>screenshot</strong> of both processes after the switch, with the microservice receiving an event over Redis.</p>
+                <strong>Architect the multi-service airport for a new Baggage feature &mdash; AI-resilient</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">The airport-api needs a BaggageService to track bags tied to flights. Design how it communicates with existing services. Answer in structured text: (1) Should BaggageService be a new NestJS microservice or a module inside airport-api &mdash; give your reasoning. (2) If a bag is lost, which transport would you use to notify the passenger in real time (WebSocket, SSE, TCP microservice event, or BullMQ job) and why? (3) What happens to in-flight BullMQ jobs if the BaggageService process crashes &mdash; how would you protect against job loss? Your answer must reference the architecture of your airport-api as it exists after Lessons 1&ndash;9.</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>gRPC reading exercise</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Read the <a href="https://docs.nestjs.com/microservices/grpc" style="color: var(--blue);">NestJS gRPC docs</a>. In 3 bullets, answer: (a) what does gRPC give you that REST doesn't? (b) what's the cost of using it? (c) when would you specifically reach for it over TCP/Redis/NATS? Submit as text.</p>
+                <strong>Why does a microservice boundary cost more than a function call &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Calling a service method is an in-process function call. Calling a TCP microservice goes over the network. The real costs go beyond latency &mdash; what are 3 additional failure modes or operational costs that appear the moment you extract a module into its own process? Think about: partial failures, distributed transactions, observability, and deployment. For each, explain what you would concretely do to mitigate it. Write 6&ndash;8 sentences.</p>
             </li>
         </ol>
     </div>

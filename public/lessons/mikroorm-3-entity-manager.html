@@ -978,42 +978,37 @@ article.author = authorRef;
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Build the CRUD demo</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Replace <code>src/main.ts</code> with the Part 6 script. Run <code>npm start</code>.</li>
-                    <li>Push to your <code>mikroorm-course-yourname</code> repo as a new commit on a fresh branch. Submit the PR URL.</li>
-                </ul>
+                <strong>Build the CRUD demo and capture the Identity Map cache hit</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Write a main.ts script that: (1) persists and flushes a Book and three Articles, (2) updates the Book title and marks one Article deleted, (3) flushes again, (4) calls <code>em.findOne(Article, 1n)</code> twice in a row. Run with debug logging. Submit a screenshot showing: the batched UPDATE + DELETE in one transaction, then exactly <em>one</em> SELECT for both findOne calls. The second call must not produce a second query.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot must show: (1) a single BEGIN&hellip;COMMIT wrapping the UPDATE and DELETE in one flush; (2) one SELECT WHERE id = 1 after the flush; (3) no second SELECT for the second findOne &mdash; the Identity Map returns the same in-memory instance. If you see two SELECTs: you likely forked the EM or cleared it between the two calls.</p>
+                </details>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Capture the Identity Map cache hit</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>From the run above, screenshot the section of the query log that covers steps 5 and 6 of the Part 6 script.</li>
-                    <li>The screenshot must show: the batched UPDATE + DELETE in one transaction, then exactly <em>one</em> SELECT for both <code>findOne(Article, 1n)</code> calls.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Why the by-slug query still fires SQL (Elaborative interrogation)</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 4&ndash;6 sentences: why does MikroORM still issue a SELECT when you call <code>em.findOne(Book, &#123; title: 'War and Peace' &#125;)</code> twice in a row, even though it returns the same JS instance both times? What does the Identity Map use as its key, and why is that the right design?</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+                <strong>Why does a by-title query still fire SQL?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">In 4&ndash;6 sentences: why does MikroORM still issue a SELECT when you call <code>em.findOne(Book, &#123; title: 'War and Peace' &#125;)</code> twice in a row, even though it returns the same JS instance both times? What does the Identity Map use as its key, and why is that the right design? Submit as text.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The Identity Map is keyed by primary key, not by arbitrary filter conditions. MikroORM cannot know that <code>&#123; title: 'War and Peace' &#125;</code> resolves to id=42 without asking the database. After the first SELECT it registers the returned instance under id=42. The second call re-runs the query, gets id=42 in the result row, and returns the already-managed JS instance &mdash; same object reference, but SQL still fires. Caching by arbitrary filter would require MikroORM to track every possible condition and invalidate on every write &mdash; effectively a query cache.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Cursor-based pagination</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add 20 articles to the seed loop. Use <code>em.findByCursor(Article, &#123; first: 5, orderBy: &#123; id: 'desc' &#125; &#125;)</code> to fetch the first page. Then call it again with <code>after: page.endCursor</code> for the next page. Document the opaque cursor string round-trip in your repo's README &mdash; show what the string looks like and what each call returns.</p>
+                <strong>Cursor-based pagination &mdash; plan, run, revise</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Before writing any code, write a 3-step plan: (1) what SQL you expect <code>findByCursor</code> to generate for the first page, (2) what the opaque cursor string probably encodes, and (3) what happens to the cursor if you change the <code>orderBy</code> field mid-session. Then implement it with 20 articles, pages of 5, ordered by id desc. Run it. Submit: the plan, the actual cursor string (copy-paste), and a revision note on what you got wrong.</p>
+                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What does cursor-based pagination solve that OFFSET pagination cannot? What would an AI answer about pagination probably miss from this exercise?</em></p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Update via reference, no SELECT</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Imagine an <code>Author</code> entity exists (you can stub one with just <code>id</code> and <code>name</code>). Use <code>em.getReference(Author, someId)</code> + assignment to set an Article's author without ever loading the author from the DB. Capture the query log proving no SELECT against the <code>author</code> table fires &mdash; only the INSERT/UPDATE on <code>article</code>. Add the log to the README.</p>
+                <strong>Why does em.getReference() avoid a SELECT, and when does that backfire?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);"><code>em.getReference(Author, 42n)</code> returns a proxy with only the id populated &mdash; no SELECT fires. Why is this safe when you only need to set a foreign-key relation, and when does it produce a silent bug or runtime error? Describe exactly one safe scenario and one dangerous scenario. Answer in 4&ndash;6 sentences.</p>
             </li>
         </ol>
     </div>

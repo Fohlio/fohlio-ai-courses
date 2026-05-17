@@ -1074,46 +1074,37 @@ archive-api/
     <div class="homework">
         <h2>Capstone Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Submit the capstone PR</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>One pull request against <code>mikroorm-course-yourname</code> covering at least <strong>4 of the 8 criteria</strong> in Part 6.</li>
-                    <li>The PR description must list, with file links, exactly which criteria you've satisfied and where each one lives.</li>
-                    <li>Migrations must be reversible (<code>up</code> and <code>down</code> both present).</li>
-                    <li>Submit the PR URL.</li>
-                </ul>
+                <strong>Wire production config and capture slow-query + metadata-cache evidence</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Create <code>mikro-orm.config.prod.ts</code> with: structured JSON logging, a slow-query threshold of 100ms, and metadata cache enabled (GeneratedCacheAdapter pointing to a <code>.cache/</code> directory). Start the app. Trigger a deliberately slow query by running <code>em.execute('SELECT pg_sleep(0.15)')</code>. Submit a screenshot showing TWO things on screen: (a) the structured JSON log line for the slow query (must include the SQL text and time taken), and (b) a boot log line indicating metadata was loaded from cache (run the app twice &mdash; the second run loads the cache).</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot must show: (1) a JSON log object containing at least &#123; sql: 'select pg_sleep(...)', took: &lt;n&gt;ms &#125; &mdash; the slow-query path fires at warn level when a query exceeds slowQueryThreshold; (2) a log line from a prior boot showing "Loaded metadata from cache" or similar from GeneratedCacheAdapter. If no slow-query log: confirm slowQueryThreshold is set on the config object, not the driver. If no cache line: run the app twice &mdash; first run generates the file, second loads it.</p>
+                </details>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Production logs + metadata cache screenshot</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Run <code>archive-api</code> with <code>mikro-orm.config.prod.ts</code>.</li>
-                    <li>Trigger an artificially slow query (e.g. <code>SELECT pg_sleep(0.3) FROM article LIMIT 1</code> via raw SQL) so the slow-query threshold fires.</li>
-                    <li>Submit a screenshot showing: (a) the structured JSON log line for the slow query, (b) a boot log line indicating the metadata cache loaded.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Self-assessment (~200 words, elaborative interrogation)</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Answer in plain text: &ldquo;Which two concepts from this course do you expect to use most often in your day-to-day Fohlio work, and why?&rdquo;</li>
-                    <li>Push yourself on the &ldquo;why&rdquo;: name a concrete service or feature where you'd reach for each, and what specifically the concept solves there. Generic answers (&ldquo;it's useful&rdquo;) don't count.</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+                <strong>Course synthesis &mdash; two concepts you will use at Fohlio + prior-lesson callbacks</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (~200 words): Name the two concepts from this course you expect to use most often at Fohlio. For each: name a concrete Fohlio service or feature, state what specific problem it solves there, and say which earlier lesson's homework task made it click. Generic answers ("it scales") don't count. Part B (L3/L6/L9 callbacks): Describe a hypothetical production incident involving all three of: a stale Identity Map (L3), a soft-delete filter accidentally disabled (L6), and a missing @CreateRequestContext() on a queue worker (L9). What data corruption results? What is the minimal fix for each cause? Submit both parts as text.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A rubric: full marks require a named Fohlio service (not "the backend"), a specific problem statement (not "performance"), and a reference to a specific lesson or homework task. Part B: Stale Identity Map (L3) &mdash; a queue worker reuses a long-lived EM; its stale Article overwrites an HTTP change on flush. Fix: @CreateRequestContext() on the worker (also fixes cause 3). Soft-delete filter disabled (L6) &mdash; a report query accidentally surfaces deleted articles to a client. Fix: scope filter disable to a forked EM, never the global EM. Missing @CreateRequestContext() (L9) &mdash; multiple concurrent jobs mutate the same Identity Map, causing race conditions on flush. Fix: decorate the handler method.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Deploy the capstone to a real environment</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Deploy <code>archive-api</code> to a real host: Vercel + Neon Postgres, Fly.io + Supabase, or Docker on your own VPS. Wire up at least one read replica if your Postgres host supports it. Submit: (a) the deployed URL, (b) a screenshot of <code>GET /articles?populate=author,tags</code> returning a non-empty response from the deployed instance.</p>
+                <strong>MikroORM vs Prisma at Fohlio &mdash; structured comparison with personal stakes</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Compare MikroORM and Prisma across four dimensions: Unit of Work vs per-operation approach, relation loading, migration tooling, NestJS integration. For each dimension state which tool wins under what conditions and name a concrete Fohlio service where that dimension would tip the decision. Then paste your comparison into ChatGPT and ask it to summarize the winner. Write 3 sentences on what the AI summary missed &mdash; specifically about your own experience running both tools across this course and the NestJS course.</p>
+                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: Looking back at all 10 lessons, which homework task changed your mental model the most, and why?</em></p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Post-mortem: MikroORM vs Prisma at Fohlio (~300 words)</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">You met Prisma in <code>nestjs-4-data-layer</code>. Now compare its mental model to MikroORM's. Where does each win? When would you reach for each at Fohlio? Be specific: name a concrete service shape where Prisma is the right call, and one where MikroORM clearly is. Avoid &ldquo;it depends&rdquo; without examples. Submit as text.</p>
+                <strong>Why does the metadata cache eliminate cold-start tax, and when does it backfire?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">MikroORM discovers entity metadata at boot by inspecting TypeScript reflection and decorator metadata &mdash; a process that touches every entity file and builds an in-memory schema graph. The GeneratedCacheAdapter serializes this graph to disk so the next boot skips discovery. Why does this matter in a serverless or container-autoscaling environment where cold starts are frequent? Name one scenario where the cache becomes incorrect and causes a runtime error, and describe the minimal invalidation step. Answer in 5&ndash;7 sentences.</p>
             </li>
         </ol>
     </div>

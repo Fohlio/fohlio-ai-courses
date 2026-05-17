@@ -12,7 +12,7 @@ import { SubmissionQuiz } from "./SubmissionQuiz";
 import { SubmissionChecklist } from "./SubmissionChecklist";
 
 const TYPE_LABELS: Record<string, string> = {
-  pr_link: "PR Link",
+  pr_link: "Link",
   screenshot: "Screenshot",
   text: "Text",
   quiz: "Quiz",
@@ -97,8 +97,26 @@ export function TaskCard({
           <p className="font-semibold text-gray-900">{task.title}</p>
           <p className="mt-1 text-sm text-gray-500">{task.description}</p>
         </div>
-        <Badge variant="gray">{TYPE_LABELS[task.submissionType]}</Badge>
+        <div className="flex shrink-0 flex-col items-end gap-1">
+          <Badge variant="gray">{TYPE_LABELS[task.submissionType]}</Badge>
+          {typeof task.estimatedMinutes === "number" && (
+            <span className="text-xs text-gray-400">
+              ≈ {task.estimatedMinutes} min
+            </span>
+          )}
+        </div>
       </div>
+
+      {task.modelAnswer?.trim() && (
+        <details className="mt-3 rounded-lg border border-gray-200 bg-gray-50 p-3">
+          <summary className="cursor-pointer text-sm font-medium text-gray-700">
+            Model answer / self-check
+          </summary>
+          <p className="mt-2 whitespace-pre-line text-sm text-gray-600">
+            {task.modelAnswer}
+          </p>
+        </details>
+      )}
 
       <div className="mt-4 border-t border-gray-100 pt-4">
         {task.submissionType === "pr_link" && (

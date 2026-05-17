@@ -1,0 +1,40 @@
+[
+  {
+    "id": "mikroorm-task-7-1",
+    "title": "Generate the initial migration and capture the up() method",
+    "description": "Install @mikro-orm/migrations. Register the Migrator extension in your config. Create a migrations/ directory. Run 'npx mikro-orm migration:create --initial'. Open the generated file and submit a screenshot of its up() method — the full CREATE TABLE statements for book, article, author, tag, and both pivot tables must be visible. Next: add slug: p.string().unique() to Book, run 'npx mikro-orm migration:create --name=add_slug_to_book', and submit a second screenshot showing that migration's up() with exactly the ALTER TABLE ... ADD COLUMN ... ADD CONSTRAINT ... lines. No repo needed — two screenshots as one submission.",
+    "category": "required",
+    "submissionType": "screenshot",
+    "order": 1,
+    "modelAnswer": "Screenshot 1 must show createTable calls (or raw SQL) for: book, article, author, tag, book_tags, article_tags — all within the up() method.\nScreenshot 2 must show: ALTER TABLE book ADD COLUMN slug varchar(255) NOT NULL (or similar) and ALTER TABLE book ADD CONSTRAINT book_slug_unique UNIQUE (slug).\nCommon mistake: the second migration is empty. This happens when MikroORM still has the snapshot from before Book was updated. Solution: confirm the snapshot file was committed alongside the entity change, or delete the snapshot and regenerate.",
+    "estimatedMinutes": 30
+  },
+  {
+    "id": "mikroorm-task-7-2",
+    "title": "Snapshot file purpose + L5/L6 filter callback",
+    "description": "This task combines migrations (L7) with loading and filter knowledge from L5–L6.\n\nPart A (L7): In 5–7 sentences explain why MikroORM keeps a .snapshot-*.json file rather than diffing against the live database. Reference team workflows (two developers running migration:create on separate branches) and CI determinism (same entity change must produce the same migration file on any machine). Use the Library analogy if it helps.\n\nPart B (L5–L6 callback): Your initial migration ran successfully on staging. A teammate runs it on their local machine and it fails with 'relation already exists'. Explain why this happened and what the correct fix is — without touching the migration file itself. (Hint: this is a dev-environment issue, not a code issue.)\n\nSubmit both parts as text.",
+    "category": "required",
+    "submissionType": "text",
+    "order": 2,
+    "modelAnswer": "Part A: The snapshot records the entity model as it was when the last migration was generated — it is the ORM's internal 'previous state'. When migration:create runs, MikroORM diffs the current entity definitions against the snapshot, not against the live DB. This means: (1) two developers on different branches get the same diff because they both start from the same committed snapshot, regardless of what their local DBs look like; (2) CI can generate and verify migrations without any live database at all. Library analogy: the snapshot is the last signed-off edition of the catalogue. New additions are diffed against that edition, not against whatever books happen to be on the shelves that day.\n\nPart B: The teammate's local database already has those tables from a previous schema:update (dev tool) run. The migration tries to CREATE TABLE but the tables exist. Fix: drop the local database (or run migration:fresh) so the migration runs on a clean schema. The migration file itself is correct — the problem is that schema:update was used on that machine instead of migrations.",
+    "estimatedMinutes": 25
+  },
+  {
+    "id": "mikroorm-task-7-3",
+    "title": "Faker-powered ArticleSeeder with relations — plan, build, verify (AI-resilient)",
+    "description": "Build an ArticleSeeder that uses @faker-js/faker to create 50 articles, each associated with 1 randomly chosen author and 1–3 randomly chosen tags from a pool of 10 pre-seeded tags. The seeder must use DatabaseSeeder as its root and be runnable via 'npx mikro-orm seeder:run'.\n\nThree-stage task:\n1. Plan: before coding, write the seed order (which entities must be created first and why). What happens if you try to create an Article with a tag that has not been flushed yet?\n2. Implement and run. Verify by querying: SELECT COUNT(*) FROM article and SELECT COUNT(*) FROM article_tags — post the counts as text.\n3. Critique: what would break if two developers ran the seeder on the same database simultaneously? How would you make the seeder idempotent?\n\nMetacognitive memo: What does building a seeder reveal about the importance of flush ordering that reading the lesson alone does not?",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 1,
+    "estimatedMinutes": 40
+  },
+  {
+    "id": "mikroorm-task-7-4",
+    "title": "Why does MikroORM diff against the snapshot and not the live DB?",
+    "description": "Why would diffing migration:create against the live database be unreliable in a team of three developers, each working on a different feature branch? Describe exactly one failure mode that would produce a wrong or conflicting migration if the live DB were the source of truth. Then explain why the snapshot approach prevents that failure mode. Answer in 5–7 sentences.",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 2,
+    "estimatedMinutes": 15
+  }
+]

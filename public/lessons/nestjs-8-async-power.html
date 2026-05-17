@@ -1446,47 +1446,43 @@ CacheModule.<span class="function">registerAsync</span>({
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Cache <code>GET /flights</code></strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add <code>@nestjs/cache-manager</code> to your <code>airport-api</code> project</li>
-                    <li>Cache <code>GET /flights</code> with TTL 60s using <code>CacheInterceptor</code> + <code>@CacheTTL</code></li>
-                    <li>Hit the endpoint twice in a row. Take a <strong>screenshot</strong> showing both responses with timestamps &mdash; the second one should be visibly faster</li>
-                    <li>Submit the screenshot</li>
-                </ul>
+                <strong>Cache GET /flights with visible timing proof</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Add <code>@nestjs/cache-manager</code>. Apply <code>CacheInterceptor</code> + <code>@CacheTTL(60)</code> to <code>GET /flights</code>. Hit the endpoint twice in a row and capture both response times. Submit a screenshot showing both responses &mdash; the second response time must be noticeably lower, or include the terminal showing the Prisma query log only firing on the first request. Tip: add <code>PRISMA_QUERY_LOG=true</code> to <code>.env</code> to see whether Prisma actually queries the DB on the second call.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot should show either: (a) response times dropping from e.g. 45ms to &lt;5ms, or (b) a Prisma SELECT on the first request and no SELECT on the second. If timing does not change, <code>CacheInterceptor</code> is not applied &mdash; check it is in <code>@UseInterceptors()</code> or wired globally. If every request re-queries the DB, verify <code>CacheModule.register({ ttl: 60 })</code> is in the module imports.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>Add a BullMQ <code>notifications</code> queue</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Install <code>@nestjs/bullmq</code> and run Redis locally (<code>docker run -p 6379:6379 redis</code>)</li>
-                    <li>Register a queue named <code>notifications</code></li>
-                    <li>When a new flight is created in <code>POST /flights</code>, enqueue a <code>flight-created</code> job with the flight ID</li>
-                    <li>Add a processor that does <code>console.log('Notification for flight ' + id)</code></li>
-                    <li>Push to your <code>nestjs-course-yourname</code> repo and submit the commit link</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>EventEmitter2 vs BullMQ &mdash; one paragraph</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In one short paragraph (3&ndash;5 sentences): when would you reach for <code>EventEmitter2</code> and when for BullMQ? Use a concrete Fohlio-style example for each</li>
-                    <li>Submit as text in the platform</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>BullMQ notification queue + cron cleanup &mdash; cumulative async</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 45 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Install <code>@nestjs/bullmq</code> and run Redis (<code>docker run -p 6379:6379 redis</code>). Register a <code>notifications</code> queue. When a flight is created via <code>POST /flights</code> (already JWT-protected from Lesson 5), enqueue a <code>flight-created</code> job. Build a processor that logs "Notification sent for flight &lt;id&gt;". Then add <code>@nestjs/schedule</code> and create a <code>CleanupService</code> with <code>@Cron('*/2 * * * *')</code> that logs "[CRON] Checking for stale jobs at &lt;ISO timestamp&gt;". Run the app for at least 6 minutes. Submit a screenshot showing: (1) the POST /flights terminal output with the job enqueue log, (2) at least 3 cron firing log lines.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Screenshot must show both: the BullMQ processor log ("Notification sent for flight X") triggered by POST /flights, and cron log lines at 2-minute intervals. Common failures: (1) Redis not running &mdash; BullMQ throws "connect ECONNREFUSED". (2) Processor not decorated with <code>@Processor('notifications')</code> &mdash; queue name must match exactly. (3) <code>ScheduleModule.forRoot()</code> not imported &mdash; <code>@Cron</code> jobs fire silently if missing.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Add a 5-minute <code>@Cron</code> job</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add <code>@nestjs/schedule</code>. Create a <code>CleanupService</code> with a <code>@Cron('*/5 * * * *')</code> method that logs <code>[CRON] Cleanup pass at &lt;ISO timestamp&gt;</code>. Run the app for at least 10 minutes. Take a <strong>screenshot</strong> of the log output showing 2&ndash;3 cron firings.</p>
+                <strong>Choose the right async tool for 5 scenarios &mdash; AI-resilient judgment</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">For each scenario below, state which tool you would use (EventEmitter2, BullMQ, @Cron, or cache-manager) and write one sentence explaining why. End with a 3-sentence metacognitive memo: what distinction was hardest to make, and what would you look for in a code review to catch an EventEmitter2-where-BullMQ-was-needed mistake?</p>
+                <ol style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Send a passenger a welcome email after registration &mdash; email sending takes ~800ms.</li>
+                    <li>Invalidate the GET /flights cache when a flight is updated.</li>
+                    <li>Emit an in-process domain event so FlightsModule can notify GateModule without a direct import.</li>
+                    <li>Archive all completed flights older than 30 days every night at 02:00.</li>
+                    <li>Re-try a failed payment up to 3 times with exponential backoff.</li>
+                </ol>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Swap the cache to Redis</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Replace the in-memory store with <code>@keyv/redis</code>. Hit <code>GET /flights</code> once to populate the cache. Restart the Node process. Hit <code>GET /flights</code> again &mdash; it should still return the cached value (because Redis survived the restart). Take a <strong>screenshot</strong> showing the timestamps and the cache surviving the restart.</p>
+                <strong>Why a queue does not solve every latency problem &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">BullMQ moves work out of the request cycle. So why can't you use it to speed up every slow endpoint &mdash; for example, why can't you enqueue the DB query itself and return the result asynchronously? Walk through what the client would receive and what additional infrastructure that requires. Then name one class of problem where a queue genuinely does not help latency at all. Write 4&ndash;6 sentences.</p>
             </li>
         </ol>
     </div>

@@ -1,0 +1,40 @@
+[
+  {
+    "id": "mikroorm-task-6-1",
+    "title": "Add softDelete filter and ArticleRepository, capture filter on/off SQL",
+    "description": "Define Article with a softDelete filter (condition: { deletedAt: null }, default: true). Add ArticleRepository with two QB-backed methods: findHotArticles(minViews: number) returning articles where view_count >= minViews, and searchByTitle(q: string) using a LIKE/ILIKE condition. Wire the repository via the repository option in defineEntity. Write a short script that: (1) runs a find with the filter active and (2) disables the filter via em.addFilter / setFilterParams and runs the same find. Run with debug: true and submit a screenshot showing both queries — the first must contain 'deleted_at is null' in the WHERE clause, the second must not.",
+    "category": "required",
+    "submissionType": "screenshot",
+    "order": 1,
+    "modelAnswer": "The screenshot must show two consecutive SELECT statements:\n1. ... WHERE deleted_at IS NULL ... (filter active)\n2. The same query without deleted_at IS NULL (filter disabled via em.getRepository(Article).getEntityManager().setFilterParams or em.addFilter with disabled flag).\nCommon mistake: calling em.disableFilter() on the wrong EM instance (the base EM vs the forked one used in the script). Each EM fork has its own filter state.",
+    "estimatedMinutes": 35
+  },
+  {
+    "id": "mikroorm-task-6-2",
+    "title": "qb.execute() vs qb.getResult() + L4/L5 callback — text analysis",
+    "description": "This task combines QueryBuilder internals (L6) with loading and relations knowledge from L4–L5.\n\nPart A (L6): In 4–6 sentences explain why qb.execute() skips the Identity Map while qb.getResult() registers entities in it. Name one concrete bug each behavior can prevent — so two bugs total. Use the Records Library analogy if it helps.\n\nPart B (L4–L5 callback): You have an ArticleRepository method that uses qb.execute() to fetch raw rows for a report. A teammate adds article.tags access inside the report loop and sees N+1 queries. Why does this happen even though the tags relation is defined on Article? What would need to change — in the query or in the result processing — to fix it without switching to getResult()? (Hint: think about what execute() returns vs what populate needs.)\n\nSubmit both parts as text.",
+    "category": "required",
+    "submissionType": "text",
+    "order": 2,
+    "modelAnswer": "Part A:\n- qb.execute() returns raw plain objects (not entity instances). The Identity Map stores entity instances keyed by PK. Plain objects are not registered, so they do not participate in change-tracking — which means you cannot accidentally dirty-flush a raw reporting row.\n- qb.getResult() hydrates entity instances and registers them. Useful when you need the result to participate in subsequent EM operations (update, relation population).\n- Bug prevented by execute(): accidentally flushing a report row because it became managed.\n- Bug prevented by getResult(): getting a stale entity because the same PK was already in the map from an earlier load but getResult() re-hydrates it with the latest data from this query.\n\nPart B: qb.execute() returns plain objects with no MikroORM proxy. Tags is a Collection that only exists on an entity instance. Accessing .tags on a plain object returns undefined or throws. Fix: either switch to qb.getResult() + em.populate(articles, ['tags']), or add a JOIN + aggregation inside the QB query to pull tag data as a raw JSON array without touching the ORM collection.",
+    "estimatedMinutes": 25
+  },
+  {
+    "id": "mikroorm-task-6-3",
+    "title": "Multi-tenant filter via AsyncLocalStorage — plan, build, critique (AI-resilient)",
+    "description": "Implement a tenant filter that reads tenantId from AsyncLocalStorage and injects 'WHERE tenant_id = :tenantId' into every Article query automatically. The filter must be enabled by default and must be possible to disable for a specific admin query.\n\nThis is a three-stage task:\n1. Plan (before coding): write the filter definition and the AsyncLocalStorage wiring in pseudocode. What happens if the AsyncLocalStorage store is empty (no active tenant context)? Should the filter throw, return all rows, or return no rows? Defend your choice.\n2. Implement: code it, run two queries — one with tenant context set, one without.\n3. Critique: paste your implementation into ChatGPT and ask 'Is this production-safe?' Copy the response. Then write 3 sentences on what ChatGPT got right, what it missed (e.g., the risk of filter leaking between requests when using a non-forked EM), and what you would change.\n\nMetacognitive memo: What is the hardest part of per-tenant filters that a code example alone does not reveal?",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 1,
+    "estimatedMinutes": 40
+  },
+  {
+    "id": "mikroorm-task-6-4",
+    "title": "Why does qb.execute() bypass the Identity Map — and why is that not always a bug?",
+    "description": "The Records Library's master catalogue (Identity Map) tracks every entity the reading room has handed out. qb.execute() deliberately bypasses this catalogue and hands you raw rows. Why would you ever want to skip the catalogue? Give two concrete, different reasons — one related to performance, one related to correctness. Then explain why blindly switching all qb.execute() calls to qb.getResult() would be wrong. Answer in 5–7 sentences.",
+    "category": "advanced",
+    "submissionType": "text",
+    "order": 2,
+    "estimatedMinutes": 15
+  }
+]

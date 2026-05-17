@@ -20,6 +20,8 @@ type HomeworkTaskSeed = {
   category: "required" | "advanced";
   submissionType: "pr_link" | "screenshot" | "text" | "quiz" | "checklist";
   order: number;
+  modelAnswer?: string;
+  estimatedMinutes?: number;
 };
 
 type LessonSeed = {
@@ -229,7 +231,7 @@ const LESSONS: LessonSeed[] = [
 ];
 
 async function loadHomework(homeworkFile: string): Promise<HomeworkTaskSeed[]> {
-  const path = join(process.cwd(), ".context", "mikroorm-homework", homeworkFile);
+  const path = join(process.cwd(), "scripts", "mikroorm-homework", homeworkFile);
   const raw = await readFile(path, "utf-8");
   return JSON.parse(raw) as HomeworkTaskSeed[];
 }
@@ -322,6 +324,8 @@ async function main() {
               category: task.category,
               submissionType: task.submissionType,
               order: task.order,
+              modelAnswer: task.modelAnswer ?? null,
+              estimatedMinutes: task.estimatedMinutes ?? null,
             },
           });
         }

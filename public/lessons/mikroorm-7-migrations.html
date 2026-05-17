@@ -1143,45 +1143,37 @@ psql archive -c <span class="string">'\d book'</span>
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Generate the initial migration for <code>archive-api</code></strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Install <code>@mikro-orm/migrations</code>, register the <code>Migrator</code> extension, set up <code>migrations/</code>.</li>
-                    <li>Run <code>npx mikro-orm migration:create --initial</code>.</li>
-                    <li>Open a PR on <code>mikroorm-course-yourname</code> with the new migration file <em>and</em> the <code>.snapshot-*.json</code> file. Submit the PR URL.</li>
-                </ul>
+                <strong>Generate the initial migration and capture the up() method</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Install <code>@mikro-orm/migrations</code>. Register the Migrator extension in your config. Create a <code>migrations/</code> directory. Run <code>npx mikro-orm migration:create --initial</code>. Open the generated file and submit a screenshot of its <code>up()</code> method &mdash; CREATE TABLE statements for book, article, author, tag, and both pivot tables must be visible. Then add <code>slug: p.string().unique()</code> to Book, run <code>npx mikro-orm migration:create --name=add_slug_to_book</code>, and submit a second screenshot of that migration's <code>up()</code> showing the ALTER TABLE line. Two screenshots as one submission.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Screenshot 1 must show createTable calls (or raw SQL) for: book, article, author, tag, book_tags, article_tags &mdash; all within up(). Screenshot 2 must show: ALTER TABLE book ADD COLUMN slug varchar(255) NOT NULL and a UNIQUE constraint. If screenshot 2 is empty: the snapshot may predate your Book change. Delete the snapshot file and re-run migration:create.</p>
+                </details>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Add <code>slug</code> to <code>Book</code> &mdash; screenshot the generated SQL</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add <code>slug: p.string().unique()</code> to <code>Book</code>.</li>
-                    <li>Run <code>npx mikro-orm migration:create --name=add_slug_to_book</code>.</li>
-                    <li>Take a screenshot of the generated <code>up()</code> method.</li>
-                    <li>Submit the screenshot.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Why a snapshot file? &mdash; elaborative interrogation</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 5&ndash;7 sentences: <em>why</em> does MikroORM keep a separate <code>.snapshot-*.json</code> file rather than diffing against the live database directly? Reference team workflows (multiple developers running <code>migration:create</code>) and CI determinism (the same entity change must produce the same migration on every machine). Use the Library analogy if it helps.</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+                <strong>Snapshot file purpose + L5/L6 filter callback</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (L7): In 5&ndash;7 sentences explain why MikroORM keeps a .snapshot-*.json file rather than diffing against the live database. Reference team workflows and CI determinism. Part B (L5&ndash;L6 callback): Your initial migration ran fine on staging. A teammate runs it on their local machine and gets "relation already exists". Explain why and what the correct fix is &mdash; without touching the migration file. Submit both parts as text.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: The snapshot records the entity model as of the last migration. migration:create diffs current entities against the snapshot, not the live DB &mdash; so two developers on separate branches get the same diff regardless of their local DB state. CI can generate and verify migrations without a running database. Library analogy: the snapshot is the last signed-off catalogue edition. Part B: The teammate's local DB already has those tables from a previous schema:update run. Fix: drop the local database (or run migration:fresh) so the migration runs on a clean schema. The migration file is correct.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Faker-powered <code>ArticleSeeder</code> with relations</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Install <code>@mikro-orm/seeder</code> and <code>@faker-js/faker</code>. Write an <code>ArticleSeeder</code> that uses a <code>Factory</code> to generate 100 articles with realistic titles and slugs, each with 1&ndash;3 randomly chosen tags from a pool of 5 (fiction, history, science, philosophy, biography). Wire it into <code>DatabaseSeeder</code>. Confirm <code>npx mikro-orm migration:fresh --seed</code> produces 100 articles in a clean DB. Add the seeder file to your repo.</p>
+                <strong>Faker-powered ArticleSeeder with relations &mdash; plan, build, verify</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Build an ArticleSeeder that uses @faker-js/faker to create 50 articles, each with 1 random author and 1&ndash;3 random tags from a pool of 10. Use DatabaseSeeder as root, run via <code>npx mikro-orm seeder:run</code>. Three stages: (1) plan the seed order &mdash; which entities must be created first and why; what happens if you create an Article with a tag not yet flushed? (2) Implement and run, verify with SELECT COUNT(*) FROM article. (3) Critique: what breaks if two developers run the seeder simultaneously? How would you make it idempotent?</p>
+                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What does building a seeder reveal about flush ordering that reading the lesson alone does not?</em></p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Hand-edit a backfill migration</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add a <code>readingTimeMinutes</code> non-null integer column to <code>Article</code>, default 0 in dev but in your migration <em>compute it</em> from the existing data: estimate as <code>greatest(1, length(title) / 5)</code>. Keep all three artifacts side by side in your repo's <code>README.md</code>: (a) the entity diff, (b) the auto-generated migration MikroORM produced, (c) your hand-edited version with the backfill <code>UPDATE</code>. In 2&ndash;3 sentences explain why the auto version would have failed against a populated table.</p>
+                <strong>Why does MikroORM diff against the snapshot and not the live DB?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Why would diffing migration:create against the live database be unreliable in a team of three developers each on a different feature branch? Describe exactly one failure mode that would produce a wrong or conflicting migration if the live DB were the source of truth. Then explain why the snapshot approach prevents that failure mode. Answer in 5&ndash;7 sentences.</p>
             </li>
         </ol>
     </div>

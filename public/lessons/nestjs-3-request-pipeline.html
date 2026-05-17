@@ -1089,46 +1089,36 @@
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Add a global LoggingMiddleware</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Create a <code>LoggerMiddleware</code> (class form, with <code>@Injectable</code>) that logs every request as <code>${method} ${url} - ${responseTime}ms</code></li>
-                    <li>Wire it via <code>configure()</code> in <code>AppModule</code> with <code>.forRoutes('*')</code></li>
-                    <li>Hit a few endpoints (<code>GET /flights</code>, <code>POST /users</code>, etc.)</li>
-                    <li>Take a <strong>screenshot</strong> of your terminal showing 3+ requests logged with timing</li>
-                </ul>
+                <strong>LoggingMiddleware + timing in the terminal</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Create a class-based <code>LoggerMiddleware</code> with <code>@Injectable()</code> that logs every request as <code>METHOD /url - Xms</code> (measure elapsed time with <code>Date.now()</code>). Wire it in <code>AppModule.configure()</code> with <code>.forRoutes('*')</code>. Hit at least 3 different endpoints. Submit a screenshot of your terminal showing 3+ logged lines with timing and the server running without errors.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Terminal should show lines like "GET /flights - 12ms". Three things to verify: (1) you implement <code>NestMiddleware</code> with <code>use(req, res, next)</code>, (2) you call <code>next()</code> &mdash; without it requests hang, (3) you measure time with a <code>Date.now()</code> delta. If timing always shows 0ms, move the end timestamp to the response <code>finish</code> event.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>Push the pipeline additions</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Push to your existing <code>nestjs-course-yourname</code> repo: at minimum the LoggerMiddleware, an <code>ApiKeyGuard</code> applied to one route, and a <code>TimingInterceptor</code></li>
-                    <li>Submit the link to the commit (or PR)</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Quick answer: Guard vs Pipe</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In your own words, 2&ndash;4 sentences: what's the difference between a Guard and a Pipe? When would you use each?</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>ApiKeyGuard + TimingInterceptor &mdash; pipeline chain</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Build an <code>ApiKeyGuard</code> that reads <code>X-Api-Key</code> and returns 403 if the key is wrong. Build a <code>TimingInterceptor</code> that logs "Handler took Xms" after the handler completes. Apply both to <code>GET /flights</code>. Submit a screenshot showing: (1) a request without the key getting 403, (2) a request with the correct key getting 200, and (3) the terminal showing the interceptor timing log for the successful request.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Guard must return <code>false</code> or throw <code>ForbiddenException</code> &mdash; returning <code>false</code> gives a 403 automatically. Interceptor uses <code>tap()</code> from RxJS to measure time after the observable completes. The timing log should only appear for the successful request (the guard short-circuits before the interceptor's "after handler" code on a 403). If you see "Guard is not defined", check it is in the <code>providers</code> array of the module.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>RolesGuard</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add a <code>RolesGuard</code> that reads <code>X-User-Role</code> from the request header (we'll wire real auth in Lesson 5 &mdash; for now just trust the header). Apply it to one admin-only route (e.g. <code>DELETE /flights/:id</code>) so it returns 403 unless the role is <code>admin</code>. Take a <strong>screenshot</strong> of two requests &mdash; one with <code>X-User-Role: admin</code> succeeding, one with <code>X-User-Role: user</code> getting a 403.</p>
-                <p style="font-size: 14px; color: var(--gray-500);">Hint: same shape as <code>ApiKeyGuard</code>, but read a different header and check a different value.</p>
+                <strong>RolesGuard &mdash; critique and extend</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Build a <code>RolesGuard</code> that reads <code>X-User-Role</code> from headers and blocks <code>DELETE /flights/:id</code> unless the role is <code>admin</code>. Submit two screenshots: one showing DELETE with <code>X-User-Role: user</code> getting 403, one with <code>X-User-Role: admin</code> getting 204. Then write 2&ndash;3 sentences: what is the security flaw in trusting an arbitrary request header for roles, and what would the real fix be? Include this reflection in your text below the screenshots.</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>UpperCaseInterceptor</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Build a custom <code>UpperCaseInterceptor</code> that walks the response object and uppercases every string value. Apply it to one endpoint (e.g. <code>GET /flights</code>) using <code>@UseInterceptors()</code>. Take a <strong>screenshot</strong> showing the same endpoint with and without the interceptor &mdash; before/after.</p>
-                <p style="font-size: 14px; color: var(--gray-500);">Hint: use <code>map(data =&gt; ...)</code> from RxJS. Recursive walk: if value is a string, uppercase; if object, recurse; if array, map.</p>
+                <strong>Why a Guard and not Middleware for authentication &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Both Middleware and Guards run before the handler. So why does NestJS have Guards at all &mdash; why not put authentication logic in Middleware? What specifically can a Guard do that Middleware cannot? Think about: access to <code>ExecutionContext</code>, decorator metadata, the <code>canActivate</code> contract, and testability. Write 4&ndash;5 sentences.</p>
             </li>
         </ol>
     </div>

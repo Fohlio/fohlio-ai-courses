@@ -914,48 +914,36 @@ airport-api/
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Scaffold and run the starter project</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Install the Nest CLI: <code>npm i -g @nestjs/cli</code></li>
-                    <li>Create a new project: <code>nest new airport-api</code></li>
-                    <li>Run it: <code>npm run start:dev</code></li>
-                    <li>Add the <code>GET /hello/:name</code> endpoint from Part 5</li>
-                    <li>Take a <strong>screenshot</strong> showing the endpoint working in your browser or Postman/Insomnia</li>
-                    <li>Submit the screenshot</li>
-                </ul>
+                <strong>Scaffold and run airport-api</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Install the Nest CLI (<code>npm i -g @nestjs/cli</code>), create the project (<code>nest new airport-api</code>), add the <code>GET /hello/:name</code> endpoint from Part 5, and start the server (<code>npm run start:dev</code>). Submit a screenshot showing the endpoint responding in your browser or Postman &mdash; the URL bar and the response body must both be visible.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Your screenshot should show the URL bar containing <code>/hello/&lt;some-name&gt;</code> and the response body returning a string that includes the name. No compile errors in the terminal. If you see "Cannot GET /hello/name", the route decorator or parameter decorator is missing &mdash; check <code>@Get('hello/:name')</code> and <code>@Param('name')</code>.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>Push your starter to a GitHub repo</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Create a new public repo: <code>nestjs-course-yourname</code></li>
-                    <li>Push your <code>airport-api</code> project there</li>
-                    <li>Submit the repo URL (we'll keep using this repo for every lesson going forward)</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Quick answer: Controller vs Service</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 1&ndash;2 sentences: what is the difference between a <strong>Controller</strong> and a <strong>Service</strong> in NestJS? Use the airport analogy.</li>
-                    <li>Submit as text in the platform</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>Controller vs Service &mdash; in your own words</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 10 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">In 1&ndash;2 sentences, explain the difference between a Controller and a Service in NestJS. Use the airport analogy from the lesson. Do not copy the lesson text &mdash; rephrase it so you can recall it without looking.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A strong answer captures two things: (1) the Controller is the entry point &mdash; it decides which handler runs based on the HTTP method and route, like the check-in desk directing passengers. (2) The Service holds the business logic &mdash; it does the actual work, like back-office staff processing the booking. Key distinction: Controllers know about HTTP; Services know nothing about HTTP.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Add a second controller</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Create a new <code>FlightController</code> with a <code>GET /flights</code> endpoint that returns a hardcoded array of 3 flight objects: <code>[{ id: 1, destination: 'NYC', gate: 'A12' }, ...]</code>. Register it in <code>AppModule</code>.</p>
-                <p style="font-size: 14px; color: var(--gray-500);">Hint: the CLI can generate it for you: <code>nest generate controller flight</code></p>
+                <strong>Add a FlightController with GET /flights</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Generate a FlightController (<code>nest generate controller flight</code>) and add a <code>GET /flights</code> endpoint that returns a hardcoded array of 3 flight objects: <code>[{ id: 1, destination: 'NYC', gate: 'A12' }, ...]</code>. Register it in <code>AppModule</code>. Submit a screenshot showing the <code>/flights</code> response with all 3 objects visible.</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Swap to Fastify</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Follow the <a href="https://docs.nestjs.com/techniques/performance" style="color: var(--blue);">NestJS Fastify docs</a> and switch your app to use the Fastify adapter. Verify it still responds correctly. What do you notice?</p>
+                <strong>Why does DI exist &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Why does NestJS use a dependency injection container instead of letting each class call <code>new SomeDependency()</code> directly? What specific problems does <code>new</code> cause in a large codebase &mdash; think testing, lifecycle management, and sharing state. Write 3&ndash;5 sentences. Do not just describe what DI does &mdash; explain why the alternative fails.</p>
             </li>
         </ol>
     </div>

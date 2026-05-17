@@ -146,6 +146,8 @@ function mapTask(task: CourseRecordTask, courseId: string): HomeworkTask {
     order: task.order,
     quizQuestions: toStringArray(task.quizQuestions),
     checklistItems: toStringArray(task.checklistItems),
+    modelAnswer: task.modelAnswer ?? null,
+    estimatedMinutes: task.estimatedMinutes ?? null,
   };
 }
 

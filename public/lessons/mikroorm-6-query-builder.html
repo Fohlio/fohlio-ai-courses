@@ -1276,44 +1276,37 @@ app.<span class="function">use</span>((req, res, next) <span class="keyword">=&g
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Add <code>softDelete</code> filter + <code>ArticleRepository</code></strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Define <code>Article</code> as in Part 5 with the <code>softDelete</code> filter (<code>default: true</code>).</li>
-                    <li>Add <code>ArticleRepository</code> with two methods: <code>findHotArticles(minViews)</code> and <code>searchByTitle(q)</code>.</li>
-                    <li>Wire it into <code>defineEntity</code> via the <code>repository</code> option.</li>
-                    <li>Open a PR on <code>mikroorm-course-yourname</code> with these changes. Submit the PR URL.</li>
-                </ul>
+                <strong>Add softDelete filter + ArticleRepository, capture filter on/off SQL</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Define Article with a softDelete filter (condition: <code>&#123; deletedAt: null &#125;</code>, default: true). Add ArticleRepository with <code>findHotArticles(minViews)</code> and <code>searchByTitle(q)</code>. Wire the repository via the repository option in defineEntity. Write a script that runs a find with the filter active, then disables the filter and runs the same find. Submit a screenshot of the terminal with both queries visible &mdash; the first must contain <code>deleted_at is null</code> in the WHERE clause, the second must not.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot must show two SELECT statements: (1) &hellip; WHERE deleted_at IS NULL &hellip; (filter active); (2) the same query without that clause (filter disabled). Common mistake: calling em.disableFilter() on the wrong EM instance &mdash; each fork has its own filter state. If both queries look the same, check that you are disabling the filter on the same EM instance used for the second query.</p>
+                </details>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Filter on/off SQL diff &mdash; screenshot</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Run the demo from Part 7 with <code>debug: true</code>. Capture a screenshot of the terminal showing the two queries side-by-side: one with <code>where "deleted_at" is null</code> and one without.</li>
-                    <li>Submit the screenshot.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong><code>execute()</code> vs <code>getResult()</code> &mdash; elaborative interrogation</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 4&ndash;6 sentences: <em>why</em> does <code>qb.execute()</code> skip the Identity Map while <code>qb.getResult()</code> registers in it? Then give one concrete bug each behavior helps you avoid (so two bugs total). Use the Library analogy if it helps.</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+                <strong>qb.execute() vs qb.getResult() + L4/L5 callback</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (L6): In 4&ndash;6 sentences explain why <code>qb.execute()</code> skips the Identity Map while <code>qb.getResult()</code> registers entities in it. Name one concrete bug each behavior can prevent (two bugs total). Part B (L4&ndash;L5 callback): You have an ArticleRepository method that uses <code>qb.execute()</code> to fetch raw rows. A teammate adds <code>article.tags</code> access inside the result loop and sees N+1 queries. Why? What would need to change to fix it without switching to <code>getResult()</code>? Submit both parts as text.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: qb.execute() returns plain objects &mdash; not entity instances, so nothing registers in the Identity Map. qb.getResult() hydrates entity instances and registers them. Bug prevented by execute(): accidentally dirty-flushing a report row. Bug prevented by getResult(): getting a stale entity because the same PK was already in the map. Part B: execute() returns plain objects with no MikroORM proxy, so .tags is undefined. Fix: switch to qb.getResult() + em.populate(articles, ['tags']), or add a JOIN + JSON aggregation inside the QB query to pull tag data inline.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Multi-tenant filter via <code>AsyncLocalStorage</code></strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Build a global <code>tenant</code> filter that scopes every query by <code>tenantId</code>, where the <code>tenantId</code> comes from a Node <code>AsyncLocalStorage</code> context. Wire it through a fake middleware function that takes a <code>tenantId</code> and runs a callback inside <code>RequestContext.create</code>. Demonstrate that two parallel calls with different <code>tenantId</code>s see disjoint datasets. Add the script to your repo with a brief <code>README.md</code> note explaining how it emulates what NestJS request scope will give us in Lesson 9.</p>
+                <strong>Multi-tenant filter via AsyncLocalStorage &mdash; plan, build, critique</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Implement a tenant filter that reads tenantId from AsyncLocalStorage and injects <code>WHERE tenant_id = :tenantId</code> into every Article query automatically. Three stages: (1) plan in pseudocode what happens if the AsyncLocalStorage store is empty &mdash; throw, return all rows, or return no rows? Defend your choice. (2) Implement it and run two queries, one with tenant context set and one without. (3) Paste your implementation into ChatGPT and ask "Is this production-safe?" Write 3 sentences on what it got right and what it missed (e.g., filter leaking between requests on a non-forked EM).</p>
+                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What is the hardest part of per-tenant filters that a code example alone does not reveal?</em></p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Window function via QB raw fragments</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Write a QB query that fetches the <em>latest article per author</em>, using a window function (<code>ROW_NUMBER() OVER (PARTITION BY author_id ORDER BY published_at DESC)</code>). Use <code>raw()</code> fragments inside QB. Compare the SQL the ORM produces with the SQL you'd hand-write. Add the query and the produced SQL to your repo's <code>README.md</code>.</p>
+                <strong>Why does qb.execute() bypass the Identity Map &mdash; and why is that not always a bug?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">The Records Library's master catalogue tracks every entity the reading room has handed out. <code>qb.execute()</code> deliberately bypasses that catalogue and hands you raw rows. Give two concrete, different reasons you would ever want to skip the catalogue &mdash; one performance-related, one correctness-related. Then explain why blindly switching all <code>qb.execute()</code> calls to <code>qb.getResult()</code> would be wrong. Answer in 5&ndash;7 sentences.</p>
             </li>
         </ol>
     </div>

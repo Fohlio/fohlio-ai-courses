@@ -1929,51 +1929,38 @@ git push</pre>
     <!-- ============================================ -->
 
     <div class="homework">
-        <h2>Homework Assignment</h2>
+        <h2>Homework</h2>
 
-        <p>All homework is done in the shared repo: <code>https://github.com/Fohlio/fohlio-ai-courses</code></p>
-
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Add your totem to <code>totems.txt</code></strong>
-                <p>Clone <code>fohlio-ai-courses</code> (if you haven't already), create a branch, add your line to <code>totems.txt</code> in the format <code>[github name] - [repo] - [totem animal]</code>, and create a PR. Send me the PR link. Be ready to resolve a merge conflict when other students' PRs get merged first!</p>
+                <strong>Run fohlio-frontend locally</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
+                <p style="margin-top:6px;">Clone <code>fohlio-frontend</code> to your computer. Run: <code>make setup</code>, then <code>make use-test01</code>, then <code>make s</code>. Wait for the dev server to start and open the URL it prints (usually <code>http://localhost:3000</code>). Send a screenshot of the browser showing the Fohlio login page. If you get an error at any step, include the terminal output in your screenshot &mdash; that way Ivan can help faster.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A correct screenshot shows the browser open at a localhost URL with the Fohlio login page visible &mdash; email field, password field, sign-in button. Common failures: missing env variables (message Ivan), wrong Node.js version (must be 20.12.2 via nvm), yarn packages not installed (run <code>make setup</code> again). A screenshot of the terminal running but browser not shown is not sufficient.</p>
+                </details>
             </li>
-            <li style="margin-top: 16px;">
-                <strong>Resolve the merge conflict</strong>
-                <p>After I merge someone else's PR, your PR will show a conflict. Resolve it by following the steps from Part 6 (<code>fetch</code> &rarr; <code>merge</code> &rarr; fix markers &rarr; <code>add</code> &rarr; <code>commit</code> &rarr; <code>push</code>). This is the most important skill from this lesson!</p>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Set up the frontend locally</strong>
-                <ul>
-                    <li>Clone <code>fohlio-frontend</code></li>
-                    <li>Run <code>make setup</code></li>
-                    <li>Run <code>make use-test01</code> (or any available staging server)</li>
-                    <li>Run <code>make s</code> and verify you see the login page</li>
-                    <li>Send me a screenshot of the running app</li>
-                </ul>
+            <li style="margin-top:20px;">
+                <strong>Explain the Fohlio architecture in your own words</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin-top:6px;">Without looking at the lesson, write 4&ndash;6 sentences covering: (a) what the frontend and backend do and how they communicate, (b) what staging vs production means in practice, and (c) why branch names start with a Jira ticket number. Use your own words &mdash; a direct quote from the lesson means you haven't internalized it yet.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A strong answer covers all three parts in plain language. Example: (a) the frontend is the React app in the browser; the backend handles data and auth &mdash; they talk via GraphQL. (b) Staging is a copy of production where changes are tested before real users see them &mdash; a bug on staging is embarrassing, a bug on production costs money. (c) Branch names start with the Jira ticket so anyone reading the git log can find the spec and business context without asking the author. Bullet lists from the lesson without explanation score lower.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 24px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Explore the codebase</strong>
-                <p>Open <code>fohlio-frontend</code> in Cursor and try to find:</p>
-                <ul>
-                    <li>Where is the login page?</li>
-                    <li>Where are the GraphQL queries?</li>
-                    <li>What does <code>make s</code> actually do?</li>
-                </ul>
+                <strong>Explore the codebase &mdash; staged investigation</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin-top:6px;"><strong>Stage 1 &mdash; Predict:</strong> before opening Cursor, write down where you think the login page file is located in fohlio-frontend. <strong>Stage 2 &mdash; Investigate:</strong> open fohlio-frontend in Cursor and find: the login page file, where GraphQL queries are defined, and what <code>make s</code> actually runs (open the Makefile). <strong>Stage 3 &mdash; Compare:</strong> how close was your prediction? What surprised you? Submit all three stages as one text reply. Metacognitive memo: what would an AI miss about this codebase that you only learned by navigating it yourself?</p>
+                <p style="font-size:13px;color:var(--gray-500);margin-top:4px;">Note: harder than the lesson on purpose &mdash; the surprise is the learning.</p>
             </li>
-            <li style="margin-top: 16px;">
-                <strong>Quiz: answer these questions</strong>
-                <ul>
-                    <li>What language does the backend use?</li>
-                    <li>What does Redis do? Name 2 use cases.</li>
-                    <li>What's the difference between <code>test01</code> and <code>uat01</code>?</li>
-                    <li>Why do branch names start with a Jira ticket number?</li>
-                </ul>
+            <li style="margin-top:20px;">
+                <strong>Why staging &mdash; elaborative interrogation</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin-top:6px;">Answer in your own words: (1) Why do teams use staging servers instead of testing directly on production? What specific bad outcomes would happen without staging? (2) Why is testing on production dangerous even if you revert quickly when something goes wrong?</p>
             </li>
         </ol>
     </div>

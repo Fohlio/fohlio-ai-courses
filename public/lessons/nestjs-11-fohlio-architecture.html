@@ -1613,63 +1613,36 @@ project.deletedAt = <span class="keyword">new</span> Date();   <span class="comm
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Map a real Fohlio module to the Module Convention</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Clone or open the <code>asuncion</code> repo locally</li>
-                    <li>Pick ONE module &mdash; <code>users</code> is the simplest (<code>asuncion/src/modules/users/</code>)</li>
-                    <li>Take a <strong>screenshot</strong> of the folder structure (VSCode/finder/<code>tree</code> &mdash; whichever)</li>
-                    <li>In the text answer below the screenshot: list which files map to which Module Convention slot (<code>entities/</code>, <code>dto/</code>, <code>repositories/</code>, primary <code>service.ts</code>, primary <code>controller.ts</code>, <code>module.ts</code>) and call out anything extra you see</li>
-                    <li>Submit screenshot</li>
-                </ul>
+                <strong>Refactor FlightsService through a FlightsRepository</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">In your airport-api: create a <code>FlightsRepository</code> class and move every Prisma call out of <code>FlightsService</code> into named repository methods (<code>findById</code>, <code>findAll</code>, <code>save</code>, <code>remove</code>). <code>FlightsService</code> must NOT import <code>PrismaService</code> or any ORM directly &mdash; only <code>FlightsRepository</code>. Register <code>FlightsRepository</code> in <code>FlightsModule</code> providers and inject it into <code>FlightsService</code> via the constructor. Submit a screenshot of the <code>FlightsService</code> file open in your editor &mdash; no Prisma import visible, <code>FlightsRepository</code> constructor injection visible.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Your <code>FlightsService</code> should have <code>constructor(private readonly repo: FlightsRepository) {}</code> with no <code>import { PrismaService }</code> or <code>import { PrismaClient }</code> in the file. If NestJS throws "Nest can't resolve dependencies of FlightsService", <code>FlightsRepository</code> is not in <code>FlightsModule</code> providers. Repository methods should have intent-expressing names (<code>findById</code>, not <code>prisma.flight.findUnique</code>) &mdash; the service calls <code>repo.findById(id)</code>.</p>
+                </details>
             </li>
 
-            <li style="margin-top: 16px;">
-                <strong>Refactor FlightsService through a FlightsRepository</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In your <code>nestjs-course-yourname</code> repo from Lessons 1&ndash;10, find the <code>FlightsService</code></li>
-                    <li>Create a <code>FlightsRepository</code> class. Move every DB call out of the service into named repository methods (<code>findById</code>, <code>findAll</code>, <code>save</code>, etc.)</li>
-                    <li>The service must NOT import Prisma/MikroORM directly &mdash; only <code>FlightsRepository</code></li>
-                    <li>Wire it up in the module's <code>providers</code></li>
-                    <li>Push and submit the commit URL</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Explain the Repository Pattern in airport language</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 3&ndash;4 sentences using the airport analogy: explain the Repository Pattern to a teammate who's used to "just call the ORM in the service"</li>
-                    <li>What problem does it solve? Use the <em>waiter / records librarian / archive</em> mapping</li>
-                    <li>Submit as text</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Refactor a util into an injected service</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In your <code>nestjs-course-yourname</code> repo, find (or create) a service that calls a <code>*.util.ts</code> function which touches a repository, the clock, or any other mockable side-effect</li>
-                    <li>Promote that util to an <code>@Injectable()</code> class. Inject it through the constructor. Update <code>providers</code> in the module</li>
-                    <li>Push and submit the commit/PR URL</li>
-                </ul>
+            <li style="margin-top: 20px;">
+                <strong>Suites unit test + util-to-service refactor &mdash; cumulative</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 45 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Find a utility function in your codebase that touches a repository, the clock, or the BullMQ queue (or create a small one, e.g. <code>formatFlightCode()</code> used in <code>FlightsService</code>). Promote it to an <code>@Injectable()</code> class, inject it through <code>FlightsService</code> constructor, update <code>FlightsModule</code> providers. Then install <code>@suites/unit</code> and <code>@suites/doubles</code> and write a unit test for <code>FlightsService</code> using <code>TestBed.solitary(FlightsService).compile()</code>. Override one mock (e.g. <code>FlightsRepository.findAll</code>) with <code>mockResolvedValue</code>. Assert the service behavior. Submit a screenshot of the green test run showing the test name and pass status.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The test runner output must show at least one passing test with a descriptive name. If <code>TestBed.solitary()</code> throws "Cannot find module @suites/unit", run <code>npm i -D @suites/unit @suites/doubles</code>. A Suites test should be noticeably shorter than an equivalent <code>Test.createTestingModule()</code> version &mdash; if your Suites test has manual mock setup for every dependency, you are not using Suites correctly; <code>solitary()</code> auto-mocks all deps. The refactored class must appear in the <code>FlightsService</code> constructor, not imported as a static function.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top:28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Read architecture.md and surface the rules</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Open <code>asuncion/architecture.md</code> in full. List <strong>3 MUST rules</strong> and <strong>3 NEVER rules</strong> you find &mdash; copy the actual lines, with line numbers if you can. Bonus: pick the rule you find most surprising and explain why in one paragraph. Submit as a screenshot of your notes plus the bonus paragraph as text.</p>
+                <strong>Map a Fohlio module + critique what you find</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Open the asuncion repo. Pick any module other than <code>users</code> (try bookings, workspaces, or invitations). Take a screenshot of its folder structure. Then write a short analysis: (1) which files map to which Module Convention slot, (2) is there anything that violates the "no util files" rule from <code>architecture.md</code> &mdash; a <code>*.util.ts</code>, a <code>*.helper.ts</code>, or a plain function doing side-effectful work, (3) if you found a violation, describe what it should be refactored into. Submit the screenshot and the analysis as text.</p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Edge cases of the soft-delete lifecycle</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Read the soft-delete sections in <code>asuncion/architecture.md</code> (lines ~1275&ndash;1335) and trace at least one entity that uses <code>@Filter('softDelete')</code> (try <code>workspace.entity.ts</code>). Then write a 4&ndash;6 sentence note: what edge cases does the implementation handle that a naive <code>where: { deletedAt: null }</code> filter wouldn't? Touch on partial unique indexes, raw-SQL leak risk, restore-over-recreate, and cascading deletes.</p>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Write a Suites/Automock unit test</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Install <code>@suites/unit</code> and <code>@suites/doubles</code> in your <code>nestjs-course-yourname</code> repo. Pick the service you refactored in Required #4 (or any service with 2+ injected deps). Write a unit test using <code>TestBed.solitary(YourService).compile()</code>. Override one mock with <code>mockResolvedValue</code>, assert the service's behavior. Submit a screenshot of the green test run. <strong>Bonus:</strong> compare the line count of the Suites test vs the same test written with NestJS's stock <code>Test.createTestingModule</code> + manual mocks.</p>
+                <strong>Why the repository pattern makes tests faster &mdash; the elaborative question</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">You refactored <code>FlightsService</code> to go through <code>FlightsRepository</code>. Now your Suites test mocks <code>FlightsRepository</code> instead of <code>PrismaService</code>. What concrete difference does this make in the test &mdash; specifically, what would you have to set up in the mock if you were mocking <code>PrismaService</code> directly? Then explain: why does the repository boundary make it easier to swap the ORM in the future &mdash; what specifically would change if you moved from Prisma to MikroORM with vs without the pattern in place? Write 5&ndash;7 sentences.</p>
             </li>
         </ol>
     </div>

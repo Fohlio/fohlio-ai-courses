@@ -1131,46 +1131,37 @@ Article.<span class="function">addHook</span>(<span class="string">'beforeCreate
     <div class="homework">
         <h2>Homework</h2>
 
-        <h3>Required (for everyone):</h3>
+        <h3>Required (for everyone)</h3>
         <ol>
             <li>
-                <strong>Add the Address embeddable, the typed metadata jsonb, and the slugify hook</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Add <code>Address</code> as <code>embeddable: true</code> and embed it on <code>Author</code> in inline mode (default).</li>
-                    <li>Add a typed <code>metadata: jsonb</code> column to <code>Article</code> using <code>p.json&lt;ArticleMetadata&gt;()</code>.</li>
-                    <li>Add a <code>beforeCreate</code> hook on <code>Article</code> that auto-generates <code>slug</code> from <code>title</code>.</li>
-                    <li>Push to your <code>mikroorm-course-yourname</code> repo. Submit the PR URL.</li>
-                </ul>
+                <strong>Add Address embeddable and capture the flattened DDL</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Define an Address embeddable (street, city, country &mdash; all strings) and embed it on Author in inline mode. Add a typed <code>metadata: p.json&lt;ArticleMetadata&gt;()</code> column to Article. Add a <code>beforeCreate</code> hook on Article that auto-generates slug from title (lowercase, replace spaces with hyphens). Run <code>npx mikro-orm schema:update --dump</code> and submit a screenshot of the <code>create table author</code> portion showing <code>address_street</code>, <code>address_city</code>, <code>address_country</code> inlined directly into the author table &mdash; proof the embeddable was flattened.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot must show author table columns including address_street varchar not null, address_city varchar not null, address_country varchar not null &mdash; all directly in the author table, not in a separate address table. If you see CREATE TABLE address: you used @Entity() instead of @Embeddable(). If address columns are missing entirely: the embedded property is not present in the entity's defineEntity block.</p>
+                </details>
             </li>
 
             <li style="margin-top: 16px;">
-                <strong>Screenshot the generated DDL</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>Run <code>npx mikro-orm schema:update --dump</code>.</li>
-                    <li>Capture the <code>create table "author"</code> portion. The screenshot should show the four <code>address_*</code> columns inlined directly into the authors table &mdash; proof that the embeddable was flattened, not put into a separate table.</li>
-                    <li>Submit the screenshot.</li>
-                </ul>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Why is a counter inside JSONB dangerous? (Elaborative interrogation)</strong>
-                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
-                    <li>In 4&ndash;6 sentences: explain why putting an integer counter inside a JSONB column is dangerous under concurrent writes, while putting the same counter in a plain <code>int</code> column is safe.</li>
-                    <li>Reference how Postgres updates JSONB internally (whole-field rewrite vs in-place column update) and why that matters for read-modify-write.</li>
-                    <li>Submit as text in the platform.</li>
-                </ul>
+                <strong>JSONB concurrent counter danger + L6/L7 callback</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (L8): In 4&ndash;6 sentences explain why storing an integer counter inside a JSONB column is dangerous under concurrent writes while a plain int column is safe. Reference how Postgres updates JSONB internally (whole-field rewrite) and why that causes lost-update under read-modify-write. Part B (L6&ndash;L7 callback): Write the migration <code>up()</code> in pseudocode or real TypeScript that: (1) adds a view_count int column with default 0, (2) backfills it from the JSONB field, (3) removes the JSONB key. Which filter from L6 would need re-testing after this migration? Submit both parts as text.</p>
+                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
+                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
+                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: Postgres stores JSONB as a binary blob. Updating a single key requires rewriting the entire column value. Two concurrent transactions each read the current blob, modify the counter in memory, and write back &mdash; the second write overwrites the first. A plain int column supports UPDATE SET view_count = view_count + 1 as an atomic in-place operation with row-level locking. Part B: up() should: addColumn('article', { name: 'view_count', type: 'int', default: 0 }), then addSql("UPDATE article SET view_count = (metadata->>'viewCount')::int WHERE ..."), then addSql("UPDATE article SET metadata = metadata - 'viewCount'"). Re-test the softDelete filter from L6 to confirm it still applies after the column changes.</p>
+                </details>
             </li>
         </ol>
 
-        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
         <ol>
             <li>
-                <strong>Implement a MoneyType custom type</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Write a <code>MoneyType</code> that stores cents as a <code>bigint</code> in the database and exposes a <code>Money { amount: bigint, currency: string }</code> value object in JS. Add it to a new <code>Article.priceCents</code> property. Confirm via the generated SQL that the column is a real <code>bigint</code>, not a varchar. Add a small demo in <code>main.ts</code> that creates an Article with a price, flushes, re-reads it, and asserts the value object survives the round trip. Capture the query log and add it to the repo's <code>README.md</code>.</p>
+                <strong>Implement MoneyType custom type &mdash; plan, build, critique</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Implement a MoneyType that stores a <code>Money &#123; amount: number, currency: string &#125;</code> value object as <code>'amount:currency'</code> string in Postgres. Three stages: (1) plan &mdash; identify the four methods a custom Type must implement and write them as stubs with one-line comments; (2) implement, apply to Book.price, run schema:update --dump, confirm varchar column, create a Book, reload it, verify the JS value is a Money object; (3) paste your MoneyType into ChatGPT and ask "What edge cases does this miss?" Write 3 sentences on what it got right and what it missed about the MikroORM Type contract.</p>
+                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What does building a custom Type clarify about MikroORM's mapping layer that reading the docs alone does not?</em></p>
             </li>
             <li style="margin-top: 16px;">
-                <strong>Build the STI Document hierarchy</strong>
-                <p style="margin: 8px 0 4px; font-size: 14px;">Add an STI inheritance hierarchy: abstract <code>Document</code> base with <code>title</code> and <code>publishedYear</code>, and three concrete subclasses &mdash; <code>Book</code> (with <code>isbn</code>), <code>Journal</code> (with <code>volume</code>, <code>issue</code>), <code>Manuscript</code> (with <code>folioShelf</code>). Insert one row of each. Then write one polymorphic query: <code>em.find(Document, {})</code> should return all three rows correctly typed as <code>Book | Journal | Manuscript</code>. Capture the generated SQL (it should be a single SELECT, no JOINs) and add it to your <code>README.md</code>.</p>
+                <strong>Why is storing a counter in JSONB a concurrency trap, not just a style choice?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
+                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Two concurrent HTTP requests each want to increment <code>article.metadata.viewCount</code> by 1. Walk through the exact sequence of operations &mdash; read, modify, write &mdash; for both requests under optimistic (no row lock) conditions and explain why the final count is 1 instead of 2. Then explain why the same two requests incrementing a plain int column with <code>UPDATE article SET view_count = view_count + 1 WHERE id = $1</code> produce a final count of 2. Reference Postgres row-level locking. Answer in 5&ndash;7 sentences.</p>
             </li>
         </ol>
     </div>
