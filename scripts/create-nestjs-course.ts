@@ -4,6 +4,12 @@ import { join } from "path";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { ADMIN_GITHUB_NICKNAME } from "../src/lib/constants";
+import { seedCourseSkills, seedBadges } from "../src/lib/skillSeeder";
+import {
+  NESTJS_SKILLS,
+  NESTJS_LESSON_SKILLS,
+  BADGES,
+} from "./gamification-seeds";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
@@ -900,11 +906,19 @@ async function main() {
     }
   }, { timeout: 60_000, maxWait: 10_000 });
 
+  await seedCourseSkills(prisma, {
+    courseId: COURSE_ID,
+    skills: NESTJS_SKILLS,
+    lessonSkills: NESTJS_LESSON_SKILLS,
+  });
+  await seedBadges(prisma, BADGES);
+
   console.log("NestJS course seeded successfully.");
   console.log(`Course slug: ${COURSE_SLUG}`);
   console.log(`Lessons published: ${LESSONS.filter((l) => l.isPublished).length}/${LESSONS.length}`);
   const totalTasks = LESSONS.reduce((acc, l) => acc + l.homework.length, 0);
   console.log(`Homework tasks seeded: ${totalTasks}`);
+  console.log(`Skills: ${NESTJS_SKILLS.length}, lesson links: ${NESTJS_LESSON_SKILLS.length}, badges: ${BADGES.length} (global catalog)`);
 }
 
 main()

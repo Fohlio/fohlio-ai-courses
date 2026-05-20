@@ -1,0 +1,15 @@
+{
+  "slug": "fohlio-tech-course",
+  "model": "google/gemini-3-pro-image-preview",
+  "style": "flat editorial vector illustration, calm graphite and electric-blue palette, slight grain, clean composition, no text",
+  "outDir": "public/lessons/images/fohlio-tech-course",
+  "refs": [],
+  "images": [
+    { "lesson": 1, "slot": "hero", "file": "lesson-1-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "A timeline of branching paths in a workshop notebook with translucent overlays showing edits and merges, evoking git history and branching, warm desk light" },
+    { "lesson": 2, "slot": "hero", "file": "lesson-2-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "A clean isometric blueprint of a SaaS application with three labeled layers — clients, services, datastores — connected by glowing arrows, calm engineering aesthetic" },
+    { "lesson": 3, "slot": "hero", "file": "lesson-3-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "A stylized browser viewport split into a hierarchy of components with the React tree visible through translucent layers, modern editorial flat" },
+    { "lesson": 4, "slot": "hero", "file": "lesson-4-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "A glowing neural mesh nestled inside a translucent geode, with soft particles of language flowing in and out, evoking the inside of a large language model" },
+    { "lesson": 5, "slot": "hero", "file": "lesson-5-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "Three labeled circuit-board connectors plugging into a central glowing AI assistant block, evoking MCP servers and tool integration" },
+    { "lesson": 6, "slot": "hero", "file": "lesson-6-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "An open workshop bench with skill cards arrayed like trading cards, each glowing with a different ability, evoking authoring reusable AI skills for GTM work" }
+  ]
+}

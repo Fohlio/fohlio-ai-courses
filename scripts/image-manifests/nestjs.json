@@ -1,0 +1,21 @@
+{
+  "slug": "nestjs",
+  "model": "google/gemini-3-pro-image-preview",
+  "style": "flat editorial vector illustration, calm teal-and-amber palette, slight grain, clean composition, no text",
+  "outDir": "public/lessons/images/nestjs",
+  "refs": [],
+  "images": [
+    { "lesson": 1,  "slot": "hero", "file": "lesson-1-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "A bright airport control tower at dawn, blueprint-style overlay, layered architecture vibe, calm and orderly, evoking structure from chaos" },
+    { "lesson": 2,  "slot": "hero", "file": "lesson-2-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Airport check-in hall with three connected service desks symbolizing controllers, providers and modules, clean wayfinding, isometric" },
+    { "lesson": 3,  "slot": "hero", "file": "lesson-3-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Airport security pipeline — passport check, baggage scan, boarding gate — as a horizontal flow of stations with luminous arrows" },
+    { "lesson": 4,  "slot": "hero", "file": "lesson-4-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Airport baggage handling system with conveyor belts feeding a central vault, symbolic of a database layer, warm amber lighting" },
+    { "lesson": 5,  "slot": "hero", "file": "lesson-5-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Airport security checkpoint with biometric gate, glowing teal scanner arch, calm guard, evokes authentication and authorization" },
+    { "lesson": 6,  "slot": "hero", "file": "lesson-6-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Airport customs declaration counter with translucent forms floating above, evoking validation and DTO mapping" },
+    { "lesson": 7,  "slot": "hero", "file": "lesson-7-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Massive airport departure board glowing with hundreds of flights, evoking scale and pagination, dawn lighting" },
+    { "lesson": 8,  "slot": "hero", "file": "lesson-8-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Airport ground crew dispatch room with parallel radio channels and queued task tickets, evokes async work and job queues" },
+    { "lesson": 9,  "slot": "hero", "file": "lesson-9-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Network of small regional airports connected by glowing flight paths, evoking microservices and inter-service messaging" },
+    { "lesson": 10, "slot": "hero", "file": "lesson-10-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "Airport operations control center at night with calm operators watching dashboards, evoking observability and production readiness" },
+    { "lesson": 11, "slot": "hero", "file": "lesson-11-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "A modern campus aerial view with a central hub building and labeled departments connected by glass walkways, evoking modular monolith and bounded contexts" },
+    { "lesson": 12, "slot": "hero", "file": "lesson-12-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "A row of identical airline terminals each operating independently under one master terminal building, evokes multi-tenant SaaS architecture" }
+  ]
+}

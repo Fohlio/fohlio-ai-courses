@@ -32,6 +32,7 @@ const ALLOWED_TAGS = [
   "mark",
   "ol",
   "p",
+  "picture",
   "pre",
   "section",
   "small",
@@ -70,6 +71,7 @@ const ALLOWED_TAGS = [
   "radialGradient",
   "stop",
   "desc",
+  "foreignObject",
 ];
 
 const SVG_ATTRIBUTES = [
@@ -126,10 +128,28 @@ const SVG_ATTRIBUTES = [
 ];
 
 const ALLOWED_ATTRIBUTES: sanitizeHtml.IOptions["allowedAttributes"] = {
-  "*": ["class", "id", "style", "title"],
+  "*": [
+    "class",
+    "id",
+    "style",
+    "title",
+    "data-widget",
+    "data-config",
+    "data-state",
+  ],
   a: ["href", "name", "target", "rel"],
-  img: ["src", "alt", "width", "height"],
-  source: ["src", "type"],
+  img: [
+    "src",
+    "alt",
+    "width",
+    "height",
+    "loading",
+    "decoding",
+    "sizes",
+    "srcset",
+  ],
+  picture: [],
+  source: ["src", "srcset", "sizes", "type", "media"],
   video: ["src", "poster", "controls", "playsinline", "preload"],
   svg: SVG_ATTRIBUTES,
   defs: SVG_ATTRIBUTES,
