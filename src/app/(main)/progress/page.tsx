@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/auth";
 import { getOverallStudentProgress } from "@/lib/courseQueries";
+import { getUserXpSummary } from "@/lib/gamification";
+import { prisma } from "@/lib/prisma";
 import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 
@@ -13,10 +15,17 @@ export default async function ProgressPage() {
     return null;
   }
 
-  const progress = await getOverallStudentProgress({
-    id: user.id,
-    role: user.role,
-  });
+  const [progress, xp, streak, badges] = await Promise.all([
+    getOverallStudentProgress({ id: user.id, role: user.role }),
+    getUserXpSummary(user.id),
+    prisma.userStreak.findUnique({ where: { userId: user.id } }),
+    prisma.userBadge.findMany({
+      where: { userId: user.id },
+      include: { badge: true },
+      orderBy: { awardedAt: "desc" },
+      take: 12,
+    }),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -51,6 +60,42 @@ export default async function ProgressPage() {
           <p className="mt-1 text-2xl font-bold text-gray-900">
             {progress.completionPercentage}%
           </p>
+        </Card>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Card>
+          <p className="text-sm font-medium text-gray-500">XP earned</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{xp.totalXp}</p>
+          <p className="mt-1 text-xs text-gray-400">{xp.thisWeekXp} this week</p>
+        </Card>
+        <Card>
+          <p className="text-sm font-medium text-gray-500">
+            Streak {streak?.optedIn ? "" : "(opt-in)"}
+          </p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">
+            {streak?.optedIn ? `${streak.currentDays} days` : "off"}
+          </p>
+          <p className="mt-1 text-xs text-gray-400">
+            {streak?.optedIn
+              ? `longest ${streak.longestDays}`
+              : "enable in settings"}
+          </p>
+        </Card>
+        <Card>
+          <p className="text-sm font-medium text-gray-500">Badges</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{badges.length}</p>
+          <div className="mt-2 flex flex-wrap gap-1">
+            {badges.slice(0, 6).map((entry) => (
+              <span
+                key={entry.badgeId}
+                title={entry.badge.description}
+                className="inline-flex items-center rounded-full bg-brand-light/40 px-2 py-0.5 text-xs font-medium text-brand"
+              >
+                {entry.badge.title}
+              </span>
+            ))}
+          </div>
         </Card>
       </div>
 

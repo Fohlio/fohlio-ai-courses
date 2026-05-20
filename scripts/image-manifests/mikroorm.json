@@ -1,0 +1,19 @@
+{
+  "slug": "mikroorm",
+  "model": "google/gemini-3-pro-image-preview",
+  "style": "flat editorial vector illustration, calm slate-blue and warm terracotta palette, slight grain, clean composition, no text",
+  "outDir": "public/lessons/images/mikroorm",
+  "refs": [],
+  "images": [
+    { "lesson": 1,  "slot": "hero", "file": "lesson-1-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "A grand library hall with rows of indexed shelves and a translator desk at the entrance, evoking object-relational mapping and metadata, warm morning light" },
+    { "lesson": 2,  "slot": "hero", "file": "lesson-2-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Cardboard catalog cards being decorated with metadata stamps and slotted into drawer cases, evoking entity definitions and decorators" },
+    { "lesson": 3,  "slot": "hero", "file": "lesson-3-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "A central reading-room librarian at a polished desk receiving and dispatching books, evokes EntityManager and identity map, soft warm lighting" },
+    { "lesson": 4,  "slot": "hero", "file": "lesson-4-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Multiple library shelves linked by glowing colored threads showing one-to-many and many-to-many relations, abstract and serene" },
+    { "lesson": 5,  "slot": "hero", "file": "lesson-5-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Library worker filling a wheeled cart with the exact books needed for a reader, others left on shelves, evoking lazy versus eager loading" },
+    { "lesson": 6,  "slot": "hero", "file": "lesson-6-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "A custom-built research request form with composable fields and filters drifting over a vast catalog hall, evoking query builders" },
+    { "lesson": 7,  "slot": "hero", "file": "lesson-7-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "A renovation scene of an old library wing — walls being moved, shelves relabeled, with careful blueprints, evokes safe database migrations" },
+    { "lesson": 8,  "slot": "hero", "file": "lesson-8-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "Hidden archival chambers with rare books, mechanical lifts and locked vaults, evoking advanced ORM features like subscribers and embeddables" },
+    { "lesson": 9,  "slot": "hero", "file": "lesson-9-hero.webp",  "aspectRatio": "16:9", "useRefs": [], "prompt": "A modern library wing slotted neatly into an airport terminal with a shared atrium, evokes MikroORM integrated into NestJS" },
+    { "lesson": 10, "slot": "hero", "file": "lesson-10-hero.webp", "aspectRatio": "16:9", "useRefs": [], "prompt": "A serene library at night with calm reading lamps and a master librarian reviewing operations charts, evoking production readiness and monitoring" }
+  ]
+}

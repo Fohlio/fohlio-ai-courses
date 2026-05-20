@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { recordSubmissionAward } from "@/lib/gamification";
 
 const HTTP_URL_RE = /^https?:\/\/\S+$/i;
 
@@ -98,6 +99,7 @@ export async function PUT(
     select: {
       lessonId: true,
       submissionType: true,
+      category: true,
       lesson: {
         select: {
           courseId: true,
@@ -152,7 +154,25 @@ export async function PUT(
     },
   });
 
-  return NextResponse.json({ submission });
+  // Idempotent XP + mastery + streak. Resubmissions are no-ops on XP.
+  // Course owners and admins do not earn XP for their own course content.
+  let award: Awaited<ReturnType<typeof recordSubmissionAward>> | null = null;
+  if (!isPrivileged) {
+    try {
+      award = await recordSubmissionAward({
+        userId: user.id,
+        taskId,
+        lessonId,
+        courseId,
+        taskCategory: task.category,
+      });
+    } catch (error) {
+      // XP failure must never block submission success.
+      console.error("[submissions.PUT] gamification award failed", error);
+    }
+  }
+
+  return NextResponse.json({ submission, award });
 }
 
 export async function GET(

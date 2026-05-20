@@ -18,6 +18,10 @@ model User {
 
   ownedCourses Course[]         @relation("CourseOwner")
   submissions  TaskSubmission[]
+  xpEvents     XpEvent[]
+  skillStates  UserSkillState[]
+  badges       UserBadge[]
+  streak       UserStreak?
 
   @@map("users")
 }
@@ -43,6 +47,8 @@ model Course {
 
   owner       User             @relation("CourseOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   lessons     Lesson[]
+  skills      Skill[]
+  badges      Badge[]
 
   @@index([status])
   @@index([ownerId])
@@ -76,6 +82,7 @@ model Lesson {
   course      Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
   tasks       HomeworkTask[]
   assets      LessonAsset[]
+  lessonSkills LessonSkill[]
 
   @@unique([courseId, slug])
   @@index([courseId, order])
@@ -168,4 +175,133 @@ model TaskSubmission {
 enum SubmissionStatus {
   submitted
   reviewed
+}
+
+// ---------------------------------------------------------------------------
+// Gamification — MVP slice per skill references/gamification.md § 8.
+// Hard constraints:
+//   - XP/streak/badge from REAL ACTIONS only (lesson read, task submitted,
+//     self-check passed). No XP for time-on-page, no points-for-clicks.
+//   - Streak is opt-in and never locks content (Brilliant pattern).
+//   - No leaderboard model. Pseudo-leaderboards demotivate low-rank learners
+//     (Hanus & Fox 2015). Cohort comparison surfaces are intentionally absent.
+//   - Badge taxonomy capped at ~30 globally to stay meaningful (Bogost 2011).
+//   - All XP writes are idempotency-keyed so resubmission cannot inflate score.
+// ---------------------------------------------------------------------------
+
+model Skill {
+  id          String  @id @default(cuid())
+  courseId    String
+  slug        String
+  title       String
+  description String?
+  order       Int     @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  course       Course          @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessonSkills LessonSkill[]
+  userStates   UserSkillState[]
+
+  @@unique([courseId, slug])
+  @@index([courseId, order])
+  @@map("skills")
+}
+
+model LessonSkill {
+  lessonId String
+  skillId  String
+  weight   Int    @default(1)
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  skill  Skill  @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([lessonId, skillId])
+  @@index([skillId])
+  @@map("lesson_skills")
+}
+
+model UserSkillState {
+  userId       String
+  skillId      String
+  mastery      Float    @default(0)
+  reps         Int      @default(0)
+  lastPracticed DateTime?
+  updatedAt    DateTime @updatedAt
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([userId, skillId])
+  @@index([userId])
+  @@map("user_skill_states")
+}
+
+model XpEvent {
+  id             String   @id @default(cuid())
+  userId         String
+  courseId       String?
+  lessonId       String?
+  source         XpSource
+  sourceRef      String
+  amount         Int
+  idempotencyKey String   @unique
+  createdAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([courseId, createdAt])
+  @@map("xp_events")
+}
+
+enum XpSource {
+  lesson_read
+  task_submitted
+  task_self_checked
+  badge_awarded
+  streak_milestone
+}
+
+model Badge {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  iconKey     String
+  courseId    String?
+  criteria    Json
+  createdAt   DateTime @default(now())
+
+  course     Course?     @relation(fields: [courseId], references: [id], onDelete: SetNull)
+  userBadges UserBadge[]
+
+  @@index([courseId])
+  @@map("badges")
+}
+
+model UserBadge {
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, badgeId])
+  @@index([userId])
+  @@map("user_badges")
+}
+
+model UserStreak {
+  userId         String    @id
+  currentDays    Int       @default(0)
+  longestDays    Int       @default(0)
+  lastActiveDate DateTime?
+  optedIn        Boolean   @default(false)
+  updatedAt      DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_streaks")
 }

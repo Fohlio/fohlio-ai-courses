@@ -1,5 +1,6 @@
 import { prepareLessonHtml } from "@/lib/lessonHtml";
 import type { Lesson } from "@/lib/types";
+import { LessonWidgets } from "./LessonWidgets";
 
 interface LessonContentProps {
   lesson: Lesson;
@@ -29,9 +30,12 @@ export async function LessonContent({ lesson }: LessonContentProps) {
   const content = prepareLessonHtml(lesson.contentHtml, lesson.assets);
 
   return (
-    <div
-      className="lesson-content"
-      dangerouslySetInnerHTML={{ __html: content.html }}
-    />
+    <>
+      <div
+        className="lesson-content"
+        dangerouslySetInnerHTML={{ __html: content.html }}
+      />
+      <LessonWidgets />
+    </>
   );
 }

@@ -3,6 +3,12 @@ import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { backfillLegacyCourse } from "../src/lib/legacyCourse";
 import { ADMIN_GITHUB_NICKNAME } from "../src/lib/constants";
+import { seedCourseSkills, seedBadges } from "../src/lib/skillSeeder";
+import {
+  GTM_SKILLS,
+  GTM_LESSON_SKILLS,
+  BADGES,
+} from "./gamification-seeds";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -24,7 +30,16 @@ async function main() {
   }
 
   await backfillLegacyCourse(prisma);
+
+  await seedCourseSkills(prisma, {
+    courseId: "course-fohlio-tech-course",
+    skills: GTM_SKILLS,
+    lessonSkills: GTM_LESSON_SKILLS,
+  });
+  await seedBadges(prisma, BADGES);
+
   console.log("Legacy course backfilled.");
+  console.log(`Skills: ${GTM_SKILLS.length}, lesson links: ${GTM_LESSON_SKILLS.length}, badges: ${BADGES.length} (global catalog).`);
 }
 
 main()
