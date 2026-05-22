@@ -69,6 +69,36 @@ export function SubmissionViewer({ content }: SubmissionViewerProps) {
         </ul>
       );
 
+    case "widget":
+      return (
+        <div className="space-y-2 rounded-lg border border-gray-200 bg-gray-50 p-3 text-sm">
+          <div className="flex items-center gap-2 text-xs uppercase tracking-wide text-gray-500">
+            <span>Widget</span>
+            <code className="font-mono text-gray-700">{content.widgetId}</code>
+            <span
+              className={
+                content.completed
+                  ? "rounded-full bg-emerald-100 px-2 py-0.5 text-emerald-700"
+                  : "rounded-full bg-amber-100 px-2 py-0.5 text-amber-700"
+              }
+            >
+              {content.completed ? "completed" : "in progress"}
+            </span>
+          </div>
+          {content.reflection?.trim() && (
+            <p className="whitespace-pre-wrap text-gray-700">
+              {content.reflection}
+            </p>
+          )}
+          <details className="text-xs text-gray-500">
+            <summary className="cursor-pointer">Raw state</summary>
+            <pre className="mt-2 overflow-x-auto rounded bg-white p-2 font-mono text-[11px] leading-snug text-gray-700">
+              {JSON.stringify(content.state, null, 2)}
+            </pre>
+          </details>
+        </div>
+      );
+
     default:
       return null;
   }

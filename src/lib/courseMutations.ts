@@ -51,10 +51,14 @@ const HomeworkTaskInputSchema = z.object({
   title: z.string().trim().min(1).max(160),
   description: z.string().trim().min(1).max(4000),
   category: z.enum(["required", "advanced"]).default("required"),
-  submissionType: z.enum(["pr_link", "screenshot", "text", "quiz", "checklist"]).default("text"),
+  submissionType: z
+    .enum(["pr_link", "screenshot", "text", "quiz", "checklist", "widget"])
+    .default("text"),
   order: z.number().int().positive(),
   quizQuestions: z.array(z.string().trim().min(1)).optional(),
   checklistItems: z.array(z.string().trim().min(1)).optional(),
+  widgetId: z.string().trim().min(1).max(64).optional(),
+  widgetConfig: z.record(z.string(), z.unknown()).optional(),
 });
 
 const HomeworkReplaceSchema = z.array(HomeworkTaskInputSchema);
@@ -636,6 +640,8 @@ export async function replaceLessonHomework(
               order: task.order,
               quizQuestions: task.quizQuestions ?? Prisma.JsonNull,
               checklistItems: task.checklistItems ?? Prisma.JsonNull,
+              widgetId: task.widgetId ?? null,
+              widgetConfig: (task.widgetConfig ?? Prisma.JsonNull) as Prisma.InputJsonValue,
             },
           });
         } else {
@@ -649,6 +655,8 @@ export async function replaceLessonHomework(
               order: task.order,
               quizQuestions: task.quizQuestions ?? Prisma.JsonNull,
               checklistItems: task.checklistItems ?? Prisma.JsonNull,
+              widgetId: task.widgetId ?? null,
+              widgetConfig: (task.widgetConfig ?? Prisma.JsonNull) as Prisma.InputJsonValue,
             },
           });
         }

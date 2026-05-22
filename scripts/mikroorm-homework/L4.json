@@ -1,40 +1,147 @@
 [
   {
     "id": "mikroorm-task-4-1",
-    "title": "Persist a full entity graph with relations and capture the pivot DDL",
-    "description": "Add Author and Tag entities to your archive-api project. Author has a 1:M to Book (the Author side is inverse, the Book side owns the FK). Book and Article both have M:M to Tag via a pivot table. Write a script that creates 1 author, 2 books, 1 article, and 3 tags, assigns all relations, and flushes. Then run 'npx mikro-orm schema:update --dump' and submit a screenshot showing the book_tags pivot table DDL — the screenshot must include both book_id and tag_id columns and at least one FOREIGN KEY constraint line. No GitHub repo — submit the screenshot directly.",
+    "title": "Drag each side of the relation graph into the right slot",
+    "description": "The lesson's archive-api has Author, Book, Article, and Tag. Place each relation property into the correct slot (owning vs inverse, which collection lives where).",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 1,
-    "modelAnswer": "The screenshot must show a CREATE TABLE book_tags (or the name you gave it) with:\n- book_id bigint NOT NULL REFERENCES book(id)\n- tag_id bigint NOT NULL REFERENCES tag(id)\n- A primary key on (book_id, tag_id) or similar composite constraint.\nIf you see 'book_tags' but with only one column, you likely forgot to declare the inverse side with mappedBy. The pivot table requires both sides to be mapped before MikroORM can generate it.\nIf the dump is empty: the migration snapshot may already exist and schema:update sees no diff. Run 'npx mikro-orm schema:create --dump' instead.",
-    "estimatedMinutes": 30
+    "widgetId": "arch-diagram",
+    "widgetConfig": {
+      "prompt": "Drop each property onto the entity-side that owns/declares it. Owning side = holds the FK column (or the pivot in M:M). Inverse side = mappedBy.",
+      "slots": [
+        {
+          "id": "book-fk-author",
+          "label": "Book side of Book–Author (owns the author_id FK)",
+          "correctNodeId": "p-book-author"
+        },
+        {
+          "id": "author-books-inv",
+          "label": "Author side of Book–Author (inverse, exposes Collection<Book>)",
+          "correctNodeId": "p-author-books"
+        },
+        {
+          "id": "book-tags-owns",
+          "label": "Book side of Book–Tag M:M (owning side, generates the pivot)",
+          "correctNodeId": "p-book-tags"
+        },
+        {
+          "id": "tag-books-inv",
+          "label": "Tag side of Book–Tag M:M (inverse, mappedBy: 'tags')",
+          "correctNodeId": "p-tag-books"
+        },
+        {
+          "id": "article-tags-owns",
+          "label": "Article side of Article–Tag M:M (owning side)",
+          "correctNodeId": "p-article-tags"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "p-book-author",
+          "label": "author: p.manyToOne(() => Author)",
+          "hint": "M:1 — the FK column lives on the many side, which is Book"
+        },
+        {
+          "id": "p-author-books",
+          "label": "books: p.oneToMany(() => Book, b => b.author)",
+          "hint": "1:M inverse — exposes a Collection<Book>"
+        },
+        {
+          "id": "p-book-tags",
+          "label": "tags: p.manyToMany(() => Tag)",
+          "hint": "Declared without mappedBy — therefore owns the pivot"
+        },
+        {
+          "id": "p-tag-books",
+          "label": "books: p.manyToMany(() => Book, b => b.tags, { mappedBy: true })",
+          "hint": "Inverse side with mappedBy"
+        },
+        {
+          "id": "p-article-tags",
+          "label": "tags: p.manyToMany(() => Tag)",
+          "hint": "Article also owns its own Article–Tag pivot"
+        }
+      ]
+    },
+    "modelAnswer": "Owning side holds the FK (M:1, 1:1) or generates the pivot (M:M). Inverse side uses mappedBy and exposes a Collection. Book owns its FK to Author (author_id lives in the book row). Author has the inverse 1:M Collection<Book>. Both Book and Article own their own M:M to Tag — that creates two separate pivot tables (book_tags and article_tags). Tag has two inverse Collections, one for each.",
+    "estimatedMinutes": 15
   },
   {
     "id": "mikroorm-task-4-2",
-    "title": "Owning side, inverse side, and a L2/L3 curveball — schema + query log",
-    "description": "This task combines relations (L4) with Identity Map and entity lifecycle knowledge from L2–L3. Do both parts:\n\nPart A (Relations): Add the M:M between Article and Tag. Run 'npx mikro-orm schema:update --dump'. Confirm article_tags pivot appears. Submit a screenshot.\n\nPart B (Prior lessons callback): Load the Author you inserted in Part A using em.findOne(Author, authorId, { populate: ['books'] }). Immediately call em.findOne(Author, authorId, { populate: ['books'] }) a second time. How many SELECTs fire? Why? (Refer to what you learned in L3 about the Identity Map key.) Submit your answer as text below the screenshot.\n\nSubmit: one screenshot + one short text paragraph.",
+    "title": "Pick the right cascade strategy",
+    "description": "A scenario walk: the librarian wants to remove an Author from the catalogue along with all of that author's Books, but Tags attached to those books must stay. Walk the decision tree to find the correct cascade configuration.",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 2,
-    "modelAnswer": "Part A: article_tags pivot table with article_id and tag_id FKs must be visible.\nPart B: The second findOne still fires a SELECT because the Identity Map is keyed by PK, not by populate hint. MikroORM does not know the first result included populated books unless it tracks the populate spec per-identity (it does not). However: if the books collection was already initialized on the instance, MikroORM may short-circuit. Students who observed zero queries on the second call should check whether their EM was forked between calls — that resets the map. One SELECT is the normal expectation for the same populate hint called twice on the same EM instance because MikroORM re-runs the query to ensure freshness of the collection.",
-    "estimatedMinutes": 30
+    "widgetId": "decision-tree",
+    "widgetConfig": {
+      "rootId": "root",
+      "nodes": {
+        "root": {
+          "id": "root",
+          "question": "We want: delete Author -> all the author's Books deleted; Tags untouched. Where should cascade: ['remove'] go?",
+          "options": [
+            {
+              "label": "On Author.books (the 1:M inverse side)",
+              "nextNodeId": "q-orphan-or-remove"
+            },
+            {
+              "label": "On Book.author (the M:1 owning side)",
+              "outcome": {
+                "kind": "wrong",
+                "explanation": "Wrong direction. Cascade on the M:1 would say 'when Book is deleted, also delete Author' — that would delete the parent, not the children. Cascade always flows from the side you delete to the side that should also go."
+              }
+            },
+            {
+              "label": "On Book.tags (the M:M)",
+              "outcome": {
+                "kind": "wrong",
+                "explanation": "Wrong relation. The requirement is to delete books when an author is deleted, not to touch tags. Cascade on book.tags would propagate from Book to Tag, which is the opposite of what we want."
+              }
+            }
+          ]
+        },
+        "q-orphan-or-remove": {
+          "id": "q-orphan-or-remove",
+          "question": "Should you use cascade: ['remove'] or orphanRemoval: true?",
+          "options": [
+            {
+              "label": "cascade: ['remove'] — propagates from em.remove(author) to each Book in the collection.",
+              "outcome": {
+                "kind": "correct",
+                "explanation": "Correct. cascade: ['remove'] is exactly the ORM-level propagation we need when Author is removed. orphanRemoval triggers when a Book is removed from the collection but the Author stays — that's a different requirement."
+              }
+            },
+            {
+              "label": "orphanRemoval: true — that's the modern way.",
+              "outcome": {
+                "kind": "suboptimal",
+                "explanation": "orphanRemoval triggers when a child is removed from the collection while the parent stays. The requirement here is 'delete parent + cascade to children', which is cascade: ['remove']. orphanRemoval would silently do nothing on em.remove(author)."
+              }
+            },
+            {
+              "label": "deleteRule: 'cascade' on the FK",
+              "outcome": {
+                "kind": "suboptimal",
+                "explanation": "That works at the DB level and skips MikroORM's lifecycle. The lesson stresses: ORM cascade fires hooks and respects the Unit of Work; DB cascade is invisible to MikroORM and can leave the Identity Map holding ghost references to deleted rows."
+              }
+            }
+          ]
+        }
+      }
+    },
+    "modelAnswer": "Place cascade: ['remove'] on Author.books — the side you delete *from*. cascade flows from the side em.remove() is called on to the targets in its collection. orphanRemoval is for the dual scenario: child removed from collection while parent stays. DB-level deleteRule is faster but invisible to MikroORM's lifecycle and can poison the Identity Map.",
+    "estimatedMinutes": 12
   },
   {
     "id": "mikroorm-task-4-3",
-    "title": "Demonstrate orphan removal — plan, implement, verify (AI-resilient)",
-    "description": "Before writing code: in 2–3 sentences predict what SQL MikroORM will issue when you remove a Book from author.books with orphanRemoval: true on the collection. Be specific: UPDATE, DELETE, or both? Which table?\n\nThen implement it: configure orphanRemoval: true on Author.books. Write a script that loads an author with populated books, calls author.books.remove(books[0]), then flushes. Capture the query log.\n\nRevision: Was your prediction correct? If not, explain why the actual SQL differed from your expectation. What does 'orphan' mean in MikroORM's model, and how is it different from cascade remove?\n\nMetacognitive memo: What does this exercise reveal about the difference between removing from a collection and deleting an entity? What would an AI summary of orphan removal probably oversimplify?",
-    "category": "advanced",
-    "submissionType": "text",
-    "order": 1,
-    "estimatedMinutes": 35
-  },
-  {
-    "id": "mikroorm-task-4-4",
     "title": "Why must exactly one side own an M:M relation?",
-    "description": "Why does MikroORM require an explicit owning side in M:M relations, and what would happen at the schema and runtime level if both sides declared themselves as the owner? Reference: which side generates the pivot table INSERT/DELETE, and what SQL conflict or duplication would occur if both sides tried. Answer in 4–6 sentences.",
+    "description": "Why does MikroORM require an explicit owning side in M:M relations, and what would happen at the schema and runtime level if both sides declared themselves as the owner? Reference: which side generates the pivot table INSERT/DELETE, and what SQL conflict or duplication would occur if both sides tried. Answer in 4-6 sentences.",
     "category": "advanced",
     "submissionType": "text",
-    "order": 2,
+    "order": 3,
+    "modelAnswer": "Owning side = the one that emits INSERT/DELETE against the pivot table. If both sides claimed ownership, MikroORM would generate two pivot tables (book_tags AND tag_books) at schema time — and at runtime an attach would fire INSERTs into both, then on detach one side wouldn't know about the row in the other. The mappedBy declaration is what tells MikroORM 'I am the mirror, not the source of truth.' The pivot table is unambiguously owned: book.tags.add(tag) writes to book_tags only; tag.books reads from the same table via the mappedBy hint.",
     "estimatedMinutes": 15
   }
 ]

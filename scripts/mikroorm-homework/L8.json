@@ -1,40 +1,135 @@
 [
   {
     "id": "mikroorm-task-8-1",
-    "title": "Add Address embeddable and capture the flattened DDL",
-    "description": "Define an Address embeddable (street, city, country — all strings) and embed it on Author in inline mode (the default). Add a typed metadata jsonb column to Article using p.json<ArticleMetadata>() where ArticleMetadata has readTimeMinutes: number and featuredImageUrl: string | null. Add a beforeCreate hook on Article that auto-generates slug from title (lowercase, replace spaces with hyphens, strip non-alphanumeric). Run 'npx mikro-orm schema:update --dump' and submit a screenshot of the 'create table author' portion — it must show four address_* columns inlined into the author table (address_street, address_city, address_country), proving the embeddable was flattened rather than stored in a separate table.",
+    "title": "Spot the JSONB concurrent-counter bug",
+    "description": "Below is a service method that tries to increment metadata.viewCount inside a JSONB column. Click the line that causes the lost-update bug under concurrent requests, and explain the root cause in one sentence (the keyword 'read-modify-write' or 'lost update' is expected).",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 1,
-    "modelAnswer": "The screenshot must show author table columns including: address_street varchar not null, address_city varchar not null, address_country varchar not null — all directly in the author table, not in a separate address table.\nIf you see a CREATE TABLE address: you used the entity decorator instead of embeddable. The @Embeddable() decorator (or defineEntity with embeddable: true) is required.\nIf address columns are missing entirely: the embeddable was not registered in the entity's defineEntity block. Confirm the embedded property is present with p.embedded(() => Address).",
-    "estimatedMinutes": 30
+    "widgetId": "error-trace",
+    "widgetConfig": {
+      "errorMessage": "Bug report: under load, two concurrent POST /articles/:id/view requests both succeed, yet the final viewCount only goes up by 1 instead of 2. No SQL error, no log entry — just a silent miscount.",
+      "code": [
+        "async incrementView(id: bigint) {",
+        "  const em = this.orm.em.fork();",
+        "  const article = await em.findOneOrFail(Article, id);",
+        "  const meta = article.metadata ?? { viewCount: 0 };",
+        "  meta.viewCount = meta.viewCount + 1;",
+        "  article.metadata = meta;",
+        "  await em.flush();",
+        "}"
+      ],
+      "rootCauseLine": 5,
+      "acceptKeywords": [
+        "read-modify-write",
+        "lost update",
+        "race",
+        "concurrent",
+        "non-atomic",
+        "not atomic"
+      ]
+    },
+    "modelAnswer": "Line 5 is the classic read-modify-write race. Postgres stores JSONB as a single binary blob — to bump one key, the ORM must SELECT the whole metadata, mutate it in JS, then UPDATE the whole column back. Two concurrent requests both read the same value (say 7), both write 8, and one increment is lost. The fix is to move viewCount out of JSONB into a real int column and increment with `UPDATE article SET view_count = view_count + 1 WHERE id = $1` — Postgres takes a row lock and the addition is atomic.",
+    "estimatedMinutes": 12
   },
   {
     "id": "mikroorm-task-8-2",
-    "title": "JSONB concurrent counter danger + L6/L7 callback",
-    "description": "This task combines embeddables and JSONB (L8) with filters and migrations from L6–L7.\n\nPart A (L8): In 4–6 sentences explain why storing an integer counter inside a JSONB column is dangerous under concurrent writes, while putting the same counter in a plain int column is safe. Reference how Postgres updates JSONB internally (whole-field rewrite) and why that causes lost-update under read-modify-write.\n\nPart B (L6–L7 callback): You decide to extract the counter from JSONB into a dedicated view_count int column. Write the migration up() method in pseudocode or real TypeScript (using this.addColumn and this.addSql) that: (1) adds the view_count column with default 0, (2) backfills it from the JSONB field (you can use raw SQL), and (3) drops the JSONB key. Also: what filter (from L6) would you need to update or re-test after this migration?\n\nSubmit both parts as text.",
+    "title": "Match the advanced-modeling toolbox to its use case",
+    "description": "Lesson 8 introduces five advanced modeling tools. Match each to the scenario where the lesson recommends it.",
     "category": "required",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 2,
-    "modelAnswer": "Part A: Postgres stores JSONB as a binary-parsed blob. To update a single key, Postgres must rewrite the entire column value for that row. Under concurrent writes, two transactions each read the current blob, modify the counter key in memory, and write back — the second write overwrites the first, losing one increment. A plain int column supports atomic UPDATE SET view_count = view_count + 1 which Postgres executes as a single in-place operation with row-level locking — no read-modify-write race is possible.\n\nPart B (pseudocode):\nup(): {\n  this.addColumn('article', { name: 'view_count', type: 'int', default: 0, nullable: false });\n  this.addSql(\"UPDATE article SET view_count = (metadata->>'readTimeMinutes')::int WHERE metadata->>'readTimeMinutes' IS NOT NULL\");\n  // Note: dropping a JSONB key requires updating the column, not dropping it entirely unless metadata only held the counter:\n  // this.addSql(\"UPDATE article SET metadata = metadata - 'readTimeMinutes'\");\n}\nFilter update: if the softDelete filter condition references metadata->'deletedAt', nothing changes. If viewCount was part of a filter condition (e.g. $gt: minViews), update the filter to reference the new column.",
-    "estimatedMinutes": 30
+    "widgetId": "concept-match",
+    "widgetConfig": {
+      "pairs": [
+        {
+          "id": "embeddable",
+          "term": "Embeddable (inline mode)",
+          "definition": "Address fields (street/city/country) live on the Author table as address_* columns — no extra table, no extra join."
+        },
+        {
+          "id": "sti",
+          "term": "Single Table Inheritance (STI)",
+          "definition": "Book + Article + Photo all share a 'media' table with a discriminator column — small per-subtype variation."
+        },
+        {
+          "id": "tpt",
+          "term": "Table Per Type (TPT)",
+          "definition": "Subtypes diverge sharply: separate tables per subclass, joined by FK at query time."
+        },
+        {
+          "id": "virtual",
+          "term": "Virtual entity",
+          "definition": "An in-memory hydration target built from a raw SQL or QB expression — no DB table backs it."
+        },
+        {
+          "id": "hook",
+          "term": "Lifecycle hook (@BeforeCreate)",
+          "definition": "Auto-generate Article.slug from title before the row is inserted."
+        }
+      ]
+    },
+    "modelAnswer": "Embeddables flatten value objects into the parent row. STI = one table + discriminator for shape-similar subtypes. TPT = separate tables joined when needed for shape-divergent subtypes. Virtual entities are read-only projections over raw SQL. Lifecycle hooks fire inside the Unit of Work and are the canonical place for derived-field logic like slug generation.",
+    "estimatedMinutes": 10
   },
   {
     "id": "mikroorm-task-8-3",
-    "title": "Implement MoneyType custom type — plan, build, critique (AI-resilient)",
-    "description": "Implement a custom MikroORM Type called MoneyType that stores a Money value object (amount: number, currency: string) as 'amount:currency' string in Postgres. It must implement convertToDatabaseValue (object→string) and convertToJSValue (string→object). Apply it to a price property on Book.\n\nThree-stage task:\n1. Plan: before coding, identify the four methods a custom Type must implement and what each does. Write them as stubs with just their signatures and a one-line comment.\n2. Implement: build MoneyType, apply it to Book.price, run schema:update --dump, confirm the price column is stored as varchar. Create a Book with a price, flush, reload it, and verify the JS value is a Money object (not a raw string).\n3. Critique: paste your MoneyType into ChatGPT and ask 'What edge cases does this miss?' Copy the response. Write 3 sentences on what ChatGPT got right and what it missed specifically about the MikroORM Type contract (e.g., getColumnType(), compareAsType()).\n\nMetacognitive memo: What does building a custom Type clarify about how MikroORM's mapping layer works that reading the docs alone does not?",
+    "title": "Pick the right strategy for an inheritance scenario (decision tree)",
+    "description": "The librarian wants one catalogue page that shows Books, Magazines, and Newspapers together. Books and Magazines share 80% of fields; Newspapers diverge with a publishDate, no ISBN, and a region. Walk the tree to pick STI, TPT, or mapped superclass.",
     "category": "advanced",
-    "submissionType": "text",
-    "order": 1,
-    "estimatedMinutes": 40
-  },
-  {
-    "id": "mikroorm-task-8-4",
-    "title": "Why is storing a counter in JSONB a concurrency trap, not just a style choice?",
-    "description": "Two concurrent HTTP requests each want to increment article.metadata.viewCount by 1. Walk through the exact sequence of operations — read, modify, write — for both requests under optimistic (no row lock) conditions and explain why the final count is 1 instead of 2. Then explain why the same two requests incrementing a plain int view_count column with UPDATE article SET view_count = view_count + 1 WHERE id = $1 do produce a final count of 2. Your answer should reference Postgres row-level locking. Answer in 5–7 sentences.",
-    "category": "advanced",
-    "submissionType": "text",
-    "order": 2,
+    "submissionType": "widget",
+    "order": 3,
+    "widgetId": "decision-tree",
+    "widgetConfig": {
+      "rootId": "root",
+      "nodes": {
+        "root": {
+          "id": "root",
+          "question": "First question: do you need polymorphic queries (find all media in one query, irrespective of subtype)?",
+          "options": [
+            {
+              "label": "Yes, the catalogue lists everything in one page.",
+              "nextNodeId": "q-shape"
+            },
+            {
+              "label": "No, each subtype has its own page and query path.",
+              "outcome": {
+                "kind": "correct",
+                "explanation": "Mapped superclass is fine here — share fields at the TypeScript level, no inheritance at the DB level. Simplest, no discriminator, no joins. The lesson recommends this whenever you don't actually need polymorphic SQL."
+              }
+            }
+          ]
+        },
+        "q-shape": {
+          "id": "q-shape",
+          "question": "Polymorphic queries required. How shape-similar are the subtypes?",
+          "options": [
+            {
+              "label": "Mostly the same — books and magazines share 80% of fields, newspapers diverge a bit.",
+              "outcome": {
+                "kind": "correct",
+                "explanation": "STI (Single Table Inheritance) wins. One 'media' table + a discriminator column. Polymorphic queries are a single SELECT. Newspaper-only columns are NULL on Book/Magazine rows — acceptable when shape overlap is high."
+              }
+            },
+            {
+              "label": "Strongly different — different required fields, different constraints, different indexes.",
+              "outcome": {
+                "kind": "suboptimal",
+                "explanation": "TPT keeps schemas clean but every polymorphic query becomes a JOIN or UNION across subtype tables. The lesson notes TPT pays its tax on every read — only worth it when the shapes really diverge AND the polymorphic queries are rare."
+              }
+            },
+            {
+              "label": "Identical, just different behaviour.",
+              "outcome": {
+                "kind": "wrong",
+                "explanation": "If the shapes are identical, you don't need inheritance at all — make it one entity with a `kind` field and put behaviour differences in services. Inheritance buys you nothing here and costs maintenance."
+              }
+            }
+          ]
+        }
+      }
+    },
+    "modelAnswer": "Decision rule: first ask 'do I need polymorphic queries?'. If no, mapped superclass (TS-only). If yes and shapes are similar, STI. If yes and shapes diverge, TPT (and accept the JOIN tax). If shapes are identical, you don't need inheritance — one entity + kind field.",
     "estimatedMinutes": 15
   }
 ]

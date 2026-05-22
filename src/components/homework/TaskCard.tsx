@@ -10,6 +10,7 @@ import { SubmissionScreenshot } from "./SubmissionScreenshot";
 import { SubmissionText } from "./SubmissionText";
 import { SubmissionQuiz } from "./SubmissionQuiz";
 import { SubmissionChecklist } from "./SubmissionChecklist";
+import { SubmissionWidget } from "./SubmissionWidget";
 
 const TYPE_LABELS: Record<string, string> = {
   pr_link: "Link",
@@ -17,6 +18,7 @@ const TYPE_LABELS: Record<string, string> = {
   text: "Text",
   quiz: "Quiz",
   checklist: "Checklist",
+  widget: "Interactive",
 };
 
 const HTTP_URL_RE = /^https?:\/\/\S+$/i;
@@ -34,6 +36,8 @@ function isContentValid(content: SubmissionContent | null): boolean {
       return content.answers?.some((a) => a.answer?.trim()) ?? false;
     case "checklist":
       return content.items?.some((i) => i.checked) ?? false;
+    case "widget":
+      return Boolean(content.completed);
     default:
       return false;
   }
@@ -154,6 +158,16 @@ export function TaskCard({
           <SubmissionChecklist
             items={task.checklistItems ?? []}
             value={content?.type === "checklist" ? content : null}
+            onChange={setContent}
+            disabled={disabled}
+          />
+        )}
+        {task.submissionType === "widget" && (
+          <SubmissionWidget
+            taskId={task.id}
+            widgetId={task.widgetId ?? null}
+            widgetConfig={task.widgetConfig ?? null}
+            value={content?.type === "widget" ? content : null}
             onChange={setContent}
             disabled={disabled}
           />

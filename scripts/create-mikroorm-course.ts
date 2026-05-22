@@ -24,8 +24,10 @@ type HomeworkTaskSeed = {
   title: string;
   description: string;
   category: "required" | "advanced";
-  submissionType: "pr_link" | "screenshot" | "text" | "quiz" | "checklist";
+  submissionType: "pr_link" | "screenshot" | "text" | "quiz" | "checklist" | "widget";
   order: number;
+  widgetId?: string;
+  widgetConfig?: Record<string, unknown>;
   modelAnswer?: string;
   estimatedMinutes?: number;
 };
@@ -330,6 +332,10 @@ async function main() {
               category: task.category,
               submissionType: task.submissionType,
               order: task.order,
+              widgetId: task.widgetId ?? null,
+              widgetConfig: task.widgetConfig
+                ? (JSON.parse(JSON.stringify(task.widgetConfig)) as object)
+                : undefined,
               modelAnswer: task.modelAnswer ?? null,
               estimatedMinutes: task.estimatedMinutes ?? null,
             },

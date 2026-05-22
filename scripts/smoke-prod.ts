@@ -6,12 +6,24 @@ const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  const [courses, lessons, skills, badges, lessonSkills] = await Promise.all([
+  const [
+    courses,
+    lessons,
+    skills,
+    badges,
+    lessonSkills,
+    series,
+    coursesInSeries,
+    widgetTasks,
+  ] = await Promise.all([
     prisma.course.count(),
     prisma.lesson.count(),
     prisma.skill.count(),
     prisma.badge.count(),
     prisma.lessonSkill.count(),
+    prisma.series.count(),
+    prisma.course.count({ where: { seriesId: { not: null } } }),
+    prisma.homeworkTask.count({ where: { submissionType: "widget" } }),
   ]);
 
   const sample = await prisma.lesson.findMany({
@@ -35,6 +47,9 @@ async function main() {
     lessonSkills,
     badges,
     skillsByCourse,
+    series,
+    coursesInSeries,
+    widgetTasks,
   });
 
   await prisma.$disconnect();

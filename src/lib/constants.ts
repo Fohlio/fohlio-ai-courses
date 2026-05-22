@@ -4,10 +4,12 @@ interface LegacyHomeworkTask {
   title: string;
   description: string;
   category: "required" | "advanced";
-  submissionType: "pr_link" | "screenshot" | "text" | "quiz" | "checklist";
+  submissionType: "pr_link" | "screenshot" | "text" | "quiz" | "checklist" | "widget";
   order: number;
   quizQuestions?: string[];
   checklistItems?: string[];
+  widgetId?: string;
+  widgetConfig?: Record<string, unknown>;
   modelAnswer?: string;
   estimatedMinutes?: number;
 }
@@ -68,28 +70,93 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-1-1",
             lessonId: "lesson-1",
-            title: "Install Cursor and verify Git",
+            title: "Why Git — pick the real reason",
             description:
-              "Install Cursor from cursor.com. Then open its built-in terminal (Ctrl+` / Cmd+`) and run: git --version. Send a screenshot showing both Cursor open and the terminal output with a version number like 'git version 2.x.x'.",
+              "Imagine your teammate says: 'Why can't we just put files in Dropbox or Google Drive and edit together? Why do we need Git at all?' Pick the strongest answer below and justify it in your own words — at least 25 words. The justification is the actual task; the choice without it does not count.",
             category: "required",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 1,
-            estimatedMinutes: 20,
+            estimatedMinutes: 12,
+            widgetId: "mcq-justify",
+            widgetConfig: {
+              question:
+                "Why do software teams use Git instead of just sharing files via Dropbox / Google Drive?",
+              options: [
+                {
+                  id: "a",
+                  label: "Git is free and Dropbox costs money.",
+                },
+                {
+                  id: "b",
+                  label:
+                    "Git records the full history of every change as named commits and lets multiple people work in parallel on isolated branches without overwriting each other.",
+                },
+                {
+                  id: "c",
+                  label:
+                    "Git stores files in the cloud automatically so you do not lose work.",
+                },
+                {
+                  id: "d",
+                  label:
+                    "Git makes the code run faster than editing files directly.",
+                },
+              ],
+              correctOptionId: "b",
+              minJustificationWords: 25,
+              rubric:
+                "A strong justification names BOTH parallel work (branches) and history/traceability (commits). It also explains what would break with Dropbox — silent overwrites, no review point, no way to undo a change to a single file from yesterday.",
+            },
             modelAnswer:
-              "A correct screenshot shows the Cursor editor window open with the integrated terminal visible at the bottom. The terminal must display a line starting with 'git version' followed by a version number (any version 2.x or higher is fine). If you see 'command not found', Git is not installed — re-read Part 1 and follow the installation steps for your OS.",
+              "B is correct. Dropbox just synchronizes the latest version — when two people save at once, one overwrites the other silently. Git keeps the full history as named commits and lets each person work on a branch in isolation, so changes are reviewed and merged deliberately, not by 'whoever saved last wins'.",
           },
           {
             id: "task-1-2",
             lessonId: "lesson-1",
-            title: "Make your first local commit",
+            title: "Match the Git vocabulary",
             description:
-              "Clone the fohlio-ai-courses repo to your computer. Then: create a new branch called YOUR-NAME-hello, create a file called hello.txt with one sentence about why you joined this course, stage it (git add .), commit it (git commit -m 'Hello from YOUR-NAME'), and run git log --oneline to confirm the commit is there. Send a screenshot of the terminal showing the git log output with your commit.",
+              "Drag each Git term to its plain-English definition. These are the four words you will see every single day in this course — repository, commit, branch, remote.",
             category: "required",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 2,
-            estimatedMinutes: 25,
+            estimatedMinutes: 10,
+            widgetId: "concept-match",
+            widgetConfig: {
+              pairs: [
+                {
+                  id: "repo",
+                  term: "Repository",
+                  definition:
+                    "The folder that Git is tracking — contains your code and the full history of every change.",
+                },
+                {
+                  id: "commit",
+                  term: "Commit",
+                  definition:
+                    "A named snapshot of your changes with a message — the unit of history Git stores.",
+                },
+                {
+                  id: "branch",
+                  term: "Branch",
+                  definition:
+                    "An isolated line of work that lets you change code without affecting main until you are ready to merge.",
+                },
+                {
+                  id: "remote",
+                  term: "Remote",
+                  definition:
+                    "A copy of the repository hosted somewhere else (usually GitHub) that the team pushes to and pulls from.",
+                },
+                {
+                  id: "main",
+                  term: "main",
+                  definition:
+                    "The default branch — the version of the code that everyone treats as the source of truth.",
+                },
+              ],
+            },
             modelAnswer:
-              "A correct screenshot shows the terminal with git log --oneline output that includes your commit hash and message. Check these four things: (1) you are on your own branch, not main — run 'git branch' and verify it shows your branch with an asterisk; (2) the commit message is meaningful, not just 'test'; (3) the file hello.txt exists in the folder; (4) git status shows 'nothing to commit, working tree clean' after the commit. Common mistake: forgetting 'git add .' before committing — git status will show the file as 'untracked' if this happened.",
+              "Repository is the folder; commit is one named snapshot in its history; branch is a parallel line of work; remote is the shared copy (usually on GitHub); main is the trunk everyone treats as the source of truth.",
           },
         ],
       },
@@ -100,28 +167,15 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-1-3",
             lessonId: "lesson-1",
-            title: "Reflect on your first commit — staged process",
+            title: "Install Cursor + make your first commit",
             description:
-              "This task has three stages you must complete in order. Stage 1 — Plan: before touching the terminal, write 3-5 sentences describing what you expect to happen when you run 'git add . && git commit -m ...' on a new file. What does Git do internally? Stage 2 — Execute: now actually run the commit from task #2. Did anything surprise you compared to your prediction? Stage 3 — Revision note: in 2-3 sentences, describe one thing that was different from what you expected, or one thing you had to look up. Submit all three stages as a single text reply. Metacognitive memo: what would an AI summary of this lesson miss that you learned by doing?\n\nNote: this task is intentionally harder than the lesson — that gap is the learning.",
+              "Install Cursor from cursor.com. Open the integrated terminal (Cmd+` / Ctrl+`). Clone the fohlio-ai-courses repo, create a branch YOUR-NAME-hello, add a hello.txt file with one sentence about why you joined this course, then 'git add .', 'git commit -m \"Hello from YOUR-NAME\"', 'git log --oneline'. Send a screenshot of the terminal showing the git log output with your commit on your branch.",
             category: "advanced",
-            submissionType: "text",
+            submissionType: "screenshot",
             order: 1,
-            estimatedMinutes: 25,
+            estimatedMinutes: 30,
             modelAnswer:
-              "There is no single correct answer — the value is in the process. A strong response: Stage 1 has a genuine prediction (even if wrong). Stage 2 names a specific surprise (e.g. 'I expected git add to confirm each file but it was silent'). Stage 3 shows genuine reflection, not a restatement. The metacognitive memo should name something experiential — muscle memory of commands, confusion reading the log format, the feeling of not knowing if it worked — not just 'I learned what a commit is'.",
-          },
-          {
-            id: "task-1-4",
-            lessonId: "lesson-1",
-            title: "Why branches — elaborative interrogation",
-            description:
-              "Answer these two questions in your own words, without quoting the lesson directly. (1) Why does Git use branches instead of just letting everyone commit directly to main? What specific problem would arise if there were no branches? (2) Why doesn't Git automatically resolve merge conflicts by picking the most recent change? What would go wrong if it did?",
-            category: "advanced",
-            submissionType: "text",
-            order: 2,
-            estimatedMinutes: 20,
-            modelAnswer:
-              "(1) Without branches, every commit would immediately affect the shared codebase. Two people editing the same file would constantly overwrite each other's work. A half-finished feature would break the code for everyone. Branches let each person work in isolation and only merge when the work is stable and reviewed. (2) 'Most recent wins' sounds logical but breaks down immediately: if Alice refactors a function and Bob adds a parameter to it, the most recent commit would silently discard the other's work with no warning. A conflict forces a human to look at both changes and decide — the machine cannot know which change is intentional.",
+              "A correct screenshot shows Cursor's integrated terminal with git log --oneline output that includes your commit hash and message. Verify: (1) 'git branch' shows your branch with the asterisk (not main), (2) the commit message is meaningful, (3) hello.txt is in the working tree, (4) 'git status' says 'nothing to commit, working tree clean'. Common miss: forgetting 'git add .' — 'git status' will show the file as untracked if so.",
           },
         ],
       },
@@ -154,28 +208,154 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-2-1",
             lessonId: "lesson-2",
-            title: "Run fohlio-frontend locally",
+            title: "Map Fohlio's environments to what they mean",
             description:
-              "Clone fohlio-frontend to your computer. Run: make setup, then make use-test01, then make s. Wait for the dev server to start and open the URL it prints (usually http://localhost:3000). Send a screenshot of the browser showing the Fohlio login page. If you get an error at any step, include the terminal output in your screenshot — that way Ivan can help faster.",
+              "Match each piece of Fohlio's stack to its actual role. These are the names you will see in Slack threads and on PR descriptions every week — knowing which is which is the whole point.",
             category: "required",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 1,
-            estimatedMinutes: 25,
+            estimatedMinutes: 10,
+            widgetId: "concept-match",
+            widgetConfig: {
+              pairs: [
+                {
+                  id: "fe",
+                  term: "Frontend (fohlio-frontend)",
+                  definition:
+                    "The React app the user actually sees in the browser — pages, buttons, forms.",
+                },
+                {
+                  id: "be",
+                  term: "Backend",
+                  definition:
+                    "The server that owns the data, auth, and business logic — talks to the frontend over GraphQL.",
+                },
+                {
+                  id: "test01",
+                  term: "test01 / uat01",
+                  definition:
+                    "Staging servers — a copy of production where changes are tested before real users see them.",
+                },
+                {
+                  id: "prod",
+                  term: "Production",
+                  definition:
+                    "The real Fohlio that paying customers use — a bug here costs money.",
+                },
+                {
+                  id: "jira",
+                  term: "FOH-XXXX prefix on a branch",
+                  definition:
+                    "Links the branch to its Jira ticket so anyone reading git log can find the spec and context.",
+                },
+              ],
+            },
             modelAnswer:
-              "A correct screenshot shows the browser open at a localhost URL with the Fohlio login page visible — it should have an email field, a password field, and a sign-in button. If you see a blank page or an error, the most common causes are: (1) missing env variables — message Ivan in Slack; (2) wrong Node.js version — re-read Part 3 and ensure you are on Node 20.12.2 via nvm; (3) yarn packages not installed — run 'make setup' again. A screenshot of the terminal with 'make s' running (but browser not shown) is not sufficient.",
+              "Frontend = React app in the browser; Backend = the GraphQL data/auth layer; test01/uat01 = staging copies of prod; Production = real customers; FOH-XXXX = Jira ticket prefix that makes every commit traceable to its spec.",
           },
           {
             id: "task-2-2",
             lessonId: "lesson-2",
-            title: "Explain the Fohlio architecture in your own words",
+            title: "You hit a merge conflict — what now?",
             description:
-              "Without looking at the lesson slides, write 4-6 sentences describing how Fohlio's systems are connected. Cover: (a) what the frontend and backend do, (b) what staging vs production means in practice, and (c) why branch names start with a Jira ticket number. Use your own words — a direct quote from the lesson is a sign you haven't internalized it yet.",
+              "Walk through a real Git flow scenario step by step. There is one correct path; the others are common mistakes new engineers make. Pick at each branch and explain your reasoning when prompted.",
             category: "required",
-            submissionType: "text",
+            submissionType: "widget",
             order: 2,
-            estimatedMinutes: 20,
+            estimatedMinutes: 15,
+            widgetId: "decision-tree",
+            widgetConfig: {
+              rootId: "start",
+              nodes: {
+                start: {
+                  id: "start",
+                  question:
+                    "You finished your task on branch FOH-1234-fix-login. You try to merge main in and Git says: CONFLICT (content): Merge conflict in src/Login.tsx. What do you do first?",
+                  options: [
+                    {
+                      label:
+                        "Run 'git reset --hard main' to wipe your changes and start over.",
+                      outcome: {
+                        kind: "wrong",
+                        explanation:
+                          "That destroys your work. Conflicts are normal — they mean two people changed the same lines. You need to resolve, not delete.",
+                      },
+                    },
+                    {
+                      label:
+                        "Open the conflicting file in Cursor and look at the <<<<<<< / ======= / >>>>>>> markers to see both versions.",
+                      nextNodeId: "openFile",
+                    },
+                    {
+                      label:
+                        "Force-push your branch with 'git push --force' so main is overwritten with your version.",
+                      outcome: {
+                        kind: "wrong",
+                        explanation:
+                          "Force-push overwrites the shared branch and erases your teammate's work. Never force-push main. The whole point of a conflict is that Git refuses to silently lose changes.",
+                      },
+                    },
+                  ],
+                },
+                openFile: {
+                  id: "openFile",
+                  question:
+                    "You see both versions of the changed code separated by conflict markers. What now?",
+                  options: [
+                    {
+                      label:
+                        "Pick HEAD (your version) every time — your code is newer so it must be right.",
+                      outcome: {
+                        kind: "wrong",
+                        explanation:
+                          "'Newer wins' silently discards your teammate's change. The conflict exists exactly because Git cannot tell which intent is correct — you have to read both and decide.",
+                      },
+                    },
+                    {
+                      label:
+                        "Read both sides, combine the changes so both intents are preserved, delete the markers, run the app to confirm it still works, then commit.",
+                      nextNodeId: "commit",
+                    },
+                    {
+                      label:
+                        "Ask Cursor AI to auto-resolve every conflict without looking at the result.",
+                      outcome: {
+                        kind: "suboptimal",
+                        explanation:
+                          "Cursor can suggest a resolution, but you still have to read it and run the code. Blindly accepting AI conflict resolution is how silent regressions ship to prod.",
+                      },
+                    },
+                  ],
+                },
+                commit: {
+                  id: "commit",
+                  question:
+                    "Conflict resolved, app runs locally. What's the right final step before opening the PR?",
+                  options: [
+                    {
+                      label:
+                        "Stage the resolved files, commit with a clear message, push the branch, open a PR with the FOH-1234 ticket linked.",
+                      outcome: {
+                        kind: "correct",
+                        explanation:
+                          "Exactly. Staging confirms the resolution, the commit records what you decided, and the PR lets a teammate review before it hits main.",
+                      },
+                    },
+                    {
+                      label:
+                        "Skip the commit and push the resolved files straight to test01.",
+                      outcome: {
+                        kind: "wrong",
+                        explanation:
+                          "You cannot 'push to test01' directly — staging is deployed FROM main (or a release branch) after merge. The PR is the review gate.",
+                      },
+                    },
+                  ],
+                },
+              },
+            },
             modelAnswer:
-              "A strong answer covers all three parts in plain language. Example: (a) The frontend is the React app the user sees in the browser; the backend handles data, auth, and business logic — they communicate via GraphQL. (b) Staging (test01, uat01) is a copy of production where changes are tested before real users see them — a bug on staging is embarrassing, a bug on production costs money. (c) Branch names start with the Jira ticket so anyone reading the Git log can immediately find the spec, business context, and discussion for that change without asking the author. Answers that just list bullet points from the lesson without explanation score lower.",
+              "Correct path: open the file, read both versions, merge them intentionally, run the app, commit, push, PR. Wrong paths: hard reset (loses work), force push (overwrites teammates), blind AI auto-resolve (silent regressions), 'newer wins' (silently drops one side's intent).",
           },
         ],
       },
@@ -186,28 +366,15 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-2-3",
             lessonId: "lesson-2",
-            title: "Explore the codebase — staged investigation",
+            title: "Run fohlio-frontend locally + explore the codebase",
             description:
-              "This task has three stages. Stage 1 — Predict: before opening Cursor, write down where you think the login page file is located in fohlio-frontend. Take a guess based on what you know about how web projects are structured. Stage 2 — Investigate: open fohlio-frontend in Cursor. Find: the login page file, where the GraphQL queries are defined, and what 'make s' actually runs (open the Makefile). Stage 3 — Compare: how close was your prediction? What surprised you about the file structure? Submit all three stages as a single text reply. Metacognitive memo: what would an AI miss about this codebase that you only learned by navigating it yourself?",
+              "Clone fohlio-frontend, run 'make setup', 'make use-test01', 'make s', and open the printed localhost URL. Then open Cursor and find three things in the code: the login page file, where GraphQL queries are defined, and what 'make s' actually runs (open the Makefile). Submit one screenshot — the browser showing the Fohlio login page — and 3-4 sentences naming the file paths you found and one thing that surprised you about the structure.",
             category: "advanced",
-            submissionType: "text",
+            submissionType: "screenshot",
             order: 1,
-            estimatedMinutes: 30,
+            estimatedMinutes: 35,
             modelAnswer:
-              "A strong response shows genuine prediction in Stage 1 (even a wrong guess is fine — 'I thought it would be in src/pages/login.tsx'). Stage 2 should name actual file paths, not just folders. Stage 3 should contrast the prediction with reality. The metacognitive memo should mention something like folder naming conventions, the FSD layer structure, or the Makefile abstraction — things you only understand by navigating, not by reading a description.",
-          },
-          {
-            id: "task-2-4",
-            lessonId: "lesson-2",
-            title: "Why staging — elaborative interrogation",
-            description:
-              "Answer in your own words: (1) Why do teams use staging servers instead of testing changes directly on production? What specific bad outcomes would happen without staging? (2) Why is it dangerous to test on production even if you are very careful and revert quickly if something goes wrong?",
-            category: "advanced",
-            submissionType: "text",
-            order: 2,
-            estimatedMinutes: 15,
-            modelAnswer:
-              "(1) Without staging, every untested change goes immediately to real users. A broken deployment could take down the login page for paying customers, corrupt data, or expose a security bug before anyone notices. Staging lets you discover these issues in a controlled environment where only the team can see them. (2) Even a 30-second production incident is logged, noticed by monitoring tools, and potentially seen by customers. Some failures are not instantly reversible — a bad database migration can corrupt data before you realize it. 'Revert quickly' assumes you notice immediately, which is rarely true.",
+              "A correct screenshot shows the Fohlio login page at a localhost URL. The reflection should name real file paths (not just folder names) for the login page and a GraphQL query, plus what 'make s' wraps. Surprises are usually about the FSD layer numbering, the Makefile abstraction, or how thin individual files are. If 'make s' errors: likely wrong Node version, missing yarn deps, or missing .env.local — message Ivan.",
           },
         ],
       },
@@ -241,28 +408,111 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-3-1",
             lessonId: "lesson-3",
-            title: "Clone fohlio-frontend and run it locally",
+            title: "Fill in a real Fohlio .env.local",
             description:
-              "Install nvm and Node.js v20.12.2. Set up GitHub CLI token: run 'gh auth refresh -s read:packages' then set the yarn npm token (command from the lesson). Clone fohlio-frontend, run make setup, make use-test01, make s. Send a screenshot of the browser showing the running Fohlio app. If you get stuck at any step, include the terminal error in your screenshot.",
+              "Fill in the missing pieces of a Fohlio frontend .env.local file. Each blank teaches you which variable controls what. There is one canonical correct value per blank — match exactly what the lesson and the Makefile expect.",
             category: "required",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 1,
-            estimatedMinutes: 35,
+            estimatedMinutes: 12,
+            widgetId: "code-fill",
+            widgetConfig: {
+              language: "bash",
+              code: "# fohlio-frontend / .env.local\n# Tells the React app which backend to talk to:\nREACT_APP_API_URL=https://{{1}}.fohlio.com/graphql\n\n# Node version pinned by .nvmrc (use 'nvm use' to activate):\nNODE_VERSION={{2}}\n\n# Token used by yarn to download @fohlio/ui-kit from GitHub Packages.\n# Generated by: gh auth refresh -s read:packages\nNPM_AUTH_TOKEN={{3}}\n\n# Which dev environment 'make s' should point at by default:\nFOHLIO_ENV={{4}}\n",
+              blanks: [
+                {
+                  id: "1",
+                  placeholder: "staging hostname",
+                  answer: "test01",
+                  accept: ["test01", "uat01"],
+                },
+                {
+                  id: "2",
+                  placeholder: "Node version",
+                  answer: "20.12.2",
+                  accept: ["20.12.2", "v20.12.2"],
+                },
+                {
+                  id: "3",
+                  placeholder: "gh token env var",
+                  answer: "$GITHUB_TOKEN",
+                  accept: [
+                    "$GITHUB_TOKEN",
+                    "${GITHUB_TOKEN}",
+                    "GITHUB_TOKEN",
+                  ],
+                },
+                {
+                  id: "4",
+                  placeholder: "default env",
+                  answer: "test01",
+                  accept: ["test01"],
+                },
+              ],
+            },
             modelAnswer:
-              "A correct screenshot shows the Fohlio app running in the browser at a localhost URL. Key checks: (1) the browser shows the login page or dashboard, not an error screen; (2) no red terminal errors in the background; (3) you are using Node 20.12.2 — run 'node --version' and include it if unsure. Common failures: wrong Node version (nvm not activated), missing GitHub token (yarn install fails with 401), missing .env.local (blank white page). For .env.local, message Ivan in Slack.",
+              "Blank 1 = test01 (staging hostname used by 'make use-test01'). Blank 2 = 20.12.2 (pinned by .nvmrc — wrong Node version is the #1 cause of 'make setup' failing). Blank 3 = $GITHUB_TOKEN (yarn needs read:packages to install @fohlio/ui-kit from GitHub Packages — 401 = missing token). Blank 4 = test01 (the env 'make s' points at unless you switch).",
           },
           {
             id: "task-3-2",
             lessonId: "lesson-3",
-            title: "Describe what one FSD layer does — in your own words",
+            title: "FSD layers — where does each thing belong?",
             description:
-              "Pick any one layer from the FSD structure (1-app, 2-pages, 3-widgets, 4-features, 5-entities, or 6-shared). In 3-5 sentences, explain: (a) what kind of code belongs in that layer, (b) what kind of code must NOT go there and why, and (c) give one concrete example of something you found in that layer when you browsed the fohlio-frontend codebase. Do not just quote the lesson definition — use your own words and your own example from the real codebase.",
+              "Three short multiple-choice questions about the FSD (Feature-Sliced Design) structure inside fohlio-frontend's src/__fsd__/. Pick the layer, then write one sentence justifying the choice. Open the actual folder if you need to check.",
             category: "required",
-            submissionType: "text",
+            submissionType: "widget",
             order: 2,
-            estimatedMinutes: 25,
+            estimatedMinutes: 15,
+            widgetId: "quiz-explain",
+            widgetConfig: {
+              minExplanationWords: 12,
+              questions: [
+                {
+                  id: "q1",
+                  prompt:
+                    "You are building the 'Create New Project' page. The page itself — its route, its layout, the data it loads on mount — should live in which layer?",
+                  options: [
+                    { id: "app", label: "1-app" },
+                    { id: "pages", label: "2-pages" },
+                    { id: "widgets", label: "3-widgets" },
+                    { id: "shared", label: "6-shared" },
+                  ],
+                  correctOptionId: "pages",
+                  rubric:
+                    "Pages own the route + composition. App is for providers and global config; widgets are reusable UI blocks like a sidebar; shared is for cross-feature primitives.",
+                },
+                {
+                  id: "q2",
+                  prompt:
+                    "You wrote a small Button component that the entire app reuses — no business logic, no API calls, just a styled button. Which layer?",
+                  options: [
+                    { id: "entities", label: "5-entities" },
+                    { id: "features", label: "4-features" },
+                    { id: "shared", label: "6-shared" },
+                    { id: "pages", label: "2-pages" },
+                  ],
+                  correctOptionId: "shared",
+                  rubric:
+                    "Shared is for cross-cutting UI primitives and helpers with no business meaning. Entities = data models like User/Project; features = a single user-facing capability; pages = full routes.",
+                },
+                {
+                  id: "q3",
+                  prompt:
+                    "A 'User' object — its TypeScript type, its GraphQL query, the hook that fetches it — should live in which layer?",
+                  options: [
+                    { id: "pages", label: "2-pages" },
+                    { id: "features", label: "4-features" },
+                    { id: "entities", label: "5-entities" },
+                    { id: "shared", label: "6-shared" },
+                  ],
+                  correctOptionId: "entities",
+                  rubric:
+                    "Entities are reusable data models — the shape + how to fetch it. Pages would couple the User type to one screen; features are about user actions; shared is too generic.",
+                },
+              ],
+            },
             modelAnswer:
-              "A strong answer names a specific layer and gives a concrete example from the actual codebase (e.g. 'In 5-entities I found a User entity that defines the shape of a user object and its API query — this is correct because entities are reusable data models. Business logic like redirecting after login does NOT belong here because that is a feature, not a data model'). Answers that just repeat the layer names without a real example from the codebase score lower. The goal is to demonstrate that you actually opened the folder and looked.",
+              "Q1 = pages (a route + composition lives in 2-pages). Q2 = shared (a generic Button is a cross-cutting primitive in 6-shared). Q3 = entities (the User data model + its query are in 5-entities so every feature can reuse it). The general rule: lower-numbered layers may import from higher-numbered ones, never the other way.",
           },
         ],
       },
@@ -273,28 +523,15 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-3-3",
             lessonId: "lesson-3",
-            title: "Challenge Cursor AI and catch its mistake",
+            title: "Challenge Cursor AI on the FSD structure",
             description:
-              "Open fohlio-frontend in Cursor. Ask Cursor chat (Cmd+L) to explain the FSD layer structure of this specific project. Then: navigate the actual src/__fsd__/ folder yourself and find at least one place where Cursor's explanation was wrong, incomplete, or too generic. Write up: (a) what Cursor said, (b) what you actually found in the codebase that contradicts or refines it, (c) why you think Cursor got it wrong (training data, hallucination, over-generalization?). Metacognitive memo: what does this exercise tell you about when to trust AI explanations of a codebase vs when to verify yourself?",
+              "Open fohlio-frontend in Cursor. Ask Cursor chat (Cmd+L) to explain the FSD layer structure of this specific project. Then navigate src/__fsd__/ yourself and find at least one place where Cursor's explanation was wrong, incomplete, or too generic. Write up: (a) what Cursor said, (b) what you actually found that contradicts or refines it, (c) why you think Cursor got it wrong (training data, hallucination, over-generalization?). Metacognitive memo: when do you trust AI explanations of a codebase, and when do you verify?",
             category: "advanced",
             submissionType: "text",
             order: 1,
             estimatedMinutes: 30,
             modelAnswer:
-              "A strong response shows a genuine discrepancy — Cursor may give a textbook FSD explanation that doesn't match Fohlio's specific numbering convention (1-app through 6-shared), or it may miss project-specific patterns. The key is that you actually navigated the code to verify. The metacognitive memo should reach a concrete conclusion, e.g. 'AI is good for orientation but you must verify against the actual file tree for any specific project claim'. Vague answers ('Cursor was mostly right') without a specific example score lower.",
-          },
-          {
-            id: "task-3-4",
-            lessonId: "lesson-3",
-            title: "Why environment variables — elaborative interrogation",
-            description:
-              "Answer in your own words: (1) Why are API keys and database URLs stored in .env.local files instead of directly in the code? What specifically would go wrong if a developer committed an API key to the git repository? (2) Why does the same codebase need different .env files for development, staging, and production? What breaks if you use the production database URL in development?",
-            category: "advanced",
-            submissionType: "text",
-            order: 2,
-            estimatedMinutes: 20,
-            modelAnswer:
-              "(1) If an API key is committed to git, it becomes part of the permanent history of the repository. Anyone with access to the repo — now or in the future — can read it. On public repos, automated scanners find and abuse exposed keys within minutes. Even on private repos, rotating the key requires a git history rewrite or accepting the risk. (2) If development connects to the production database, every test, seed script, or accidental delete runs against real customer data. A developer running a migration locally would migrate production. Using staging/dev databases creates an isolated sandbox where mistakes are recoverable.",
+              "A strong response names a real discrepancy — e.g. Cursor gives a textbook FSD explanation that misses Fohlio's specific 1- through 6- numbering convention, or invents a layer that doesn't exist. The metacognitive memo should land on a concrete rule like 'AI is good for orientation but for any project-specific claim — file paths, naming conventions, internal patterns — I verify against the actual tree before quoting it.'",
           },
         ],
       },
@@ -334,28 +571,100 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-4-1",
             lessonId: "lesson-4",
-            title: "Install Claude Desktop and connect Notion + Jira",
+            title: "Match the AI building blocks",
             description:
-              "Download Claude Desktop from claude.ai/download. Go to Settings → Connectors and connect two tools: (1) Notion — click Add Connector, enter https://mcp.notion.com/mcp, complete OAuth. Ask Claude to summarize any Notion page. (2) Atlassian — add the Atlassian connector and connect it to our Jira. Ask Claude 'What are my open tickets?' or 'Summarize ticket FOH-XXXX'. Send one screenshot showing Claude successfully answering a question that required reading from one of these tools. Note: MCP connectors require a Pro/Max/Team Claude plan — message Ivan in Slack if you need access.",
+              "Match each term from Lesson 4 to its plain-English definition. These five words — LLM, context window, agent, MCP, skill — are the vocabulary you will use for the rest of the course.",
             category: "required",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 1,
-            estimatedMinutes: 30,
+            estimatedMinutes: 10,
+            widgetId: "concept-match",
+            widgetConfig: {
+              pairs: [
+                {
+                  id: "llm",
+                  term: "LLM (Large Language Model)",
+                  definition:
+                    "A model trained to predict the next token of text — the underlying engine behind Claude, ChatGPT, Gemini.",
+                },
+                {
+                  id: "context",
+                  term: "Context window",
+                  definition:
+                    "The total amount of text (in tokens) the model can see in one conversation — older messages fall out or lose weight when it fills up.",
+                },
+                {
+                  id: "chatbot",
+                  term: "Chatbot",
+                  definition:
+                    "Single-turn responder — answers from what it already knows; no tools, no autonomous multi-step actions.",
+                },
+                {
+                  id: "agent",
+                  term: "Agent",
+                  definition:
+                    "An LLM that can call tools, run multiple steps autonomously, observe results, and adapt — does work, not just answers.",
+                },
+                {
+                  id: "mcp",
+                  term: "MCP (Model Context Protocol)",
+                  definition:
+                    "An open standard that lets an AI client discover and invoke external tools (Notion, Jira, GitHub) without bespoke per-tool code.",
+                },
+                {
+                  id: "skill",
+                  term: "Skill",
+                  definition:
+                    "A packaged, reusable workflow with a trigger description — teaches the agent HOW you want a recurring task done.",
+                },
+              ],
+            },
             modelAnswer:
-              "A correct screenshot shows Claude's response to a question that required live data from Notion or Jira — not a generic answer Claude would give without the connector. Look for: Claude mentioning specific page names, ticket numbers, or content that only exists in your actual Notion or Jira. A screenshot of the Connectors settings page showing the tools listed is helpful but not sufficient on its own — we need to see Claude using the data. If a connector fails, include the error and what you tried.",
+              "LLM = next-token model under the hood; context window = how much text it can hold at once; chatbot = single-turn answers; agent = multi-step tool user; MCP = standard plug for tools; skill = packaged workflow with a trigger. The canonical mental model from the lesson: MCP = Hands, Skills = Brain, Subagents = Workers.",
           },
           {
             id: "task-4-2",
             lessonId: "lesson-4",
-            title: "Explain chatbot vs agent — in your own words",
+            title: "Chatbot or agent — pick the real distinction",
             description:
-              "Write 3-5 sentences explaining the difference between a chatbot and an agent. Requirements: (1) use a concrete example that is NOT from this lesson (not the travel-booking example); (2) explain what specifically the agent does that the chatbot cannot; (3) mention why this difference matters for a GTM team member's daily work. Do not quote the lesson — use your own analogy and your own example.",
+              "Someone on the GTM team asks you 'so what is the actual difference between Claude in the browser and an agent? Aren't they both just AI?'. Pick the most accurate answer below and justify it in your own words — at least 30 words. The justification must use a concrete multi-step example, NOT the travel-booking example from the lesson.",
             category: "required",
-            submissionType: "text",
+            submissionType: "widget",
             order: 2,
-            estimatedMinutes: 20,
+            estimatedMinutes: 15,
+            widgetId: "mcq-justify",
+            widgetConfig: {
+              question:
+                "What is the real difference between a chatbot (Claude in the browser, ChatGPT default) and an agent?",
+              options: [
+                {
+                  id: "a",
+                  label:
+                    "Agents are bigger LLMs with more parameters; chatbots use smaller models.",
+                },
+                {
+                  id: "b",
+                  label:
+                    "Agents have access to tools and can take multiple autonomous steps — observe a result, decide what to do next, and act — while a chatbot is a single-turn responder.",
+                },
+                {
+                  id: "c",
+                  label:
+                    "Agents only work via API; chatbots only work in a browser.",
+                },
+                {
+                  id: "d",
+                  label:
+                    "Chatbots are always wrong; agents are always right.",
+                },
+              ],
+              correctOptionId: "b",
+              minJustificationWords: 30,
+              rubric:
+                "Strong justification names a concrete multi-step task the agent does that a chatbot cannot — e.g. 'find all my open Jira tickets, open the linked Notion page for each, draft a status update'. Tie it to a real GTM workflow you would actually delegate.",
+            },
             modelAnswer:
-              "A strong answer has three parts working together. Example: 'A chatbot is like asking a colleague a question — they answer from memory and that is where it ends. An agent is like giving that colleague a task and a set of tools: they go look things up, take actions, check the results, and report back. The key difference is that the agent can do multiple steps autonomously — for example, finding all open Jira tickets assigned to me, checking the corresponding Notion spec for each, and drafting a status update. For a GTM team member, this means I can delegate a 20-minute research task instead of just asking a single question.' Answers that just say 'chatbots respond, agents act' without a concrete multi-step example score lower.",
+              "B is correct. The size of the model is independent — both can use the same LLM. What makes something an agent is the tool loop: read user goal, call a tool (Jira, Notion, web), observe the result, decide the next step, repeat until done. A chatbot ends after one reply. For GTM, that is the difference between 'tell me about HubSpot' and 'pull my 10 open opportunities, summarize each, flag the ones with no activity in 14 days'.",
           },
         ],
       },
@@ -366,28 +675,15 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-4-3",
             lessonId: "lesson-4",
-            title: "Find the edge of the agent — process-visible task",
+            title: "Find the edge of the agent — real task on real data",
             description:
-              "Give Claude Desktop (with at least Notion and Jira connected) a real multi-step task from your actual work this week — something that requires looking at 2+ sources and producing a useful output. Run it. Then: (a) describe the task and paste or summarize Claude's output; (b) identify one specific thing Claude got wrong or couldn't do — not a hypothetical, something that actually happened in this run; (c) explain why you think it failed there (context window? missing connector? bad reasoning?). Metacognitive memo: what does this tell you about which tasks are safe to delegate to an agent vs which ones need human judgment?\n\nNote: this task is deliberately harder than the lesson examples — finding the failure mode is the goal.",
+              "Install Claude Desktop, connect Notion and Jira via Settings → Connectors. Give Claude a real multi-step task from your work this week — something that requires looking at 2+ sources and producing a useful output. Run it. Then write: (a) the task and a summary of Claude's output, (b) one specific thing Claude got wrong or couldn't do (real, not hypothetical), (c) your theory of why it failed (context window? missing connector? bad reasoning?). Metacognitive memo: which kinds of tasks are safe to delegate to an agent, and which still need human judgment?",
             category: "advanced",
             submissionType: "text",
             order: 1,
             estimatedMinutes: 35,
             modelAnswer:
-              "A strong response names a real task (e.g. 'I asked Claude to summarize all my open Jira tickets and cross-reference the related Notion specs'). The failure should be specific and real — Claude hallucinated a ticket number, missed a page because it was in a different Notion workspace, lost track of context partway through, or gave a confident wrong answer. The metacognitive memo should reach a concrete rule of thumb, e.g. 'tasks with verifiable outputs (find this ticket, read this page) are safer than tasks requiring judgment (prioritize these tickets by business impact)'. Generic answers ('AI is good but not perfect') score lower.",
-          },
-          {
-            id: "task-4-4",
-            lessonId: "lesson-4",
-            title: "Why the context window matters — elaborative interrogation",
-            description:
-              "Answer in your own words: (1) Why does the context window cause problems in long conversations, even if the total text fits within the limit? What specifically happens to the quality of responses as context fills up? (2) Why can't AI companies just make the context window unlimited? What are the real constraints?",
-            category: "advanced",
-            submissionType: "text",
-            order: 2,
-            estimatedMinutes: 20,
-            modelAnswer:
-              "(1) Even before hitting the hard limit, long contexts degrade quality because the model's attention is spread across more tokens — older information gets less 'weight' in the response. In practice, instructions given at the start of a long conversation are followed less precisely near the end. The model may also start contradicting itself or forgetting constraints you set early on. (2) Processing more tokens requires proportionally more compute (attention is quadratic in context length). A 10x longer context doesn't cost 10x more — it costs much more. There are also physical memory limits on current hardware. Researchers are working on efficient attention mechanisms, but there is no free lunch: longer context = higher latency and cost per response.",
+              "A strong response names a real task ('summarize my 8 open Jira tickets and cross-reference the linked Notion specs'), a specific failure (hallucinated ticket number, missed a page in a separate workspace, lost a constraint partway through), and a plausible cause (context filled up, connector scope was too narrow, ambiguous prompt). The memo should land on a concrete rule like 'verifiable look-up tasks are safe; tasks requiring judgment on business impact still need a human checkpoint.'",
           },
         ],
       },
@@ -451,28 +747,155 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-5-1",
             lessonId: "lesson-5",
-            title: "Connect 3 MCP tools and solve a real work question",
+            title: "API or MCP — pick the right tool for the job",
             description:
-              "Connect at least 3 tools in Claude Desktop via Settings → Connectors (Notion, Atlassian/Jira, plus one more of your choice). Then find a real question from your actual work this week that requires looking at 2+ of those sources. Ask Claude with all tools connected. Send one screenshot showing Claude's answer to your real question. In 2-3 sentences: what surprised you, and how long would this have taken before MCP? (Tip: use a question you actually needed answered, not a demo question — transfer to real work is the point.)",
+              "A teammate asks you whether to use 'the regular HubSpot API' or 'an MCP connector' for their AI workflow. Walk this scenario down the decision tree. At each branch, pick the choice you think is right — wrong picks include the most common GTM misconceptions about MCP.",
             category: "required",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 1,
-            estimatedMinutes: 35,
+            estimatedMinutes: 15,
+            widgetId: "decision-tree",
+            widgetConfig: {
+              rootId: "start",
+              nodes: {
+                start: {
+                  id: "start",
+                  question:
+                    "Your teammate wants Claude Desktop to read HubSpot deals and post a weekly summary in Slack. They ask: should we use the HubSpot REST API directly or set up the HubSpot MCP server?",
+                  options: [
+                    {
+                      label:
+                        "REST API. APIs are the universal way to talk to services — MCP is just a buzzword on top.",
+                      outcome: {
+                        kind: "wrong",
+                        explanation:
+                          "Calling HubSpot's REST API directly means writing custom code for auth, pagination, retries, and re-doing it for every other AI client. MCP exists precisely to remove that per-tool integration work.",
+                      },
+                    },
+                    {
+                      label:
+                        "MCP. Claude Desktop can discover the HubSpot MCP tools at runtime and call them with no custom code on our side.",
+                      nextNodeId: "next",
+                    },
+                    {
+                      label:
+                        "Build a custom Claude plugin from scratch in Python.",
+                      outcome: {
+                        kind: "suboptimal",
+                        explanation:
+                          "Possible but wasteful — HubSpot already publishes an official MCP server. Building a custom integration duplicates work that the MCP standard already solves.",
+                      },
+                    },
+                  ],
+                },
+                next: {
+                  id: "next",
+                  question:
+                    "Good. Now your teammate asks: 'so if MCP is so universal, why does Claude Desktop ALSO need the Notion connector and the Atlassian connector? Why not just one MCP?'",
+                  options: [
+                    {
+                      label:
+                        "Because each MCP server only exposes ONE tool — Notion needs its own server, Atlassian needs its own server. MCP is the standard PLUG; each tool ships its own server.",
+                      nextNodeId: "final",
+                    },
+                    {
+                      label:
+                        "Because Claude Desktop has bugs that require separate connectors per tool.",
+                      outcome: {
+                        kind: "wrong",
+                        explanation:
+                          "Not a bug. The MCP standard is intentionally one server per service — like having one USB cable but plugging in different devices.",
+                      },
+                    },
+                    {
+                      label:
+                        "Because Anthropic charges per connector.",
+                      outcome: {
+                        kind: "wrong",
+                        explanation:
+                          "No — MCP is an open standard, anyone can build a server. Connector count is about the number of tools you want to expose, not pricing.",
+                      },
+                    },
+                  ],
+                },
+                final: {
+                  id: "final",
+                  question:
+                    "Last question. You want to add a quick custom tool — 'fetch latest deals from our internal RevOps spreadsheet'. The team has 30 min. What is the right move?",
+                  options: [
+                    {
+                      label:
+                        "Write a tiny MCP server (a single Python or TypeScript file) that exposes one tool. Run it locally, point Claude Desktop at it.",
+                      outcome: {
+                        kind: "correct",
+                        explanation:
+                          "Exactly. A minimal MCP server can be one file with one tool. Once it follows the protocol, ANY MCP client — Claude Desktop, Cursor, Manus — can use it.",
+                      },
+                    },
+                    {
+                      label:
+                        "Wait for Anthropic to ship an official 'spreadsheet' connector.",
+                      outcome: {
+                        kind: "wrong",
+                        explanation:
+                          "MCP is open — you do not need to wait. The whole point is that anyone can build a server in their own language.",
+                      },
+                    },
+                    {
+                      label:
+                        "Copy-paste the spreadsheet contents into Claude's chat every week.",
+                      outcome: {
+                        kind: "suboptimal",
+                        explanation:
+                          "Works once, doesn't scale, and burns context window every time. MCP exists to remove this kind of manual paste.",
+                      },
+                    },
+                  ],
+                },
+              },
+            },
             modelAnswer:
-              "A correct screenshot shows Claude answering a genuine work question using data from at least two connected tools — for example, cross-referencing a Jira ticket with a Notion spec, or pulling a GitHub PR and its linked issue. The 2-3 sentence reflection should be specific: 'I asked Claude to find all Jira tickets tagged with my name and match them to the Notion pages they reference. It took 40 seconds. Manually this would have been 15 minutes of tab-switching.' Vague answers ('it was faster than expected') score lower.",
+              "Correct path: prefer MCP over direct API (1 standard vs N bespoke integrations), accept that each tool ships its own server (the USB analogy), and recognize that you can write your own MCP server for any internal data source in under an hour. MCP is the plug, the servers are the devices, the clients (Claude Desktop, Cursor, Manus) all speak the same protocol.",
           },
           {
             id: "task-5-2",
             lessonId: "lesson-5",
-            title: "Design your MCP workflow — current vs future state",
+            title: "Order the steps of adding an MCP server",
             description:
-              "This is a cumulative task combining Lessons 3 and 5. Think about your role and a repeated weekly task. Write up the workflow in this exact format:\n\nTool stack: [list 3-5 MCP tools you would connect]\nOld way: [describe how you do this task today, step by step — be specific]\nMCP way: [describe how Claude + MCP would handle it]\nEstimated time saved per week: [your honest estimate in minutes]\nArchitecture note: In Lesson 3 you learned that fohlio-frontend communicates with the backend via GraphQL. How is MCP's tool protocol similar to or different from that pattern? (2-3 sentences — connect the technical concept from L3 to what you now understand about MCP.)",
+              "Put the steps of adding the Notion MCP server to Claude Desktop in the right order. This is the exact flow from Part 4 of the lesson — get it right and you can do it from memory next time.",
             category: "required",
-            submissionType: "text",
+            submissionType: "widget",
             order: 2,
-            estimatedMinutes: 30,
+            estimatedMinutes: 8,
+            widgetId: "flow-order",
+            widgetConfig: {
+              prompt:
+                "Order the steps to connect Notion to Claude Desktop via MCP.",
+              steps: [
+                {
+                  id: "1",
+                  label: "Open Claude Desktop → Settings → Connectors.",
+                },
+                {
+                  id: "2",
+                  label: "Click 'Add Connector' and paste the URL https://mcp.notion.com/mcp.",
+                },
+                {
+                  id: "3",
+                  label: "Complete the OAuth flow in the popup — sign in to Notion and grant access.",
+                },
+                {
+                  id: "4",
+                  label: "Confirm the connector appears in the list with a green 'Connected' badge.",
+                },
+                {
+                  id: "5",
+                  label: "Open a new chat and ask Claude to read a specific Notion page to verify the tool actually works.",
+                },
+              ],
+            },
             modelAnswer:
-              "A strong workflow answer is role-specific and concrete. The architecture note is the key check: a good answer notices that both GraphQL and MCP define a typed interface between a client and a data source — GraphQL queries specific fields from the backend, MCP requests specific tools from a server. The difference is that MCP is designed for AI agents to discover and invoke tools dynamically, whereas GraphQL is a fixed schema the developer writes against. Answers that just say 'both are ways to get data' without noting the dynamic discovery aspect are incomplete.",
+              "Open Settings → Connectors. Add Connector with the MCP URL. Do the OAuth. Confirm the green Connected badge. Test with a real question in a fresh chat. The verification step is critical — a 'Connected' badge does not guarantee Claude can read the data; only a real query proves the tool surface is exposed correctly.",
           },
         ],
       },
@@ -483,28 +906,15 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-5-3",
             lessonId: "lesson-5",
-            title: "Try Manus vs Claude Desktop — comparative judgment",
+            title: "Run a real cross-tool workflow + reflect",
             description:
-              "Give the same real task to both Manus (manus.im) and Claude Desktop with your connected MCP tools. The task should be something requiring research + synthesis (e.g. analyze a competitor, draft an account brief, summarize a set of Jira tickets). Run both. Then write: (a) what each tool produced, (b) which was better for this task and why, (c) for what type of GTM task would you use Manus vs Claude Desktop going forward? Send a screenshot of one result (whichever was more interesting). Metacognitive memo: what assumption did you have before running this that the experiment changed?",
+              "Connect at least 3 MCP tools in Claude Desktop (Notion, Atlassian/Jira, plus one more — HubSpot, GitHub, Linear, anything from the lesson's catalog). Then pick one real question from your work this week that requires 2+ sources. Run it. Send a screenshot of Claude's answer. Then write 4-6 sentences answering all three: (a) the question and the result, (b) how long the manual version would take, (c) what specifically broke or surprised you — context window? Permission scope? Wrong tool picked by Claude?",
             category: "advanced",
             submissionType: "screenshot",
             order: 1,
-            estimatedMinutes: 40,
+            estimatedMinutes: 35,
             modelAnswer:
-              "A strong answer runs the same task on both tools and makes a genuine comparison — not 'Manus was better' but 'Manus produced a more structured report because it can browse the web autonomously, while Claude Desktop with MCP was faster for tasks entirely within tools I had already connected.' The metacognitive memo should name a real changed assumption, e.g. 'I assumed Claude Desktop would be slower because it needs connectors pre-configured, but it was actually more accurate on internal data.' Answers that only run one tool score lower.",
-          },
-          {
-            id: "task-5-4",
-            lessonId: "lesson-5",
-            title: "Why MCP instead of direct API calls — elaborative interrogation",
-            description:
-              "Answer in your own words: (1) If an AI model can already call APIs directly with the right code, why does MCP exist as a separate standard? What problem does it solve that 'just call the API' does not? (2) Why is the standardization aspect of MCP valuable, and not just the ability to connect tools? What breaks without a standard?",
-            category: "advanced",
-            submissionType: "text",
-            order: 2,
-            estimatedMinutes: 20,
-            modelAnswer:
-              "(1) Calling an API directly requires writing integration code for every service, handling authentication differently for each, and the AI model cannot discover what a service can do — it must be pre-programmed. MCP gives services a standard way to advertise their capabilities so an AI agent can discover tools at runtime without bespoke integration code per service. (2) Without a standard, every AI client (Claude, GPT, Gemini) would need a custom connector for every tool. Tool builders would have to publish four versions of their integration. With a standard, you build the MCP server once and any compliant client works. This is exactly the USB analogy: before USB, every device needed a different port on the computer.",
+              "A correct screenshot shows Claude answering a genuine cross-tool work question — visible Jira ticket IDs cross-referenced with Notion page titles, or PRs linked to issues. Strong reflections are specific: 'Took 40 seconds; manually 15 minutes of tab-switching. Surprise: Claude picked the wrong workspace in Notion at first because two workspaces have similar names — I had to clarify which one.' Vague reflections ('it was fast') score lower.",
           },
         ],
       },
@@ -609,28 +1019,125 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-1",
             lessonId: "lesson-6",
-            title: "Run a Playbook and build your first Skill",
+            title: "Skill vs prompt vs MCP — which is which?",
             description:
-              "Part A — Playbook: Open manus.im/playbook and pick one playbook matching your role (Sales: B2B Sales Deck Generator / Sales Funnel Builder; Marketing: Reddit Sentiment Analyzer / Marketing Presentation Maker; CS: Account Health Analyzer; RevOps: Commission Calculator; PMM: PRD Templates). Run it on a real task from this week. Part B — Skill: In the same or a new Manus conversation, run a repeated weekly task end-to-end, then type 'Package this workflow into a Skill.' Open the Skill Library, rename it to kebab-case, and trigger it with /your-skill-name in a fresh chat. Send one screenshot showing the skill activated via slash command. In 3-4 sentences: what worked, what surprised you, and how long the manual version of this task takes you normally.",
+              "Pick the answer that captures the canonical mental model from this lesson: MCP = Hands, Skills = Brain, Subagents = Workers. Then justify your choice in at least 30 words, using a concrete example from your role (sales, marketing, CS, RevOps, or PMM).",
             category: "required",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 1,
-            estimatedMinutes: 40,
+            estimatedMinutes: 12,
+            widgetId: "mcq-justify",
+            widgetConfig: {
+              question:
+                "A teammate asks: 'I already have MCP connectors set up. Why would I also need a Skill? Isn't that the same thing?' What's the right answer?",
+              options: [
+                {
+                  id: "a",
+                  label:
+                    "Skills and MCP are the same thing — Skills are just a rebrand of MCP servers.",
+                },
+                {
+                  id: "b",
+                  label:
+                    "MCP gives the agent HANDS (the ability to call external tools like Jira or HubSpot); a Skill is the BRAIN — a packaged, reusable workflow that tells the agent HOW you want a specific recurring task done. You need both.",
+                },
+                {
+                  id: "c",
+                  label:
+                    "Skills replace MCP — once you have a Skill you can uninstall your MCP servers.",
+                },
+                {
+                  id: "d",
+                  label:
+                    "MCP is for engineers; Skills are for non-engineers — they cannot be used together.",
+                },
+              ],
+              correctOptionId: "b",
+              minJustificationWords: 30,
+              rubric:
+                "Strong justification names a concrete workflow from your role where the Skill (the procedure) AND the MCP tools (Jira, Notion, HubSpot) work together — e.g. 'my account-brief Skill reads Jira tickets via MCP, then formats the brief in the Fohlio voice from my Project knowledge files.'",
+            },
             modelAnswer:
-              "A correct screenshot shows the slash command /your-skill-name typed in a fresh Manus chat and the skill responding with structured output — not a generic AI response. Key checks: the skill name is in kebab-case, the output is recognizably shaped by the workflow you ran (not a blank template), and the slash command triggered it (not a manual prompt). The 3-4 sentence reflection should name something specific that surprised you about the auto-package experience — e.g. 'I expected to write YAML but Manus generated the SKILL.md entirely from the conversation' or 'The description it auto-wrote was too generic and I had to rewrite it.'",
+              "B is correct. MCP = Hands (the connectors that let the agent reach into Notion, Jira, HubSpot). Skill = Brain (the packaged know-how — when to do something, what steps, in what format). A renewal-brief Skill calls the HubSpot MCP for account data and the Notion MCP for the spec, then assembles the brief in your team's voice. Take away MCP and the Skill has nothing to reach for; take away the Skill and you re-explain the workflow every time.",
           },
           {
             id: "task-6-2",
             lessonId: "lesson-6",
-            title: "Write a great Skill description — and connect it to L4",
+            title: "Spot the great Skill description",
             description:
-              "This is a cumulative task combining Lessons 4 and 6. Part A — Description: Open your skill from task #1 in the Manus Skill Library. Rewrite its description applying all four rules from Part 6: (1) WHAT + WHEN + trigger phrases; (2) matchable phrases front-loaded in the first 250 chars; (3) pushy trigger language; (4) describe WHEN, not HOW. Submit the description (under 1024 chars) plus one sentence per rule explaining how your description applies it. Part B — L4 connection: In Lesson 4 you learned the difference between a chatbot and an agent. In 2-3 sentences: is a Manus Skill closer to a chatbot or an agent behavior? Use the definition from L4 to justify your answer.",
+              "Three short multiple-choice questions about the four rules of a great Skill description: (1) WHAT + WHEN + triggers, (2) matchable phrases in the first 250 chars, (3) pushy trigger language, (4) describe WHEN, not HOW. Pick the better description in each pair and justify in one sentence.",
             category: "required",
-            submissionType: "text",
+            submissionType: "widget",
             order: 2,
-            estimatedMinutes: 30,
+            estimatedMinutes: 15,
+            widgetId: "quiz-explain",
+            widgetConfig: {
+              minExplanationWords: 12,
+              questions: [
+                {
+                  id: "q1",
+                  prompt:
+                    "Which description is more likely to actually trigger when a sales rep asks 'help me prep for my Acme renewal call next Tuesday'?",
+                  options: [
+                    {
+                      id: "a",
+                      label:
+                        "'This skill fetches account data from HubSpot, queries Jira for tickets, formats the output as a PDF using a template.'",
+                    },
+                    {
+                      id: "b",
+                      label:
+                        "'Use this skill whenever you need to prepare for a renewal call or account review — it pulls the account history, recent tickets, and product usage into a one-page brief.'",
+                    },
+                  ],
+                  correctOptionId: "b",
+                  rubric:
+                    "B leads with the trigger ('renewal call', 'account review') in the first 250 chars — matches the language a sales rep actually types. A describes HOW (fetches, queries, formats) which users never say.",
+                },
+                {
+                  id: "q2",
+                  prompt:
+                    "Which description follows the rule 'describe WHEN, not HOW'?",
+                  options: [
+                    {
+                      id: "a",
+                      label:
+                        "'Internally calls the GraphQL pipeline, serializes to JSON, then renders with handlebars.'",
+                    },
+                    {
+                      id: "b",
+                      label:
+                        "'Activate when you need to summarize a long Slack thread or stand-up notes into 3-5 bullets.'",
+                    },
+                  ],
+                  correctOptionId: "b",
+                  rubric:
+                    "B names the situation (long Slack thread, stand-up notes) — words the user types. A is internal implementation that no user describes a problem in.",
+                },
+                {
+                  id: "q3",
+                  prompt:
+                    "Which opening uses 'pushy trigger language' the way the lesson recommends?",
+                  options: [
+                    {
+                      id: "a",
+                      label:
+                        "'This skill can sometimes be useful in various marketing scenarios depending on context.'",
+                    },
+                    {
+                      id: "b",
+                      label:
+                        "'Use this skill whenever a customer asks for a comparison between Fohlio and a competitor — it produces a battlecard-style answer in our brand voice.'",
+                    },
+                  ],
+                  correctOptionId: "b",
+                  rubric:
+                    "B starts with 'Use this skill whenever...' — a clear, pushy trigger phrase tied to a specific scenario. A is hedged and vague and the agent will pass over it.",
+                },
+              ],
+            },
             modelAnswer:
-              "Part A: a strong description starts with a trigger phrase like 'Use this skill whenever...' or 'Activate when you need to...' followed immediately by the specific scenario. The first 250 characters should contain words a GTM person would naturally type when they need this help. Rule 4 means the description says 'when preparing a renewal call brief' not 'this skill fetches data from Jira and formats it into sections.' Part B: a Skill is closer to an agent behavior — it encodes a multi-step workflow with defined inputs and outputs, not a single-turn response. A chatbot (L4 definition) responds to one prompt; a Skill packages a sequence of steps that run autonomously. However, a Skill without live tool access (MCP) behaves more like a chatbot — the distinction depends on what connectors are active.",
+              "All three correct answers (B / B / B) follow the same pattern: lead with a pushy trigger phrase ('Use this skill whenever...', 'Activate when...'), front-load the words a user actually types ('renewal call', 'long Slack thread', 'comparison with a competitor'), and describe WHEN to invoke it, not HOW it works internally. Implementation detail is the skill's job; trigger words are what gets it found.",
           },
         ],
       },
@@ -641,28 +1148,15 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-3",
             lessonId: "lesson-6",
-            title: "Compose a Manus Project + Skill — with comparison",
+            title: "Build a Skill in Manus + compare with/without a Project",
             description:
-              "Create a Manus Project for your role (e.g. 'Fohlio Sales' or 'Fohlio CS'). Write a Master Instruction with your role, ICP, and 3-5 brand voice principles. Upload 2-3 knowledge files (battlecards, ICP doc, brand guidelines, or sales playbook). Run your skill from task #1 inside that Project. Then run the same skill outside the Project. Send a screenshot of both outputs. Write one paragraph comparing them: what changed, and why does persistent context in a Project change the output quality? Metacognitive memo: what assumption about AI context did this experiment update for you?",
+              "Part A: In Manus, run one repeated weekly workflow end-to-end, then type 'Package this workflow into a Skill.' Open the Skill Library, rename to kebab-case, trigger it with /your-skill-name in a fresh chat. Part B: Create a Manus Project ('Fohlio Sales', 'Fohlio CS' — your role). Write a Master Instruction with your role, ICP, 3-5 brand voice principles. Upload 2-3 knowledge files. Run your skill inside the Project, then outside it. Send one screenshot of the slash-command result and one paragraph (4-6 sentences) comparing the in-Project vs out-of-Project outputs — what specifically changed, and what does that tell you about how persistent context shapes Skill output?",
             category: "advanced",
             submissionType: "screenshot",
             order: 1,
-            estimatedMinutes: 40,
+            estimatedMinutes: 45,
             modelAnswer:
-              "A strong comparison paragraph names specific differences — e.g. 'Inside the Project, Claude referenced our ICP doc and used Fohlio's terminology for deal stages. Outside, it gave a generic B2B SaaS template. The Project's Master Instruction acted as persistent system context that shaped every output.' The metacognitive memo should update a belief, e.g. 'I assumed context was context — a long prompt would do the same thing. The Project showed that structured, persistent knowledge is different from dumping text into a single conversation.'",
-          },
-          {
-            id: "task-6-4",
-            lessonId: "lesson-6",
-            title: "Why the description is the make-or-break field — elaborative interrogation",
-            description:
-              "Answer in your own words: (1) Why does the skill description determine whether the agent triggers the skill at all? What is the agent actually doing when it decides which skill to use? (2) Why does 'describe WHEN not HOW' matter? If the description explains the steps in detail, why would that hurt rather than help?",
-            category: "advanced",
-            submissionType: "text",
-            order: 2,
-            estimatedMinutes: 20,
-            modelAnswer:
-              "(1) The agent uses the description as a semantic signal to match against the user's request. It is not reading a menu — it is doing a similarity match between the user's intent and the description text. If the description uses jargon or internal names that don't match how users phrase requests, the skill is invisible even if it is installed. (2) 'HOW' descriptions fill the character limit with implementation details that users never say. 'This skill fetches from Jira, formats into sections, and outputs a PDF' does not match any natural language request. 'Use this skill when preparing for a renewal call and you need a quick account brief' matches 'help me prep for my renewal with Acme Corp'. The HOW is the skill's job — the WHEN is the trigger.",
+              "A correct screenshot shows /your-skill-name triggered in a fresh Manus chat with recognizable structured output (not a generic AI reply). The paragraph should name concrete differences — inside the Project the output uses Fohlio terminology, references the ICP doc, follows the brand voice; outside it falls back to generic B2B SaaS templates. The takeaway: structured persistent context (Master Instruction + knowledge files) is qualitatively different from dumping the same text into one long prompt. The Skill is the procedure; the Project is the memory the procedure draws from.",
           },
         ],
       },

@@ -1,40 +1,70 @@
 [
   {
     "id": "mikroorm-task-3-1",
-    "title": "Build the full CRUD demo and capture the Identity Map cache hit",
-    "description": "Write or update main.ts with this sequence: (1) persist and flush a Book and three Articles, (2) update the Book title and soft-delete one Article by setting deletedAt, (3) flush again, (4) call em.findOne(Article, 1n) twice in a row. Run npm start with debug logging on. Submit a screenshot of the query log covering steps 3 and 4 — it must show: the batched UPDATE + DELETE in one transaction, then exactly one SELECT for both findOne calls (the second call returns the cached instance). No GitHub repo needed — paste the screenshot directly.",
+    "title": "Fill the missing pieces of a persist + flush + refind sequence",
+    "description": "A working example from Lesson 3: create one book, persist it, flush, then refetch it and assert the Identity Map handed back the same instance. Fill the three blanks.",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 1,
-    "modelAnswer": "The screenshot must show:\n1. A single BEGIN...COMMIT wrapping the UPDATE for the book title and the DELETE (or UPDATE for soft-delete) for the article — both in one flush transaction.\n2. One SELECT WHERE id = 1 after the flush.\n3. No second SELECT for the second findOne call — the Identity Map returns the same in-memory instance.\nIf you see two SELECTs: you likely called em.fork() or cleared the EM between the two findOne calls. The Identity Map is per-EM-instance — a new fork does not share the map.",
-    "estimatedMinutes": 25
+    "widgetId": "code-fill",
+    "widgetConfig": {
+      "language": "ts",
+      "code": "// archive-api: lesson 3 persist + flush + refind\nconst em = orm.em.fork();\nconst book = em.create(Book, { title: 'War and Peace' });\nem.{{1}}(book);\nawait em.{{2}}();\n\nconst again = await em.findOne(Book, book.id);\nconsole.log('same instance?', book {{3}} again);\n",
+      "blanks": [
+        {
+          "id": "1",
+          "placeholder": "register with the EM",
+          "answer": "persist",
+          "accept": ["persist"]
+        },
+        {
+          "id": "2",
+          "placeholder": "send everything in one transaction",
+          "answer": "flush",
+          "accept": ["flush"]
+        },
+        {
+          "id": "3",
+          "placeholder": "reference-equality operator",
+          "answer": "===",
+          "accept": ["===", "=="]
+        }
+      ]
+    },
+    "modelAnswer": "em.persist(book) registers the new entity (state: New -> Managed). em.flush() collects all managed changes and writes them in one transaction. After flush, findOne by the same PK returns the same in-memory instance, so book === again is true — proving the Identity Map handed back the canonical reference instead of constructing a fresh object.",
+    "estimatedMinutes": 10
   },
   {
     "id": "mikroorm-task-3-2",
-    "title": "Why does a by-title query still fire SQL even when the result is already in the map?",
-    "description": "In 4–6 sentences: why does MikroORM still issue a SELECT when you call em.findOne(Book, { title: 'War and Peace' }) twice in a row, even though it returns the same JS instance both times? What does the Identity Map use as its key, and why is that the right design? Submit as text.",
+    "title": "Predict the query log of a double findOne",
+    "description": "Predict exactly what the MikroORM debug log prints for this script: persist a Book, flush, then call em.findOne(Book, 1n) twice in a row. How many SELECTs will fire, and what does that prove about the Identity Map?",
     "category": "required",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 2,
-    "modelAnswer": "Core answer:\n1. The Identity Map is keyed by primary key, not by arbitrary filter conditions. MikroORM cannot know that '{ title: War and Peace }' resolves to id=42 without asking the database.\n2. After the first SELECT it registers the returned instance under id=42. On the second call, MikroORM sends the query again, receives id=42 in the result row, and then returns the already-managed JS instance instead of constructing a new one. You get the same object reference, but the SQL still fires.\n3. The alternative — caching by arbitrary filter — would require MikroORM to track every possible filter condition and invalidate those caches on every write. That is effectively a query cache, which is a separate, complex feature (and one Postgres already provides at the connection-pool level).\n4. Library analogy: the librarian can look up a book by catalogue number instantly; but 'the red book on the second shelf' requires a shelf walk even if you just asked that same question a minute ago.",
-    "estimatedMinutes": 15
+    "widgetId": "terminal-trace",
+    "widgetConfig": {
+      "prompt": "Predict the query log. The EM is freshly forked; debug logging is on.",
+      "command": "npm start  # runs: em.persist(book); await em.flush(); await em.findOne(Book, 1n); await em.findOne(Book, 1n);",
+      "expectedOutput": [
+        "[query] begin",
+        "[query] insert into \"book\" (\"title\") values ($1) returning \"id\"",
+        "[query] commit",
+        "[query] select \"b0\".* from \"book\" as \"b0\" where \"b0\".\"id\" = $1 limit $2",
+        "// second findOne: no SELECT — instance served from Identity Map"
+      ],
+      "fuzzy": true
+    },
+    "modelAnswer": "Expected log: BEGIN, one INSERT, COMMIT, then exactly ONE SELECT for the first findOne. The second findOne fires no SQL — MikroORM checks the Identity Map by PK first, finds the managed Book instance, and returns it. If you see a second SELECT, your EM was forked or cleared between the two calls.",
+    "estimatedMinutes": 12
   },
   {
     "id": "mikroorm-task-3-3",
     "title": "Cursor-based pagination — plan, run, revise (AI-resilient)",
-    "description": "Before writing any code, write a 3-step plan: (1) what SQL you expect findByCursor to generate for the first page, (2) what the opaque cursor string probably encodes, and (3) what happens to the cursor if you change the orderBy field mid-session.\n\nThen implement it: add 20 articles to your seed. Use em.findByCursor(Article, { first: 5, orderBy: { id: 'desc' } }) for page 1, then pass after: page.endCursor for page 2. Run it.\n\nRevision note: Compare the actual SQL and cursor string to your plan. What did you get wrong? What would you change in your plan? Submit: the plan, the actual cursor string (copy-paste), and your revision note (3–5 sentences).\n\nMetacognitive memo: What does cursor-based pagination solve that OFFSET pagination cannot? What would an AI answer about pagination probably miss from this exercise?",
+    "description": "Before writing any code, write a 3-step plan: (1) what SQL you expect findByCursor to generate for the first page, (2) what the opaque cursor string probably encodes, and (3) what happens to the cursor if you change the orderBy field mid-session.\n\nThen implement it: add 20 articles to your seed. Use em.findByCursor(Article, { first: 5, orderBy: { id: 'desc' } }) for page 1, then pass after: page.endCursor for page 2. Run it.\n\nRevision note: Compare the actual SQL and cursor string to your plan. What did you get wrong? What would you change in your plan? Submit: the plan, the actual cursor string (copy-paste), and your revision note (3-5 sentences).\n\nMetacognitive memo: What does cursor-based pagination solve that OFFSET pagination cannot? What would an AI answer about pagination probably miss from this exercise?",
     "category": "advanced",
     "submissionType": "text",
-    "order": 1,
+    "order": 3,
+    "modelAnswer": "Cursor pagination encodes the last seen sort-key (here, the article id) into an opaque base64 string. The SQL on page 2 is `WHERE id < :endCursor ORDER BY id DESC LIMIT 5`. Changing orderBy mid-session invalidates the cursor because the cursor encodes the sort field — switching fields means the cursor points to nothing meaningful. OFFSET pagination breaks under concurrent inserts (rows shift), and forces the DB to scan + skip; cursor pagination is stable and uses the index directly. An AI answer typically explains the concept but skips the cursor-invalidation gotcha and the row-shift bug under inserts.",
     "estimatedMinutes": 35
-  },
-  {
-    "id": "mikroorm-task-3-4",
-    "title": "Why does em.getReference() avoid a SELECT, and when does that backfire?",
-    "description": "em.getReference(Author, 42n) returns a proxy object with only the id populated — no SELECT fires. Why is this safe when you only need to set a foreign-key relation, and when does it produce a silent bug? Describe exactly one scenario where skipping the SELECT is correct and one where it causes a runtime error or data corruption. Answer in 4–6 sentences.",
-    "category": "advanced",
-    "submissionType": "text",
-    "order": 2,
-    "estimatedMinutes": 15
   }
 ]

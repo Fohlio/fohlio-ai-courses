@@ -1,23 +1,109 @@
 [
   {
     "id": "mikroorm-task-6-1",
-    "title": "Add softDelete filter and ArticleRepository, capture filter on/off SQL",
-    "description": "Define Article with a softDelete filter (condition: { deletedAt: null }, default: true). Add ArticleRepository with two QB-backed methods: findHotArticles(minViews: number) returning articles where view_count >= minViews, and searchByTitle(q: string) using a LIKE/ILIKE condition. Wire the repository via the repository option in defineEntity. Write a short script that: (1) runs a find with the filter active and (2) disables the filter via em.addFilter / setFilterParams and runs the same find. Run with debug: true and submit a screenshot showing both queries — the first must contain 'deleted_at is null' in the WHERE clause, the second must not.",
+    "title": "Assemble the QueryBuilder for the 'hot articles' search",
+    "description": "The lesson's hot-articles report: published articles with view_count >= :minViews and a title matching :q, sorted by view_count desc, limit 10. Pick the right operator and aggregation in each slot.",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 1,
-    "modelAnswer": "The screenshot must show two consecutive SELECT statements:\n1. ... WHERE deleted_at IS NULL ... (filter active)\n2. The same query without deleted_at IS NULL (filter disabled via em.getRepository(Article).getEntityManager().setFilterParams or em.addFilter with disabled flag).\nCommon mistake: calling em.disableFilter() on the wrong EM instance (the base EM vs the forked one used in the script). Each EM fork has its own filter state.",
-    "estimatedMinutes": 35
+    "widgetId": "query-builder",
+    "widgetConfig": {
+      "dialect": "sql",
+      "prompt": "Build the hot-articles QueryBuilder. The softDelete filter is active and adds deleted_at IS NULL automatically.",
+      "template": "qb.select('*')\n  .where({\n    viewCount: { {{op_views}}: minViews },\n    title: { {{op_like}}: `%${q}%` },\n    publishedAt: { {{op_pub}}: null },\n  })\n  .orderBy({ viewCount: '{{order_dir}}' })\n  .{{terminator}}();",
+      "slots": [
+        {
+          "id": "op_views",
+          "label": "view_count operator (>= minViews)",
+          "options": [
+            { "value": "$gte" },
+            { "value": "$gt" },
+            { "value": "$in" },
+            { "value": "$eq" }
+          ],
+          "correct": "$gte"
+        },
+        {
+          "id": "op_like",
+          "label": "title operator (case-insensitive substring)",
+          "options": [
+            { "value": "$ilike" },
+            { "value": "$like" },
+            { "value": "$eq" },
+            { "value": "$contains" }
+          ],
+          "correct": "$ilike"
+        },
+        {
+          "id": "op_pub",
+          "label": "publishedAt operator (only published articles)",
+          "options": [
+            { "value": "$ne" },
+            { "value": "$eq" },
+            { "value": "$gt" },
+            { "value": "$exists" }
+          ],
+          "correct": "$ne"
+        },
+        {
+          "id": "order_dir",
+          "label": "sort direction",
+          "options": [
+            { "value": "desc" },
+            { "value": "asc" }
+          ],
+          "correct": "desc"
+        },
+        {
+          "id": "terminator",
+          "label": "return hydrated entities (so the result participates in the Identity Map)",
+          "options": [
+            { "value": "getResult" },
+            { "value": "execute" },
+            { "value": "getSingleResult" },
+            { "value": "count" }
+          ],
+          "correct": "getResult"
+        }
+      ]
+    },
+    "modelAnswer": "$gte for >=, $ilike for case-insensitive substring on Postgres, $ne null is the lesson's idiom for 'published'. orderBy desc, then getResult() because we want entity instances (not raw rows from execute()) so they register in the Identity Map and can be reused by the request.",
+    "estimatedMinutes": 12
   },
   {
     "id": "mikroorm-task-6-2",
-    "title": "qb.execute() vs qb.getResult() + L4/L5 callback — text analysis",
-    "description": "This task combines QueryBuilder internals (L6) with loading and relations knowledge from L4–L5.\n\nPart A (L6): In 4–6 sentences explain why qb.execute() skips the Identity Map while qb.getResult() registers entities in it. Name one concrete bug each behavior can prevent — so two bugs total. Use the Records Library analogy if it helps.\n\nPart B (L4–L5 callback): You have an ArticleRepository method that uses qb.execute() to fetch raw rows for a report. A teammate adds article.tags access inside the report loop and sees N+1 queries. Why does this happen even though the tags relation is defined on Article? What would need to change — in the query or in the result processing — to fix it without switching to getResult()? (Hint: think about what execute() returns vs what populate needs.)\n\nSubmit both parts as text.",
+    "title": "Pick the right tool for the stage you are in",
+    "description": "The lesson maps four problems to four tools (em.find vs QueryBuilder vs Filter vs custom Repository). Pick the right call and justify your reasoning.",
     "category": "required",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 2,
-    "modelAnswer": "Part A:\n- qb.execute() returns raw plain objects (not entity instances). The Identity Map stores entity instances keyed by PK. Plain objects are not registered, so they do not participate in change-tracking — which means you cannot accidentally dirty-flush a raw reporting row.\n- qb.getResult() hydrates entity instances and registers them. Useful when you need the result to participate in subsequent EM operations (update, relation population).\n- Bug prevented by execute(): accidentally flushing a report row because it became managed.\n- Bug prevented by getResult(): getting a stale entity because the same PK was already in the map from an earlier load but getResult() re-hydrates it with the latest data from this query.\n\nPart B: qb.execute() returns plain objects with no MikroORM proxy. Tags is a Collection that only exists on an entity instance. Accessing .tags on a plain object returns undefined or throws. Fix: either switch to qb.getResult() + em.populate(articles, ['tags']), or add a JOIN + aggregation inside the QB query to pull tag data as a raw JSON array without touching the ORM collection.",
-    "estimatedMinutes": 25
+    "widgetId": "mcq-justify",
+    "widgetConfig": {
+      "question": "Every Article query in the multi-tenant report service must transparently include WHERE tenant_id = :currentTenant. The tenant id comes from AsyncLocalStorage on each request. What is the right MikroORM tool?",
+      "options": [
+        {
+          "id": "filter",
+          "label": "A Filter on Article with a default condition that reads tenantId from AsyncLocalStorage and is enabled by default."
+        },
+        {
+          "id": "repo",
+          "label": "A custom ArticleRepository where every method manually adds where: { tenantId: currentTenant() }."
+        },
+        {
+          "id": "middleware",
+          "label": "Express middleware that rewrites the SQL string before it hits the driver."
+        },
+        {
+          "id": "view",
+          "label": "A Postgres view per tenant that hides other tenants' rows."
+        }
+      ],
+      "correctOptionId": "filter",
+      "minJustificationWords": 25,
+      "rubric": "Strong answers note that Filters are MikroORM's first-class mechanism for 'every query gets this WHERE for free', they survive QueryBuilder use, and they can be disabled per-operation for admin paths. The custom repository works but leaks the tenancy concern into every method and forgets a path the day someone uses em.find directly."
+    },
+    "modelAnswer": "Filter — that's exactly what filters exist for. It applies globally to every find/QueryBuilder against Article, can be parameterized (the filter callback reads tenantId from AsyncLocalStorage), and can be explicitly disabled for an admin all-tenants query via em.setFilterParams or em.find(..., { filters: { tenant: false } }). Custom repositories are a fallback when you also want bespoke query methods; views are heavyweight and a deployment headache.",
+    "estimatedMinutes": 12
   },
   {
     "id": "mikroorm-task-6-3",
@@ -25,16 +111,8 @@
     "description": "Implement a tenant filter that reads tenantId from AsyncLocalStorage and injects 'WHERE tenant_id = :tenantId' into every Article query automatically. The filter must be enabled by default and must be possible to disable for a specific admin query.\n\nThis is a three-stage task:\n1. Plan (before coding): write the filter definition and the AsyncLocalStorage wiring in pseudocode. What happens if the AsyncLocalStorage store is empty (no active tenant context)? Should the filter throw, return all rows, or return no rows? Defend your choice.\n2. Implement: code it, run two queries — one with tenant context set, one without.\n3. Critique: paste your implementation into ChatGPT and ask 'Is this production-safe?' Copy the response. Then write 3 sentences on what ChatGPT got right, what it missed (e.g., the risk of filter leaking between requests when using a non-forked EM), and what you would change.\n\nMetacognitive memo: What is the hardest part of per-tenant filters that a code example alone does not reveal?",
     "category": "advanced",
     "submissionType": "text",
-    "order": 1,
+    "order": 3,
+    "modelAnswer": "Best practice for empty context: THROW. Returning all rows (the silent default in many ORMs) is a tenant-leak that won't surface in tests. Returning zero is safer than all-rows but masks the misconfigured boot path that should have set the context. The implementation registers the filter at config level with `cond: () => ({ tenantId: store.getStore()?.tenantId ?? throw new Error('No tenant context') })`. The big production gotcha AI usually misses: AsyncLocalStorage state must be set inside a forked EM scope, otherwise two concurrent requests share the same EM cache and their entities get mixed up regardless of the filter.",
     "estimatedMinutes": 40
-  },
-  {
-    "id": "mikroorm-task-6-4",
-    "title": "Why does qb.execute() bypass the Identity Map — and why is that not always a bug?",
-    "description": "The Records Library's master catalogue (Identity Map) tracks every entity the reading room has handed out. qb.execute() deliberately bypasses this catalogue and hands you raw rows. Why would you ever want to skip the catalogue? Give two concrete, different reasons — one related to performance, one related to correctness. Then explain why blindly switching all qb.execute() calls to qb.getResult() would be wrong. Answer in 5–7 sentences.",
-    "category": "advanced",
-    "submissionType": "text",
-    "order": 2,
-    "estimatedMinutes": 15
   }
 ]
