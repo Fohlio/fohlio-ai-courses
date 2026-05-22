@@ -134,6 +134,13 @@ function mapAsset(asset: CourseRecordAsset): LessonAsset {
   };
 }
 
+function toRecord(value: unknown): Record<string, unknown> | null {
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    return value as Record<string, unknown>;
+  }
+  return null;
+}
+
 function mapTask(task: CourseRecordTask, courseId: string): HomeworkTask {
   return {
     id: task.id,
@@ -146,6 +153,8 @@ function mapTask(task: CourseRecordTask, courseId: string): HomeworkTask {
     order: task.order,
     quizQuestions: toStringArray(task.quizQuestions),
     checklistItems: toStringArray(task.checklistItems),
+    widgetId: task.widgetId ?? null,
+    widgetConfig: toRecord(task.widgetConfig),
     modelAnswer: task.modelAnswer ?? null,
     estimatedMinutes: task.estimatedMinutes ?? null,
   };
@@ -230,6 +239,8 @@ function mapCourseDetailRecord(course: CourseRecord, viewer: Viewer | null): Cou
     totalTasks,
     updatedAt: course.updatedAt,
     createdAt: course.createdAt,
+    seriesId: course.seriesId ?? null,
+    orderInSeries: course.orderInSeries ?? null,
     lessons,
   };
 }
@@ -248,6 +259,8 @@ function withProgress(course: CourseDetail, progress: CourseProgress | null): Co
     publishedLessonCount: course.publishedLessonCount,
     totalTasks: course.totalTasks,
     updatedAt: course.updatedAt,
+    seriesId: course.seriesId,
+    orderInSeries: course.orderInSeries,
     progress,
   };
 }
@@ -263,6 +276,132 @@ function mapSubmission(record: DbTaskSubmission): TaskSubmission {
     createdAt: record.createdAt,
     updatedAt: record.updatedAt,
     content: toSubmissionContent(record.content),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Series queries
+// ---------------------------------------------------------------------------
+
+async function getSeriesRecords() {
+  return prisma.series.findMany({
+    include: {
+      courses: {
+        where: { status: "published" },
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          subtitle: true,
+          description: true,
+          coverImageUrl: true,
+          status: true,
+          orderInSeries: true,
+          ownerId: true,
+          updatedAt: true,
+          owner: {
+            select: {
+              id: true,
+              githubNickname: true,
+              displayName: true,
+            },
+          },
+          lessons: {
+            where: { isPublished: true },
+            select: {
+              id: true,
+              tasks: { select: { id: true } },
+            },
+          },
+        },
+        orderBy: { orderInSeries: "asc" },
+      },
+    },
+    orderBy: { order: "asc" },
+  });
+}
+
+export interface SeriesCardSummary {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  description: string;
+  coverImageUrl: string | null;
+  order: number;
+  courseCount: number;
+  publishedLessonCount: number;
+  totalTasks: number;
+}
+
+export interface SeriesDetailSummary extends SeriesCardSummary {
+  courses: CourseCard[];
+}
+
+export async function getSeriesCatalog(): Promise<SeriesCardSummary[]> {
+  const series = await getSeriesRecords();
+  return series.map((entry) => {
+    const publishedLessonCount = entry.courses.reduce(
+      (acc, course) => acc + course.lessons.length,
+      0,
+    );
+    const totalTasks = entry.courses.reduce(
+      (acc, course) =>
+        acc +
+        course.lessons.reduce((sum, lesson) => sum + lesson.tasks.length, 0),
+      0,
+    );
+    return {
+      id: entry.id,
+      slug: entry.slug,
+      title: entry.title,
+      subtitle: entry.subtitle,
+      description: entry.description,
+      coverImageUrl: entry.coverImageUrl,
+      order: entry.order,
+      courseCount: entry.courses.length,
+      publishedLessonCount,
+      totalTasks,
+    };
+  });
+}
+
+export async function getSeriesBySlug(
+  slug: string,
+  viewer: Viewer,
+): Promise<SeriesDetailSummary | null> {
+  const series = await prisma.series.findUnique({
+    where: { slug },
+  });
+  if (!series) return null;
+
+  // Reuse the full catalog query so progress + per-course mapping stay aligned.
+  const allCourses = await getCourseCatalog(viewer);
+  const courses = allCourses
+    .filter((course) => course.seriesId === series.id)
+    .sort((a, b) => (a.orderInSeries ?? 0) - (b.orderInSeries ?? 0));
+
+  const publishedLessonCount = courses.reduce(
+    (sum, course) => sum + course.publishedLessonCount,
+    0,
+  );
+  const totalTasks = courses.reduce(
+    (sum, course) => sum + course.totalTasks,
+    0,
+  );
+
+  return {
+    id: series.id,
+    slug: series.slug,
+    title: series.title,
+    subtitle: series.subtitle,
+    description: series.description,
+    coverImageUrl: series.coverImageUrl,
+    order: series.order,
+    courseCount: courses.length,
+    publishedLessonCount,
+    totalTasks,
+    courses,
   };
 }
 

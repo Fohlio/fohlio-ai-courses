@@ -1,42 +1,87 @@
 [
   {
     "id": "mikroorm-task-1-1",
-    "title": "Scaffold archive-api and prove the Identity Map",
-    "description": "Set up a local Postgres database named 'archive'. Install @mikro-orm/core, @mikro-orm/postgresql, and @mikro-orm/reflection. Create mikro-orm.config.ts pointing at that database. Define a Book entity with id (bigint PK), title (string, max 200), and createdAt (datetime). Write main.ts that: (1) calls MikroORM.init(), (2) persists two Book instances in one flush, (3) fetches one of them by id, and (4) console.log('same instance?', book === fetched). Run npm start and capture a screenshot of your terminal showing the INSERT log, the SELECT log, and 'same instance? true' on the same screen.",
+    "title": "Match the Records Library terms to MikroORM concepts",
+    "description": "Drag each Records Library role on the left to the MikroORM concept it stands in for on the right. Get all five matches correct.",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 1,
-    "modelAnswer": "The terminal should show:\n1. A BEGIN statement followed by batched INSERTs (both books in one transaction), then COMMIT.\n2. A single SELECT WHERE id = <n> for the findOne call.\n3. 'same instance? true' — confirming the Identity Map returned the already-managed object instead of constructing a new one.\nIf you see two SELECTs, the entity was not registered before the second findOne — check that you called em.persist() before em.flush(), not em.insert().",
-    "estimatedMinutes": 25
+    "widgetId": "concept-match",
+    "widgetConfig": {
+      "pairs": [
+        {
+          "id": "master-catalogue",
+          "term": "Master catalogue of the library",
+          "definition": "Identity Map — one canonical in-memory instance per primary key, per EntityManager fork"
+        },
+        {
+          "id": "librarian-notebook",
+          "term": "Librarian's notebook of corrections collected at the desk",
+          "definition": "Unit of Work — pending changes accumulated until flush()"
+        },
+        {
+          "id": "closing-walk",
+          "term": "The closing-time walk to the storeroom",
+          "definition": "flush() — one ordered transaction that writes every change in dependency order"
+        },
+        {
+          "id": "reading-room",
+          "term": "A patron's private reading-room desk",
+          "definition": "A forked EntityManager — per-request isolation of managed entities"
+        },
+        {
+          "id": "catalogue-card",
+          "term": "A catalogue card you can scribble on",
+          "definition": "A managed entity — a plain object whose mutations the Unit of Work tracks"
+        }
+      ]
+    },
+    "modelAnswer": "Master catalogue is the Identity Map (PK-keyed, per-EM-fork). The librarian's notebook is the Unit of Work — changes are deferred until flush(). The closing walk is flush() itself: one transaction, dependency-ordered. The reading-room desk is a forked EM (one per HTTP request). The catalogue card is a managed entity instance — MikroORM tracks every property mutation on it without you calling .save().",
+    "estimatedMinutes": 10
   },
   {
     "id": "mikroorm-task-1-2",
-    "title": "Explain the Unit of Work in your own words",
-    "description": "In 4–6 sentences answer: what does the Unit of Work pattern do, and why does MikroORM flush all changes in a single transaction rather than one-by-one? Use at least one concrete example tied to the Records Library analogy (the librarian, the catalogue card, the reading room). Submit as text.",
+    "title": "Why DataMapper, not ActiveRecord?",
+    "description": "Pick the single best reason MikroORM ships with DataMapper as its primary mode rather than ActiveRecord, then justify your pick in at least 25 words referencing what changes for unit tests.",
     "category": "required",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 2,
-    "modelAnswer": "A good answer covers three things:\n1. The Unit of Work collects every change made to managed entities during the request (new, modified, removed) without touching the database yet.\n2. On flush(), MikroORM orders those changes by foreign-key dependency and wraps them in a single transaction — so either everything lands or nothing does.\n3. Library analogy: the librarian takes notes on every change you make at the reading-room desk (new catalogue cards, corrections, withdrawals), then at closing time walks to the storeroom once and commits everything in the right order — not once per correction.\nWatch for: answers that conflate the Identity Map with the Unit of Work. They cooperate, but the Identity Map is about uniqueness of instances; the UoW is about deferred write batching.",
-    "estimatedMinutes": 15
+    "widgetId": "mcq-justify",
+    "widgetConfig": {
+      "question": "Why does MikroORM make DataMapper the default and treat ActiveRecord as opt-in?",
+      "options": [
+        {
+          "id": "perf",
+          "label": "DataMapper is measurably faster at the SQL level than ActiveRecord."
+        },
+        {
+          "id": "decoupling",
+          "label": "DataMapper keeps persistence out of the entity, so the entity stays a plain class with no DB import — testable in isolation."
+        },
+        {
+          "id": "syntax",
+          "label": "DataMapper has nicer syntax for find() than ActiveRecord."
+        },
+        {
+          "id": "history",
+          "label": "ActiveRecord was deprecated in TypeScript ORMs around 2020."
+        }
+      ],
+      "correctOptionId": "decoupling",
+      "minJustificationWords": 25,
+      "rubric": "Strong answers note that an ActiveRecord entity must import a connection/session to call .save() — which makes the entity un-instantiable in a unit test without a real or mocked DB. DataMapper entities are POJOs; the EntityManager owns persistence, so you can `new Book({ title: 'x' })` in a test that never opens a socket."
+    },
+    "modelAnswer": "The correct pick is `decoupling`. An ActiveRecord Book has `book.save()` — which requires Book to know about the DB session. That means every unit test that instantiates a Book is implicitly an integration test. DataMapper splits the model from the EntityManager: the entity stays a POJO, persistence lives in the EM, and unit tests run with zero database. The benefit is invisible on a 200-line side-project and obvious on a multi-team codebase like Fohlio.",
+    "estimatedMinutes": 12
   },
   {
     "id": "mikroorm-task-1-3",
     "title": "Why is the Identity Map per-request, not global? (AI-resilient)",
-    "description": "Draft a 3–5 sentence answer explaining why a shared, global Identity Map would be catastrophic in a multi-request web server. Then test your answer: paste your draft into ChatGPT and ask it to improve it. Identify one thing ChatGPT added or changed that you agree with, and one thing it missed or got wrong. Submit: your original draft, the ChatGPT output, and your one-line verdict on each. (Hint: think about concurrent requests mutating the same in-memory Book instance, and what 'stale data' means when 50 HTTP handlers share one map.)\n\nMetacognitive memo: What was hard to articulate? What would an AI summary of this lesson probably miss about why per-request isolation matters?",
+    "description": "Draft a 3-5 sentence answer explaining why a shared, global Identity Map would be catastrophic in a multi-request web server. Then test your answer: paste your draft into ChatGPT and ask it to improve it. Identify one thing ChatGPT added or changed that you agree with, and one thing it missed or got wrong. Submit: your original draft, the ChatGPT output, and your one-line verdict on each. (Hint: think about concurrent requests mutating the same in-memory Book instance, and what 'stale data' means when 50 HTTP handlers share one map.)\n\nMetacognitive memo: What was hard to articulate? What would an AI summary of this lesson probably miss about why per-request isolation matters?",
     "category": "advanced",
     "submissionType": "text",
-    "order": 1,
+    "order": 3,
     "modelAnswer": "Key reasoning the answer must include:\n1. Two concurrent requests could load the same entity id into the same JS object. Request A mutates it; flush from Request B now writes Request A's dirty data to the database under Request B's transaction — silent data corruption.\n2. A global map never gets cleared: entities loaded six hours ago stay 'managed', occupying memory and presenting stale state to any handler that asks for them.\n3. Per-request fork() gives each handler its own reading-room; the head librarian's master catalogue is the source of truth, but each patron's desk is private.\nAI limitation: ChatGPT typically gives a technically correct but surface-level answer. It often misses the flush-ordering issue under concurrent mutations — that it is not just a memory leak but a correctness bug.",
     "estimatedMinutes": 25
-  },
-  {
-    "id": "mikroorm-task-1-4",
-    "title": "Why does MikroORM choose Data Mapper over Active Record?",
-    "description": "Why does keeping persistence logic out of the entity class make the domain model easier to test, and why doesn't that benefit show up on small projects? Answer in 4–6 sentences. Consider: what does an Active Record entity need to import to call .save(), and what does that import do to your unit tests?",
-    "category": "advanced",
-    "submissionType": "text",
-    "order": 2,
-    "modelAnswer": "Core reasoning:\n1. An Active Record entity must import a DB adapter or connection pool. Unit tests therefore need a real (or mocked) database connection just to instantiate the model — the test suite becomes an integration test suite by default.\n2. With Data Mapper, the entity is a plain class with no DB imports. You can new Book({ title: '...' }) in a unit test without touching Postgres at all.\n3. The benefit is invisible on small projects because the entire app may already be one integration test or no tests at all. The cost of the Active Record coupling only shows up when you want to test business rules in isolation — which at Fohlio means testing a pricing rule without spinning up a database.\n4. The trade-off is indirection: you need to learn EntityManager, whereas Active Record's user.save() is immediately obvious to a junior.",
-    "estimatedMinutes": 15
   }
 ]

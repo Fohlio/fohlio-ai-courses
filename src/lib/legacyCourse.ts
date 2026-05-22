@@ -57,6 +57,9 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
             order: task.order,
             quizQuestions: task.quizQuestions ?? Prisma.JsonNull,
             checklistItems: task.checklistItems ?? Prisma.JsonNull,
+            widgetId: task.widgetId ?? null,
+            widgetConfig:
+              (task.widgetConfig ?? Prisma.JsonNull) as Prisma.InputJsonValue,
             modelAnswer: task.modelAnswer ?? null,
             estimatedMinutes: task.estimatedMinutes ?? null,
           })),
@@ -139,6 +142,8 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
             order: task.order,
             quizQuestions: task.quizQuestions,
             checklistItems: task.checklistItems,
+            widgetId: task.widgetId,
+            widgetConfig: task.widgetConfig,
             modelAnswer: task.modelAnswer ?? null,
             estimatedMinutes: task.estimatedMinutes ?? null,
           },

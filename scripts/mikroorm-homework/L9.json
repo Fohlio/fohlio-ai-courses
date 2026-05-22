@@ -1,23 +1,106 @@
 [
   {
     "id": "mikroorm-task-9-1",
-    "title": "Wire MikroORM into a NestJS app and prove fork-per-request",
-    "description": "In your archive-api project, add app.module.ts with MikroOrmModule.forRoot(config) and a BookModule that uses MikroOrmModule.forFeature([Book]). Build BookController with GET /books and POST /books endpoints. Build BookService with an injected EntityManager. In the POST handler, log (em as any)['id'] to the console before persisting. Start the server and send two consecutive POST /books requests using curl or HTTPie. Submit a screenshot of your server logs showing two different EntityManager IDs printed for the two requests — proving that each request got a fresh fork of the EM.",
+    "title": "Wire the NestJS module graph",
+    "description": "Place each NestJS building block onto the correct slot in the archive-api module graph from lesson 9.",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 1,
-    "modelAnswer": "The screenshot must show two distinct numeric IDs logged for the two POST requests — e.g., 'EM id: 2' and 'EM id: 3'. The IDs must differ, proving MikroORM's middleware forked a new EM for each HTTP request.\nIf both requests show the same ID: the RequestContext middleware is not wired up. Check that MikroOrmModule.forRoot includes autoLoadEntities: true and that the app uses MikroOrmModule's built-in middleware (NestJS integration registers RequestContext automatically — if you see one ID, you may have used orm.em directly instead of injecting EntityManager via the module).",
-    "estimatedMinutes": 35
+    "widgetId": "arch-diagram",
+    "widgetConfig": {
+      "prompt": "Drop each piece onto its correct role in the MikroORM + NestJS wiring. The lesson uses MikroOrmModule.forRoot once at the AppModule, forFeature per feature module, and @CreateRequestContext for non-HTTP entry points.",
+      "slots": [
+        {
+          "id": "root-config",
+          "label": "AppModule — registers the global ORM connection + middleware",
+          "correctNodeId": "n-forroot"
+        },
+        {
+          "id": "feature-repo",
+          "label": "BookModule — exposes the Book repository to its services",
+          "correctNodeId": "n-forfeature"
+        },
+        {
+          "id": "http-em",
+          "label": "BookController -> BookService — auto-forked EM per HTTP request",
+          "correctNodeId": "n-requestcontext-mw"
+        },
+        {
+          "id": "cron-em",
+          "label": "ArticleRebuildCron.run() — non-HTTP entry, needs its own EM fork",
+          "correctNodeId": "n-createrequestcontext"
+        },
+        {
+          "id": "tx-service",
+          "label": "BookService.createWithLog() — single-method transaction boundary",
+          "correctNodeId": "n-transactional"
+        }
+      ],
+      "nodes": [
+        {
+          "id": "n-forroot",
+          "label": "MikroOrmModule.forRoot(config)",
+          "hint": "Once at the AppModule. Owns the connection pool and the RequestContext middleware."
+        },
+        {
+          "id": "n-forfeature",
+          "label": "MikroOrmModule.forFeature([Book])",
+          "hint": "Per feature module — makes the @InjectRepository tokens available."
+        },
+        {
+          "id": "n-requestcontext-mw",
+          "label": "RequestContext middleware (auto-installed by forRoot)",
+          "hint": "Forks the EM per HTTP request — without this, every handler shares the global EM."
+        },
+        {
+          "id": "n-createrequestcontext",
+          "label": "@CreateRequestContext()",
+          "hint": "Method decorator for queue handlers, @Cron jobs, and other non-HTTP entry points."
+        },
+        {
+          "id": "n-transactional",
+          "label": "@Transactional()",
+          "hint": "Method decorator that wraps the method body in em.transactional()."
+        }
+      ]
+    },
+    "modelAnswer": "forRoot registers the connection + the RequestContext middleware globally; forFeature exposes per-entity repositories to a feature module. RequestContext middleware forks the EM per HTTP request automatically. For anything that isn't an HTTP request — cron, queue handlers, CLI commands — you must add @CreateRequestContext() manually, otherwise the global EM is shared across runs. @Transactional() goes on the service method that owns the transaction boundary, never on the controller.",
+    "estimatedMinutes": 15
   },
   {
     "id": "mikroorm-task-9-2",
-    "title": "@Transactional on controller vs service + L7/L8 callback",
-    "description": "This task combines NestJS transaction scope (L9) with migrations and embeddables from L7–L8.\n\nPart A (L9): In 4–6 sentences explain why @Transactional() on a controller method is an anti-pattern, while on a service method it is idiomatic. Reference separation of concerns: what controllers should and should not own, and what belongs in a service.\n\nPart B (L7–L8 callback): Your BookService.createWithLog() is decorated with @Transactional(). It creates a Book (with an Address embeddable on Author) and an AuditLog in one atomic operation. A migration later adds a NOT NULL column to AuditLog without a default. Describe step by step what happens to in-flight createWithLog transactions that were mid-flight when the migration ran. What does this tell you about the order of migration deployment vs service deployment in production?\n\nSubmit both parts as text.",
+    "title": "Fill the Transactional Outbox skeleton",
+    "description": "From lesson 9's Transactional Outbox example: BookService writes a Book and an OutboxEvent in the same transaction. Fill the three blanks that the lesson highlights as load-bearing.",
     "category": "required",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 2,
-    "modelAnswer": "Part A: Controllers are HTTP adapters — they translate HTTP requests into service calls and HTTP responses out of service results. They should not own any business logic or transactional state. Placing @Transactional() on a controller tightly couples the HTTP layer to the database transaction boundary, making it impossible to call the same logic from a queue handler or a cron job without going through HTTP. A service method decorated with @Transactional() is called by any client (HTTP, queue, cron) uniformly — the transaction boundary lives where the business operation begins.\n\nPart B: If the migration adds a NOT NULL column to AuditLog without a default, any INSERT to AuditLog that does not explicitly supply that column will fail with a NOT NULL constraint violation. In-flight transactions started before the migration will continue against the old schema if they hold an open transaction (Postgres DDL acquires an ACCESS EXCLUSIVE lock — so typically the migration blocks until all active transactions on that table finish). After the migration commits, any new createWithLog call will fail until the service code is also deployed with the new column populated. Lesson: always deploy migrations that add NOT NULL columns in two steps — first with a DEFAULT, then (after service is deployed) remove the default.",
-    "estimatedMinutes": 25
+    "widgetId": "code-fill",
+    "widgetConfig": {
+      "language": "ts",
+      "code": "@Injectable()\nexport class BookService {\n  constructor(private readonly em: EntityManager) {}\n\n  @{{1}}()\n  async createBook(input: CreateBookInput) {\n    const book = this.em.create(Book, input);\n    const event = this.em.create(OutboxEvent, {\n      eventType: 'book.created',\n      payload: { bookId: book.id, title: book.title },\n    });\n    // No explicit flush here — the decorator does it.\n  }\n}\n\n@Injectable()\nexport class OutboxProcessor {\n  constructor(private readonly em: EntityManager) {}\n\n  @Cron('*/5 * * * * *')\n  @{{2}}()\n  async drain() {\n    const events = await this.em.find(OutboxEvent, { processedAt: null });\n    for (const event of events) {\n      await publish(event);\n      event.processedAt = new Date();\n    }\n    await this.em.{{3}}();\n  }\n}\n",
+      "blanks": [
+        {
+          "id": "1",
+          "placeholder": "service-method transaction decorator",
+          "answer": "Transactional",
+          "accept": ["Transactional"]
+        },
+        {
+          "id": "2",
+          "placeholder": "non-HTTP entry context decorator",
+          "answer": "CreateRequestContext",
+          "accept": ["CreateRequestContext"]
+        },
+        {
+          "id": "3",
+          "placeholder": "send pending changes in one transaction",
+          "answer": "flush",
+          "accept": ["flush"]
+        }
+      ]
+    },
+    "modelAnswer": "@Transactional() wraps the service method in em.transactional() — Book + OutboxEvent land or roll back together. @CreateRequestContext() on the cron drain() forks a fresh EM for each run, so stale entities from a previous run never bleed in. em.flush() at the end of drain() commits all the `processedAt` updates in one transaction.",
+    "estimatedMinutes": 12
   },
   {
     "id": "mikroorm-task-9-3",
@@ -25,16 +108,8 @@
     "description": "Design and implement a minimal Transactional Outbox for the archive-api NestJS app. When a Book is created, an OutboxEvent entity (eventType, payload JSON, processedAt nullable) must be inserted in the same transaction as the Book INSERT. A background processor (a NestJS @Cron job decorated with @CreateRequestContext()) must poll for unprocessed events, process them (for this task: console.log the payload), and mark them processedAt.\n\nThree-stage task:\n1. Design: draw the entity relationship in pseudocode or a text table. What is the invariant this pattern guarantees? What problem does it solve that 'publish event after flush' does not?\n2. Implement: wire it. Run two book creations and verify in the DB (via psql or a raw query) that two OutboxEvent rows exist with processedAt filled.\n3. Stress test (text only, no code): describe what happens if the @Cron job crashes between reading and marking processedAt. Is the event processed twice or dropped? How would you make processing idempotent?\n\nMetacognitive memo: What does the outbox pattern reveal about the boundary between ORM operations and message broker operations that a typical MikroORM tutorial misses?",
     "category": "advanced",
     "submissionType": "text",
-    "order": 1,
+    "order": 3,
+    "modelAnswer": "Invariant: 'a Book exists in the DB iff its book.created event is durably recorded in OutboxEvent' — guaranteed because both INSERTs share one transaction. 'Publish after flush' breaks if the process crashes between flush and publish: the row exists, the event is lost. Crash between read-and-mark in the drain: the event is processed twice (at-least-once delivery). Idempotency requires a stable event id consumed downstream with a dedup table, or upsert-by-id at the consumer. The boundary nobody mentions: the ORM transaction does not extend to the message broker — outbox is the seam where you accept 'at-least-once' as the price of crash-safety.",
     "estimatedMinutes": 45
-  },
-  {
-    "id": "mikroorm-task-9-4",
-    "title": "Why does @CreateRequestContext() exist separately from the NestJS middleware?",
-    "description": "The RequestContext middleware automatically forks an EntityManager for every HTTP request. @CreateRequestContext() does the same for non-HTTP execution contexts. Why can't queue handlers and cron jobs simply reuse the EM that the HTTP middleware creates? What is the entity lifecycle state of a 'stale' managed entity sitting in a long-lived EM that has not been forked for the current job run? Answer in 4–6 sentences.",
-    "category": "advanced",
-    "submissionType": "text",
-    "order": 2,
-    "estimatedMinutes": 15
   }
 ]

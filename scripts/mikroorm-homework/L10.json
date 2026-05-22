@@ -1,23 +1,168 @@
 [
   {
     "id": "mikroorm-task-10-1",
-    "title": "Capstone: wire production config and capture slow-query + metadata-cache evidence",
-    "description": "Create mikro-orm.config.prod.ts with: structured JSON logging (logger that calls JSON.stringify), a slow-query threshold of 100ms, and metadata cache enabled (GeneratedCacheAdapter pointing to a .cache/ directory). Start the app with this config. Trigger a deliberately slow query by running em.execute('SELECT pg_sleep(0.15)') via a script or endpoint. Submit a screenshot showing TWO things visible on screen: (a) the structured JSON log line for the slow query (it must include the SQL text and the time taken), and (b) a boot log line indicating metadata was loaded from cache (on the second run). If your Postgres host does not support pg_sleep, substitute any query that takes over 100ms (e.g., a table scan on a large unseeded table).",
+    "title": "Pick the right production read path",
+    "description": "An archive-api endpoint has to serve a 'recent articles by popular authors' query under heavy load. Walk the tree to choose between read replica, cache, schema separation, or main DB.",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 1,
-    "modelAnswer": "The screenshot must show:\n1. A JSON log object containing at least: { sql: 'select pg_sleep(...)', took: <number>ms, level: 'warn' } or equivalent — the slow-query path in the MikroORM logger fires at warn level when a query exceeds the threshold.\n2. A second log line (from a previous or concurrent boot) showing 'Loaded metadata from cache' or similar — indicating the GeneratedCacheAdapter found the .cache/ file on startup.\nIf you see no slow-query log: confirm the slowQueryThreshold is set on the config (not on the driver). If the cache line is absent: run the app twice — the first run generates the cache file, the second run loads it.",
-    "estimatedMinutes": 35
+    "widgetId": "decision-tree",
+    "widgetConfig": {
+      "rootId": "root",
+      "nodes": {
+        "root": {
+          "id": "root",
+          "question": "What's the staleness tolerance of this endpoint?",
+          "options": [
+            {
+              "label": "Real-time required (a librarian just changed the data and the next request must see it)",
+              "nextNodeId": "q-load"
+            },
+            {
+              "label": "Up to 60 seconds of staleness is acceptable",
+              "nextNodeId": "q-cache-vs-replica"
+            }
+          ]
+        },
+        "q-load": {
+          "id": "q-load",
+          "question": "Read-after-write is required. Where should this query go?",
+          "options": [
+            {
+              "label": "Primary DB — the only place that has the latest committed row.",
+              "outcome": {
+                "kind": "correct",
+                "explanation": "Correct. Read-after-write demands the primary. Lesson 10's read-replica config supports a read-after-write window via a 'sticky to primary for N seconds after write' policy — but the default is: real-time reads go to primary."
+              }
+            },
+            {
+              "label": "Read replica — async replication is usually fast enough.",
+              "outcome": {
+                "kind": "wrong",
+                "explanation": "Wrong. 'Usually fast enough' is the line that produces a flaky test suite and an angry user. Replication lag is bounded but real (tens to hundreds of ms typical). For real-time reads, go to primary."
+              }
+            },
+            {
+              "label": "Runtime cache — repopulate after each write.",
+              "outcome": {
+                "kind": "wrong",
+                "explanation": "Cache invalidation on writes is a separate complexity layer and still won't beat just reading from primary for a real-time-required path."
+              }
+            }
+          ]
+        },
+        "q-cache-vs-replica": {
+          "id": "q-cache-vs-replica",
+          "question": "Staleness is tolerated. Is the query expensive (joins, aggregations) or cheap?",
+          "options": [
+            {
+              "label": "Expensive — heavy joins, aggregations, or a big result set.",
+              "outcome": {
+                "kind": "correct",
+                "explanation": "Read replica + slow-query logging. Lesson 10's setup routes reads to the replica via the driver config; the slow-query threshold log catches anything still over 100ms so you can tune indexes."
+              }
+            },
+            {
+              "label": "Cheap — single-row lookup hit thousands of times per second.",
+              "outcome": {
+                "kind": "suboptimal",
+                "explanation": "Replica works, but for a cheap query hit massively, an in-process LRU or a Redis cache is cheaper than a DB round-trip and avoids replication lag concerns entirely. Replica is fine — just not the best fit."
+              }
+            }
+          ]
+        }
+      }
+    },
+    "modelAnswer": "Real-time-required -> primary. Tolerant of staleness + expensive query -> read replica with slow-query logging. Tolerant of staleness + cheap-but-hot query -> cache (LRU or Redis). The decision rule is staleness first, cost second. Skipping the staleness question is how a 'read replica everywhere' refactor introduces stale-read bugs in the checkout flow.",
+    "estimatedMinutes": 15
   },
   {
     "id": "mikroorm-task-10-2",
-    "title": "Course synthesis — two concepts you will use at Fohlio + prior-lesson callbacks",
-    "description": "This is the capstone synthesis task. Do both parts.\n\nPart A (synthesis, ~200 words): Name the two concepts from this course you expect to use most often in your day-to-day Fohlio work. For each: name a concrete Fohlio service or feature where you would apply it, what specific problem it solves there, and which earlier lesson's homework task made it click. Generic answers ('it's useful', 'it scales') do not count — be specific and personal.\n\nPart B (callbacks — L3, L6, L9): Describe a hypothetical production incident at Fohlio involving all three of the following: a stale Identity Map (L3), a soft-delete filter that was accidentally disabled (L6), and a missing @CreateRequestContext() on a queue worker (L9). What data corruption or bug would result? What is the minimal fix for each of the three causes?\n\nSubmit both parts as text.",
+    "title": "Production capstone quiz — explain each pick",
+    "description": "Three short scenarios pulling on L1, L6, L9 and L10. Pick the right answer and explain in 15+ words for each. This is the capstone synthesis quiz.",
     "category": "required",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 2,
-    "modelAnswer": "Part A (rubric): Full marks require: (1) a named Fohlio service (not 'the backend'), (2) a specific problem statement (not 'performance' or 'correctness' in the abstract), (3) a reference to a specific lesson or homework task. Example of a passing answer: 'QueryBuilder filters (L6): for the multi-tenant reporting service that produces per-client budget exports — a Filter with tenantId from AsyncLocalStorage means every query is automatically scoped without every service method adding a WHERE clause. L6 homework task 3 made this concrete when I had to handle the empty-context case.' Example of a failing answer: 'Migrations (L7) because production databases need migrations.'\n\nPart B (model answer): Stale Identity Map (L3) — a queue worker reuses a long-lived EM, so its copy of Article is hours old; an update made by an HTTP request is invisible to the worker, which then flushes the stale state and overwrites the HTTP change. Fix: decorate the worker with @CreateRequestContext() (which also fixes cause 3). Soft-delete filter disabled (L6) — a report query accidentally calls em.disableFilter('softDelete') and surfaces deleted articles to a client. Fix: scope filter disable to a scoped EM fork, never on the global EM. Missing @CreateRequestContext() (L9) — the queue worker shares the global EM, so multiple concurrent jobs mutate the same Identity Map, causing race conditions on flush. Fix: @CreateRequestContext() on the handler method.",
-    "estimatedMinutes": 30
+    "widgetId": "quiz-explain",
+    "widgetConfig": {
+      "minExplanationWords": 15,
+      "questions": [
+        {
+          "id": "q-cold-start",
+          "prompt": "Your serverless archive-api is cold-starting in 3.1 seconds. Boot logs show 'discovering 24 entities' takes 2.4s of that. Which feature do you turn on?",
+          "options": [
+            {
+              "id": "gen-cache",
+              "label": "GeneratedCacheAdapter (metadata cache) — write the discovered metadata to disk so the next boot loads it instead of re-discovering."
+            },
+            {
+              "id": "lazy",
+              "label": "Lazy-load every entity at first use."
+            },
+            {
+              "id": "fewer",
+              "label": "Delete some entities."
+            },
+            {
+              "id": "warm",
+              "label": "Keep one warm instance running 24/7."
+            }
+          ],
+          "correctOptionId": "gen-cache",
+          "rubric": "Strong answers note the cache must be regenerated when entities change — typically as a build step — otherwise stale metadata makes the cache the bug."
+        },
+        {
+          "id": "q-tenant-leak",
+          "prompt": "Production incident: report endpoint started leaking tenant B's articles to tenant A. The recent change was an admin import script using `em.disableFilter('tenant')`. What is the minimal fix?",
+          "options": [
+            {
+              "id": "scope-fork",
+              "label": "Disable the filter only on a forked EM scoped to that one import operation, never on the global em."
+            },
+            {
+              "id": "delete-filter",
+              "label": "Delete the tenant filter — they're too dangerous."
+            },
+            {
+              "id": "throw",
+              "label": "Throw an exception any time disableFilter is called."
+            },
+            {
+              "id": "view",
+              "label": "Move to per-tenant Postgres schemas."
+            }
+          ],
+          "correctOptionId": "scope-fork",
+          "rubric": "Reasoning should mention that em.disableFilter on the shared/global em is process-wide — all later requests reuse the same EM with the filter off. A forked EM gets its own filter state."
+        },
+        {
+          "id": "q-outbox-stuck",
+          "prompt": "Your Transactional Outbox processor stops draining — outbox rows pile up but no errors logged. The cron decorator is in place. What's the likely cause?",
+          "options": [
+            {
+              "id": "missing-context",
+              "label": "Missing @CreateRequestContext() on the cron method — the EM is shared/stale and might be in a bad state from a prior run."
+            },
+            {
+              "id": "no-flush",
+              "label": "Missing em.flush() at the end — processedAt is set in memory but never persisted, so the next tick re-reads the same rows... wait, that's the symptom too."
+            },
+            {
+              "id": "broker-down",
+              "label": "Message broker is down — but the question says no errors logged."
+            },
+            {
+              "id": "cron-disabled",
+              "label": "@Cron schedule is wrong."
+            }
+          ],
+          "correctOptionId": "missing-context",
+          "rubric": "Strong answers note that missing @CreateRequestContext() is the canonical lesson-9 bug: the cron reuses a long-lived EM, the Identity Map fills with stale references, flush eventually fails silently or rolls back."
+        }
+      ]
+    },
+    "modelAnswer": "Cold start fix: metadata cache (GeneratedCacheAdapter) — but regenerate it at build, otherwise the cache becomes the bug. Tenant leak: scope the filter disable to a forked EM, never the global one. Stuck outbox processor: missing @CreateRequestContext() — the canonical lesson 9 trap where a non-HTTP entry shares the global EM and slowly poisons itself.",
+    "estimatedMinutes": 15
   },
   {
     "id": "mikroorm-task-10-3",
@@ -25,16 +170,8 @@
     "description": "You encountered Prisma in the NestJS course (nestjs-4-data-layer). Now compare its mental model to MikroORM's across four dimensions: (1) Unit of Work vs Prisma's per-operation approach, (2) relation loading, (3) migration tooling, (4) NestJS integration. For each dimension: state which tool wins and under what conditions, and name a concrete Fohlio service shape where that dimension would tip the decision.\n\nAI-resilient constraint: at the end, paste your comparison into ChatGPT and ask it to summarize the winner. Then write 3 sentences explaining what the AI summary missed — specifically about your own experience with both tools across this course and the NestJS course. What nuance is invisible to an AI that has not run both tools against the same schema?\n\nMetacognitive memo: Looking back at all 10 lessons, which homework task changed your mental model the most, and why?",
     "category": "advanced",
     "submissionType": "text",
-    "order": 1,
+    "order": 3,
+    "modelAnswer": "Rubric: A passing answer names a specific Fohlio service per dimension and avoids 'it depends' as a verdict. Unit of Work: MikroORM wins when you have multi-entity transactional flows (the outbox pattern from L9); Prisma wins for simple CRUD where the per-operation model is less to learn. Loading: MikroORM populate + Identity Map wins on read-heavy domain logic; Prisma's `include` is more discoverable for one-off queries. Migrations: Prisma's diff-against-DB is simpler day-1; MikroORM's snapshot wins on a 4-developer team where branches diverge. NestJS integration: MikroORM's RequestContext + @Transactional decorators feel more native than Prisma's client-singleton pattern. AI summary usually defaults to 'Prisma is more popular, MikroORM is more powerful' — invisible to it: the lived experience of debugging an N+1 against the same schema in both tools.",
     "estimatedMinutes": 40
-  },
-  {
-    "id": "mikroorm-task-10-4",
-    "title": "Why does the metadata cache eliminate cold-start tax, and when does it backfire?",
-    "description": "MikroORM discovers entity metadata at boot time by inspecting TypeScript reflection or decorator metadata — a process that touches every entity file, parses types, and builds an in-memory schema graph. The GeneratedCacheAdapter serializes this graph to disk so the next boot can skip discovery. Why does this matter in a serverless or container-autoscaling environment where cold starts are frequent? Then name one scenario where the cache becomes incorrect and causes a runtime error — and describe the minimal invalidation step. Answer in 5–7 sentences.",
-    "category": "advanced",
-    "submissionType": "text",
-    "order": 2,
-    "estimatedMinutes": 15
   }
 ]

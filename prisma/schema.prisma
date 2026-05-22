@@ -40,19 +40,46 @@ model Course {
   coverImageUrl String?
   status        CourseStatus @default(draft)
   ownerId       String
+  seriesId      String?
+  orderInSeries Int          @default(0)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   publishedAt   DateTime?
   archivedAt    DateTime?
 
   owner       User             @relation("CourseOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  series      Series?          @relation(fields: [seriesId], references: [id], onDelete: SetNull)
   lessons     Lesson[]
   skills      Skill[]
   badges      Badge[]
 
   @@index([status])
   @@index([ownerId])
+  @@index([seriesId, orderInSeries])
   @@map("courses")
+}
+
+// ---------------------------------------------------------------------------
+// Series — Coursera-style track grouping. A series gathers related courses
+// into a single learning path (e.g. "Backend Track" = NestJS + MikroORM).
+// Series are owned implicitly by the platform; courses can detach via
+// SetNull on delete without losing data.
+// ---------------------------------------------------------------------------
+
+model Series {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String
+  subtitle      String?
+  description   String
+  coverImageUrl String?
+  order         Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  courses Course[]
+
+  @@map("series")
 }
 
 enum CourseStatus {
@@ -128,6 +155,8 @@ model HomeworkTask {
   order          Int
   quizQuestions  Json?
   checklistItems Json?
+  widgetId       String?
+  widgetConfig   Json?
   modelAnswer    String?
   estimatedMinutes Int?
   createdAt      DateTime         @default(now())
@@ -151,6 +180,7 @@ enum SubmissionType {
   text
   quiz
   checklist
+  widget
 }
 
 model TaskSubmission {

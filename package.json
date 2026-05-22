@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3026",
     "build": "prisma generate && next build",
-    "build:vercel": "prisma generate && prisma db push && tsx scripts/backfill-legacy-course.ts && next build",
+    "build:vercel": "prisma generate && prisma db push && tsx scripts/backfill-legacy-course.ts && tsx scripts/seed-series.ts && next build",
     "start": "next start -p 3026",
     "lint": "eslint",
     "e2e": "playwright test",
@@ -19,6 +19,7 @@
     "db:backfill": "tsx scripts/backfill-legacy-course.ts",
     "db:nestjs": "tsx scripts/create-nestjs-course.ts",
     "db:mikroorm": "tsx scripts/create-mikroorm-course.ts",
+    "db:series": "tsx scripts/seed-series.ts",
     "db:snapshot-submissions": "tsx scripts/snapshot-submissions.ts",
     "db:remap-submissions": "tsx scripts/remap-submissions.ts"
   },

@@ -55,6 +55,10 @@ export function LessonWidgets() {
       });
     });
 
+    // The portal host pattern legitimately needs to setState after a DOM scan
+    // — there is no equivalent "external system" abstraction we can subscribe
+    // to. See React docs on rendering into portals discovered in the DOM.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounts(next);
   }, []);
 

@@ -3,6 +3,7 @@ import { z } from "zod";
 import { getCurrentUser } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { recordSubmissionAward } from "@/lib/gamification";
+import { Prisma } from "@/generated/prisma/client";
 
 const HTTP_URL_RE = /^https?:\/\/\S+$/i;
 
@@ -42,12 +43,21 @@ const ChecklistSchema = z.object({
     .min(1),
 });
 
+const WidgetSchema = z.object({
+  type: z.literal("widget"),
+  widgetId: z.string().min(1).max(64),
+  state: z.record(z.string(), z.unknown()),
+  completed: z.boolean(),
+  reflection: z.string().max(4_000).optional(),
+});
+
 const ContentSchema = z.discriminatedUnion("type", [
   PrLinkSchema,
   ScreenshotSchema,
   TextSchema,
   QuizSchema,
   ChecklistSchema,
+  WidgetSchema,
 ]);
 
 const PutBodySchema = z.object({
@@ -64,6 +74,7 @@ const SUBMISSION_TYPE_TO_CONTENT_TYPE: Record<string, ContentType> = {
   text: "text",
   quiz: "quiz",
   checklist: "checklist",
+  widget: "widget",
 };
 
 export async function PUT(
@@ -100,6 +111,7 @@ export async function PUT(
       lessonId: true,
       submissionType: true,
       category: true,
+      widgetId: true,
       lesson: {
         select: {
           courseId: true,
@@ -128,6 +140,13 @@ export async function PUT(
     );
   }
 
+  if (content.type === "widget" && task.widgetId && content.widgetId !== task.widgetId) {
+    return NextResponse.json(
+      { error: "Widget id does not match the task definition." },
+      { status: 400 },
+    );
+  }
+
   const isPrivileged =
     user.role === "admin" || task.lesson.course.ownerId === user.id;
 
@@ -137,6 +156,12 @@ export async function PUT(
     }
   }
 
+  // Cast: Zod-parsed content is a discriminated union with
+  // `Record<string, unknown>` inside WidgetContent.state — Prisma's recursive
+  // `InputJsonValue` type can't see that this is JSON-safe. We validated the
+  // shape at the schema boundary above, so the cast is safe.
+  const contentJson = content as unknown as Prisma.InputJsonValue;
+
   const submission = await prisma.taskSubmission.upsert({
     where: { userId_taskId: { userId: user.id, taskId } },
     create: {
@@ -145,12 +170,12 @@ export async function PUT(
       lessonId,
       courseId,
       status: "submitted",
-      content,
+      content: contentJson,
     },
     update: {
       courseId,
       status: "submitted",
-      content,
+      content: contentJson,
     },
   });
 

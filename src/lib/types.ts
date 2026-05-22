@@ -75,12 +75,16 @@ export interface CourseCard {
   publishedLessonCount: number;
   totalTasks: number;
   updatedAt: Date;
+  seriesId?: string | null;
+  orderInSeries?: number | null;
   progress?: CourseProgress | null;
 }
 
 export interface CourseDetail extends CourseCard {
   createdAt: Date;
   lessons: Lesson[];
+  seriesId?: string | null;
+  orderInSeries?: number | null;
 }
 
 export type HomeworkCategory = "required" | "advanced";
@@ -102,6 +106,8 @@ export interface HomeworkTask {
   order: number;
   quizQuestions?: string[];
   checklistItems?: string[];
+  widgetId?: string | null;
+  widgetConfig?: Record<string, unknown> | null;
   modelAnswer?: string | null;
   estimatedMinutes?: number | null;
 }
@@ -111,7 +117,8 @@ export type SubmissionType =
   | "screenshot"
   | "text"
   | "quiz"
-  | "checklist";
+  | "checklist"
+  | "widget";
 
 // ============================================================
 // STUDENT PROGRESS & SUBMISSIONS
@@ -136,7 +143,8 @@ export type SubmissionContent =
   | ScreenshotContent
   | TextContent
   | QuizContent
-  | ChecklistContent;
+  | ChecklistContent
+  | WidgetContent;
 
 export interface PrLinkContent {
   type: "pr_link";
@@ -173,6 +181,44 @@ export interface ChecklistContent {
 export interface ChecklistItemData {
   label: string;
   checked: boolean;
+}
+
+export interface WidgetContent {
+  type: "widget";
+  widgetId: string;
+  /**
+   * Opaque widget-owned state — each widget interprets this shape itself.
+   * Must be JSON-serializable. The widget reports `completed: true` only
+   * when it considers the task answered correctly enough to submit.
+   */
+  state: Record<string, unknown>;
+  completed: boolean;
+  /** Optional free-text reflection captured alongside the widget answer. */
+  reflection?: string;
+}
+
+// ============================================================
+// SERIES
+// ============================================================
+
+export interface Series {
+  id: string;
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  description: string;
+  coverImageUrl: string | null;
+  order: number;
+}
+
+export interface SeriesCard extends Series {
+  courseCount: number;
+  publishedCourseCount: number;
+  totalLessons: number;
+}
+
+export interface SeriesDetail extends Series {
+  courses: CourseCard[];
 }
 
 // ============================================================

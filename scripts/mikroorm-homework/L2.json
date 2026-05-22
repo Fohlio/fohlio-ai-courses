@@ -1,40 +1,139 @@
 [
   {
     "id": "mikroorm-task-2-1",
-    "title": "Add the Article entity and capture the schema dump",
-    "description": "Add src/entities/Article.ts to your archive-api project. Give Article: a bigint PK (id), title (string, max 200), slug (string, unique), viewCount (integer, default 0), publishedAt (datetime, nullable), and a metadata column typed as jsonb. Register Article in mikro-orm.config.ts. Run 'npx mikro-orm schema:create --dump' with both Book and Article in the entities array. Submit a screenshot showing both 'create table book' and 'create table article' DDL, with column types visible (varchar, bigserial, jsonb, timestamptz).",
+    "title": "Design the Article catalogue card",
+    "description": "Configure the six fields of the Article entity from the lesson. For each row pick the property name (lesson convention: camelCase in TS, snake_case in DB), the MikroORM type, and the right flag (PK, unique, nullable, default 0).",
     "category": "required",
-    "submissionType": "screenshot",
+    "submissionType": "widget",
     "order": 1,
-    "modelAnswer": "The schema dump should show:\n- book: id bigserial primary key, title varchar(200) not null, created_at timestamptz not null\n- article: id bigserial primary key, title varchar(200) not null, slug varchar(255) unique not null, view_count int not null default 0, published_at timestamptz null, metadata jsonb null\nCommon mistakes: forgetting .nullable() on publishedAt (it becomes NOT NULL in the dump), or using p.integer() vs p.bigint() for the PK (bigserial vs integer).",
-    "estimatedMinutes": 20
-  },
-  {
-    "id": "mikroorm-task-2-2",
-    "title": "bigint vs uuid — when to pick each",
-    "description": "In 4–6 sentences: why is bigint a better default than int for production tables, and when does uuid beat both? Be concrete — name a real scenario for each choice, not a bullet list. Submit as text.",
-    "category": "required",
-    "submissionType": "text",
-    "order": 2,
-    "modelAnswer": "A good answer covers:\n1. int overflows at ~2.1 billion rows. A high-volume events or audit table can hit that in months. bigint raises the ceiling to 9.2 × 10^18 at zero extra storage cost on modern 64-bit Postgres.\n2. uuid is the right call when you need to generate IDs outside the database — mobile clients, distributed services, or import pipelines where you want a stable id before the INSERT lands. It also prevents enumeration attacks on public APIs (GET /articles/1 reveals you have exactly one article).\n3. The cost of uuid: it is 16 bytes vs 8, index pages hold fewer entries, and random uuid v4 causes index fragmentation on insert-heavy tables (uuid v7 or gen_random_uuid() with a sortable prefix mitigates this).\nWatch for answers that say 'uuid is always safer' without acknowledging the index cost.",
+    "widgetId": "model-builder",
+    "widgetConfig": {
+      "prompt": "Lesson 2's Article catalogue card. Pick name + type + flag for each row. The DB column names follow MikroORM's underscore naming strategy automatically.",
+      "entityName": "Article",
+      "expectedFields": [
+        {
+          "id": "id",
+          "nameOptions": ["id", "articleId", "pk", "uuid"],
+          "correctName": "id",
+          "typeOptions": [
+            { "value": "p.bigint().primary()", "label": "p.bigint().primary()" },
+            { "value": "p.integer().primary()", "label": "p.integer().primary()" },
+            { "value": "p.string()", "label": "p.string()" }
+          ],
+          "correctType": "p.bigint().primary()",
+          "flagLabel": "Primary key?",
+          "correctFlag": true
+        },
+        {
+          "id": "title",
+          "nameOptions": ["title", "name", "heading"],
+          "correctName": "title",
+          "typeOptions": [
+            { "value": "p.string({ length: 200 })", "label": "p.string({ length: 200 })" },
+            { "value": "p.text()", "label": "p.text()" },
+            { "value": "p.integer()", "label": "p.integer()" }
+          ],
+          "correctType": "p.string({ length: 200 })"
+        },
+        {
+          "id": "slug",
+          "nameOptions": ["slug", "url", "path"],
+          "correctName": "slug",
+          "typeOptions": [
+            { "value": "p.string()", "label": "p.string()" },
+            { "value": "p.uuid()", "label": "p.uuid()" }
+          ],
+          "correctType": "p.string()",
+          "flagLabel": "Unique?",
+          "correctFlag": true
+        },
+        {
+          "id": "viewCount",
+          "nameOptions": ["viewCount", "views", "view_count", "hits"],
+          "correctName": "viewCount",
+          "typeOptions": [
+            { "value": "p.integer({ default: 0 })", "label": "p.integer({ default: 0 })" },
+            { "value": "p.bigint()", "label": "p.bigint()" },
+            { "value": "p.string()", "label": "p.string()" }
+          ],
+          "correctType": "p.integer({ default: 0 })",
+          "flagLabel": "DB default = 0?",
+          "correctFlag": true
+        },
+        {
+          "id": "publishedAt",
+          "nameOptions": ["publishedAt", "published_at", "publishDate"],
+          "correctName": "publishedAt",
+          "typeOptions": [
+            { "value": "p.datetime().nullable()", "label": "p.datetime().nullable()" },
+            { "value": "p.datetime()", "label": "p.datetime()" },
+            { "value": "p.date().nullable()", "label": "p.date().nullable()" }
+          ],
+          "correctType": "p.datetime().nullable()",
+          "flagLabel": "Nullable in DB?",
+          "correctFlag": true
+        },
+        {
+          "id": "metadata",
+          "nameOptions": ["metadata", "extra", "meta"],
+          "correctName": "metadata",
+          "typeOptions": [
+            { "value": "p.json()", "label": "p.json()" },
+            { "value": "p.text()", "label": "p.text()" },
+            { "value": "p.string()", "label": "p.string()" }
+          ],
+          "correctType": "p.json()",
+          "flagLabel": "Nullable in DB?",
+          "correctFlag": true
+        }
+      ]
+    },
+    "modelAnswer": "Article's spine in this course: bigint PK (room to grow past int's 2.1B ceiling), title varchar(200) NOT NULL, slug unique varchar, view_count int DEFAULT 0 NOT NULL, published_at timestamptz NULLABLE (drafts have no publish date), and metadata jsonb NULLABLE. The naming strategy maps camelCase TS to snake_case DB automatically — you write publishedAt, the column is published_at.",
     "estimatedMinutes": 15
   },
   {
-    "id": "mikroorm-task-2-3",
-    "title": "Add a Tag entity with UUID PK and compare DDL (AI-resilient)",
-    "description": "Define a Tag entity with: id as a UUID primary key (p.uuid().primary().defaultRaw('gen_random_uuid()')), and name as a unique string. Register it. Run 'npx mikro-orm schema:create --dump' and compare the SQL for tag.id (uuid) vs article.id (bigserial).\n\nNow comes the AI-resistant part: run the schema:create command a second time on a clean database and compare the output to the first run. Are they identical? Why or why not? If they differ, what does that tell you about snapshot-based diffing (which you will study in Lesson 7)?\n\nMetacognitive memo (3–5 sentences): What surprised you about the DDL diff between uuid and bigserial? What would an AI answer about 'uuid vs bigint' miss that you now know from running the actual schema output?",
-    "category": "advanced",
-    "submissionType": "text",
-    "order": 1,
-    "estimatedMinutes": 30
+    "id": "mikroorm-task-2-2",
+    "title": "Fill in the Book entity definition",
+    "description": "Complete the missing pieces of a real lesson-2 Book entity defined with `defineEntity`. The blanks cover the bigint PK, the varchar length cap, and the `nullable()` modifier the lesson stresses.",
+    "category": "required",
+    "submissionType": "widget",
+    "order": 2,
+    "widgetId": "code-fill",
+    "widgetConfig": {
+      "language": "ts",
+      "code": "import { defineEntity, p } from '@mikro-orm/core';\n\nexport const Book = defineEntity({\n  name: 'Book',\n  properties: (p) => ({\n    id: {{1}}.primary(),\n    title: p.string({ length: {{2}} }),\n    publishedYear: p.integer().{{3}}(),\n    createdAt: p.datetime().onCreate(() => new Date()),\n  }),\n});\n",
+      "blanks": [
+        {
+          "id": "1",
+          "placeholder": "PK type",
+          "answer": "p.bigint()",
+          "accept": ["p.bigint()"]
+        },
+        {
+          "id": "2",
+          "placeholder": "max length",
+          "answer": "200",
+          "accept": ["200"]
+        },
+        {
+          "id": "3",
+          "placeholder": "DB modifier so the column is optional",
+          "answer": "nullable",
+          "accept": ["nullable"]
+        }
+      ]
+    },
+    "modelAnswer": "id: p.bigint().primary() — bigint, not integer, for headroom. title: p.string({ length: 200 }) — varchar(200), the course convention. publishedYear: p.integer().nullable() — the lesson hammers that .nullable() is the DB-side flag; the `?` in TypeScript is a separate concern.",
+    "estimatedMinutes": 10
   },
   {
-    "id": "mikroorm-task-2-4",
+    "id": "mikroorm-task-2-3",
     "title": "Why does nullable (DB) not imply optional (TypeScript)?",
-    "description": "Why does MikroORM require you to mark a property both .nullable() (for the database column) AND with '?' or '| null' in TypeScript (for the type system) separately — instead of inferring one from the other? What bad thing would happen if MikroORM auto-applied '| null' to every .nullable() column? Answer in 4–5 sentences.",
+    "description": "Why does MikroORM require you to mark a property both .nullable() (for the database column) AND with '?' or '| null' in TypeScript (for the type system) separately — instead of inferring one from the other? What bad thing would happen if MikroORM auto-applied '| null' to every .nullable() column? Answer in 4-5 sentences.",
     "category": "advanced",
     "submissionType": "text",
-    "order": 2,
+    "order": 3,
+    "modelAnswer": "MikroORM separates the two so you can have a column that is NULL in storage but always present in the in-memory entity (because a service always fills it on load), or vice versa. Auto-applying `| null` would force every consumer of the entity to handle null even when business logic guarantees presence — flooding the codebase with non-null assertions or guards. The two flags answer two different questions: 'can the row be missing this value?' and 'can application code see undefined here?' Conflating them removes a useful expressive axis.",
     "estimatedMinutes": 15
   }
 ]

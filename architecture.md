@@ -253,6 +253,26 @@ Lesson files live in `public/lessons/` as standalone HTML or PDF. The platform:
 3. For PDF: serves the raw file
 4. Lesson metadata (title, homework tasks, etc.) is defined in `lib/constants.ts` — NOT in the database
 
+### Series (Tracks)
+
+Courses can be grouped into `Series` (a.k.a. tracks) — Coursera-style learning paths. A series has a slug, title, description, and an ordered list of courses. Two seeded series:
+
+- `backend` — NestJS (order 1) → MikroORM (order 2)
+- `ai-gtm` — Fohlio Tech Course (legacy 6 lessons)
+
+Series live in `prisma/schema.prisma` (`Series` model + `Course.seriesId` FK), are seeded by `scripts/seed-series.ts`, and surfaced at `/series` (catalog) and `/series/[slug]` (detail with ordered course cards). The sidebar exposes "Tracks" as the first nav item; root `/` redirects to `/series`.
+
+### Homework Widgets
+
+Homework tasks support a `widget` submission type — interactive in-browser tasks that replace the old text/screenshot-only forms. The widget contract lives at `src/components/homework/widgets/types.ts`:
+
+- Each widget is a `HomeworkWidget<TState>` component with a typed config (baked into the task seed) and per-student state (persisted as `WidgetContent` JSON).
+- The registry at `src/components/homework/widgets/registry.ts` maps `widgetId` strings to components.
+- `SubmissionWidget` (the host) dispatches to the right widget by id, owns the lifecycle, and forwards `{ state, completed }` updates into the existing `TaskCard` submission flow.
+- 12 widgets ship in the initial set: `arch-diagram`, `code-fill`, `code-order`, `concept-match`, `decision-tree`, `error-trace`, `flow-order`, `mcq-justify`, `model-builder`, `query-builder`, `quiz-explain`, `terminal-trace`.
+
+Hard rules for widgets: client component, Tailwind only, mobile down to 320px, ICAP (active input required, no passive click-to-reveal), drag-and-drop = HTML5 only with keyboard fallback, no network calls (submission stays in `TaskCard`).
+
 ### Documentation
 
 | File | Purpose |
