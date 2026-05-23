@@ -1,13 +1,15 @@
 "use client";
 
-import { type FormEvent, useState } from "react";
+import { type FormEvent, Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-export default function RegisterPage() {
-  const router = useRouter();
+import { safeRedirectTarget } from "@/lib/safeRedirect";
+
+function RegisterForm() {
+  const searchParams = useSearchParams();
   const { register } = useAuth();
 
   const [githubNickname, setGithubNickname] = useState("");
@@ -44,7 +46,10 @@ export default function RegisterPage() {
         password,
         displayName.trim() || undefined,
       );
-      router.push("/courses");
+      const redirectTo = safeRedirectTarget(searchParams.get("redirect"));
+      // Hard navigation — see comment in /login for why router.push is not
+      // safe here (cookie / RSC cache race).
+      window.location.assign(redirectTo);
     } catch (err) {
       setError(
         err instanceof Error
@@ -134,5 +139,13 @@ export default function RegisterPage() {
         </Link>
       </p>
     </>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   );
 }

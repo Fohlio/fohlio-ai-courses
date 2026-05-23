@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getSeriesBySlug } from "@/lib/courseQueries";
 import { CourseCard } from "@/components/course/CourseCard";
@@ -12,9 +12,10 @@ interface SeriesDetailPageProps {
 
 export default async function SeriesDetailPage({ params }: SeriesDetailPageProps) {
   const user = await getCurrentUser();
-  if (!user) return null;
-
   const { slug } = await params;
+  // Belt-and-braces: middleware already protects this route.
+  if (!user) redirect(`/login?redirect=/series/${encodeURIComponent(slug)}`);
+
   const series = await getSeriesBySlug(slug, { id: user.id, role: user.role });
 
   if (!series) {

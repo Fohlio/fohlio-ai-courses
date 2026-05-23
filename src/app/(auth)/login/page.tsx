@@ -2,13 +2,13 @@
 
 import { type FormEvent, Suspense, useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { safeRedirectTarget } from "@/lib/safeRedirect";
 
 function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { login } = useAuth();
 
@@ -35,8 +35,12 @@ function LoginForm() {
 
     try {
       await login(githubNickname.trim(), password);
-      const redirectTo = searchParams.get("redirect") || "/courses";
-      router.push(redirectTo);
+      const redirectTo = safeRedirectTarget(searchParams.get("redirect"));
+      // Hard navigation to guarantee the next page reads the freshly-set
+      // session cookie via a fresh middleware run — `router.push` reuses
+      // the in-memory RSC cache and can miss the cookie under React's
+      // batching, which manifested as a "blank page after login" bug.
+      window.location.assign(redirectTo);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "Login failed. Please try again.",
