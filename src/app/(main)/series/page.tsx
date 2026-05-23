@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getSeriesCatalog } from "@/lib/courseQueries";
 import { Card } from "@/components/ui/Card";
@@ -8,7 +9,9 @@ export const dynamic = "force-dynamic";
 
 export default async function SeriesIndexPage() {
   const user = await getCurrentUser();
-  if (!user) return null;
+  // Belt-and-braces: middleware already protects this route, but if it is
+  // ever bypassed (e.g. in unit tests) we still send unauth users to login.
+  if (!user) redirect("/login?redirect=/series");
 
   const series = await getSeriesCatalog();
 
