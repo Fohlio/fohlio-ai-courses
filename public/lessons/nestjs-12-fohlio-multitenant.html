@@ -858,6 +858,8 @@
 
     <p>This is the contract: the guard verifies the token and stuffs the payload onto the request. The decorator reads it back, typed. Together they replace what would otherwise be a tangle of <code>req.headers.authorization</code> parsing in every controller.</p>
 
+    <div data-widget="mcq-justify" data-config='{"question":"A controller has just @JwtAuthGuard but no @WorkspaceScopeGuard. User A (workspace 1) calls GET /projects?workspaceId=2. What happens?","options":[{"id":"a","label":"MikroORM&#39;s tenant filter blocks the query automatically"},{"id":"b","label":"User A receives workspace 2&#39;s projects — JWT proves identity but never proves cross-tenant authorization. That&#39;s how you become a Have I Been Pwned headline"},{"id":"c","label":"NestJS auto-rejects mismatched workspace IDs because @CurrentUser is typed"},{"id":"d","label":"The request 404s because the workspaceId isn&#39;t in the JWT"}],"correctOptionId":"b","minJustificationWords":12,"rubric":"Authentication ≠ authorization. JWT says \"User A is User A.\" @WorkspaceScopeGuard says \"User A is allowed to read workspace 2.\" Skip the second guard and you&#39;ve built an IDOR with extra steps."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 3: STATEFUL JWT + REDIS -->
@@ -1169,6 +1171,8 @@
         <p><strong>Production gotcha:</strong> Socket.IO with <code>RedisIoAdapter</code> changes one critical assumption. With a single instance, the socket connection state is local memory &mdash; you can store user-to-socket mappings in a <code>Map</code> in the gateway. With Redis adapter, those maps fragment across instances. To target a specific user, use Socket.IO <em>rooms</em> (<code>socket.join(\`user:\${userId}\`)</code>) and emit to the room (<code>server.to(\`user:\${userId}\`).emit(...)</code>) &mdash; the adapter routes to whichever instance holds that user.</p>
     </div>
 
+    <div data-widget="step-player" data-config='{"prompt":"Trace one Socket.IO message across 4 API instances behind RedisIoAdapter","steps":[{"title":"1. User on instance B subscribes","body":"Browser opens a Socket.IO connection. The load balancer hands it to instance B. The gateway calls socket.join(&#39;workspace:42&#39;). Instance B now knows: \"this socket is in workspace:42&#39;s room.\" Instances A, C, D have no idea this socket exists."},{"title":"2. A different user, on instance D, triggers an event","body":"User on instance D updates a project. The service calls io.to(&#39;workspace:42&#39;).emit(&#39;project.updated&#39;, payload). Without RedisIoAdapter, only sockets on instance D would receive it — every other instance&#39;s sockets get nothing."},{"title":"3. RedisIoAdapter fan-out","body":"With RedisIoAdapter, instance D publishes the emit to a Redis Pub/Sub channel. A, B, and C all subscribe to that channel. Each receives the message and asks: \"do I have any sockets in workspace:42?\""},{"title":"4. Instance B delivers","body":"Instance B finds the original socket in its local room registry and pushes the event over that one open WebSocket connection. Instance A and C find nothing in their local rooms — they drop the message silently. The user sees the update in real time, on the right tab, with zero coupling between instances."}]}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 5: THE WORKER PROCESS -->
@@ -1455,6 +1459,8 @@ app.<span class="function">enableVersioning</span>({ type: VersioningType.URI })
     <div class="info-box orange">
         <p><strong>Pattern to internalize:</strong> production-grade <code>main.ts</code> files are <em>boring</em> &mdash; ten or fifteen utility calls in a precise order, each fixing a specific operational concern. There's no clever code here. There's just experience compressed into bootstrap order. When you read a Fohlio-style <code>main.ts</code>, every line is a postmortem.</p>
     </div>
+
+    <div data-widget="flow-order" data-config='{"prompt":"Drag the bootstrap steps into the precise order Fohlio&#39;s main.ts runs them (top = first). Order matters — each line is a postmortem.","steps":[{"id":"sentry","label":"Sentry.init() — before NestFactory.create","detail":"If Sentry comes after bootstrap, a crash during DI wiring (the most common kind) is invisible."},{"id":"create","label":"NestFactory.create(AppModule)","detail":"Build the DI graph. Throws here = wiring bug."},{"id":"helmet","label":"app.use(helmet())","detail":"HTTP security headers — must apply before any route is reachable."},{"id":"cors","label":"app.enableCors({...})","detail":"Tenant-allowed origins. Before routes register."},{"id":"validation","label":"app.useGlobalPipes(new ValidationPipe(...))","detail":"Whitelist + forbidNonWhitelisted across every endpoint."},{"id":"versioning","label":"app.enableVersioning({ type: URI })","detail":"/v1, /v2 prefix routing before Swagger introspects routes."},{"id":"swagger","label":"SwaggerModule.setup(...)","detail":"Generate OpenAPI from the final controller set."},{"id":"listen","label":"await app.listen(PORT)","detail":"Only NOW do we start taking real traffic. Everything above is operational hygiene done in silence."}]}'></div>
 
 
     <!-- ============================================ -->

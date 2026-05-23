@@ -759,6 +759,8 @@
         </tr>
     </table>
 
+    <div data-widget="inline-reflect" data-config='{"storageKey":"nestjs-7-swagger-value","prompt":"Write 2-3 sentences: what is the value of a Swagger spec to people who never write Nest code — your QA, your mobile devs, your DBA?","placeholder":"For example: QA can replay any endpoint with one click, mobile devs generate a typed client...","minWords":18,"exampleReflection":"QA stops asking us \"what does this endpoint return?\" — they open Swagger and try it. Our mobile team auto-generates a typed Kotlin/Swift client from the spec, so a wrong field name on the server is a compile error in their build. And when a customer&#39;s integration breaks, support has a live console instead of a curl tutorial."}'></div>
+
     <div class="recall-box">
         <div class="recall-title">&#x1F914; Guess before reading Part 4</div>
         <div class="recall-question">Look at <code>CreateFlightDto</code> above. Every field has an <code>@ApiProperty()</code> decorator. The TypeScript already says <code>code: string</code>. Why can't Swagger just <em>read</em> the TypeScript and skip the decorators?</div>
@@ -958,6 +960,8 @@
         GraphQL backend dev, sliding in: &ldquo;Want me to write you a query?&rdquo;<br>
         <em>The plane Wi-Fi is the great equalizer.</em>
     </div>
+
+    <div data-widget="concept-toggle" data-config='{"title":"Same screen, two contracts — REST vs GraphQL","views":[{"id":"rest","label":"REST — multiple endpoints","tone":"neutral","body":"Mobile needs: flight code, gate, passenger names.\n\nGET /flights/42         → full flight (12 fields)\nGET /flights/42/gate    → full gate (8 fields)\nGET /flights/42/pax     → array of passengers (each 9 fields)\n\n3 round-trips. ~4KB on the wire. Mobile only uses 600 bytes."},{"id":"graphql","label":"GraphQL — one query","tone":"good","body":"query {\n  flight(id: 42) {\n    code\n    gate { name }\n    passengers { firstName lastName }\n  }\n}\n\n1 round-trip. Server returns exactly those fields, ~600 bytes. Mobile on 3G is happy."},{"id":"tradeoff","label":"The catch","tone":"bad","body":"GraphQL trades HTTP cache for client flexibility.\n\n- No more \"CDN-cache /flights/42 for 60 seconds\"\n- N+1 queries possible if you don&#39;t use DataLoader\n- Auth becomes per-field instead of per-endpoint\n\nUse REST for public/cacheable APIs, GraphQL for screens with deep nested needs."}]}'></div>
 
 
     <!-- ============================================ -->

@@ -743,6 +743,7 @@
         Reports says: "I'll print the receipt... in 30 seconds."
     </div>
 
+    <div data-widget="concept-match" data-config='{"pairs":[{"id":"frontend","term":"Frontend","definition":"What the user sees in the browser &mdash; buttons, forms, screens."},{"id":"backend","term":"Backend","definition":"The brain that checks permissions, runs business logic, and talks to the database."},{"id":"db","term":"PostgreSQL","definition":"Where the actual project data lives long-term."},{"id":"redis","term":"Redis","definition":"Fast in-memory cache for sessions and short-lived values."},{"id":"reports","term":"Reports","definition":"The printing press &mdash; turns data into PDFs and Excel files (slow)."}]}'></div>
 
     <!-- ============================================ -->
     <!-- PART 2: GIT FLOW RECAP -->
@@ -1415,6 +1416,8 @@ make deploy-next
     <div class="info-box red">
         <p><strong>Note the domains:</strong> Test servers use <code>fohlio.io</code>, while UAT/staging servers use <code>fohlio.com</code>. Production is <code>app.fohlio.com</code>.</p>
     </div>
+
+    <div data-widget="decision-tree" data-config='{"rootId":"start","nodes":{"start":{"id":"start","question":"You just merged a PR fixing a small bug. Where should it be deployed first?","options":[{"label":"Straight to production &mdash; it&#39;s a tiny fix.","outcome":{"kind":"wrong","explanation":"Tiny fixes still break things. Production should never be the first place new code runs. Try again."}},{"label":"To a staging server first.","nextNodeId":"staging"},{"label":"Nowhere &mdash; let it sit on main for a week.","outcome":{"kind":"suboptimal","explanation":"Code that sits unused gathers dust and conflicts. Ship it to staging so it can be tested."}}]},"staging":{"id":"staging","question":"Good. Staging deploy is green. The fix passed a quick smoke test there. Now what?","options":[{"label":"Deploy to production using the Makefile deploy command.","outcome":{"kind":"correct","explanation":"Yes &mdash; tested on staging, smoke-checked, then deployed to production via the documented Makefile target. This is the safe path."}},{"label":"Wait another day just to be safe.","outcome":{"kind":"suboptimal","explanation":"Caution is good, but indefinite waiting blocks the team. Once staging validates the fix, ship it."}},{"label":"Roll it back &mdash; staging worked, no need for prod.","outcome":{"kind":"wrong","explanation":"Staging is not where real users live. The fix only matters once it&#39;s in production."}}]}}}'></div>
 
     <!-- ============================================ -->
     <!-- PART 5: CONNECTING FRONTEND LOCALLY -->

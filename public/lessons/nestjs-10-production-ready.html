@@ -843,6 +843,8 @@
         <em>If your test never fails, ask whether it ever could.</em>
     </div>
 
+    <div data-widget="concept-match" data-config='{"pairs":[{"id":"unit","term":"Unit test","definition":"Test one provider with all dependencies mocked — fast (ms), runs every save"},{"id":"e2e","term":"E2E test","definition":"Boot the real app via TestingModule and hit endpoints over HTTP with Supertest"},{"id":"override","term":".overrideProvider()","definition":"Swap a real service for a mock inside TestingModule — the DI override hook"},{"id":"supertest","term":"Supertest","definition":"HTTP client that talks to an Express/Nest app object directly, no network needed"},{"id":"pyramid","term":"Test pyramid","definition":"Lots of unit, fewer integration, even fewer E2E — healthy ratio ~70/30 unit/E2E for NestJS"}]}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 4: HEALTH CHECKS WITH TERMINUS -->
@@ -1299,6 +1301,8 @@ pm2 startup</code></pre>
         Senior: &ldquo;Then no.&rdquo;<br>
         <em>The right answer is almost always &ldquo;the simplest thing your team can operate.&rdquo;</em>
     </div>
+
+    <div data-widget="mcq-justify" data-config='{"question":"Your /health/live returns 200 but /health/ready returns 503 because Postgres is unreachable. What does a sane orchestrator (Vercel, k8s) do?","options":[{"id":"a","label":"Kills the pod immediately and restarts it"},{"id":"b","label":"Stops sending traffic to this instance but leaves the process alive — restarting wouldn&#39;t bring Postgres back"},{"id":"c","label":"Routes traffic anyway because liveness is fine"},{"id":"d","label":"Switches the request to /health/live as a fallback endpoint"}],"correctOptionId":"b","minJustificationWords":12,"rubric":"Liveness = \"is the process alive\", readiness = \"can I serve traffic right now.\" A failing dependency makes you not ready (pause traffic) but the process is fine — killing it just adds a cold start once Postgres returns."}'></div>
 
 
     <!-- ============================================ -->

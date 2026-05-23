@@ -690,6 +690,8 @@
         </div>
     </div>
 
+    <div data-widget="terminal-trace" data-config='{"prompt":"You just ran migration:up to apply the add_slug_to_book migration. Predict what migration:list will print &mdash; remember mikro_orm_migrations is the source of truth, not the file system.","command":"npx mikro-orm migration:list","expectedOutput":["Migration20260101000000_initial -- executed","Migration20260507142301_add_slug_to_book -- executed","No pending migrations"],"fuzzy":true}'></div>
+
     <h3>When to hand-edit a generated migration</h3>
 
     <p>Generated migrations are correct for schema changes. They are <em>not always correct</em> for the data implications of those changes. Three cases where you need to edit before merging:</p>
@@ -981,6 +983,8 @@
   <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" drop constraint "book_slug_unique";`</span>);
   <span class="keyword">this</span>.<span class="function">addSql</span>(<span class="string">`alter table "book" drop column "slug";`</span>);
 }</code></pre>
+
+    <div data-widget="inline-reflect" data-config='{"storageKey":"mikroorm-l7-migration-discipline","prompt":"Think about the codebase you work in today. The next time you add a NOT NULL column to a populated table, what is your three-step rule? Write the steps as you would tell a junior reviewing your PR &mdash; include the verb (add, backfill, enforce) and the SQL primitive for each.","placeholder":"1. ...\n2. ...\n3. ...","exampleReflection":"1. Add the column as NULL-allowed (alter table add column &hellip; varchar). 2. Backfill every existing row from another column or a computed value, in the same migration (update &hellip; set slug = &hellip;). 3. Only then alter column set not null and add the unique constraint. The auto-generated migration skips steps 1 and 2 because it assumes an empty table &mdash; my job at PR time is to add them before the migration ever touches production.","minWords":25}'></div>
 
     <h3>Step 4 &mdash; apply, roll back, roll forward</h3>
 

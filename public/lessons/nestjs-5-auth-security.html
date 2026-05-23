@@ -603,6 +603,8 @@ npm i -D @types/bcrypt</code></pre>
         <em>If a system can email you your old password, run.</em>
     </div>
 
+    <div data-widget="live-quiz" data-config='{"question":"Why is bcrypt slow on purpose — and why is that a security feature, not a bug?","options":[{"id":"a","label":"It rate-limits login attempts at the framework level"},{"id":"b","label":"Each hash takes ~100ms, so an attacker who steals the DB can only try a few hashes per second per CPU"},{"id":"c","label":"It encrypts the password with a slow algorithm so brute-force decryption fails"},{"id":"d","label":"Slow hashing prevents SQL injection on the password column"}],"correctOptionId":"b","explanation":"Bcrypt is a deliberately expensive one-way hash. A fast hash like MD5 lets attackers test billions of guesses per second on stolen data. Bcrypt&#39;s work factor caps that at a few per second per core."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 3: LOCAL AUTH STRATEGY -->
@@ -949,6 +951,8 @@ nest g service users</code></pre>
         Senior: &ldquo;That's all RBAC is. A label and a guard.&rdquo;<br>
         <em>Most "complex permission systems" are this, repeated.</em>
     </div>
+
+    <div data-widget="error-trace" data-config='{"code":["@Controller(&#39;flights&#39;)","export class FlightsController {","  @Delete(&#39;:id&#39;)","  @UseGuards(RolesGuard, AuthGuard(&#39;jwt&#39;))","  @Roles(&#39;admin&#39;)","  remove(@Param(&#39;id&#39;) id: string) {","    return this.flights.remove(+id);","  }","}"],"errorMessage":"TypeError: Cannot read properties of undefined (reading &#39;role&#39;)\n    at RolesGuard.canActivate (roles.guard.ts:14:32)","rootCauseLine":4,"acceptKeywords":["order","authguard","first","before","jwt"]}'></div>
 
 
     <!-- ============================================ -->

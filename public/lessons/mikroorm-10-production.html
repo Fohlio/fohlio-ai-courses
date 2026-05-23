@@ -732,6 +732,8 @@
         <p><strong>When read replicas earn their keep:</strong> read-heavy services (dashboards, search, list endpoints), reporting workloads, analytics queries, materialized-view feeders. They are <em>not</em> a free win for write-heavy services or for workloads with strict read-after-write requirements (auth, payments) &mdash; in those cases the replica lag will bite you and the operational complexity is not worth it.</p>
     </div>
 
+    <div data-widget="live-quiz" data-config='{"question":"A handler does em.persistAndFlush(article), then immediately em.findOne(Article, article.id). preferReadReplicas: true is set. Intermittently the second call returns the old version of the row. What is the cleanest fix?","options":[{"id":"a","label":"Set preferReadReplicas: false everywhere &mdash; the replicas are not worth the trouble."},{"id":"b","label":"Wrap the handler in @Transactional() (or em.transactional(...)). All reads inside the transaction route to primary, so the second findOne sees the write."},{"id":"c","label":"Call em.clear() between the flush and the findOne."},{"id":"d","label":"Manually pass { populate: [&#39;*&#39;] } to the second findOne."}],"correctOptionId":"b","explanation":"The framework already does the right thing once you put the code in the right shape. MikroORM routes every query inside a transactional scope to the write connection &mdash; reads after the flush will hit primary. Per-query override with connectionType: &#39;write&#39; is also valid, but @Transactional is the discipline that scales beyond one handler."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 5: MULTIPLE SCHEMAS -->
@@ -891,6 +893,8 @@ archive-api/
     </div>
 
     <p>Don't try to nail all eight in one weekend &mdash; pick four that lean into your strengths, then add a fifth or sixth if time allows. The PR description should call out, with file links, exactly which criteria you've covered and where to find each one. That's how reviewers will mark you.</p>
+
+    <div data-widget="inline-reflect" data-config='{"storageKey":"mikroorm-l10-capstone-plan","prompt":"Pick four of the eight capstone criteria (a&ndash;h) you intend to ship in your PR. For each, write one sentence on why that criterion fits your project &mdash; or what real-world pain it would relieve. The exercise is to commit to a shape before you start writing code, not to enumerate everything you could theoretically build.","placeholder":"(c) softDelete filter &mdash; because our admin tools need to restore accidentally-deleted articles\n(d) STI on Document &mdash; because Books and Journals share most of their columns and...","exampleReflection":"(b) Custom MoneyType &mdash; our invoices have shipped &lsquo;199900 USD&rsquo; to clients twice; the type fixes the boundary once. (c) softDelete filter on Article &mdash; legal won&#39;t let us hard-delete drafts. (e) @Transactional publishArticle + outbox event &mdash; we already have a Slack notifier that drifts from the article table. (g) Cron worker with @CreateRequestContext &mdash; the existing setInterval based one randomly throws on global-context errors after the v7 upgrade.","minWords":30}'></div>
 
 
     <!-- ============================================ -->

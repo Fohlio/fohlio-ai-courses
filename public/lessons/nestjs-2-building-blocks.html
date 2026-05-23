@@ -741,6 +741,8 @@
         <div class="recall-hint">Hint: one is for the &ldquo;<em>?</em>&rdquo; part, the other is for the &ldquo;<em>:</em>&rdquo; part.</div>
     </div>
 
+    <div data-widget="mcq-justify" data-config='{"question":"You inject @Res() into a handler to set a custom header, then return a JSON object. The client receives an empty response. Why?","options":[{"id":"a","label":"NestJS strips the body when custom headers are set"},{"id":"b","label":"Injecting @Res() puts you in manual mode — your return value is ignored unless you use @Res({ passthrough: true })"},{"id":"c","label":"You need to call res.json() instead of returning"},{"id":"d","label":"The default @HttpCode is 204 No Content"}],"correctOptionId":"b","minJustificationWords":10,"rubric":"The moment you grab the raw response object, Nest hands the wheel over. Add passthrough:true to keep returning data while still touching headers."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 3: PROVIDERS DEEP DIVE -->
@@ -967,6 +969,8 @@ is available in the BookingsModule context.</span></code></pre>
     </div>
 
     <p><strong>Answer to the recall question from Part 1:</strong> Only the service changes. The controller and the module stay identical &mdash; they don't know or care whether the data comes from Postgres, Redis, or the moon. That's the whole point.</p>
+
+    <div data-widget="concept-toggle" data-config='{"title":"FlightsModule wants to use BookingsService — what does each module need?","views":[{"id":"broken","label":"Broken — missing exports","tone":"bad","body":"BookingsModule:\n  providers: [BookingsService]\n  // no exports!\n\nFlightsModule:\n  imports: [BookingsModule]\n  providers: [FlightsService]\n\nResult: Nest crashes at startup — \"BookingsService is not exported from BookingsModule\". The terminal can&#39;t borrow ground crew that another terminal keeps private."},{"id":"fixed","label":"Fixed — exports + imports","tone":"good","body":"BookingsModule:\n  providers: [BookingsService]\n  exports: [BookingsService]   // crew is loaned out\n\nFlightsModule:\n  imports: [BookingsModule]    // borrow the crew\n  providers: [FlightsService]\n\nResult: FlightsService can inject BookingsService. Encapsulation is preserved — every other module still has to ask."}]}'></div>
 
 
     <!-- ============================================ -->

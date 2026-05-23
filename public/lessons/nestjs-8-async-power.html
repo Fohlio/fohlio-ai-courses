@@ -783,6 +783,8 @@ CacheModule.<span class="function">registerAsync</span>({
         </div>
     </div>
 
+    <div data-widget="live-quiz" data-config='{"question":"You add @CacheKey(&#39;flights:list&#39;) to GET /flights but skip @CacheTTL. A user posts a new flight; GET /flights still returns the old list for an hour. Why?","options":[{"id":"a","label":"Redis crashed silently and is serving stale memory"},{"id":"b","label":"The cache interceptor never invalidates on writes — it only sets, reads, and expires by TTL. You need explicit cache.del() in POST"},{"id":"c","label":"NestJS caches forever by default if TTL isn&#39;t set"},{"id":"d","label":"The @CacheKey decorator only applies to authenticated routes"}],"correctOptionId":"b","explanation":"Declarative caching is set-and-expire only. Writes need to either invalidate the key (cache.del) or you accept the staleness window. There&#39;s no \"auto-invalidate on related write\" — only TTL."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 3: BACKGROUND JOBS WITH BULLMQ -->
@@ -1009,6 +1011,8 @@ CacheModule.<span class="function">registerAsync</span>({
 
     <p>Now <code>http://localhost:3000/queues</code> shows every queue, every job, every retry, every failure reason. Lock it behind an admin guard before shipping &mdash; it exposes job payloads.</p>
 
+    <div data-widget="step-player" data-config='{"prompt":"Walk through a BullMQ job from request to completion","steps":[{"title":"1. Request arrives at the gate","body":"POST /bookings hits the controller. The handler calls bookingsService.create(...), writes the row, then calls emailQueue.add(&#39;sendConfirmation&#39;, { bookingId }) and returns 201. Total request time: ~30ms."},{"title":"2. Job is parked in Redis","body":"The job payload — { bookingId: 42 } — is serialized to JSON and pushed onto the Redis &#39;emails&#39; list. Nothing has been sent yet. If the worker is offline, the job just waits."},{"title":"3. Worker picks it up","body":"A separate Node process running the @Processor(&#39;emails&#39;) class polls Redis, sees the new job, and runs its process() method. This process can take 5 seconds (slow SMTP) — the original request already returned 4.97 seconds ago."},{"title":"4. Success or retry","body":"If process() returns cleanly, the job is marked completed. If it throws, BullMQ retries it with exponential backoff (3 attempts by default). After all attempts fail, it lands in the &#39;failed&#39; set — visible in Bull Board for triage."},{"title":"5. Observability","body":"Bull Board at /queues shows the full lifecycle: waiting → active → completed | failed, with payload, error, retry count. A staff dashboard for every passenger&#39;s baggage tag."}]}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 4: EVENTEMITTER2 -->
@@ -1181,6 +1185,8 @@ CacheModule.<span class="function">registerAsync</span>({
         4. Update an in-memory online-users counter when someone logs in.</div>
         <div class="recall-hint">1 &amp; 3 = BullMQ (must succeed, may retry). 2 &amp; 4 = EventEmitter2 (cheap signal, OK if a crash loses one). The pattern: would a lost event cause a refund or a complaint? &rarr; queue. Would it cause a stale dashboard for 30 seconds? &rarr; event.</div>
     </div>
+
+    <div data-widget="mcq-justify" data-config='{"question":"BullMQ guarantees a job runs \"at least once.\" What does that mean for your job handlers in production?","options":[{"id":"a","label":"They will run exactly once — Redis dedupes for you"},{"id":"b","label":"They must be idempotent — a network blip can cause the same job to be reprocessed after a worker timeout"},{"id":"c","label":"They run zero times unless you call .save() explicitly"},{"id":"d","label":"They run twice by default so you have a backup result"}],"correctOptionId":"b","minJustificationWords":12,"rubric":"At-least-once means retries on partial failure are possible. Charging a card or sending an email twice is a real risk. Use idempotency keys (Stripe, message-id) or check-before-write inside the processor."}'></div>
 
 
     <!-- ============================================ -->

@@ -797,6 +797,7 @@
         <div class="recall-hint">If you can't find an analogy &mdash; that's a signal. It means you understood the concept but haven't <em>owned</em> it yet. Re-read the table above, focus on the &laquo;Who Can Set Up&raquo; row, and try again. That's where the magic is.</div>
     </div>
 
+    <div data-widget="concept-toggle" data-config='{"title":"Same question, two worlds: &laquo;What tickets do I have in Jira?&raquo;","views":[{"id":"api","label":"API-only world","tone":"bad","body":"You open Jira in the browser. You log in. You navigate to your board. You filter by assignee. You read the list. If you want to summarize it for standup, you copy the titles into a doc and write the summary yourself. Claude cannot help &mdash; it has no way to reach Jira on its own. Every developer who wants to automate this must read the Jira API docs, write code, handle auth, and deploy it."},{"id":"mcp","label":"MCP world","tone":"good","body":"You type the question into Claude. Claude calls the Atlassian MCP server, which already knows how to authenticate and talk to Jira. The tickets come back, Claude reads them, and you get a clean summary in seconds. You did not write any code. The MCP server &mdash; built once by Atlassian &mdash; works for every Claude user."}]}'></div>
 
     <!-- ============================================ -->
     <!-- PART 3: MCP IN CLAUDE DESKTOP -->
@@ -1419,6 +1420,7 @@
         <div class="recall-hint">This isn't just an exercise. These are probably the first 3 things you should actually connect after the lesson. The scenarios below will give you more ideas &mdash; but your own instinct matters most.</div>
     </div>
 
+    <div data-widget="inline-reflect" data-config='{"storageKey":"lesson5-mcp-personal-stack","prompt":"Pick 3 tools from the MCP catalog above that would fit your role. For each one, write the single question you would ask Claude on day one. Be specific &mdash; not &laquo;summarize my work&raquo; but the actual question you have right now.","placeholder":"1. Atlassian &mdash; &laquo;What tickets are blocked on me this week?&raquo;\n2. Notion &mdash; ...\n3. Slack &mdash; ...","minWords":25,"exampleReflection":"1. Atlassian &mdash; &laquo;Which of my Jira tickets have not moved in 3+ days? Group by epic.&raquo;\n2. Notion &mdash; &laquo;Pull the latest PRD for the deals pipeline feature and list any open questions.&raquo;\n3. Slack &mdash; &laquo;What did the support team flag in #cs-alerts since Monday? Group similar issues.&raquo; These three would replace about 45 minutes of tab-switching every morning."}'></div>
 
     <!-- ============================================ -->
     <!-- PART 6: PRACTICAL SCENARIOS -->
