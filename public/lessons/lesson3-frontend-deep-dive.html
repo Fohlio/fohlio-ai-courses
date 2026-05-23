@@ -799,6 +799,7 @@
         <em>Be grateful. In 2005, this would have reloaded the entire page.</em>
     </div>
 
+    <div data-widget="step-player" data-config='{"prompt":"Trace what actually happens when a user clicks &laquo;Create Project&raquo; in the dining room.","steps":[{"title":"1. The user clicks the button","body":"A React component (the waiter) catches the click and gathers the form data &mdash; project name, owner, dates."},{"title":"2. The component asks the store for help","body":"The component does not talk to the kitchen directly. It hands the order to the state store (the head waiter), which knows the correct procedure."},{"title":"3. The store calls the API client","body":"The store hands the order to the GraphQL client &mdash; the runner whose job is to actually leave the dining room and talk to the kitchen."},{"title":"4. The backend processes the request","body":"The kitchen (backend) checks permissions, writes the new project to PostgreSQL, and returns the saved record."},{"title":"5. The store updates and the UI re-renders","body":"The store receives the new project, updates its internal state, and React re-renders only the components that depend on that state. The new project appears on screen."}]}'></div>
 
     <!-- The Big Migration Story -->
     <h3>The Two Big Upgrades</h3>
@@ -1395,6 +1396,7 @@ make s</pre>
         5. Acceptance &mdash; <em>"I should have read the lesson first."</em>
     </div>
 
+    <div data-widget="concept-toggle" data-config='{"title":"REST vs GraphQL &mdash; same restaurant, two ordering systems","views":[{"id":"rest","label":"With REST (old)","tone":"bad","body":"The waiter runs to the kitchen with a generic form: &laquo;Give me everything about Project #42.&raquo; The kitchen sends back a huge tray with every field on the project &mdash; name, owner, budget, every spec, every revision, every comment &mdash; even when the dining room only needed the name and owner. Slow, wasteful, and the dining room has to throw most of it away."},{"id":"graphql","label":"With GraphQL (new)","tone":"good","body":"The waiter writes a precise order: &laquo;I need ONLY name, owner, and the last 5 items for Project #42.&raquo; The kitchen prepares exactly that &mdash; no more, no less. Faster, lighter on the network, and the dining room knows in advance what shape the data will arrive in."}]}'></div>
 
     <!-- ============================================ -->
     <!-- PART 4: FOLDER STRUCTURE MAP -->

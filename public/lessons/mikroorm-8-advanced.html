@@ -568,6 +568,8 @@
         <p><strong>Array embeddables are always JSON.</strong> If you write <code>p.embedded(Address).array()</code> &mdash; an author with multiple addresses &mdash; MikroORM has to use JSON regardless of <code>.object()</code>. There is no relational way to flatten an arbitrary-length array of structs into columns.</p>
     </div>
 
+    <div data-widget="concept-match" data-config='{"pairs":[{"id":"inline","term":"Inline embeddable","definition":"Each property of the value object becomes its own column on the parent table. Indexable per field, queryable with plain WHERE, smallest disk footprint &mdash; pick when the shape is stable and you query individual fields."},{"id":"json","term":"JSON-mode embeddable","definition":"The whole value object is stored in one JSONB column. No per-field index by default, schemaless &mdash; pick when you read the embeddable as a whole or expect to evolve the shape without migrations."},{"id":"array","term":"Array embeddable","definition":"A list of value objects, always stored as JSON regardless of .object() &mdash; there is no relational way to flatten N rows of structs into columns."},{"id":"jsonprop","term":"Typed p.json&lt;T&gt;()","definition":"A schemaless bag with a TS-side shape annotation. Stored in JSONB. Use for settings blobs and per-row variable metadata that has no fixed schema."},{"id":"sti","term":"STI discriminator","definition":"A column on the shared table that tells the ORM which subclass to hydrate. The cost: every subtype-specific column must be nullable."}]}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 2: INHERITANCE -->
@@ -954,6 +956,8 @@ Article.<span class="function">addHook</span>(<span class="string">'beforeCreate
     <div class="info-box green">
         <p><strong>Property validation is a related lighter-weight pattern.</strong> If you only need to reject bad input (not transform shape), use <code>p.string().check(...)</code> or a property-level setter. Custom types are for when the in-memory shape genuinely differs from the on-disk shape.</p>
     </div>
+
+    <div data-widget="mcq-justify" data-config='{"question":"Your team stores price as an integer column of cents in code, but every controller does (price / 100).toFixed(2) to render it. Two places forgot the divide and shipped &lsquo;199900 USD&rsquo; to the UI. Which abstraction fixes this once at the boundary?","options":[{"id":"a","label":"Add a price formatter helper and code-review every controller for usage."},{"id":"b","label":"Define a Money class and a MoneyType custom type. The property becomes p.type(MoneyType); article.price is always a Money instance with a format() method, never a raw integer."},{"id":"c","label":"Store price as a string column with the formatted value pre-computed."},{"id":"d","label":"Move every controller into a single base controller and centralise rendering there."}],"correctOptionId":"b","minJustificationWords":15,"rubric":"Custom types convert at the ORM boundary &mdash; once, symmetrically &mdash; so the in-memory shape (Money) and the on-disk shape (varchar / integer) can diverge safely. Helpers and base classes can be forgotten; a type cannot."}'></div>
 
 
     <!-- ============================================ -->

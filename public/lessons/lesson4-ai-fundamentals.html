@@ -684,6 +684,7 @@
         <div class="step-desc">Don't drag your entire project into the chat. Include only the files that are relevant to your question. Cursor does this automatically, but manual control helps.</div>
     </div>
 
+    <div data-widget="live-quiz" data-config='{"question":"You have been chatting with Claude for an hour about a complex spec. Answers are starting to get vague and the model is forgetting details from earlier in the conversation. What is the most likely cause?","options":[{"id":"a","label":"The model got tired and needs a break."},{"id":"b","label":"The context window is filling up &mdash; old messages are pushed off the desk."},{"id":"c","label":"The internet connection is slow."},{"id":"d","label":"You need to upgrade to a more expensive plan."}],"correctOptionId":"b","explanation":"LLMs have no memory between turns &mdash; they only see what fits in the context window (the desk). As the conversation grows, older messages get pushed off and the model loses access to them. Starting a fresh chat or summarizing the key points usually fixes this."}'></div>
 
     <!-- ============================================ -->
     <!-- PART 3: CHATBOT VS AGENT -->
@@ -1130,6 +1131,7 @@
         <div class="diagram-caption">The full AI stack: You give a task &rarr; Agent thinks and coordinates &rarr; Skills provide recipes &rarr; MCP connects to tools &rarr; Subagents parallelize work</div>
     </div>
 
+    <div data-widget="mcq-justify" data-config='{"question":"In the full AI stack &mdash; agent, skills, MCP, subagents &mdash; which piece is responsible for actually reaching out to an external system like Notion or Slack?","options":[{"id":"agent","label":"The agent &mdash; it talks to everything directly."},{"id":"skill","label":"A skill &mdash; it contains the API credentials."},{"id":"mcp","label":"MCP &mdash; it gives the agent a safe, structured way to call external tools."},{"id":"subagent","label":"A subagent &mdash; it spawns to handle each external call."}],"correctOptionId":"mcp","minJustificationWords":12,"rubric":"MCP is the standard tool-belt layer. The agent decides what to do, a skill tells it how, MCP is what actually connects to the outside world (Notion, Slack, GitHub, etc.). Subagents are for parallel work, not for tool access."}'></div>
 
     <!-- ============================================ -->
     <!-- PART 6: PRACTICAL TOOLS -->

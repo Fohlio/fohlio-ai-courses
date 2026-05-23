@@ -631,6 +631,8 @@ order.customer.tier = <span class="string">'gold'</span>;
         </div>
     </div>
 
+    <div data-widget="concept-match" data-config='{"pairs":[{"id":"em","term":"EntityManager","definition":"The head librarian &mdash; the single authority you hand requests to and who signs off changes at the end of the shift."},{"id":"imap","term":"Identity Map","definition":"The master catalog &mdash; one card per physical volume, so two readers asking for book #1 get the exact same instance."},{"id":"uow","term":"Unit of Work","definition":"The working ledger &mdash; a journal of every check-out, return, and edit, flushed to the master register in one signed pass."},{"id":"repo","term":"Repository","definition":"A subject specialist desk &mdash; a typed shortcut for one kind of volume, with no power the head librarian doesn&#39;t already have."},{"id":"flush","term":"em.flush()","definition":"End-of-shift sign-off &mdash; compute the change-set, open a transaction, run inserts/updates/deletes in dependency order, commit."}]}'></div>
+
     <h3>The full mapping</h3>
 
     <table>
@@ -894,6 +896,8 @@ title: War and Peace</code></pre>
         <div class="recall-question">If you change one line in <code>main.ts</code> &mdash; <code>book1!.title = 'New Title'</code> right after the second <code>findOne</code>, then call <code>await em.flush()</code> &mdash; how many SQL statements will print? And why?</div>
         <div class="recall-hint">Try it in your editor before continuing. Remember: snapshots, change-set computation, single transaction. The answer is satisfying.</div>
     </div>
+
+    <div data-widget="step-player" data-config='{"prompt":"Walk through what em.flush() does &mdash; the head librarian&#39;s end-of-shift routine.","steps":[{"title":"1. Snapshot diff","body":"The Unit of Work compares each tracked entity to the snapshot it stored when the entity was loaded or persisted. Anything that changed lands in the change-set: new inserts, updated rows, scheduled deletes."},{"title":"2. Order by dependency","body":"Inserts and deletes are reordered so parent rows exist before children reference them, and children are removed before parents. You never write this ordering yourself."},{"title":"3. BEGIN transaction","body":"The driver opens an implicit transaction. Every SQL statement from this flush will commit together or roll back together &mdash; the master register never sees a half-done shift."},{"title":"4. Run batched SQL","body":"Multiple inserts of the same entity become one multi-row INSERT. Updates touch only the changed columns. The Identity Map ensures duplicate findOne calls hit cache, not the database."},{"title":"5. COMMIT and re-snapshot","body":"On success the driver commits, the Unit of Work clears its change-set, and each surviving entity gets a fresh snapshot so the next flush has a clean baseline."}]}'></div>
 
 
     <!-- ============================================ -->

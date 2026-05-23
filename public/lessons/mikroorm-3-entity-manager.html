@@ -571,6 +571,8 @@
 
     <p>One subtle point that catches people: a <code>new Article()</code> with the <code>new</code> keyword and <em>no</em> <code>em.create()</code> or <code>em.persist()</code> isn't in any of these states. It's just a JS object that the ORM doesn't know about. To get it tracked, you call <code>em.persist(entity)</code>, which moves it to the New state.</p>
 
+    <div data-widget="live-quiz" data-config='{"question":"You loaded a Book, edited its title, then called em.clear(). Without flushing first, you edit the title again and call em.flush(). What state was the book in for the second edit, and what does Postgres see?","options":[{"id":"a","label":"Managed &mdash; the UPDATE fires with the latest title."},{"id":"b","label":"Detached &mdash; em.flush() silently ignores the edit; Postgres sees nothing."},{"id":"c","label":"Removed &mdash; em.clear() schedules a DELETE for the row."},{"id":"d","label":"New &mdash; em.flush() runs an INSERT and duplicates the row."}],"correctOptionId":"b","explanation":"em.clear() detaches every tracked entity. A detached entity has no head librarian watching it &mdash; mutations are silent no-ops on the next flush. To make Postgres see the change, em.merge() or (more typically) em.findOne() again to put a fresh managed copy in the map."}'></div>
+
     <!-- ============================================ -->
     <!-- PART 2: PERSIST & FLUSH -->
     <!-- ============================================ -->
@@ -835,6 +837,8 @@ article.author = authorRef;
     <div class="info-box blue">
         <p><strong>Two takeaways from this:</strong> (1) The Identity Map prevents <em>duplicate object instances</em>, not <em>duplicate queries</em>. To deduplicate by-slug queries, you cache the slug yourself. (2) Because the same instance is returned, any in-memory mutations a previous handler made are still visible &mdash; which is the correctness property the map exists to protect.</p>
     </div>
+
+    <div data-widget="mcq-justify" data-config='{"question":"A teammate is convinced the Identity Map deduplicates queries. They ran findOne(Article, { slug: &#39;x&#39; }) twice in one request and saw two SELECTs in the log &mdash; and now they want to rip the ORM out. What do you tell them?","options":[{"id":"a","label":"They are right; the map is broken &mdash; file a bug."},{"id":"b","label":"The map keys on primary key, not on query. Both SELECTs fire, but Postgres returns id=1 both times and the map hands back the same JS instance &mdash; the cache is on identity, not on round trips."},{"id":"c","label":"Two SELECTs always fire even for findOne by PK; the map is a no-op in this codebase."},{"id":"d","label":"They need to call em.clear() between reads to enable caching."}],"correctOptionId":"b","minJustificationWords":15,"rubric":"Strong answer mentions: keyed by PK, the SELECT still fires because the ORM cannot know which row the slug resolves to without asking Postgres, but the returned object is the same reference (===), preserving in-memory mutations."}'></div>
 
     <div class="joke-box">
         <div class="joke-icon">&#x1F4DD;</div>

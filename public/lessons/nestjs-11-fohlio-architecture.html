@@ -840,6 +840,8 @@ src/modules/users/
         <em>The framework you learn is never the framework you ship. The skill that transfers is "how do ORMs think."</em>
     </div>
 
+    <div data-widget="live-quiz" data-config='{"question":"You read about MikroORM&#39;s Unit of Work. What does em.flush() actually do?","options":[{"id":"a","label":"Runs every change you&#39;ve made to managed entities as a single SQL batch — and ONLY then does the DB see them"},{"id":"b","label":"Closes the connection pool and reopens it fresh"},{"id":"c","label":"Same as em.persist() — the names are aliases"},{"id":"d","label":"Forces an INSERT for every entity regardless of whether it changed"}],"correctOptionId":"a","explanation":"MikroORM tracks dirty entities in memory; nothing hits the DB until flush(). That&#39;s the Unit of Work pattern — and why Fohlio&#39;s repositories own when to flush, never services."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 3: Repository Pattern -->
@@ -1141,6 +1143,8 @@ project.deletedAt = <span class="keyword">new</span> Date();   <span class="comm
         <em>The RETIRED stamp doesn't fade.</em>
     </div>
 
+    <div data-widget="concept-toggle" data-config='{"title":"Service code: textbook vs Fohlio","views":[{"id":"textbook","label":"Textbook (BAD at Fohlio)","tone":"bad","body":"// users.service.ts\n@Injectable()\nexport class UsersService {\n  constructor(private em: EntityManager) {}\n\n  async findByEmail(email: string) {\n    return this.em.findOne(User, { email, deletedAt: null });\n  }\n\n  async deactivate(id: string) {\n    const u = await this.em.findOne(User, { id });\n    u.deletedAt = new Date();\n    await this.em.flush();\n  }\n}\n\nViolations: service constructs ORM queries, calls em.flush(), forgets soft-delete filter elsewhere. Code review BLOCK."},{"id":"fohlio","label":"Fohlio (GOOD)","tone":"good","body":"// users.service.ts\n@Injectable()\nexport class UsersService {\n  constructor(private users: UsersRepository) {}\n\n  async findByEmail(email: string) {\n    return this.users.findActiveByEmail(email);\n  }\n\n  async deactivate(id: string) {\n    await this.users.softDelete(id);\n  }\n}\n\n// users.repository.ts owns the ORM. Soft-delete filter, flush, transactions — all there.\n// Service reads like prose. Swap MikroORM for anything: only the repo changes."}]}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 5: Cursor pagination -->
@@ -1393,6 +1397,8 @@ project.deletedAt = <span class="keyword">new</span> Date();   <span class="comm
         Engineer (twenty minutes later): &ldquo;Done. Twelve lines, type-safe.&rdquo;<br>
         <em>The right tool isn't the one you start with. It's the one you reach for at minute eleven.</em>
     </div>
+
+    <div data-widget="mcq-justify" data-config='{"question":"Why does Fohlio forbid offset/page-number pagination for tenant-facing lists, in favor of cursor pagination?","options":[{"id":"a","label":"Offset breaks when items are inserted/deleted between page fetches — users see duplicates or skipped rows, and DB scans the offset every time"},{"id":"b","label":"Cursor pagination is faster on the network because each cursor is shorter than a page number"},{"id":"c","label":"It&#39;s a UX preference — \"Load more\" reads better than page numbers"},{"id":"d","label":"MikroORM doesn&#39;t support OFFSET, only cursors"}],"correctOptionId":"a","minJustificationWords":12,"rubric":"At scale, OFFSET 100000 LIMIT 20 makes Postgres count and discard 100000 rows. And on an active list, inserts shift the offsets — pages drift. Cursor (WHERE id &gt; lastId) is O(log n) and stable across writes."}'></div>
 
 
     <!-- ============================================ -->

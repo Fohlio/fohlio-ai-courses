@@ -513,6 +513,8 @@
         </div>
     </div>
 
+    <div data-widget="quiz-explain" data-config='{"minExplanationWords":12,"questions":[{"id":"q1","prompt":"You SELECT 100 authors, then iterate and read author.books for each. Query log shows 101 SELECTs. What just happened?","options":[{"id":"a","label":"The Identity Map is broken &mdash; file a bug."},{"id":"b","label":"Classic N+1: every access to an uninitialised collection triggers a per-row SELECT. Add populate: [&#39;books&#39;] to the original find."},{"id":"c","label":"Postgres needs to warm its query cache, so the first 100 are slow but the next 100 will be one query."},{"id":"d","label":"em.flush() was never called, so each read goes to disk."}],"correctOptionId":"b","rubric":"The fix is declaring intent at query time (populate: [&#39;books&#39;]), not after-the-fact caching. The librarian needs the request slip before they walk to the stacks."},{"id":"q2","prompt":"After fixing with populate, you see 2 queries total: one for authors, one SELECT ... WHERE author_id IN (?, ?, ...). Which strategy is in play?","options":[{"id":"a","label":"JOINED &mdash; everything joined into one big SQL."},{"id":"b","label":"SELECT_IN &mdash; one parent query, one batched child query keyed by parent IDs."},{"id":"c","label":"BALANCED with joined-only mode."},{"id":"d","label":"Dataloader bypassing the populate layer."}],"correctOptionId":"b","rubric":"SELECT_IN is the default for to-many. It avoids cartesian row-multiplication and keeps the wire payload tight even with high fan-out."}]}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 2: POPULATE -->
@@ -724,6 +726,8 @@ LEFT JOIN book b ON b.author_id = a.id;</code></pre>
         </svg>
         <div class="diagram-caption">Same query, three strategies. BALANCED is the default for a reason &mdash; it picks the right tool per relation shape.</div>
     </div>
+
+    <div data-widget="concept-toggle" data-config='{"title":"Same query, two strategies. You load 100 books and populate tags (~5 per book), reviews (~3 per book), chapters (~10 per book). Which librarian routine wins?","views":[{"id":"joined","label":"JOINED everything","tone":"bad","body":"SQL: one SELECT with three LEFT JOINs.\n\nRows on the wire: 100 books &times; 5 tags &times; 3 reviews &times; 10 chapters = 15,000 rows. Of those, 14,900 are duplicated parent columns the hydrator dedupes and throws away.\n\nOne round trip, yes &mdash; but the wire payload is 150&times; bigger than it needs to be, and Postgres burns CPU producing rows that will never be read."},{"id":"balanced","label":"BALANCED (default)","tone":"good","body":"SQL: one query for books, plus one SELECT ... WHERE book_id IN (?, ?, ...) for each populated collection.\n\nRows on the wire: 100 books + 500 tags + 300 reviews + 1000 chapters = ~1,900 rows. Four round trips, but each one returns only the rows the route actually consumes.\n\nThis is why BALANCED is the default: pick JOINED for to-one (no fan-out) and SELECT_IN for to-many (high fan-out), and the wire payload stays proportional to the data."},{"id":"select","label":"SELECT_IN everything","tone":"neutral","body":"SQL: four separate queries, all keyed by IN-list.\n\nNo cartesian risk. But if profile (a 1:1) was also being populated, you&#39;d pay an extra round trip for what could have been a free LEFT JOIN. Fine, just slightly suboptimal on the to-one side."}]}'></div>
 
     <h3>How to set the strategy</h3>
 

@@ -734,6 +734,8 @@ src/
         <em>The two-decorator tax for nested objects. Pay it once, never debug it again.</em>
     </div>
 
+    <div data-widget="code-fill" data-config='{"language":"ts","code":"export class CreateFlightDto {\n  @{{decA}}()\n  @{{decB}}({ min: 3, max: 3 })\n  destination: string;\n\n  @{{decC}}()\n  @{{decD}}(0)\n  capacity: number;\n}","blanks":[{"id":"decA","answer":"IsString","placeholder":"IsString"},{"id":"decB","answer":"Length","placeholder":"Length"},{"id":"decC","answer":"IsInt","placeholder":"IsInt"},{"id":"decD","answer":"Min","placeholder":"Min"}]}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 4: GLOBAL VALIDATIONPIPE -->
@@ -971,6 +973,9 @@ app.<span class="function">useGlobalInterceptors</span>(
         Frontend dev: &ldquo;The whole React Query devtools panel just told the entire office.&rdquo;<br>
         <em>Serialization is not optional. It's the difference between &ldquo;works on my machine&rdquo; and &ldquo;works without leaking secrets.&rdquo;</em>
     </div>
+
+
+    <div data-widget="mcq-justify" data-config='{"question":"Without whitelist:true on ValidationPipe, what does a client get away with when posting to /users?","options":[{"id":"a","label":"Nothing extra — class-validator strips unknown fields by default"},{"id":"b","label":"They can send role:\"admin\" in the body and it&#39;ll be passed straight into prisma.user.create — mass-assignment attack"},{"id":"c","label":"The pipe throws on every unknown field automatically"},{"id":"d","label":"Only @IsString() fields are stripped, others are forwarded"}],"correctOptionId":"b","minJustificationWords":12,"rubric":"whitelist:true is opt-in — without it, validated fields pass through alongside any extras. forbidNonWhitelisted:true makes it a 400. Combine both for safety in production."}'></div>
 
 
     <!-- ============================================ -->

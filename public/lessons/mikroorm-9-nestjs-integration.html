@@ -631,6 +631,8 @@
 
     <p>In all three, calling <code>em.find()</code> on the injected EM with no fork would either throw (with <code>allowGlobalContext: false</code>, the safe default in v7+) or silently return an entity from the global EM, which is exactly the cross-request bleed scenario.</p>
 
+    <div data-widget="error-trace" data-config='{"code":["@Processor(&#39;cleanup&#39;)","export class CleanupConsumer {","  constructor(private readonly em: EntityManager) {}","","  @Process(&#39;archive-stale-books&#39;)","  async handleJob(job: { data: { cutoff: string } }) {","    const stale = await this.em.find(Book, { lastSeen: { $lt: new Date(job.data.cutoff) } });","    for (const b of stale) b.archived = true;","    await this.em.flush();","  }","}"],"errorMessage":"ValidationError: Using global EntityManager instance methods for context specific actions is disallowed. If you need to work with the global EntityManager, use `allowGlobalContext` configuration option or `fork()` instead.","rootCauseLine":6,"acceptKeywords":["context","fork","CreateRequestContext","request","scope","middleware"]}'></div>
+
     <h3>The fix: @CreateRequestContext</h3>
 
     <p>Decorate the top-level method that owns the work. The decorator wraps the method body in <code>RequestContext.create(orm.em, ...)</code> &mdash; identical to what the HTTP middleware does, just triggered by the decorator instead.</p>
@@ -905,6 +907,8 @@
         </svg>
         <div class="diagram-caption">Eight steps. One forked EntityManager. One transaction. Zero cross-request bleed.</div>
     </div>
+
+    <div data-widget="flow-order" data-config='{"prompt":"Order the request lifecycle for a POST /books call. The first step (HTTP arrives) and the last step (fork is GC&#39;d) are locked &mdash; reorder the middle steps so each one has what it needs from the previous one.","lockFirst":true,"lockLast":true,"steps":[{"id":"1","label":"HTTP POST /books arrives at Nest","detail":"Express/Fastify hands the request to Nest&#39;s router."},{"id":"2","label":"MikroORM middleware opens RequestContext.create","detail":"Wraps the rest of the request in an AsyncLocalStorage frame so injected EMs can find their fork."},{"id":"3","label":"EntityManager.fork() &mdash; private fork attached to this request","detail":"Fresh Identity Map and Unit of Work scoped to this request only."},{"id":"4","label":"BookController.create receives the DTO","detail":"Validates input. Delegates to BookService &mdash; never owns the transaction itself."},{"id":"5","label":"BookService.createBook runs inside @Transactional","detail":"em.create(Book, &hellip;), em.create(OutboxEvent, &hellip;), em.flush() &mdash; one atomic step."},{"id":"6","label":"flush() emits BEGIN, batched INSERTs, COMMIT","detail":"Both rows or neither &mdash; the outbox pattern in one transaction."},{"id":"7","label":"Controller returns &mdash; Nest serialises to 201","detail":"JSON body goes over the wire."},{"id":"8","label":"AsyncLocalStorage frame closes; fork is GC&#39;d","detail":"Identity Map and Unit of Work disappear with the request &mdash; no cross-request bleed."}]}'></div>
 
 
     <!-- ============================================ -->

@@ -699,6 +699,8 @@
         </div>
     </div>
 
+    <div data-widget="mcq-justify" data-config='{"question":"You&#39;ve got 2 services with one team of 4 people, all in TypeScript, in the same datacenter, both writing to the same Postgres. You&#39;re \"considering microservices.\" The honest answer is...","options":[{"id":"a","label":"Split immediately — Netflix did it"},{"id":"b","label":"Keep the monolith. You don&#39;t have org pain, language pain, scaling pain, or release pain — you&#39;ll pay distributed-system costs for zero benefit"},{"id":"c","label":"Split into 8 services for future-proofing"},{"id":"d","label":"Switch to gRPC and then split"}],"correctOptionId":"b","minJustificationWords":12,"rubric":"Microservices solve org and scale problems. They create network, observability, transaction, and deploy problems. If your monolith works for 4 people on one DB, splitting is pure cost. Wait for the actual pain."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 3: BUILDING A MICROSERVICE -->
@@ -980,6 +982,8 @@ nestjs-course-yourname/
         <code>emit()</code>: &ldquo;Just FYI, this happened.&rdquo; *hangs up*<br>
         <em>One is a phone call, the other is a postcard. Pick the right channel.</em>
     </div>
+
+    <div data-widget="concept-toggle" data-config='{"title":"send() vs emit() on a microservice client","views":[{"id":"send","label":"send() — phone call","tone":"neutral","body":"// Main app waits for a result\nasync createBooking(input) {\n  const booking = await this.db.create(input);\n  const ticket = await firstValueFrom(\n    this.client.send(&#39;tickets.generate&#39;, { bookingId: booking.id })\n  );\n  return { ...booking, ticket };\n}\n\nUse when: you need the response, and a failure should fail the caller. Synchronous semantics over an async wire."},{"id":"emit","label":"emit() — postcard","tone":"good","body":"// Main app fires and moves on\nasync createBooking(input) {\n  const booking = await this.db.create(input);\n  this.client.emit(&#39;booking.created&#39;, { id: booking.id });\n  return booking;\n}\n\nUse when: zero or more subscribers, no return value, audit / analytics / fan-out. The notifications service and the audit-log service both react to the same event without the booking service knowing they exist."}]}'></div>
 
 
     <!-- ============================================ -->
@@ -1263,6 +1267,8 @@ es.<span class="function">onmessage</span> = (e) =&gt; <span class="function">co
     <div class="info-box green">
         <p><strong>Real example:</strong> the &ldquo;build status&rdquo; widget on a CI dashboard? SSE. Slack-style chat? WebSockets. Stock ticker page that just needs prices flowing? SSE. Multiplayer cursor on a Figma-style canvas? WebSockets.</p>
     </div>
+
+    <div data-widget="live-quiz" data-config='{"question":"Your corporate customer&#39;s proxy blocks WebSocket upgrades. The arrivals-board page needs server-pushed flight updates. What&#39;s the lowest-friction fix?","options":[{"id":"a","label":"Tell the customer to whitelist WS — it&#39;s their problem"},{"id":"b","label":"Switch to SSE — it&#39;s plain HTTP/1.1 streaming, so it sails through almost any proxy"},{"id":"c","label":"Switch to long-polling with setInterval(fetch, 1000)"},{"id":"d","label":"Move everything to gRPC"}],"correctOptionId":"b","explanation":"SSE is one-way and rides on regular HTTP, so corporate proxies, mod_security rules, and old CDNs leave it alone. For server-to-client push (dashboards, notifications), it&#39;s often a better default than WebSocket."}'></div>
 
     <h3>Backpressure &amp; cleanup &mdash; the SSE catch</h3>
 

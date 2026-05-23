@@ -729,6 +729,8 @@ articles[<span class="string">0</span>].title = <span class="string">'New Title'
 
     <h3>Logical operators</h3>
 
+    <div data-widget="query-builder" data-config='{"dialect":"sql","prompt":"Build the FilterQuery that returns articles where viewCount is at least 1000 AND status is published AND the slug starts with the prefix &#39;post-&#39;. Pick the right operator for each slot.","template":"{ viewCount: { {{vcOp}}: 1000 }, status: {{statusOp}}, slug: { {{slugOp}}: &#39;post-%&#39; } }","slots":[{"id":"vcOp","label":"at least","correct":"$gte","options":[{"value":"$gt","label":"$gt"},{"value":"$gte","label":"$gte"},{"value":"$lt","label":"$lt"},{"value":"$lte","label":"$lte"}]},{"id":"statusOp","label":"exact match","correct":"&#39;published&#39;","options":[{"value":"&#39;published&#39;","label":"&#39;published&#39;"},{"value":"{ $eq: &#39;published&#39; }","label":"{ $eq: &#39;published&#39; }"},{"value":"{ $ne: &#39;published&#39; }","label":"{ $ne: &#39;published&#39; }"},{"value":"{ $in: &#39;published&#39; }","label":"{ $in: &#39;published&#39; }"}]},{"id":"slugOp","label":"prefix match","correct":"$like","options":[{"value":"$re","label":"$re"},{"value":"$like","label":"$like"},{"value":"$ilike","label":"$ilike"},{"value":"$eq","label":"$eq"}]}]}'></div>
+
     <p><code>$and</code> joins clauses with AND, <code>$or</code> with OR, <code>$not</code> inverts. Nest them as deeply as you need.</p>
 
     <pre><code><span class="comment">// answer to the pretest above</span>
@@ -954,6 +956,8 @@ app.<span class="function">use</span>((req, res, next) <span class="keyword">=&g
     <div class="info-box green">
         <p><strong>Filters and joins.</strong> Since v6, filters apply to relations too &mdash; they become part of the <code>JOIN ON</code> condition. So your soft-delete filter on Article also automatically hides deleted articles when they appear via <code>Author.populate(['articles'])</code>. You don't have to remember; the JOIN does.</p>
     </div>
+
+    <div data-widget="live-quiz" data-config='{"question":"A tenant-scoped filter is set as default: true. A finance script calls em.qb(Invoice).getResultList() and gets invoices from every tenant in the database. Why?","options":[{"id":"a","label":"The tenant filter parameter was never set via setFilterParams &mdash; default: true only means the filter is registered, not active."},{"id":"b","label":"QueryBuilder skips registered filters by default; you must opt in with qb.applyFilters(...) for them to apply."},{"id":"c","label":"Postgres ignored the tenant_id column."},{"id":"d","label":"The Identity Map returned cached rows from other tenants&#39; previous requests."}],"correctOptionId":"b","explanation":"em.find honours active filters automatically; QueryBuilder is the escape hatch for report queries and explicitly skips them. The fix is qb.applyFilters({ tenant: true }) &mdash; or, better, use em.find for tenant-scoped paths and reserve QB for queries that genuinely need all tenants."}'></div>
 
     <h3>Filters in QueryBuilder</h3>
 

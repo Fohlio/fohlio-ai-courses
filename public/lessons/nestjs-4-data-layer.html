@@ -779,6 +779,8 @@ airport-api/
         <p><strong>Why a migration file matters:</strong> In a team, "how does staging's schema differ from prod's?" is a question you must be able to answer instantly. With migration files in git, the answer is "diff the migrations folder between the two branches." Without them, the answer is "I don't know, let's pray."</p>
     </div>
 
+    <div data-widget="mcq-justify" data-config='{"question":"You run npx prisma migrate dev --name add-gate-column. Which four things happen?","options":[{"id":"a","label":"Generates a SQL migration file, applies it to the dev DB, regenerates @prisma/client types, and updates the schema snapshot"},{"id":"b","label":"Connects to prod and runs ALTER TABLE — that&#39;s why the command is dev-only"},{"id":"c","label":"Only edits schema.prisma — you still have to write the SQL by hand"},{"id":"d","label":"Reseeds the database with sample data on every run"}],"correctOptionId":"a","minJustificationWords":10,"rubric":"migrate dev is a generator + applier + regenerator + snapshot updater. The SQL goes into prisma/migrations/ — that is the file your DBA reviews in PR."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 4: PRISMASERVICE — THE NESTJS WAY -->
@@ -999,6 +1001,8 @@ curl -X POST http://localhost:3000/flights \
         Senior: &ldquo;Welcome to having a database.&rdquo;<br>
         <em>The first time persistence "just works" through a crash, you understand what state actually means.</em>
     </div>
+
+    <div data-widget="concept-toggle" data-config='{"title":"Two ways to use PrismaClient inside a NestJS app","views":[{"id":"bad","label":"Wrong — new PrismaClient() in every file","tone":"bad","body":"// flights.service.ts\nimport { PrismaClient } from &#39;@prisma/client&#39;;\nconst prisma = new PrismaClient();\n\n// bookings.service.ts\nimport { PrismaClient } from &#39;@prisma/client&#39;;\nconst prisma = new PrismaClient();\n\nResult: multiple connection pools eating Postgres slots, no lifecycle hooks, impossible to mock in tests. You broke DI to save three lines."},{"id":"good","label":"Right — one PrismaService","tone":"good","body":"// prisma.service.ts\n@Injectable()\nexport class PrismaService extends PrismaClient implements OnModuleInit {\n  async onModuleInit() { await this.$connect(); }\n}\n\n// flights.service.ts\nconstructor(private prisma: PrismaService) {}\n\nResult: one pool, lifecycle managed by Nest, trivially mockable. The ground crew has one ops dispatcher, not ten."}]}'></div>
 
 
     <!-- ============================================ -->

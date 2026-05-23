@@ -633,6 +633,8 @@
         <p><strong>We'll cover each of these in their own lessons.</strong> Today we focus on the first three: Modules, Controllers, and Services. Those three are all you need to build a real API endpoint. The rest are features you add when you need them.</p>
     </div>
 
+    <div data-widget="concept-match" data-config='{"pairs":[{"id":"module","term":"Module","definition":"Terminal — groups related code, declares what it provides and needs"},{"id":"controller","term":"Controller","definition":"Gate Agent — receives requests, validates, routes to the right service"},{"id":"service","term":"Service / Provider","definition":"Ground Crew — does the actual work, never talks to passengers directly"},{"id":"di","term":"DI Container","definition":"Ops Dispatch — knows which crew is available and injects them where needed"},{"id":"guard","term":"Guard","definition":"Security Checkpoint — stops the request before it reaches the gate"}]}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 4: YOUR FIRST NEST APP -->
@@ -840,6 +842,8 @@ airport-api/
         NestJS error: *startup log at 9am* &ldquo;Nest can't resolve dependencies of UserController. Please make sure UserService is available in the current module.&rdquo;<br>
         <em>One framework lets you find wiring bugs in prod. The other yells at you immediately. Guess which is kinder.</em>
     </div>
+
+    <div data-widget="live-quiz" data-config='{"question":"You forgot to list UserService in the module&#39;s providers array. When does NestJS complain?","options":[{"id":"a","label":"At runtime, when a user first hits an endpoint that needs it"},{"id":"b","label":"At startup, before the HTTP server even accepts connections"},{"id":"c","label":"Never — NestJS auto-discovers services from imports"},{"id":"d","label":"Only if you have strict mode enabled in tsconfig"}],"correctOptionId":"b","explanation":"Nest builds the full dependency graph at boot. Missing wiring fails immediately with a clear message — you find the bug at 9am, not at 2am in prod."}'></div>
 
     <h3>Your turn: change &ldquo;Hello World&rdquo; to something real</h3>
 

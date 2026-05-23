@@ -685,6 +685,8 @@
         <div class="recall-hint">Hint: re-read the pipeline order from Part 1. Guards run before Pipes.</div>
     </div>
 
+    <div data-widget="live-quiz" data-config='{"question":"You attach a Guard with @UseGuards(ApiKeyGuard) to a controller. When does it run?","options":[{"id":"a","label":"After the pipe validates the body — same checkpoint, just stricter"},{"id":"b","label":"Before pipes and the handler — at the security checkpoint, no ticket no entry"},{"id":"c","label":"After the handler runs but before the response is serialized"},{"id":"d","label":"Only when the handler throws an exception"}],"correctOptionId":"b","explanation":"Guards are the security checkpoint — they run early, before pipes touch the body. If the API key is missing, the passenger never reaches the baggage X-ray, let alone the gate agent."}'></div>
+
 
     <!-- ============================================ -->
     <!-- PART 4: INTERCEPTORS -->
@@ -1031,6 +1033,8 @@
         <li><strong>Any throw = sideways into the filter.</strong> A guard returning <code>false</code>, a pipe throwing on bad input, the handler throwing, the service throwing &mdash; all roads lead to the exception filter.</li>
         <li><strong>Interceptors are the only stage that runs twice.</strong> Once before the handler, once after. That's why &ldquo;before&rdquo; appears at step 3 and &ldquo;after&rdquo; at step 6.</li>
     </ol>
+
+    <div data-widget="flow-order" data-config='{"prompt":"Drag the pipeline stages into the order Nest runs them on a happy-path request (top = first).","steps":[{"id":"middleware","label":"Middleware","detail":"Express-style. Runs before Nest decorators are even consulted."},{"id":"guard","label":"Guard","detail":"Security checkpoint — auth/role check before pipes."},{"id":"interceptor-before","label":"Interceptor (before)","detail":"Wraps the handler — start the timer, set up context."},{"id":"pipe","label":"Pipe","detail":"Baggage X-ray — validate and transform the body/params."},{"id":"handler","label":"Controller handler","detail":"The gate agent — calls the service and returns."},{"id":"interceptor-after","label":"Interceptor (after)","detail":"Wraps the response — stop the timer, reshape payload."},{"id":"filter","label":"Exception filter","detail":"Lost & Found — only entered if something threw along the way."}]}'></div>
 
     <h3>Quick mental quiz</h3>
 
