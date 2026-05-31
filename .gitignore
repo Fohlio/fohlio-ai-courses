@@ -53,3 +53,6 @@ next-env.d.ts
 # conductor
 .context/
 .env*.local
+
+# course-lesson-writer local tracker
+.course-state.json

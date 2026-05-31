@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fohlio Domain for Engineers &mdash; Lesson 5</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 5 of 10</div>
+        <h1>Brand Standards and the Obsession with Consistency</h1>
+        <div class="subtitle">Chapter 5. Why firms are obsessed with sameness &mdash; and how the catalog enforces it</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Linda didn&rsquo;t come to a meeting. Linda came with a document.</p>
+
+    <p>Dana saw it from across the lobby: a thick PDF in a branded cover, Marriott logo at the top, and in small print at the bottom &mdash; <em>Brand Standards. FF&amp;E Specification Guide. Confidential.</em> Linda, the chain&rsquo;s brand manager, set it on the table without preamble. &ldquo;Everything that goes into the spec has to come from this list. Or you get written approval from New York. There is no third option.&rdquo;</p>
+
+    <p>Five hundred kilometers away, Brother Andersen was opening a very different document. Quietly, without pressure. Just a list: forty-three FF&amp;E items approved by the Church for its standard meetinghouse. He had maintained that list for eight years. He hadn&rsquo;t missed a single annual revision. &ldquo;We steward donated funds,&rdquo; he had once told Marco. &ldquo;Every dollar has to be in its right place.&rdquo;</p>
+
+    <p>And then there is Grace. Grace has no document. She has a Pinterest board and Helen &mdash; who lets her borrow the studio&rsquo;s workspace catalog informally, on trust.</p>
+
+    <p>Three clients. Three entirely different relationships with the phrase &ldquo;approved list.&rdquo; Today: why that list is the foundation of half of Fohlio&rsquo;s architecture &mdash; and exactly how it works in the model [1].</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>What a <strong>Brand Standard</strong> is &mdash; and how it differs from a plain catalog</li>
+            <li>How <strong>catalog statuses</strong> work: <code>draft</code> &rarr; <code>new_from_project</code> &rarr; <code>ready_to_use</code></li>
+            <li>What <strong>push / pull</strong> means &mdash; the two directions of sync between a spec and the catalog</li>
+            <li>Why the spec allows <strong>alternatives</strong> and how they connect to standards</li>
+            <li>Why Grace operating without a standard isn&rsquo;t &ldquo;freedom&rdquo; &mdash; it&rsquo;s a calculated risk with specific consequences</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3>Where we are</h3>
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Lesson 1.</strong> Spec = database, not document. Six phases. Three clients and their JTBDs.
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 2.</strong> Design intent: moodboard &rarr; first product. Where the spec begins.
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 4.</strong> Area, Schedule, <code>ProjectItemSlot</code> / <code>ProjectItem</code>, qty, finish, <code>columnsAttributes</code>. The spec as queryable data.
+        </div>
+        <div class="recap-item" style="background: var(--blue-light); border-left: 3px solid var(--blue);">
+            <strong>Lesson 5 (now).</strong> Brand Standard: the approved catalog, catalog statuses, push/pull, alternatives.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. Where the obsession with sameness comes from</h2>
+
+    <p>When Linda says &ldquo;everything must come from the list,&rdquo; that isn&rsquo;t a preference. It&rsquo;s economics. Marriott operates thousands of properties worldwide. Every property has to look similar enough that a guest who slept in Boston and checked in to Dublin recognizes the same atmosphere, the same materials, the same proportions of the chair at the desk. That&rsquo;s not aesthetics &mdash; that&rsquo;s a brand promise that commands a price premium [1].</p>
+
+    <p>Delivering that promise through individual humans with individual taste is impossible without enforcement. The enforcement is the list. The list is called a <strong>Brand Standard</strong>.</p>
+
+    <p>A Brand Standard is an approved set of products (or product families) that a chain or institution has ratified for use across its projects. In Fohlio it&rsquo;s implemented as a special catalog at the workspace level: a <code>BrandStandard</code> is, functionally, a catalog with a flag that says &ldquo;mandatory for this class of projects.&rdquo;</p>
+
+    <div class="story-box">
+        <p><strong>Brother Andersen&rsquo;s forty-three items.</strong> The Church&rsquo;s list was first assembled in 2018. Every item passed three filters: fit for a liturgical space, durability over a 15&ndash;20-year horizon, and budget compliance. Since then the list is revised annually. When a supplier exits the market, the item is replaced and all new-build projects automatically switch to the substitute. Projects already in construction receive a notification: check your specs.</p>
+        <div class="tech-note">In the model, this looks like a change to <code>CatalogItem.status</code> and a <code>SyncStateCache</code> trigger for all linked <code>ProjectItem</code> records. Lesson 8 goes through the full mechanism.</div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading further</div>
+        <div class="recall-question">Linda says: &ldquo;Every one of our hotels must use only items from the brand standard.&rdquo; Grace says: &ldquo;I have no standard &mdash; I pick whatever I want.&rdquo; From an <em>engineering model</em> standpoint &mdash; what is the concrete difference in how their specs are connected to the catalog? What is permitted for one and constrained for the other at the data level?</div>
+        <div class="recall-hint">Think about which <code>CatalogFamily</code> records are reachable &mdash; and what happens when a user tries to add an item that isn&rsquo;t in the standard.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. Catalog statuses: a product&rsquo;s life before and after approval</h2>
+
+    <p>A catalog is not a static list. Products enter it, get reviewed, and change status. This matters because status determines <em>who</em> can use a product in a spec &mdash; and what the consequences are [4].</p>
+
+    <p>Three statuses to know:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x270F;</div>
+            <div class="layer-name" style="color: var(--gray-700);"><code>draft</code></div>
+            <div class="layer-desc">Someone added the product to the catalog but it hasn&rsquo;t been reviewed. Can be used in a spec, but carefully: data may be incomplete.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E5;</div>
+            <div class="layer-name" style="color: var(--orange);"><code>new_from_project</code></div>
+            <div class="layer-desc">The product appeared in a project spec but hasn&rsquo;t been &ldquo;saved back&rdquo; to the shared catalog yet. A transitional state &mdash; Dana found it via web clipper directly in the project.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2705;</div>
+            <div class="layer-name" style="color: var(--green);"><code>ready_to_use</code></div>
+            <div class="layer-desc">Reviewed, approved, complete data. This is what Helen calls &ldquo;our catalog.&rdquo; A Brand Standard is composed exclusively of <code>ready_to_use</code> items.</div>
+        </div>
+    </div>
+
+    <p>The typical path: Priya clips a product from a supplier&rsquo;s site &rarr; it lands in the spec as <code>new_from_project</code> &rarr; Dana verifies the data, refines the source, fills in the fields &rarr; &ldquo;saves&rdquo; it to the catalog &rarr; Helen reviews and sets it to <code>ready_to_use</code>. Only then can the product enter a Brand Standard [4].</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F7E1;</div>
+        Priya added a chair to the spec from some unknown distributor&rsquo;s site. Catalog status: <code>draft</code>.<br>
+        Helen sees it on review. Three seconds of silence. Then: &ldquo;Priya, this supplier has no MOQ, no lead time, not even a warehouse address. That&rsquo;s not a supplier. That&rsquo;s an Instagram account with nice photos.&rdquo;<br>
+        Priya: &ldquo;But the chair is beautiful&hellip;&rdquo;<br>
+        Helen: &ldquo;<code>draft</code> stays <code>draft</code> until there&rsquo;s a phone number, a price, and a lead time. Without those it&rsquo;s not a line item &mdash; it&rsquo;s a wish.&rdquo;<br>
+        <em>A spec is a database. Wishes don&rsquo;t get a data type.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. Push and Pull &mdash; two directions of truth</h2>
+
+    <p>This is one of the most load-bearing concepts in the whole course. To understand it, recall from Lesson 4: a spec line item (<code>ProjectItem</code>) holds a reference to a <code>CatalogFamily</code> and a <code>CatalogItem</code>. A reference &mdash; not a copy. And that reference runs in both directions [4].</p>
+
+    <p><strong>Pull</strong> means accepting an update from the catalog into a spec line item. The catalog changed (a supplier updated a price, a new finish was added) &mdash; the <code>ProjectItem</code> can pull that update into itself.</p>
+
+    <p><strong>Push</strong> means saving an edit made inside the spec back to the catalog. Dana modified product data directly in a project and wants that change to propagate to the shared catalog for future projects.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Push and Pull between the catalog and the spec">
+            <rect x="0" y="0" width="760" height="270" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">Catalog &harr; Spec: Push / Pull</text>
+
+            <!-- Catalog block -->
+            <rect x="60" y="60" width="220" height="100" rx="12" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="170" y="96" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#3451B2">Catalog</text>
+            <text x="170" y="116" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6B7280">CatalogFamily</text>
+            <text x="170" y="133" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6B7280">CatalogItem</text>
+            <text x="170" y="150" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C">status: ready_to_use</text>
+
+            <!-- ProjectItem block -->
+            <rect x="480" y="60" width="220" height="100" rx="12" fill="#EDE9FE" stroke="#7C3AED" stroke-width="2"/>
+            <text x="590" y="96" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#7C3AED">Spec (Project)</text>
+            <text x="590" y="116" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6B7280">ProjectItemSlot</text>
+            <text x="590" y="133" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#6B7280">ProjectItem</text>
+            <text x="590" y="150" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">columnsAttributes</text>
+
+            <defs>
+                <marker id="arrgr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+                <marker id="arror" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#E8790C"/>
+                </marker>
+            </defs>
+
+            <!-- PULL arrow: Catalog → Spec -->
+            <path d="M282 95 L478 95" fill="none" stroke="#1A8F5C" stroke-width="2.5" marker-end="url(#arrgr)"/>
+            <text x="380" y="88" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#1A8F5C">PULL</text>
+            <text x="380" y="110" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C">catalog updated &rarr; accept into spec</text>
+
+            <!-- PUSH arrow: Spec → Catalog -->
+            <path d="M478 145 L282 145" fill="none" stroke="#E8790C" stroke-width="2.5" marker-end="url(#arror)"/>
+            <text x="380" y="138" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">PUSH</text>
+            <text x="380" y="162" text-anchor="middle" font-family="Inter" font-size="11" fill="#E8790C">edits in spec &rarr; save back to catalog</text>
+
+            <!-- Brand Standard note -->
+            <rect x="60" y="195" width="220" height="55" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="1.5"/>
+            <text x="170" y="218" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#1A8F5C">Brand Standard</text>
+            <text x="170" y="237" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">subset of Catalog: ready_to_use only</text>
+
+            <!-- SyncState note -->
+            <rect x="480" y="195" width="220" height="55" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="590" y="218" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">SyncStateCache</text>
+            <text x="590" y="237" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">new / ready / updates / broken</text>
+        </svg>
+        <div class="diagram-caption">Push and Pull &mdash; two directions of the same link. Brand Standard constrains Catalog to the <code>ready_to_use</code> subset. SyncStateCache tracks the link&rsquo;s health &mdash; full detail in Lesson 8 [4].</div>
+    </div>
+
+    <p>Why does this matter before Lesson 8? Because a Brand Standard exists precisely to limit <em>which</em> items from the catalog are available to the spec in the first place. If Linda has approved an item in the Brand Standard, Dana can pull it into any Marriott project. If it&rsquo;s not in the standard, written approval from New York is required. That isn&rsquo;t just policy &mdash; it&rsquo;s a constraint at the model level [4].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Three clients &mdash; three stories about sameness</h2>
+
+    <p>Back to Linda, Brother Andersen, and Grace. These aren&rsquo;t just three user types &mdash; they&rsquo;re three different answers to the question: &ldquo;Who owns the approved list?&rdquo; [1]</p>
+
+    <div class="story-box">
+        <p><strong>Linda &mdash; Marriott.</strong> The list belongs to the corporation. It was written in New York, revised every two years, distributed to every design studio working with the chain. Dana cannot add anything to the Brand Standard on her own. She can propose an alternative and wait for approval. That&rsquo;s rigid &mdash; and it&rsquo;s precisely what guarantees that a guest in Dubai recognizes the same chair they sat in in Dublin.</p>
+        <div class="tech-note">In the model: <code>BrandStandard</code> is owned by the client (Marriott), not by Dana&rsquo;s workspace. Dana&rsquo;s workspace receives access, not ownership.</div>
+    </div>
+
+    <div class="story-box">
+        <p><strong>Brother Andersen &mdash; The Church.</strong> The list belongs to the institution. It&rsquo;s conservative: nothing changes without a formal review. But when something changes, it changes everywhere. Every active construction project gets the same notification. Some accept the update (Pull); some request an exception and document the reason.</p>
+        <div class="tech-note">In the model, a mass-pull applies a Brand Standard update to all active projects of a given type simultaneously. That&rsquo;s the Lesson 8 scenario.</div>
+    </div>
+
+    <div class="story-box">
+        <p><strong>Grace &mdash; Cedar &amp; Oak.</strong> Grace has no Brand Standard of her own. Helen, the studio founder, informally lets her use the studio&rsquo;s shared workspace catalog &mdash; the same one Dana works from. That&rsquo;s not a Brand Standard; it&rsquo;s just a Workspace Catalog. Grace sees the <code>ready_to_use</code> items the studio has already used in other projects. It&rsquo;s her only quality control. Does it work? Yes. Does it guarantee consistency? No. Grace knows that &mdash; and accepts it.</p>
+    </div>
+
+    <div class="pull-quote">
+        A spec isn&rsquo;t a document. It&rsquo;s a database that happens to know how to print itself on paper. And a Brand Standard is a constraint at the level of that database.
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Test yourself</div>
+        <div class="recall-question">In Lesson 4 we established that a <code>ProjectItemSlot</code> can hold one primary item and several alternatives. Without looking back: how do alternatives connect to a Brand Standard? Why would Linda from Marriott require that an alternative also come from the Brand Standard &mdash; rather than any convenient substitute from the open catalog?</div>
+        <div class="recall-hint">Think about what happens when the primary item &ldquo;breaks&rdquo; &mdash; gets discontinued. What is the alternative&rsquo;s job at that moment?</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Templates and replication &mdash; how a Brand Standard becomes a project</h2>
+
+    <p>Marriott doesn&rsquo;t just maintain a product list. Marriott maintains a spec <em>template</em> for every hotel type. &ldquo;Courtyard by Marriott, standard guestroom&rdquo; is not a rough sketch &mdash; it&rsquo;s a complete Area spec with all slots pre-populated from the Brand Standard. When Dana opens a new Marriott project, she doesn&rsquo;t start from scratch. She starts from that template [2].</p>
+
+    <p>In Fohlio&rsquo;s model, templates work through two mechanisms:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--blue);">Project template</div>
+            <div class="layer-desc">A ready-made project used as a starting point: Areas, Slots, Items already linked to Brand Standard entries. Cloned into a new project.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--green);">Area repeat</div>
+            <div class="layer-desc"><code>repeatCount</code> scales a template Area. One &ldquo;Standard Guestroom&rdquo; &times; 480 = 480 Areas with identical slot sets, instantly.</div>
+        </div>
+    </div>
+
+    <p>This is where Lesson 4 and Lesson 5 interlock. From L4: an Area with <code>repeatCount</code> is the unit of scale. From L5: a Brand Standard is the source from which those Area slots are populated. Template plus Brand Standard &mdash; that&rsquo;s the mechanism that lets Linda guarantee consistency across 600 rooms without touching a single slot manually [4].</p>
+
+    <div class="info-box blue">
+        <p><strong>Callback to Lesson 1.</strong> In Chapter 1 we said: Marriott is obsessed with consistency, the Church with budget discipline and replication, Grace with speed. Now you can see exactly how each of those JTBDs is implemented in the model: Brand Standard (consistency) + Project template (replication at scale) + Workspace catalog (speed without a formal standard).</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. When there is no standard: Grace and the risks of improvisation</h2>
+
+    <p>Grace&rsquo;s thirty bespoke items aren&rsquo;t a disaster. She&rsquo;s a sharp operator and understands exactly what she&rsquo;s doing. But let&rsquo;s look at the specific risks she&rsquo;s absorbing by working without a Brand Standard &mdash; and what she has instead.</p>
+
+    <table>
+        <tr>
+            <th>Risk</th>
+            <th>What happens without a standard</th>
+            <th>What protects Grace</th>
+        </tr>
+        <tr>
+            <td>Mismatched finishes</td>
+            <td>Two chairs from the same supplier across different projects may carry visually similar but distinct finish codes. Without a standard nobody checks.</td>
+            <td>Small scale: 12 rooms. Grace can see the discrepancy with her own eyes.</td>
+        </tr>
+        <tr>
+            <td>Discontinued product</td>
+            <td>Without a standard&rsquo;s enforcement mechanism, nobody notifies Grace that an item has been discontinued &mdash; until it fails to show up at the warehouse.</td>
+            <td>Helen&rsquo;s workspace catalog &mdash; if Helen maintains statuses, Grace sees changes through the same workspace.</td>
+        </tr>
+        <tr>
+            <td>Duplicated effort</td>
+            <td>Every new project starts from zero. No accumulated approved list, no reuse velocity.</td>
+            <td>Grace has one project. She has no reason to replicate.</td>
+        </tr>
+    </table>
+
+    <p>Notice: the risk of a discontinued product is exactly the same failure mode that cost Dana $40k. Grace has no mechanism to catch it before delivery. The sync engine in Lesson 8 is precisely that mechanism. Grace gets a partial version of it through Helen&rsquo;s workspace &mdash; incomplete, but better than nothing.</p>
+
+    <div class="info-box orange">
+        <p><strong>The engineering takeaway:</strong> a Brand Standard isn&rsquo;t a separate enterprise feature bolted on for big clients. It&rsquo;s a special case of a general mechanic: &ldquo;approved sub-catalog.&rdquo; Grace uses that same mechanic, just at the workspace-catalog level rather than a dedicated Brand Standard. When you design any UI that touches the catalog, the right question is: who <em>owns</em> this sub-catalog, and who has read access?</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DC;</div>
+            <div class="layer-name" style="color: var(--blue);">Brand Standard</div>
+            <div class="layer-desc">An approved sub-catalog with a mandatory flag. Owned by the client (Marriott, the Church) &mdash; not the studio.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F7E1;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Catalog statuses</div>
+            <div class="layer-desc"><code>draft</code> &rarr; <code>new_from_project</code> &rarr; <code>ready_to_use</code>. Only <code>ready_to_use</code> items enter a Brand Standard.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F504;</div>
+            <div class="layer-name" style="color: var(--green);">Pull / Push</div>
+            <div class="layer-desc">Pull: accept a catalog update into the spec. Push: save a spec edit back to the catalog. Full sync mechanics in Lesson 8.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F465;</div>
+            <div class="layer-name" style="color: var(--purple);">Three clients</div>
+            <div class="layer-desc">Marriott: rigid corporate standard. The Church: annually revised institutional standard. Grace: workspace catalog with no formal standard.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 6:</strong> money. Dana opens the budget section and finds three different numbers where she expected one. Spec total, planned, actual &mdash; and the variance between them. Why &ldquo;a $200k spec&rdquo; is not the same thing as &ldquo;we spent $200k.&rdquo; The highest cognitive-load chapter of the course.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &approx; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Find the standard violation and explain it.</strong> Below are four items from a Marriott project spec. The chain&rsquo;s Brand Standard permits only chairs with finish codes <code>MR-FAB-001</code>, <code>MR-FAB-002</code>, <code>MR-FAB-004</code>, and only suppliers from this approved list: Hooker, Arteriors, Currey &amp; Company.
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Item A: Hooker Leg Chair, finish <code>MR-FAB-001</code>, qty 2</li>
+                    <li>Item B: Arteriors Kent Side Table, finish <code>MR-FAB-003</code>, qty 1</li>
+                    <li>Item C: Floor lamp from &ldquo;Local Studio Design&rdquo; (not on the supplier list), finish n/a</li>
+                    <li>Item D: Currey &amp; Company armchair, finish <code>MR-FAB-002</code>, qty 2</li>
+                </ul>
+                <p style="margin: 8px 0 0;">Identify which items violate the Brand Standard and state <em>precisely why</em> each one does. Then explain: when a user tries to save Item C, should Fohlio show a warning or enforce a hard block? Justify your answer based on what you know about how Brand Standards constrain the model.</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Violations: Item B &mdash; finish <code>MR-FAB-003</code> is not in the Brand Standard (approved codes are 001, 002, 004). Item C &mdash; &ldquo;Local Studio Design&rdquo; is not on the approved supplier list. Items A and D are compliant. | Hard block vs. warning: depends on the client&rsquo;s policy. Marriott most likely enforces a hard block on an unapproved supplier (you cannot save Item C at all without override) and a soft warning on an unapproved finish (finish may be COM or custom with written approval &mdash; soft block + a required justification field). Full credit for distinguishing the two cases and explaining the difference in consequences.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Mixed self-check (L1 + L4 + L5).</strong> Answer without looking back:
+                <p style="margin: 6px 0 0;">(a) From L1: what is Brother Andersen&rsquo;s JTBD in one sentence? Why does a Brand Standard matter more to him than to Grace?</p>
+                <p style="margin: 4px 0 0;">(b) From L4: if an Area has <code>repeatCount=20</code> and each Slot has <code>qty=3</code>, and you add an alternative to a Slot &mdash; does <code>totalQty</code> change? Why or why not?</p>
+                <p style="margin: 4px 0 0;">(c) From L5: explain Pull and Push in one sentence each. Which of the three clients is most likely to perform Pull most often &mdash; and why?</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Brother Andersen&rsquo;s JTBD: &ldquo;Replicate one proven design predictably, stewarding donated funds carefully.&rdquo; A Brand Standard matters more to him because he&rsquo;s replicating hundreds of identical objects &mdash; consistency at that scale is impossible without an enforced list. Grace is running a single unique project; a standard adds overhead with no payoff. (b) <code>totalQty</code> does not change. An alternative is a fallback &mdash; it doesn&rsquo;t add to the count. The buyer purchases either the primary or the alternative, not both. (c) Pull: the catalog changed &mdash; accept the update into the spec. Push: you edited data in the spec &mdash; save it back to the catalog. Marriott pulls most often: the Brand Standard is updated centrally and all active projects need to absorb those changes.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>A real approved list in the wild.</strong> Find any publicly available &ldquo;brand standard,&rdquo; &ldquo;approved vendor list,&rdquo; or &ldquo;specification standard&rdquo; from a hotel chain, retail chain, university, or institution. Describe its structure: what product categories does it cover, is it segmented by venue type, how is it revised? Then map it to the Fohlio model: what maps cleanly to <code>BrandStandard</code> + <code>CatalogFamily/Item</code>, and what would require custom handling outside the standard model? <em>This task is designed to be done with real-world research, not by asking an AI &mdash; the value is in finding and reading the actual document.</em>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why exactly three statuses.</strong> The model has three catalog statuses: <code>draft</code>, <code>new_from_project</code>, <code>ready_to_use</code>. Explain why two statuses (<code>draft</code> and <code>approved</code>) would be insufficient. What specific situation does <code>new_from_project</code> cover that neither endpoint state handles? If you were to add a fourth status &mdash; <code>deprecated</code> &mdash; describe how it would change the model and what behaviors it would enable or prevent in the spec. Use the &ldquo;why this way and not the obvious alternative&rdquo; framing from the course.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-l5-1">
+                Fohlio (2023). &ldquo;What is FF&amp;E: The Ultimate Guide to Specification, Procurement, and More.&rdquo; <a href="https://www.fohlio.com/blog/what-is-ffe-the-ultimate-guide-specification-procurement-management">fohlio.com/blog/what-is-ffe-the-ultimate-guide-specification-procurement-management</a>.
+                <div class="src-meta">id: src-fohlio-what-is-ffe &middot; Brand standards in the FF&amp;E context; customer segments &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l5-2">
+                Programa (2024). &ldquo;The Ultimate Guide to FF&amp;E Procurement &amp; Furniture Schedules.&rdquo; <a href="https://programa.design/blog/ff-e-procurement">programa.design/blog/ff-e-procurement</a>.
+                <div class="src-meta">id: src-programa-procurement &middot; Product library and template reuse for standardization in FF&amp;E workflows &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l5-3">
+                Procurist (2024). &ldquo;FF&amp;E Schedules: The Complete Guide for Interior Designers.&rdquo; <a href="https://procurist.io/resources/ffe-schedules">procurist.io/resources/ffe-schedules</a>.
+                <div class="src-meta">id: src-procurist-schedules &middot; Hospitality project scale and typical Area structures for enterprise clients &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l5-4">
+                Fohlio SpecHub (2026). &ldquo;architecture.md &mdash; platform domain model.&rdquo; Internal repository <code>fohlio-spechub</code>.
+                <div class="src-meta">id: src-spechub-architecture &middot; BrandStandard, catalog statuses (draft / new_from_project / ready_to_use), push/pull, SyncStateCache &middot; internal primary source</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] inside the lesson point to the entry with that number in this list. The characters (Dana, Priya, Marco, Helen, Linda, Brother Andersen, Grace) are composite illustrations, not real employees. Marriott and The Church of Jesus Christ of Latter-day Saints are used as real archetypes of Fohlio&rsquo;s customer segments, represented here through fictional characters. The $40k mistake is a fictional case built on real industry practice.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>The Fohlio Domain for Engineers &mdash; Lesson 5 of 10</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Money: spec total &ne; planned &ne; actual</p>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fohlio Domain for Engineers — Lesson 9</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 9 of 10</div>
+        <h1>The Physical Tail</h1>
+        <div class="subtitle">Chapter 9. Where the data meets the truck</div>
+    </div>
+
+    <!-- HOOK -->
+    <div class="story-box">
+        <p>The truck pulled in at 7:40. Marco was at the Cedar &amp; Oak loading bay with a tablet, watching the crew unload boxes. The PO said eight armchairs. Six came off the truck. And three nightstands instead of four.</p>
+
+        <p>A year ago that would have meant phone calls, vague supplier replies, and three weeks of uncertainty about whether the rest would ever arrive. Marco opened the receiving screen in Fohlio, found the PO, and keyed in <code>qtyReceived</code> against each line. The system flagged it immediately: <code>received_partially</code>. The supplier would be invoiced only for what arrived. The remainder stayed open, waiting for the next shipment.</p>
+
+        <p>Grace came around the corner with coffee. &ldquo;Everything okay?&rdquo; Marco nodded. &ldquo;Partial. The gap is on record.&rdquo; She didn&rsquo;t ask what that meant. She understood the part that mattered: nothing was lost.</p>
+    </div>
+
+    <p>Phase 5 &mdash; delivery &mdash; is the moment when every month of spec work, budget negotiation, and sync checking [8] runs headlong into physical reality. Boxes. Trucks. Loading docks. This chapter is about how Fohlio models that collision &mdash; and why partial receiving matters as much as the original order [1].</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>How a PO transitions into one or more shipments &mdash; and why a single order routinely spawns multiple deliveries</li>
+            <li>What partial receiving means: <code>qtyReceived</code> vs <code>qtyOrdered</code>, and how PO statuses track it</li>
+            <li>The role of warehouse and install as separate stages &mdash; not a single &ldquo;arrived&rdquo; flag</li>
+            <li>The difference between a supplier invoice and a client invoice &mdash; and how both tie to <code>actual</code> in the budget [2]</li>
+            <li>What GrCode is and why field tracking matters at the scale of 600 identical armchairs</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3>Quick recap</h3>
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L1 &mdash; Six phases</strong><br>
+            Phase 5 (delivery) was the fifth box in the lifecycle diagram. Today we&rsquo;re inside it.
+        </div>
+        <div class="recap-item">
+            <strong>L6 &mdash; Budget</strong><br>
+            <code>actual</code> = paid invoices. Before this chapter, actual was zero. Today it starts accumulating.
+        </div>
+        <div class="recap-item">
+            <strong>L8 &mdash; Sync</strong><br>
+            The sync engine made the spec true before the PO went out. That was data integrity. Now comes physics.
+        </div>
+        <div class="recap-item" style="background: var(--blue-light); border-left: 3px solid var(--blue);">
+            <strong style="color: var(--blue);">L9 &mdash; Today</strong><br>
+            Shipments, partial receiving, warehouse, install, invoices, GrCode field tracking, closeout.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. From PO to shipment: one order, multiple trucks</h2>
+
+    <p>Once a PO moves to <code>approved</code>, procurement is formally done: the commitment is made, the supplier is notified. But the physical goods don&rsquo;t yet exist in the project as fact. They exist only as a promise &mdash; line items with a lead time attached [3].</p>
+
+    <p>A <strong>shipment</strong> is a record of a specific dispatch from a supplier. One PO can produce several shipments. That&rsquo;s not an exception on large projects &mdash; it&rsquo;s the default:</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Staggered lead times</span>
+        <div class="step-desc">Armchairs ship from Italy in six months; pendant lights ship from a Texas warehouse in two weeks. One PO covers an entire guestroom, but goods arrive in waves as each item becomes ready.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Phased delivery by floor or site</span>
+        <div class="step-desc">Marriott&rsquo;s 600-room renovation is broken into construction phases. Floor two takes furniture in March; floor six takes it in May. The same PO ships to multiple shipments with different dates and delivery addresses.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Damage replacements</span>
+        <div class="step-desc">Three chairs arrive dented. The supplier ships replacements. That&rsquo;s a second shipment against the same PO &mdash; and the system needs to distinguish it from the first.</div>
+    </div>
+
+    <p>From the engineering side: <code>PurchaseOrder &rarr; Shipment(s) &rarr; ShipmentItem(s)</code>. Each <code>ShipmentItem</code> references the PO line it belongs to, and carries the count of units in transit for that delivery.</p>
+
+    <div class="pull-quote">
+        A spec isn&rsquo;t a document. It&rsquo;s a database that happens to know how to print itself on paper.
+    </div>
+
+    <p>On the delivery phase that statement takes on a literal physical dimension. The database now needs to know what actually arrived &mdash; and what still hasn&rsquo;t &mdash; down to the individual unit.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. Partial receiving: qtyReceived vs qtyOrdered</h2>
+
+    <p>Marco isn&rsquo;t standing at the loading bay with a tablet for atmosphere. His job is to record the receive: how many units of each line item actually arrived and in what condition. In Fohlio&rsquo;s terms this is <strong>receiving</strong> [3].</p>
+
+    <p>The model is straightforward: each <code>ShipmentItem</code> has a <code>qtyOrdered</code> (how many were placed on the order) and a <code>qtyReceived</code> (how many were physically accepted). While <code>qtyReceived &lt; qtyOrdered</code> on any line, the PO carries the status <code>received_partially</code>. When every line is fully received it moves to <code>received_fully</code>. When it&rsquo;s been reconciled with an invoice and explicitly closed, it becomes <code>closed</code> [4].</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timeline: PO approved to shipments, receiving, invoice, closeout">
+            <rect x="0" y="0" width="760" height="210" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <defs>
+                <marker id="arr9" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6B7280"/>
+                </marker>
+            </defs>
+
+            <text x="380" y="26" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#374151">Phase 5: PO approved &rarr; closeout</text>
+
+            <!-- Nodes -->
+            <rect x="20" y="50" width="100" height="48" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="70" y="71" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#3451B2">PO</text>
+            <text x="70" y="88" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">approved</text>
+
+            <rect x="153" y="50" width="115" height="48" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="210" y="71" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#E8790C">Shipment</text>
+            <text x="210" y="88" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">in transit / arrived</text>
+
+            <rect x="301" y="50" width="130" height="48" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="366" y="71" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#E8790C">Receiving</text>
+            <text x="366" y="88" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">qtyReceived += N</text>
+
+            <rect x="464" y="50" width="115" height="48" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="1.5"/>
+            <text x="521" y="71" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#1A8F5C">Invoice</text>
+            <text x="521" y="88" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">actual += amount</text>
+
+            <rect x="612" y="50" width="118" height="48" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="1.5"/>
+            <text x="671" y="71" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#1A8F5C">Closeout</text>
+            <text x="671" y="88" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">PO closed</text>
+
+            <!-- Arrows -->
+            <line x1="120" y1="74" x2="151" y2="74" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr9)"/>
+            <line x1="268" y1="74" x2="299" y2="74" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr9)"/>
+            <line x1="431" y1="74" x2="462" y2="74" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr9)"/>
+            <line x1="579" y1="74" x2="610" y2="74" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr9)"/>
+
+            <!-- partial loop arrow -->
+            <path d="M366 100 L366 148 L210 148 L210 100" fill="none" stroke="#E8790C" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr9)"/>
+            <text x="288" y="166" text-anchor="middle" font-family="Inter" font-size="10" fill="#E8790C">partial &rarr; new shipment</text>
+
+            <!-- warehouse label -->
+            <text x="380" y="190" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Warehouse: buffer between receiving and install</text>
+        </svg>
+        <div class="diagram-caption">One PO, multiple shipments. A partial receive loops back until all lines are fully closed.</div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before you read on</div>
+        <div class="recall-question">PO for 8 armchairs and 4 nightstands. Delivery: 6 armchairs, 3 nightstands. What is the PO status right now? What needs to happen for it to reach <code>closed</code>? And what does Marco enter in <code>qtyReceived</code> for the armchair line?</div>
+        <div class="recall-hint">The numbers are specific &mdash; your answer should be too.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. Warehouse, install, and GrCode &mdash; where engineers lose the thread</h2>
+
+    <p>Accepted goods don&rsquo;t teleport into position. Between &ldquo;arrived at the warehouse&rdquo; and &ldquo;standing in room 412&rdquo; there are two distinct events, and Fohlio models them as separate stages &mdash; not a single flag [4].</p>
+
+    <h4>Warehouse &mdash; the buffer</h4>
+    <p>The warehouse holds accepted goods until installation is scheduled. On a large project this gap can run for months: Marriott&rsquo;s first delivery wave arrives six weeks before the first floor is ready for furnishing. The warehouse is simultaneously a physical location and a logistical entity in the system. Fohlio lets you assign items to a specific warehouse (when there are several), track movement from warehouse to site, and record the handoff date [1].</p>
+
+    <h4>Install &mdash; the final fact</h4>
+    <p>Installation is the moment a line item moves from &ldquo;on the shelf&rdquo; to &ldquo;in place.&rdquo; At this stage you record that the item is installed, the room is complete, and the final inspection can begin. It&rsquo;s a separate event from receiving because the gap between the two can be significant &mdash; and both dates matter for project reporting and handover documentation [1].</p>
+
+    <h4>GrCode &mdash; QR instead of memory</h4>
+    <p>Each item on the warehouse shelf can carry a QR label &mdash; GrCode in Fohlio&rsquo;s terminology. A crew member scans it on-site and immediately sees: what it is, which room it belongs to, which PO it came from, and where in the building it should go. Field tracking closes a problem that shows up constantly on large projects: the item arrived, but nobody remembers which room needs it.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4E6;</div>
+        Crew member at the Marriott warehouse, staring at 47 identical boxes of armchairs: &ldquo;Where does this one go?&rdquo;<br><br>
+        Marco (scans QR): &ldquo;Room 412, second floor, chair by the window.&rdquo;<br><br>
+        Crew member (gestures at the next box): &ldquo;And that one?&rdquo;<br><br>
+        Marco (scans again): &ldquo;Same room, same chair &mdash; it&rsquo;s a spare. Warehouse until the next install wave.&rdquo;<br><br>
+        <em>This isn&rsquo;t automation for its own sake. It&rsquo;s the only way not to misplace 600 identical chairs.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Invoices: supplier invoice, client invoice, and actual in the budget</h2>
+
+    <p>In Lesson 6 we unpacked three budget numbers &mdash; <code>spec total</code>, <code>planned</code>, and <code>actual</code>. <code>Actual</code> was defined as &ldquo;paid invoices&rdquo; but we never traced where invoices come from. Now we can [2].</p>
+
+    <p>Fohlio works with two invoice types:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--orange-light); border: 1px solid #FBBF77;">
+            <div class="card-icon">&#x1F9FE;</div>
+            <div class="card-title" style="color: var(--orange);">Supplier Invoice</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Bill from the vendor</div>
+            <div class="card-desc">The supplier invoices Dana&rsquo;s firm for delivered goods. Tied to a specific shipment or PO. This is what feeds <code>actual</code> in the budget.</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light); border: 1px solid var(--blue-mid);">
+            <div class="card-icon">&#x1F4C4;</div>
+            <div class="card-title" style="color: var(--blue);">Client Invoice</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Bill to the client</div>
+            <div class="card-desc">Dana&rsquo;s firm invoices the client (Marriott, the Church, Grace) for services and resold goods, usually with a markup applied. A separate line in the financials.</div>
+        </div>
+    </div>
+
+    <p>The distinction matters for accounting: a supplier invoice is a cost to the firm; a client invoice is revenue. Fohlio stores them separately but links them through the project and its line items. By the end of a project you can see the full picture &mdash; what was spent, what was billed, what markup was realized [4].</p>
+
+    <div class="info-box blue">
+        <p><strong>Soft costs aren&rsquo;t just goods.</strong> An invoice contains more than product lines. Delivery, packing &amp; handling, customs duties, installation labor &mdash; these are <em>soft costs</em> (Lesson 6). They flow into <code>actual</code> through the invoice too. That&rsquo;s why <code>actual</code> at project close consistently runs higher than <code>spec total</code>, even when every item was purchased at the agreed price.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Explain without looking back</div>
+        <div class="recall-question">From Lesson 6: what is <code>variance</code> in the budget? Now, knowing about supplier invoices and soft costs &mdash; name two concrete scenarios where <code>actual</code> exceeds <code>planned</code> (not just &ldquo;differs from&rdquo; it). Why does the system need to record them separately?</div>
+        <div class="recall-hint">One scenario is almost certainly about soft costs. The other connects to what happens when a partial receive triggers a second shipment.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Three clients, one concept &mdash; one warehouse or three garages</h2>
+
+    <p>Physical logistics is where the gap between the three clients is at its widest. Not conceptually &mdash; literally, in terms of square footage, staffing, and complexity of coordination.</p>
+
+    <div class="story-box">
+        <p><strong>Marriott &mdash; 600 rooms, delivery waves.</strong> The renovation runs in phases: first four floors, then six more. Each wave is its own set of shipments. The on-site warehouse can only hold one wave at a time &mdash; so Marco manages the delivery schedule the way a dispatcher manages a freight network. Too early and the warehouse overflows; too late and the install crew stands idle. Fohlio shows what has been ordered, what has been received, what is installed, and what is still in transit &mdash; broken down by each of the 600 rooms [1].</p>
+        <div class="tech-note">This is the scale for which batch receiving exists: Marco accepts an entire floor&rsquo;s worth of goods in one operation, not item by item.</div>
+    </div>
+
+    <div class="story-box">
+        <p><strong>The Church of Jesus Christ &mdash; delivery by site and region.</strong> Standardized meetinghouses are built across multiple cities, sometimes multiple countries. One PO can cover several sites &mdash; buying at scale reduces per-unit cost. Brother Andersen tracks that each site receives its exact kit on schedule. Fohlio links a shipment to a specific Area or project, so one delivery record carries detail across multiple locations [4].</p>
+    </div>
+
+    <div class="story-box">
+        <p><strong>Grace &mdash; the garage and a free weekend.</strong> Cedar &amp; Oak is twelve rooms. The warehouse is Grace&rsquo;s garage. The install crew is Grace and her husband on a Saturday. Receiving means Grace stands at the front door and counts boxes herself. GrCode is overkill &mdash; she knows where every piece goes because there are only thirty of them. But the invoice still matters. It&rsquo;s exactly how <code>actual</code> in her budget will show what she actually spent. The same system as Marriott &mdash; just without a procurement department [2].</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Closeout: when Phase 5 ends</h2>
+
+    <p><strong>Closeout</strong> is an administrative boundary: the project declares that the delivery phase is finished. Every PO has been closed &mdash; either because it reached <code>received_fully</code>, or because Marco has made a deliberate decision to close it (the supplier can&rsquo;t ship the last two units and will issue a credit note instead). All invoices have been received and matched. The budget is locked [3].</p>
+
+    <p>This is not automatic. Marco explicitly closes each PO. Without that action the PO stays open and keeps contaminating budget status. Two units that will never arrive should not leave a project in a permanent state of &ldquo;partially received.&rdquo;</p>
+
+    <div class="info-box orange">
+        <p><strong>Why engineers should care about closeout.</strong> In a system without explicit closeout, open POs produce noise in every report: planned vs actual diverges for unclear reasons; budget utilization shows the wrong percentage; the final closeout document can&rsquo;t be produced cleanly. An explicit <code>closed</code> status with a timestamp and an actor is the boundary between &ldquo;in progress&rdquo; and &ldquo;done.&rdquo; Without it, any aggregating query runs on dirty state.</p>
+    </div>
+
+    <p>After closeout, Phase 6 begins &mdash; the project handover. Install is complete, documentation is assembled. Collaboration tokens, approval workflows, and final deliverables: that&rsquo;s the next chapter.</p>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>Phase 5 is the most physical in the entire course. Here the data stops being data and becomes boxes on a loading dock. The system&rsquo;s job is not to lose a single box.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F69A;</div>
+            <div class="layer-name" style="color: var(--blue);">PO &rarr; Shipment(s)</div>
+            <div class="layer-desc">One PO, multiple deliveries. Lead times differ, construction phases differ, delivery sites differ.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--orange);">Partial receiving</div>
+            <div class="layer-desc"><code>qtyReceived &lt; qtyOrdered</code> &rarr; <code>received_partially</code>. PO stays open until every line is full.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4B0;</div>
+            <div class="layer-name" style="color: var(--green);">Invoices &rarr; actual</div>
+            <div class="layer-desc">Supplier invoice = firm&rsquo;s cost = <code>actual</code> in the budget. Client invoice = revenue from the client.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4F1;</div>
+            <div class="layer-name" style="color: var(--purple);">GrCode field tracking</div>
+            <div class="layer-desc">QR label on every item. Scan on-site &rarr; &ldquo;room 412, window chair&rdquo; &mdash; without calling Marco.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x2705;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Closeout</div>
+            <div class="layer-desc">Explicit PO closure. The hard boundary between &ldquo;in progress&rdquo; and &ldquo;done.&rdquo; Without it, reports lie.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 10:</strong> the final chapter &mdash; project handover. Collaboration tokens, external approval workflows, final deliverables, and the close of Dana&rsquo;s arc: the process she built over nine lessons worked, and the $40k mistake didn&rsquo;t repeat.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 35 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Walk one item through Phase 5.</strong> Take that armchair from Lesson 1 &mdash; one of the sixty that arrived in the wrong finish eighteen months ago. Now imagine it&rsquo;s shipping correctly: the sync engine caught the discontinued finish in Lesson 8, the PO is signed, the right chair is on a truck. Trace its journey through Phase 5 step by step: PO &rarr; shipment &rarr; receiving &rarr; warehouse &rarr; install &rarr; invoice &rarr; closeout. For each step write one line: what happens and what the system records.
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li><strong>AI-free segment:</strong> close the lesson, spend 2 minutes writing the steps from memory, then check against the model answer.</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Passes if all seven steps are named in order with a concrete meaning for each. Example: (1) <strong>PO</strong> &mdash; the chair is a line item in an approved PO, <code>qtyOrdered = 1</code>; (2) <strong>Shipment</strong> &mdash; the supplier ships it, a <code>Shipment</code> record is created with dispatch date; (3) <strong>Receiving</strong> &mdash; Marco accepts it, <code>qtyReceived = 1</code>; PO status becomes <code>received_partially</code> or <code>received_fully</code> depending on other lines; (4) <strong>Warehouse</strong> &mdash; chair sits in the on-site warehouse, GrCode label on the box, waiting for the floor to be ready; (5) <strong>Install</strong> &mdash; chair is placed in room 412, install date recorded; (6) <strong>Invoice</strong> &mdash; supplier invoice issued against the shipment, <code>actual</code> in the budget updated; (7) <strong>Closeout</strong> &mdash; Marco explicitly closes the PO once all lines are settled.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Self-check: delivery + prior concepts.</strong> Answer without scrolling back:
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>(a) What distinguishes <code>received_partially</code> from <code>received_fully</code>? Under what condition does a PO reach <code>closed</code>?</li>
+                    <li>(b) From Lesson 6: what is the difference between <code>planned</code> and <code>actual</code>? Now explain, using what you know about invoices, why <code>actual</code> only starts accumulating in Phase 5.</li>
+                    <li>(c) From Lesson 1: which of the six phases is receiving part of? Explain why install is a separate event rather than a sub-step of receiving.</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) <code>received_partially</code>: at least one line has <code>qtyReceived &lt; qtyOrdered</code>. <code>received_fully</code>: every line is complete. <code>closed</code>: explicit closure by Marco after invoice reconciliation. (b) <code>planned</code> = total committed in POs (ordered but not yet paid); <code>actual</code> = paid invoices. Before Phase 5 there are no invoices &mdash; because nothing has been shipped and accepted yet. An invoice can only exist against a physical delivery. (c) Receiving is Phase 5 (delivery). Install is separate because weeks or months can pass between &ldquo;goods accepted at warehouse&rdquo; and &ldquo;goods standing in the room&rdquo; &mdash; those are different facts with different dates, different responsible parties, and different implications for reporting.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>The over-delivery edge case.</strong> The PO was for 8 chairs. Ten arrived on the truck. Returning them costs more than storing two extras, so Marco accepts all ten. Design how the system should handle this: what happens to <code>qtyReceived</code>, how does it affect <code>actual</code>, and what do you do with the two surplus units in the budget? Propose a concrete model &mdash; fields and statuses, not general principles. The lesson doesn&rsquo;t describe this scenario; you have to reason it through, not paraphrase.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why warehouse and install are separate entities.</strong> Fohlio models warehouse and install as distinct events, not a single &ldquo;item status&rdquo; flag. Explain: (1) what queries does this separation make possible that a single flag would not; (2) how does it affect the budget report and closeout documentation; (3) what specific scenario involving a large hospitality project (Marriott, 600 rooms, phased construction) would be difficult or impossible without the distinction. Answer all three, and tie each one back to a concept from a prior lesson (Lesson 1, 6, or 8).
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-layer-ffe-process-l9">
+                Layer (2024). &ldquo;The FF&amp;E Process: 6 Phases from Schematic Design to Handover.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team/blog/the-ff-e-process-explained</a>.
+                <div class="src-meta">Phase 5 (delivery): shipment, receiving, install as distinct events; procurement running parallel to construction &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-fohlio-what-is-ffe-l9">
+                Fohlio (2023). &ldquo;What is FF&amp;E: The Ultimate Guide to Specification, Procurement, and More.&rdquo; <a href="https://www.fohlio.com/blog/what-is-ffe-the-ultimate-guide-specification-procurement-management">fohlio.com/blog</a>.
+                <div class="src-meta">Actual costs definition; supplier vs client invoice in FF&amp;E project context &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-beyer-brown-procurement-l9">
+                Beyer Brown (2023). &ldquo;FF&amp;E Procurement: A Comprehensive Guide.&rdquo; <a href="https://www.beyerbrown.com/ffe-procurement-comprehensive-guide/">beyerbrown.com/ffe-procurement-comprehensive-guide</a>.
+                <div class="src-meta">Hospitality delivery logistics: partial shipments, warehouse staging, phased receiving, closeout procedures &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-spechub-architecture-l9">
+                Fohlio SpecHub (2026). &ldquo;architecture.md &mdash; platform domain model.&rdquo; Internal repository <code>fohlio-spechub</code>.
+                <div class="src-meta">PurchaseOrder statuses (draft / open / approved / received_partially / closed), ShipmentItem (qtyOrdered / qtyReceived), supplier and client invoices, warehouse entity, GrCode field tracking &middot; internal primary source</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] inside the lesson point to the entry with that number in this list. The characters (Dana, Marco, Priya, Helen, Linda, Brother Andersen, Grace) are composite illustrations, not real employees; Marriott and the Church of Jesus Christ are used as real archetypes of Fohlio&rsquo;s customer segments. The Cedar &amp; Oak garage is fictional; the delivery scale and logistics patterns described are drawn from real hospitality industry practice.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>The Fohlio Domain for Engineers &mdash; Lesson 9 of 10</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Project handover &mdash; collaboration, roles, and the final chapter</p>
+    </div>
+
+</div>
+
+</body>
+</html>

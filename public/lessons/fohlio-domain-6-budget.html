@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fohlio Domain for Engineers — Lesson 6</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 6 of 10</div>
+        <h1>Money: spec &ne; budget &ne; actual</h1>
+        <div class="subtitle">Chapter 6. Three different numbers about the same chairs</div>
+    </div>
+
+    <!-- HOOK — scene anchor, misconception-first, named person in first 200 words -->
+    <p>Dana lays two sheets of paper on the table. One says $187,000 &mdash; that&rsquo;s the number Linda from Marriott signed off on last quarter. The other says $214,000. That&rsquo;s what Marco ordered three weeks ago. Twenty-seven thousand dollars apart, and not a single line item in the spec has changed.</p>
+
+    <p>Priya stares at both numbers. Then: &ldquo;Is one of them wrong?&rdquo;</p>
+
+    <p>Neither is wrong. They&rsquo;re answering three completely different questions about the same chairs. &ldquo;What do they cost in the spec&rdquo; is one number. &ldquo;What did we order them for&rdquo; is another. &ldquo;What have we actually paid&rdquo; is a third. In a spreadsheet, all three live on separate tabs and never talk to each other. In Fohlio, they live in the same place and are required to explain the gap. That gap is called <strong>variance</strong> &mdash; and it&rsquo;s exactly what costs projects money when nobody is watching it.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>Why <strong>spec total</strong>, <strong>planned</strong>, and <strong>actual</strong> are always three different numbers &mdash; and what each one actually answers</li>
+            <li>What <strong>markup</strong> and <strong>soft costs</strong> are, and how they open the gap between a supplier&rsquo;s catalog price and the invoice total</li>
+            <li>How <strong>value engineering</strong> works: when &ldquo;cheaper&rdquo; doesn&rsquo;t mean &ldquo;worse&rdquo;</li>
+            <li>What <strong>byArea</strong> and <strong>bySchedule</strong> mean as two different lenses on the same budget</li>
+            <li>Where <code>Budget</code>, <code>variance</code>, and the rule &ldquo;actual = invoices, not orders&rdquo; live in the domain model</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3 style="color: var(--gray-500); font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0;">Where we are</h3>
+    <div class="recap-grid">
+        <div class="recap-item"><strong>Lesson 1:</strong> FF&amp;E, six phases, three clients &mdash; Dana, the $40k mistake, spec as database.</div>
+        <div class="recap-item"><strong>Lesson 3:</strong> CatalogFamily / CatalogItem, Sources &mdash; where price comes from.</div>
+        <div class="recap-item"><strong>Lesson 5:</strong> Brand standards, templates, push/pull &mdash; the standard constrains what you can pick, and therefore what it costs.</div>
+        <div class="recap-item" style="background: var(--blue-light); border-left: 3px solid var(--blue);"><strong>Lesson 6 (today):</strong> Spec total vs planned vs actual, markup, soft costs, value engineering, variance.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. Three numbers, three questions</h2>
+
+    <p>Marco thinks in numbers by default. So when he needs to explain the gap to Priya, he picks one example and doesn&rsquo;t let go of it until she can reconstruct the math herself.</p>
+
+    <div class="story-box">
+        <p>&ldquo;Say a chair costs $400 in the supplier&rsquo;s catalog. Dana specs 150 of them for Marriott. What&rsquo;s <em>spec total</em>?&rdquo;</p>
+        <p>Priya: &ldquo;150 &times; 400 = $60,000?&rdquo;</p>
+        <p>&ldquo;Exactly. That&rsquo;s the number Linda approved: the sum of all line items at catalog prices at the moment of sign-off. It&rsquo;s an intent &mdash; a declaration. Now I go to the supplier, negotiate a 5% discount, but I also add freight and installation. What&rsquo;s <em>planned</em>?&rdquo;</p>
+        <p>&ldquo;The sum of the purchase orders?&rdquo;</p>
+        <p>&ldquo;The sum of all <code>PurchaseOrder</code> records. Sometimes it&rsquo;s above spec total, sometimes below. And after the trucks arrive and I receive the invoices, <em>actual</em> shows up. Three numbers &mdash; three different truths about the same chairs.&rdquo;</p>
+        <div class="tech-note">
+            <strong>In the model:</strong> <code>Budget</code> lives at the <code>Project</code> level. Fields: <code>specTotal</code> (sum from the spec slots), <code>planned</code> (sum of confirmed POs), <code>actual</code> (sum of paid invoices), <code>variance</code> = <code>planned &minus; specTotal</code>. Source: <code>src-baghdad-schema</code> [4].
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Estimate before you see the diagram</div>
+        <div class="recall-question">Spec total for those 150 chairs is $60,000. The supplier gives a 5% discount, but Marco adds $3,500 freight and $2,000 installation. Will planned be higher or lower than $60,000? By how much? Answer out loud or in writing, then check against the waterfall below.</div>
+        <div class="recall-hint">Hint: the discount saves $3,000, but the soft costs add $5,500.</div>
+    </div>
+
+    <!-- SVG: three-number waterfall -->
+    <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Waterfall: spec total to planned to actual, with variance gap">
+            <rect x="0" y="0" width="760" height="320" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">Spec total &rarr; Planned &rarr; Actual: where variance comes from</text>
+
+            <!-- Spec total bar -->
+            <rect x="60" y="55" width="160" height="160" rx="8" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="2"/>
+            <text x="140" y="125" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#3451B2">Spec total</text>
+            <text x="140" y="145" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">$60,000</text>
+            <text x="140" y="163" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">intent at sign-off</text>
+            <text x="140" y="178" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">(catalog price &times; qty)</text>
+
+            <!-- Arrow 1 -->
+            <line x1="222" y1="135" x2="268" y2="135" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr6)"/>
+            <defs>
+                <marker id="arr6" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+                </marker>
+            </defs>
+
+            <!-- Planned bar — taller (markup + soft costs) -->
+            <rect x="270" y="40" width="160" height="175" rx="8" fill="#FFF3E5" stroke="#FBBF77" stroke-width="2"/>
+            <text x="350" y="115" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#E8790C">Planned</text>
+            <text x="350" y="135" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">$62,500</text>
+            <text x="350" y="153" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">&minus; discount $3k</text>
+            <text x="350" y="168" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">+ freight $3.5k</text>
+            <text x="350" y="183" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">+ install $2k</text>
+
+            <!-- Arrow 2 -->
+            <line x1="432" y1="135" x2="478" y2="135" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr6)"/>
+
+            <!-- Actual bar -->
+            <rect x="480" y="65" width="160" height="145" rx="8" fill="#E6F9F0" stroke="#8AD9B4" stroke-width="2"/>
+            <text x="560" y="130" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#1A8F5C">Actual</text>
+            <text x="560" y="150" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">= paid invoices</text>
+            <text x="560" y="168" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">may differ from planned</text>
+            <text x="560" y="183" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">(partial deliveries)</text>
+
+            <!-- Variance brace -->
+            <line x1="60" y1="250" x2="430" y2="250" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="245" y="268" text-anchor="middle" font-family="Inter" font-size="12" fill="#DC2626" font-weight="600">variance = planned &minus; specTotal = +$2,500</text>
+            <line x1="60" y1="215" x2="60" y2="250" stroke="#DC2626" stroke-width="1.5"/>
+            <line x1="430" y1="215" x2="430" y2="250" stroke="#DC2626" stroke-width="1.5"/>
+
+            <!-- Phase labels -->
+            <text x="140" y="295" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Phase 2 (spec)</text>
+            <text x="350" y="295" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Phase 4 (procurement)</text>
+            <text x="560" y="295" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Phase 5 (delivery)</text>
+        </svg>
+        <div class="diagram-caption">Variance = planned &minus; specTotal. Positive means over the approved budget; negative means saved. Actual only appears after invoices are paid.</div>
+    </div>
+
+    <p>The key takeaway: <strong>spec total is not the budget</strong>. It&rsquo;s a declaration of intent. Budget is <em>planned</em> &mdash; the real financial commitment made through purchase orders. Actual is the fact on the ground: money out of the account. A spec isn&rsquo;t a document. It&rsquo;s a database that happens to know how to print itself on paper [1] &mdash; and the budget is just one of the output reports from that same database, not a separate file that lives in someone&rsquo;s inbox.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. Where the gap comes from: markup and soft costs</h2>
+
+    <p>Priya looks at $62,500 and frames the question more precisely: &ldquo;The supplier quoted $57,000. Where does the extra five thousand come from?&rdquo; Good question &mdash; and exactly the one that burns projects when nobody asks it early enough.</p>
+
+    <p>The gap has two sources.</p>
+
+    <h4>Markup &mdash; the firm&rsquo;s margin</h4>
+    <p>The design studio buys a chair from a supplier for $400. The client gets billed $480 &mdash; a 20% markup. This isn&rsquo;t hidden: the firm carries risk, manages the process, and guarantees compliance with the spec. For Marriott, markup may be negotiated in the franchise agreement; for Grace it may be absent entirely (she buys direct). In Fohlio, markup is a field on the slot or item that feeds into the <code>planned</code> calculation [4].</p>
+
+    <h4>Soft costs &mdash; everything that isn&rsquo;t the product</h4>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F69A;</div>
+            <div class="layer-name" style="color: var(--orange);">Freight</div>
+            <div class="layer-desc">Supplier to site or warehouse. Grows non-linearly with weight and distance &mdash; heavy custom pieces can cost more to ship than to make.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F528;</div>
+            <div class="layer-name" style="color: var(--orange);">Installation</div>
+            <div class="layer-desc">Often a percentage of product cost, or a fixed rate per item. A 200-room hotel has a lot of items.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--orange);">Packing &amp; handling</div>
+            <div class="layer-desc">Packaging, unloading, moving through the site. Especially painful on custom pieces that arrive without standard pallets.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4B8;</div>
+            <div class="layer-name" style="color: var(--red);">Import duties &amp; taxes</div>
+            <div class="layer-desc">Customs duties, sales tax. On imported furniture: 5&ndash;25% on top. Depends entirely on country of origin and HS code [2].</div>
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4B0;</div>
+        Client, looking at the invoice: &ldquo;The chair was $400. I&rsquo;m being billed $631. What kind of markup is this?&rdquo;<br>
+        Marco: &ldquo;Freight $65, installation $48, duty $78, packing $40.&rdquo;<br>
+        Client: &ldquo;Fine, that&rsquo;s $631?&rdquo;<br>
+        Marco: &ldquo;Plus markup 20%.&rdquo;<br>
+        <em>Soft costs aren&rsquo;t hidden. They&rsquo;re the costs people forget to include in the approval budget, then &ldquo;discover&rdquo; on the invoice.</em>
+    </div>
+
+    <p>This is exactly why <code>specTotal</code> and <code>planned</code> are separate fields in Fohlio, not one. Spec total is catalog price &times; quantity. Planned already includes markup and the soft costs Marco added when building the PO. If they were the same field, you couldn&rsquo;t compute variance until the invoices arrived &mdash; which is far too late to do anything about it.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Explain without looking back</div>
+        <div class="recall-question">Name three examples of soft costs and explain why you can&rsquo;t just &ldquo;add 10% on top&rdquo; &mdash; what specifically makes that estimate unreliable? Answer in two sentences.</div>
+        <div class="recall-hint">Hint: think back to Lesson 3 &mdash; a Source on a catalog item includes the supplier&rsquo;s location. Freight depends on where an item comes from and where it&rsquo;s going.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. Value engineering &mdash; when the budget says no</h2>
+
+    <p>Brother Andersen opens the budget for a 200-seat meetinghouse and sees that spec total is $18,000 over the approved number. He doesn&rsquo;t raise the cap. He calls Dana.</p>
+
+    <div class="story-box">
+        <p>A fixed budget is doctrine for The Church of Jesus Christ &mdash; not because of stinginess, but because it&rsquo;s stewardship of donated funds. Every dollar over the estimate requires an explanation to the building committee. So when spec total doesn&rsquo;t fit, the only path is <strong>value engineering</strong>: find line items that can be swapped for a less expensive equivalent without losing function or violating the standard.</p>
+        <p>Dana opens the chair slot and sees Herman Miller at $620 per unit &mdash; 120 units. In the Church&rsquo;s approved standard, there&rsquo;s an equivalent from HON at $310: same durability class, same fabric, same fire-safety rating. The swap holds the standard and saves $37,200 &mdash; more than enough to close the gap.</p>
+        <div class="tech-note">
+            <strong>In the model:</strong> the swap happens through the <code>alternatives</code> list on <code>ProjectItemSlot</code>. Each slot has a primary item and a list of alternatives. Dana selects an alternative as primary; <code>specTotal</code> recomputes immediately. The standard isn&rsquo;t violated as long as the alternative is in the Brand Standard [4].
+        </div>
+    </div>
+
+    <p>For Marriott, value engineering works differently. Linda can&rsquo;t simply substitute something cheaper, because the brand book pins specific models. But Marco can play on volume: Marriott is ordering the same models across many properties in this rollout simultaneously, which gives real leverage with the manufacturer. The result is the same &mdash; planned below spec total &mdash; through a different mechanism. Variance goes negative: they came in under budget.</p>
+
+    <p>Grace doesn&rsquo;t have a brand standard to protect and she doesn&rsquo;t have Marriott&rsquo;s volume. Her value engineering is: &ldquo;I found something similar on another site for $280.&rdquo; The difference: Grace leaves no record of <em>why</em> she swapped. If she opens a second inn next year, she starts from scratch. The <code>alternatives</code> field with flags and comments in Fohlio exists precisely so that decision history doesn&rsquo;t live only in someone&rsquo;s memory.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict the downstream effect</div>
+        <div class="recall-question">Dana found an alternative chair &mdash; $90 cheaper per unit, 80 units. But it comes from a different supplier (recall Lesson 3: a price source is a Source record on the catalog item). How does the supplier change affect Marco&rsquo;s next step &mdash; procurement? What does he now have to do that he didn&rsquo;t have to do before?</div>
+        <div class="recall-hint">Each item in the spec has a Source. If the source changes, what does Marco need from the new supplier before he can build a PO?</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Currencies, duties, taxes &mdash; why the &ldquo;same&rdquo; price isn&rsquo;t</h2>
+
+    <p>Priya opens the catalog and finds Italian tile. The manufacturer lists &euro;45/m&sup2;. Dana specs 800 m&sup2;. Priya multiplies: &euro;36,000. She calls Marco with that number. Marco is quiet for a second. Then, slowly: &ldquo;Your PO is going to show a different number.&rdquo;</p>
+
+    <p>Italian imports into the US carry several layers that don&rsquo;t appear on the manufacturer&rsquo;s catalog page [2]:</p>
+
+    <table>
+        <tr>
+            <th>Layer</th>
+            <th>Example</th>
+            <th>Who adds it</th>
+        </tr>
+        <tr>
+            <td>EUR &rarr; USD exchange rate</td>
+            <td>&times;1.09 on the PO date</td>
+            <td>The market &mdash; unpredictable at spec time</td>
+        </tr>
+        <tr>
+            <td>Import duty (customs)</td>
+            <td>+4.5% for ceramic tile from the EU</td>
+            <td>US Customs, based on HS code</td>
+        </tr>
+        <tr>
+            <td>Freight (FOB destination)</td>
+            <td>+8&ndash;12% of product value</td>
+            <td>Logistics provider, depends on weight and route</td>
+        </tr>
+        <tr>
+            <td>Sales tax (by state)</td>
+            <td>0&ndash;9.5% depending on state and category</td>
+            <td>Tax law, varies widely</td>
+        </tr>
+        <tr>
+            <td>Studio markup</td>
+            <td>15% of landed cost</td>
+            <td>Client contract</td>
+        </tr>
+    </table>
+
+    <p>That &euro;36,000 tile in the spec can become $55,000+ in planned &mdash; a 35&ndash;40% gap. Not an error. The reality of international procurement. This is why experienced specifiers on imported items enter <em>landed cost</em> &mdash; the full cost to site &mdash; rather than the manufacturer&rsquo;s price, at least as a planning estimate.</p>
+
+    <div class="info-box blue">
+        <p><strong>FOB and Incoterms:</strong> FOB (Free on Board) means the supplier is responsible for the goods until they&rsquo;re loaded onto the vessel. After that, risk and cost transfer to the buyer. FOB Origin vs FOB Destination is a critical distinction: FOB Origin means the buyer pays freight; FOB Destination means the supplier does, and the price already includes it. In Fohlio, the Source record on a catalog item holds the supplier&rsquo;s terms, including shipping conditions [4].</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. byArea and bySchedule &mdash; two lenses on one budget</h2>
+
+    <p>Marriott wants to know: what does it cost to furnish one standard room? That&rsquo;s a <strong>byArea</strong> question. Brother Andersen wants to know: how much is the Church spending on the &ldquo;Seating&rdquo; category across all meetinghouses? That&rsquo;s a <strong>bySchedule</strong> question. Same budget, two completely different cuts through it.</p>
+
+    <p>The brand standards from Lesson 5 [5] are doing real work here. If Linda approved specific items for the standard room, then Budget byArea immediately shows the cost per room and what 600 rooms will total. Any deviation from the standard &mdash; a brand-book violation &mdash; shows up immediately as a positive variance at the Area level [4].</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F3E8;</div>
+            <div class="card-title">byArea</div>
+            <div class="card-subtitle" style="color: var(--blue);">Slice by room / zone</div>
+            <div class="card-desc">&ldquo;What does the Lobby cost?&rdquo; &ldquo;What does one guest room cost?&rdquo; Useful for Marriott (repeating units) and Grace (12 rooms she can price individually).</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4CB;</div>
+            <div class="card-title">bySchedule</div>
+            <div class="card-subtitle" style="color: var(--orange);">Slice by category</div>
+            <div class="card-desc">&ldquo;What are we spending on Furniture?&rdquo; &ldquo;On Lighting?&rdquo; Useful for category-level budget caps and procurement tenders where one vendor covers a whole category.</div>
+        </div>
+    </div>
+
+    <p>For Grace, both slices collapse into the same answer: she has 12 rooms and three categories. She looks at total variance and reacts. There&rsquo;s no time for two reports. This is why Fohlio surfaces the budget in both cuts: different clients ask different questions of the same underlying database, and the database has to answer all of them.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Three clients, one variance problem</h2>
+
+    <p>Friday at 4:40 p.m. Dana has three projects open on her screen. Each one has its own story about money.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">The Church &mdash; fixed budget and value engineering</span>
+        <div class="step-desc">Brother Andersen calls every two weeks: &ldquo;How&rsquo;s the budget?&rdquo; Not &ldquo;how&rsquo;s the design&rdquo; &mdash; specifically &ldquo;how&rsquo;s the budget.&rdquo; The Church has an approved list (the Brand Standard from Lesson 5). If spec total goes above the limit, value engineering is not optional &mdash; it&rsquo;s the only response. Dana cannot offer &ldquo;nicer, but more expensive.&rdquo; Only &ldquo;same quality and standard, lower cost.&rdquo; Variance here is a warning that must be resolved before a single PO is created.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Marriott &mdash; markup and the franchise corridor</span>
+        <div class="step-desc">Linda manages the budget through markup. Marriott&rsquo;s central procurement charges the design firm for process management. The contract specifies a corridor: markup no higher than 18%. Above that, Linda renegotiates. Below 8%, the studio is working at a loss. Marco&rsquo;s job is to land inside the corridor on every category. Variance at Marriott shows up as a quarterly review line on each property.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Grace &mdash; counting every dollar</span>
+        <div class="step-desc">Grace opened a credit line for $85,000. That&rsquo;s her hard cap. When planned creeps toward $80,000, she calls Dana on Sunday. She has no dedicated buyer, no Marco, no CFO. She has the Fohlio budget view and a real fear of crossing the line. For Grace, variance isn&rsquo;t a quarterly metric &mdash; it&rsquo;s a live anxiety readout. The budget dashboard exists for her not as a report, but as a stress-management panel.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>Three numbers, three questions about the same line items &mdash; this isn&rsquo;t bureaucracy. It&rsquo;s the only way to keep a thousand-row spec under control from intent to invoice.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--blue);">Three numbers</div>
+            <div class="layer-desc">specTotal (intent) &rarr; planned (committed) &rarr; actual (paid). Variance = planned &minus; specTotal.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x2795;</div>
+            <div class="layer-name" style="color: var(--orange);">Markup + soft costs</div>
+            <div class="layer-desc">Freight, installation, duties, taxes &mdash; turn the catalog price into a real planned figure. Forget them and your estimate is off by 30&ndash;40%.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F527;</div>
+            <div class="layer-name" style="color: var(--purple);">Value engineering</div>
+            <div class="layer-desc">Replace an expensive item with a cheaper equivalent &mdash; without violating the standard. The mechanism: alternatives on the slot.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4CC;</div>
+            <div class="layer-name" style="color: var(--green);">byArea / bySchedule</div>
+            <div class="layer-desc">Two slices of the same budget. Different clients ask different questions of the same database.</div>
+        </div>
+    </div>
+
+    <div class="pull-quote">
+        A spec isn&rsquo;t a document. It&rsquo;s a database that happens to know how to print itself on paper. The budget is a query against it. And variance is what happens when the query returns something different from what you expected.
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 7:</strong> planned is approved &mdash; Marco takes the spec and turns it into real orders. Next chapter covers Source, RFQ, comparing quotes, and PO statuses <code>draft&nbsp;&rarr;&nbsp;open&nbsp;&rarr;&nbsp;approved&nbsp;&rarr;&nbsp;received_partially&nbsp;&rarr;&nbsp;closed</code>. And lead time: why custom furniture takes six months, and what to do about it.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &approx; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Work the numbers.</strong> Dana specs four items for Cedar &amp; Oak:
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Bed: $1,200 &times; 12 units</li>
+                    <li>Armchair: $480 &times; 24 units</li>
+                    <li>Light fixture: $220 &times; 36 units</li>
+                    <li>Rug: $340 &times; 12 units</li>
+                </ul>
+                <p style="margin: 8px 0 0;">(a) Calculate <strong>spec total</strong>. (b) Marco adds freight $2,800, installation $3,200, and a 15% markup on the goods. Calculate <strong>planned</strong> and <strong>variance</strong>. (c) Grace pays for the beds and armchairs in the first wire transfer &mdash; what is <strong>actual</strong> after that payment? (d) Which budget slice &mdash; byArea or bySchedule &mdash; matters more to Grace, and why?</p>
+                <p style="margin: 6px 0;"><strong>AI-free recall:</strong> before you start calculating, close this lesson and spend 60 seconds dictating the definitions of specTotal, planned, actual, and variance. Then open back up and check yourself.</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) specTotal = (1,200&times;12) + (480&times;24) + (220&times;36) + (340&times;12) = 14,400 + 11,520 + 7,920 + 4,080 = <strong>$37,920</strong>. (b) Markup 15%: 37,920 &times; 1.15 = $43,608; + freight $2,800 + installation $3,200 = <strong>planned = $49,608</strong>. Variance = 49,608 &minus; 37,920 = <strong>+$11,688</strong>. (c) Actual covers beds + armchairs. Their portion of planned (proportional to spec value + markup + attributed soft costs) is roughly (14,400 + 11,520) &times; 1.15 + proportional soft costs. Passes if actual &lt; planned with correct reasoning &mdash; not all items have been paid. (d) Grace cares more about byArea (&ldquo;what does one room cost?&rdquo;) &mdash; she thinks in 12 individual rooms, not procurement categories. She has no category tender to run.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Cross-lesson question (roughly half from prior lessons).</strong> Dana found an alternative armchair for Cedar &amp; Oak: a different supplier (a Source from Lesson 3), no Brand Standard constraint (Grace doesn&rsquo;t have one), but the new supplier only sells in bulk &mdash; minimum order quantity (MOQ) is 30 units, and Dana only needs 24. Answer three questions:
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>What happens to variance when the armchair price drops from $480 to $360 per unit?</li>
+                    <li>How does switching suppliers (Lesson 3) break Marco&rsquo;s work if the new supplier has no quote on file?</li>
+                    <li>Can value engineering create a <em>new</em> budget problem if MOQ exceeds the required quantity?</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        The swap lowers specTotal by (480&minus;360)&times;24 = $2,880, reducing variance all else equal. But if Marco has no quote from the new supplier, he can&rsquo;t compute planned for that item &mdash; there&rsquo;s no Source price to build a PO against. A new Source means a new RFQ (covered in Lesson 7). MOQ = 30 when qty = 24 means Marco orders 30 units; planned grows by 6 &times; unit cost + markup. Value engineering saved on the unit price, but MOQ partially takes back the saving through extra units &mdash; unless Dana finds a supplier without a MOQ constraint.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Budget walkthrough with a colleague.</strong> Find a teammate (doesn&rsquo;t have to be from this course) and reproduce the scene from Part 1 &mdash; Marco explaining the three numbers to Priya &mdash; except now <em>you&rsquo;re</em> Marco and your colleague asks the questions. Write down three questions they asked that you couldn&rsquo;t answer immediately. Submit those questions along with the answers you found afterward. No AI tool can replicate a specific colleague&rsquo;s reactions and gaps &mdash; that&rsquo;s what makes this AI-resilient.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why three separate fields?</strong> Fohlio stores <code>specTotal</code>, <code>planned</code>, and <code>actual</code> as three distinct fields rather than one &ldquo;current budget number.&rdquo; Describe three specific situations &mdash; one for each client (the Church, Marriott, Grace) &mdash; where collapsing two of those three fields into one would cause the wrong decision. Use only examples from this chapter; don&rsquo;t generalize. The question isn&rsquo;t &ldquo;why is granularity good?&rdquo; &mdash; it&rsquo;s &ldquo;which exact decision breaks for which exact client.&rdquo;
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-l6-1">
+                Layer (2024). &ldquo;The FF&amp;E Process: 6 Phases from Schematic Design to Handover.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team/blog/the-ff-e-process-explained</a>.
+                <div class="src-meta">Six-phase model; spec total as the outcome of the approval phase &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l6-2">
+                Programa (2024). &ldquo;The Ultimate Guide to FF&amp;E Procurement &amp; Furniture Schedules.&rdquo; <a href="https://programa.design/blog/ff-e-procurement">programa.design/blog/ff-e-procurement</a>.
+                <div class="src-meta">Soft costs: freight, duties, markup &mdash; typical composition and ranges &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l6-3">
+                Fohlio (2023). &ldquo;FF&amp;E 101: How To Build The Ultimate Schedule.&rdquo; <a href="https://www.fohlio.com/blog/ffe-101-how-to-build-the-ultimate-schedule">fohlio.com/blog/ffe-101-how-to-build-the-ultimate-schedule</a>.
+                <div class="src-meta">Connection between the price Source and budget line; budget row structure &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l6-4">
+                Fohlio (2026). schema.graphql &mdash; domain entities: <code>Budget</code>, <code>PurchaseOrder</code>, <code>ProjectItemSlot.alternatives</code>. Internal repository <code>fohlio-frontend/baghdad-v1</code>.
+                <div class="src-meta">specTotal / planned / actual / variance; markup; byArea / bySchedule &middot; internal primary source</div>
+            </li>
+            <li id="src-l6-5">
+                Beyer Brown (2023). &ldquo;FF&amp;E Procurement: A Comprehensive Guide.&rdquo; <a href="https://www.beyerbrown.com/ffe-procurement-comprehensive-guide/">beyerbrown.com/ffe-procurement-comprehensive-guide/</a>.
+                <div class="src-meta">Value engineering in FF&amp;E: item substitution, the role of alternatives, budget approval practice &middot; accessed 2026-05-31</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] inside the lesson point to the entry with that number in this list. The characters (Dana, Marco, Priya, Helen, and the client faces) are composite illustrations, not real employees; Marriott and The Church of Jesus Christ are used as real archetypes of Fohlio&rsquo;s customer segments. Numbers in examples are illustrative, not from real projects.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>The Fohlio Domain for Engineers &mdash; Lesson 6 of 10</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Procurement &mdash; RFQ, quote, PO</p>
+    </div>
+
+</div>
+
+</body>
+</html>

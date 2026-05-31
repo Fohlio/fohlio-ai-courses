@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fohlio Domain for Engineers &mdash; Lesson 7</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 7 of 10</div>
+        <h1>Procurement: RFQ &rarr; Quote &rarr; PO</h1>
+        <div class="subtitle">Chapter 7. Marco takes the spec and turns it into orders</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Monday morning. Marco opens the spec and sees 847 line items. Dana closed the budget on Friday &mdash; planned is approved, variance is inside tolerance, and Linda at Marriott has signed off. The database is ready. Marco&rsquo;s job now is to turn it into legally binding purchase orders before the end of the quarter. He has four weeks.</p>
+
+    <p>The first thing he does is not call a supplier. He groups the line items by Source.</p>
+
+    <p>Sixty chairs share one Source &mdash; Herman Miller through a Chicago distributor. That&rsquo;s one RFQ, not sixty emails. The tile goes to a different Source. The lighting fixtures go to a third. Marco will send each of them a Request for Quote and wait for the market to answer back. Then he compares. Then he hits &ldquo;Create PO.&rdquo;</p>
+
+    <p>Between &ldquo;sent the RFQ&rdquo; and &ldquo;hit approve,&rdquo; three weeks can pass. Seven emails, two re-negotiations, and sometimes a quiet notification that a supplier has discontinued the exact finish Dana specified. That last part &mdash; we&rsquo;ll come back to it at the end of this chapter.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>What <strong>Source / Supplier</strong> means in the domain model, and how a family source differs from an item source</li>
+            <li>How the <strong>RFQ &rarr; quote &rarr; comparison &rarr; PO</strong> cycle works in practice</li>
+            <li>What <strong>PO statuses</strong> exist, what each means for the engineer, and why every transition costs more to reverse</li>
+            <li>What <strong>lead time</strong> and <strong>MOQ</strong> are &mdash; and why they determine <em>when</em> Marco presses &ldquo;order,&rdquo; not whether he does</li>
+            <li>Why the procurement process for Marriott, the Church, and Grace looks almost nothing alike</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3 style="color: var(--gray-500); font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0;">Where we are</h3>
+    <div class="recap-grid">
+        <div class="recap-item"><strong>Lesson 1:</strong> FF&amp;E, six phases, three clients, Dana&rsquo;s $40k mistake. Procurement is phase 4.</div>
+        <div class="recap-item"><strong>Lesson 3:</strong> CatalogFamily / CatalogItem, Sources as structured supplier records with price and terms.</div>
+        <div class="recap-item"><strong>Lesson 4:</strong> The spec as queryable data &mdash; ProjectItemSlot / ProjectItem, not a document.</div>
+        <div class="recap-item"><strong>Lesson 6:</strong> specTotal / planned / actual, markup, soft costs, variance &mdash; budget approved.</div>
+        <div class="recap-item" style="background: var(--blue-light); border-left: 3px solid var(--blue);"><strong>Lesson 7 (today):</strong> RFQ, quote, PO + statuses, lead time, MOQ, FOB. Marco is in the driver&rsquo;s seat.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. Source &mdash; how Marco knows where to send the RFQ</h2>
+
+    <p>In Lesson 3, Dana was adding products to the catalog and attaching Sources to them [3] &mdash; structured supplier records with pricing and terms. That data now belongs to Marco. A Source in the system is not a flat string like &ldquo;Herman Miller, tel: +1-800-xxx.&rdquo; It&rsquo;s a record inside <code>ContactCompany</code> with its own <code>ContactOffice</code> and <code>ContactPerson</code>, tagged as <code>source</code>, carrying fields for price, discount, MOQ, lead time, and shipping terms [4].</p>
+
+    <p>Two levels of Source matter in procurement:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F3E0;</div>
+            <div class="card-title">Family Source</div>
+            <div class="card-subtitle" style="color: var(--blue);">Supplier at the product level</div>
+            <div class="card-desc">Attached to a CatalogFamily &mdash; the product line as a whole. Useful for sending one RFQ that covers the entire range, without worrying which specific variant Marco ends up ordering.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4E6;</div>
+            <div class="card-title">Item Source</div>
+            <div class="card-subtitle" style="color: var(--orange);">Supplier at the variant level</div>
+            <div class="card-desc">Attached to a specific CatalogItem (SKU). May differ from the Family Source &mdash; different distributor, different price tier, different MOQ. When both exist, Item Source takes priority [4].</div>
+        </div>
+    </div>
+
+    <p>When Marco sees that 60 line items share one Family Source, he sends a single RFQ to that distributor and saves a week of back-and-forth. If 5 of those 60 items carry a separate Item Source through a different distributor, they break out into their own RFQ automatically. A spec that is a database [1] makes this a query, not a manual scan.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. RFQ &mdash; asking the market a structured question</h2>
+
+    <p>An RFQ is not an email saying &ldquo;send me your price list.&rdquo; It&rsquo;s a structured request: specific SKUs, finishes, quantities, required delivery date, and FOB terms. The supplier receives the list and returns a quote &mdash; a response with unit price, total, lead time, and MOQ confirmation. Getting a quote back does not mean Marco is done comparing. Usually he sends the same RFQ to two or three suppliers at once [2].</p>
+
+    <div class="story-box">
+        <p>Marco sent the Marriott RFQ to three suppliers simultaneously: Herman Miller Chicago, Steelcase Dallas, and a regional distributor out of Florida that Helen had recommended six months back. Five days later, three quotes landed in his inbox.</p>
+        <p>Herman Miller: $418/unit &mdash; lead time 14 weeks &mdash; MOQ 1 &mdash; FOB Origin.</p>
+        <p>Steelcase: $391/unit &mdash; lead time 10 weeks &mdash; MOQ 50 &mdash; FOB Destination.</p>
+        <p>Florida distributor: $362/unit &mdash; lead time &ldquo;TBD&rdquo; &mdash; MOQ 100.</p>
+        <p>Marco looked at the third row and closed it. &ldquo;TBD&rdquo; in the lead time field in FF&amp;E procurement means exactly one of two things: the item is made-to-order with a real risk of six-plus months, or the seller doesn&rsquo;t actually know. Either scenario is a red flag. A low unit price is worthless if the truck arrives after the ribbon-cutting.</p>
+        <div class="tech-note">
+            <strong>In the data model:</strong> each quote is a record linked to an RFQ and a supplier, with fields <code>unitPrice</code>, <code>totalPrice</code>, <code>leadTimeWeeks</code>, <code>moq</code>, and <code>incoterms</code>. When Marco selects a quote and creates a PO from it, that quote&rsquo;s status transitions to <code>accepted</code> [4].
+        </div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Work out the numbers before the next paragraph</div>
+        <div class="recall-question">Steelcase is $27/unit cheaper than Herman Miller, but FOB Destination means freight is included. The order is 300 chairs. You know freight from Chicago to New York is roughly $18/unit if you handle it yourself (as with FOB Origin). Which offer is better on total landed cost &mdash; and does the 300-unit order clear Steelcase&rsquo;s MOQ? Write down your numbers before reading further.</div>
+        <div class="recall-hint">Herman Miller total: 300 &times; $418 + 300 &times; $18 = ? &nbsp;&nbsp; Steelcase total: 300 &times; $391 = ? &nbsp;&nbsp; Steelcase MOQ = 50.</div>
+    </div>
+
+    <p>Marco compares on <strong>landed cost</strong> &mdash; unit price plus freight, duties, and handling &mdash; never on unit price alone. FOB Origin means Marco arranges shipping himself and assumes risk from the moment goods are loaded; FOB Destination means the supplier delivers to the named point and the price already includes freight [2]. Ignoring the distinction is one of the most reliable ways to make planned diverge from actual &mdash; exactly what Lesson 6 showed costs the project money.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The PO and its five lives</h2>
+
+    <p>A Purchase Order is a legal document: what, how many, at what price, by when, delivered where, on what terms. Unlike a quote &mdash; which is an offer &mdash; a PO is a commitment. The supplier signs. Marco signs. Money moves.</p>
+
+    <p>But a PO is not born final. It has a lifecycle &mdash; five statuses &mdash; and each step down the pipeline costs more to reverse than the last [4]:</p>
+
+    <!-- SVG: RFQ → quotes → PO statuses → shipment pipeline -->
+    <div class="diagram">
+        <svg viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Procurement pipeline: RFQ to quote comparison to PO statuses to shipment">
+            <rect x="0" y="0" width="760" height="270" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <defs>
+                <marker id="arr7" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+                </marker>
+            </defs>
+            <text x="380" y="26" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Procurement pipeline: spec &rarr; PO &rarr; shipment</text>
+
+            <!-- Spec box (left entry) -->
+            <rect x="18" y="110" width="98" height="50" rx="8" fill="#F9FAFB" stroke="#E5E7EB" stroke-width="2"/>
+            <text x="67" y="132" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#374151">Spec</text>
+            <text x="67" y="149" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Sources + qty</text>
+
+            <!-- Spec → RFQ (go up to RFQ row) -->
+            <line x1="118" y1="135" x2="143" y2="135" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr7)"/>
+            <line x1="145" y1="135" x2="145" y2="76" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+            <!-- RFQ -->
+            <rect x="18" y="48" width="100" height="50" rx="8" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="2"/>
+            <text x="68" y="70" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#3451B2">RFQ</text>
+            <text x="68" y="87" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">price request</text>
+
+            <line x1="120" y1="73" x2="145" y2="73" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr7)"/>
+
+            <!-- Quotes comparison -->
+            <rect x="147" y="48" width="112" height="50" rx="8" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="203" y="70" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#7C3AED">Quotes</text>
+            <text x="203" y="87" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">compare &amp; select</text>
+
+            <line x1="261" y1="73" x2="286" y2="73" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr7)"/>
+
+            <!-- PO label -->
+            <text x="430" y="36" text-anchor="middle" font-family="Inter" font-weight="600" font-size="11" fill="#374151">PO (Purchase Order)</text>
+
+            <!-- draft -->
+            <rect x="288" y="48" width="78" height="34" rx="6" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"/>
+            <text x="327" y="70" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">draft</text>
+
+            <line x1="368" y1="65" x2="383" y2="65" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+            <!-- open -->
+            <rect x="385" y="48" width="78" height="34" rx="6" fill="#FFF3E5" stroke="#FBBF77" stroke-width="1.5"/>
+            <text x="424" y="70" text-anchor="middle" font-family="Inter" font-size="11" fill="#E8790C">open</text>
+
+            <line x1="465" y1="65" x2="480" y2="65" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+            <!-- approved -->
+            <rect x="482" y="48" width="90" height="34" rx="6" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="1.5"/>
+            <text x="527" y="70" text-anchor="middle" font-family="Inter" font-size="11" fill="#3451B2">approved</text>
+
+            <!-- approved → received_partially (down) -->
+            <line x1="527" y1="84" x2="527" y2="108" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+            <!-- received_partially -->
+            <rect x="448" y="110" width="160" height="34" rx="6" fill="#E6F9F0" stroke="#8AD9B4" stroke-width="1.5"/>
+            <text x="528" y="132" text-anchor="middle" font-family="Inter" font-size="11" fill="#1A8F5C">received_partially</text>
+
+            <!-- received_partially → closed (down) -->
+            <line x1="527" y1="146" x2="527" y2="172" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+            <!-- closed -->
+            <rect x="463" y="174" width="128" height="34" rx="6" fill="#1A8F5C" stroke="#1A8F5C" stroke-width="1.5"/>
+            <text x="527" y="196" text-anchor="middle" font-family="Inter" font-size="11" fill="white" font-weight="600">closed</text>
+
+            <!-- Shipment box (right) -->
+            <rect x="644" y="110" width="100" height="50" rx="8" fill="#FFF3E5" stroke="#FBBF77" stroke-width="2"/>
+            <text x="694" y="132" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">Shipment</text>
+            <text x="694" y="149" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">delivery &rarr; L9</text>
+
+            <!-- received_partially → shipment -->
+            <line x1="610" y1="127" x2="642" y2="127" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr7)"/>
+
+            <!-- bottom caption -->
+            <text x="380" y="250" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Each PO lives in exactly one status. The closed transition requires all goods received and all invoices paid.</text>
+        </svg>
+        <div class="diagram-caption">PO statuses are not bureaucracy &mdash; they are the history of a financial commitment. The further right, the more it costs to reverse.</div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Status</th>
+            <th>What happened</th>
+            <th>For the engineer</th>
+        </tr>
+        <tr>
+            <td><code>draft</code></td>
+            <td>Marco created the PO but hasn&rsquo;t sent it to the supplier yet</td>
+            <td>Not yet in planned. Fully editable.</td>
+        </tr>
+        <tr>
+            <td><code>open</code></td>
+            <td>PO sent to the supplier; awaiting their confirmation</td>
+            <td>Enters planned. Changes require negotiation.</td>
+        </tr>
+        <tr>
+            <td><code>approved</code></td>
+            <td>Supplier confirmed; both parties have signed</td>
+            <td>Legally binding. Lead time clock starts here.</td>
+        </tr>
+        <tr>
+            <td><code>received_partially</code></td>
+            <td>Some line items arrived at the warehouse; the rest are still in transit</td>
+            <td>actual &lt; planned. Invoices arrive piecemeal. See Lesson 9.</td>
+        </tr>
+        <tr>
+            <td><code>received_fully</code></td>
+            <td>Every line item has arrived; nothing is left in transit</td>
+            <td>Quantities reconciled. Awaiting final invoice match before closeout. See Lesson 9.</td>
+        </tr>
+        <tr>
+            <td><code>closed</code></td>
+            <td>All items received; all invoices paid</td>
+            <td>actual = planned for this PO. Version locked.</td>
+        </tr>
+    </table>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4CB;</div>
+        Priya: &ldquo;Why not just skip straight to <code>approved</code>? Why do we need both <code>draft</code> and <code>open</code>?&rdquo;<br>
+        Marco: &ldquo;Because I&rsquo;ve already sent a PO and then spotted a typo in the SKU. With <code>draft</code> &mdash; quiet fix. Without <code>draft</code> &mdash; phone call to the supplier, formal cancellation request, and a very awkward conversation about why the guy who spec&rsquo;d 60 chairs somehow can&rsquo;t spell a part number.&rdquo;<br><br>
+        <em>The right to be wrong gets more expensive at every status transition. <code>draft</code> is the only one that costs nothing.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Lead time and MOQ &mdash; the two numbers that break schedules</h2>
+
+    <p>Marco has one rule he could recite in his sleep: custom and imported furniture has to be ordered not when you need it, but six months before you need it. Sometimes eight [2].</p>
+
+    <p><strong>Lead time</strong> is the span from PO approval to goods arriving at the warehouse. Standard in-stock furniture from a US warehouse: 2&ndash;4 weeks. Custom-fabric or custom-finish orders: 12&ndash;16 weeks. Imports from Italy or Asia: 16&ndash;26 weeks plus customs clearance. If Marriott opens rooms in October, Marco has to hit <code>approved</code> on custom chairs no later than April. Across three projects simultaneously, this is a chronograph, not a spreadsheet.</p>
+
+    <p><strong>MOQ</strong> &mdash; Minimum Order Quantity &mdash; is the supplier&rsquo;s minimum run. It&rsquo;s not an arbitrary rule: you can&rsquo;t manufacture three meters of custom fabric or run a dye lot for two chairs. MOQ creates the classic budget tension introduced in Lesson 6 [1]:</p>
+
+    <div class="info-box orange">
+        <p><strong>The MOQ trap:</strong> Grace specs 8 chairs. The supplier&rsquo;s MOQ is 12. Her options are: order 12 (planned grows by 4 extra chairs), find a different supplier (new RFQ &mdash; time lost), or combine with another project (Grace has no other projects). In enterprise, this resolves by aggregation &mdash; Marriott and the Church roll multiple properties into one order and clear any MOQ threshold with margin to spare. For Grace, it&rsquo;s a personal financial call every single time.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Explain this before reading the next paragraph</div>
+        <div class="recall-question">Marco receives a quote: lead time 18 weeks, MOQ 50. Dana&rsquo;s spec calls for 45 chairs. The project opens in 20 weeks. Name at least two concrete risks Marco must evaluate before hitting &ldquo;approve.&rdquo; Don&rsquo;t read ahead &mdash; answer first.</div>
+        <div class="recall-hint">Think about what MOQ &gt; qty does to planned (from L6). Think about what a lead time nearly equal to the deadline means for buffer.</div>
+    </div>
+
+    <p>Two risks, both real. First: 18-week lead time with 20 weeks to opening leaves a two-week buffer. Any customs delay, any carrier hiccup, any partial hold &mdash; and the chairs aren&rsquo;t there for opening day. On enterprise-scale custom orders Marco builds in a 4-week minimum buffer. Two weeks is not a buffer; it&rsquo;s a gamble. Second: MOQ 50 against qty 45 means either Dana revises the spec to 50 (PO reflects the change), Marco negotiates a split-shipment exception with the supplier, or he accepts 5 extra chairs in planned. All three options require time and documentation in the PO before it goes to <code>open</code>.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Three clients, three ways to procure</h2>
+
+    <p>A spec isn&rsquo;t a document &mdash; it&rsquo;s a database that happens to know how to print itself on paper [1]. Procurement is the phase where that database turns into physical money and legal obligations. Nowhere in the lifecycle does the difference between the three segments show up more sharply.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Marriott &mdash; procurement team, leverage, multi-site</span>
+        <div class="step-desc">Marriott has a dedicated procurement department. Marco doesn&rsquo;t phone one supplier &mdash; he runs a competitive RFQ to five simultaneously and waits for the market to fight over the volume. Eight properties in parallel means renegotiated volume discounts and MOQs that don&rsquo;t register as a constraint. What <em>does</em> get complicated: each property is in a different city with a different opening date and a different delivery address. Linda won&rsquo;t sign a single PO that spans the whole chain &mdash; she needs per-property cost accountability. One RFQ, many POs.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">The Church &mdash; approved-list procurement, slow approvals</span>
+        <div class="step-desc">Brother Andersen&rsquo;s team buys from a fixed approved-supplier list &mdash; the same brand standard introduced in Lesson 5 [3]. Marco sends RFQs only to those pre-approved suppliers. There&rsquo;s no competitive bidding, but there&rsquo;s also no risk of the &ldquo;wrong&rdquo; product slipping through. The tradeoff: PO approval requires three or four sign-off levels. A PO in <code>draft</code> can sit untouched for a week while it climbs the authorization chain. Marco learned to build that into the schedule from day one. Quiet budget discipline means no surprises &mdash; but also no speed.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Grace &mdash; no leverage, no team, every call is personal</span>
+        <div class="step-desc">Grace does procurement herself &mdash; there is no Marco. She opens the spec in Fohlio, finds the Source attached to each item, and emails the supplier. The RFQ is a Gmail draft. The quote is the reply. She creates the PO in Fohlio because it&rsquo;s the only way she has to track what&rsquo;s been ordered and what hasn&rsquo;t. MOQ 50 at qty 12 isn&rsquo;t just an accounting line for Grace &mdash; it&rsquo;s the question of whether she has the cash for 38 extra chairs she didn&rsquo;t plan for.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Something happens between &ldquo;chose&rdquo; and &ldquo;bought&rdquo;</h2>
+
+    <p>Marco closes the quote-comparison table on Friday afternoon. Steelcase won the Marriott chair order &mdash; best landed cost, lead time fits the schedule. He creates the PO in <code>draft</code>. He needs three days of final verification before moving it to <code>open</code>: one last pass over SKUs and finishes, a confirmation that the delivery address is correct for the first property, a check that the total matches the approved planned figure from Lesson 6 [1].</p>
+
+    <p>Monday morning. He opens the PO.</p>
+
+    <p>One line item &mdash; a chair with a specific fabric SKU &mdash; has a yellow flag on it. A marker that wasn&rsquo;t there Friday.</p>
+
+    <div class="info-box orange">
+        <p><strong>End hook:</strong> between Friday and Monday, something changed in the catalog. The supplier updated information on that item &mdash; possibly the exact finish Dana specified. The yellow flag is a signal from the sync engine: this line item in the spec no longer matches the current data in the catalog. This is not a coincidence. Those &ldquo;three days in draft&rdquo; are precisely the window that cost Dana $40k eighteen months ago: enough time passed between &ldquo;we chose this&rdquo; and &ldquo;we hit approve&rdquo; for reality to shift while the spec stayed the same.</p>
+        <p>What to do with the yellow flag &mdash; pull, push, or replace &mdash; is Lesson 8.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>Marco took the spec &mdash; a database [1] &mdash; and began converting it into commitments. RFQ and quotes are market intelligence. A PO is an obligation. The statuses are the audit trail of that obligation, from a fixable draft all the way to a closed financial record.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DE;</div>
+            <div class="layer-name" style="color: var(--blue);">Source / Supplier</div>
+            <div class="layer-desc">Structured supplier record with price, MOQ, lead time. Family level or Item level &mdash; Item takes priority.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4E8;</div>
+            <div class="layer-name" style="color: var(--purple);">RFQ &rarr; Quote</div>
+            <div class="layer-desc">Structured price request to one or more suppliers. Compare on landed cost, not unit price. Selected quote becomes the PO basis.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--orange);">PO + 5 statuses</div>
+            <div class="layer-desc">draft &rarr; open &rarr; approved &rarr; received_partially &rarr; closed. Each transition is harder to reverse than the last.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x23F1;</div>
+            <div class="layer-name" style="color: var(--red);">Lead time + MOQ</div>
+            <div class="layer-desc">Lead time dictates when you must order, not whether. MOQ creates budget pressure that hits SMBs hardest.</div>
+        </div>
+    </div>
+
+    <div class="pull-quote">
+        A spec isn&rsquo;t a document. It&rsquo;s a database that happens to know how to print itself on paper. Procurement is the first moment that database becomes money &mdash; and the first moment it can go stale.
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 8:</strong> the yellow flag on Marco&rsquo;s Monday PO isn&rsquo;t a bug. It&rsquo;s the sync engine working. Over the three days that PO sat in <code>draft</code>, something in the catalog changed. Lesson 8 is entirely about that engine: sync states (<code>new / ready / updates / broken</code>), push / pull / replace, orphaned refs &mdash; and exactly how this mechanism would have saved Dana from the $40k mistake eighteen months ago.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 35 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Order the steps and explain the transitions.</strong> List the procurement pipeline steps in the correct order: RFQ, quote, PO approved, PO draft, PO open, shipment, PO received_partially, PO closed. For each transition, write <em>one condition</em> that allows it &mdash; what exactly has to happen before the next step is possible.
+                <p style="margin: 6px 0;"><strong>AI-free recall segment:</strong> close the lesson tab, write the ordered list from memory in 90 seconds, then open the diagram and compare. The self-check below grades your recall pass &mdash; not the draft you copy from the screen.</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Correct order: RFQ &rarr; quote &rarr; PO draft &rarr; PO open &rarr; PO approved &rarr; PO received_partially &rarr; PO closed (with shipment running in parallel from approved onward). Transition conditions: RFQ &rarr; quote: supplier responds with price and lead time. Quote &rarr; PO draft: Marco selects a quote and creates a draft PO from it. Draft &rarr; open: Marco has verified SKUs, quantities, and address; sends to supplier. Open &rarr; approved: both parties sign. Approved &rarr; received_partially: first partial shipment arrives at the warehouse. Received_partially &rarr; closed: all line items received and all invoices paid. A pass means getting the order right and giving a condition that references something external &mdash; not just &ldquo;Marco decides.&rdquo;
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Cross-lesson analysis (L3 + L4 + L6 + L7).</strong> Grace specs 10 chairs. The current Source has MOQ 1, lead time 4 weeks. On Friday Dana finds an alternative &mdash; different supplier, $40/unit cheaper, MOQ 15, lead time 8 weeks. Cedar &amp; Oak opens in 10 weeks. Answer these four questions:
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>How does switching Source affect specTotal and planned (L6)?</li>
+                    <li>Does switching Source require a new RFQ (L3 + L7)?</li>
+                    <li>Does lead time 8 weeks fit a 10-week deadline &mdash; and is the buffer enough?</li>
+                    <li>Is ordering 15 units at qty 10 worth it (L6 MOQ trap)?</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        specTotal drops $400 (10 &times; $40). Planned depends on MOQ: if Grace orders exactly 10, she needs a supplier willing to go below MOQ &mdash; unlikely; if qty becomes 15, planned rises despite the cheaper unit price. New Source = new RFQ required: without a quote from the new supplier, there is no legal basis for a PO. Lead time 8 weeks against a 10-week deadline leaves a 2-week buffer &mdash; with any logistics hiccup (port delay, customs hold), this is riskier than the original 4-week supplier; the $40/unit saving doesn&rsquo;t offset a blown opening date. MOQ 15 at qty 10: the 5 extra chairs cost money Grace likely doesn&rsquo;t have a use for; unless she truly wants the savings and has storage, the original supplier with MOQ 1 is the safer call. A pass requires addressing all four questions with the tradeoffs named.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Play Marco.</strong> Go to any publicly accessible B2B furniture catalog (Knoll, Herman Miller, Steelcase &mdash; all have public product pages) and find a real custom item that shows a lead time or MOQ. Describe how the RFQ &rarr; PO process would differ for that specific item if the buyer were Marriott (600 rooms across eight properties) versus Grace (12-room inn). Be concrete: what changes in negotiating leverage, in how the lead time buffer is calculated, and in how the MOQ decision gets resolved. Paste the URL of the product page you used. This task is AI-resistant: no language model knows the live current-state page of a supplier catalog &mdash; you have to look with your own eyes.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why it&rsquo;s built this way.</strong> <code>received_partially</code> exists as a distinct PO status &mdash; not as a flag or a counter field. Explain exactly what breaks in the accounting of <code>actual</code> and invoices (from Lesson 6) if you remove it and replace it with a <code>receivedCount</code> field on the PO. Give a concrete failure scenario for each of the three clients: what specific mistake would occur, for whom, and why the status boundary matters. Elaborate on why a field is not semantically equivalent to a state.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-l7-1">
+                Layer (2024). &ldquo;The FF&amp;E Process: 6 Phases from Schematic Design to Handover.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team/blog/the-ff-e-process-explained</a>.
+                <div class="src-meta">Six-phase model; procurement as phase 4; parallel run with construction &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l7-2">
+                Procurist (2024). &ldquo;FF&amp;E Schedules: The Complete Guide for Interior Designers.&rdquo; <a href="https://procurist.io/resources/ffe-schedules">procurist.io/resources/ffe-schedules</a>.
+                <div class="src-meta">Lead times for custom and imported items (6+ months); 12&ndash;24 month procurement cycle; FOB terms in FF&amp;E &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l7-3">
+                Fohlio (2023). &ldquo;The Complete Guide to FF&amp;E Spec Sheets.&rdquo; <a href="https://www.fohlio.com/blog/the-complete-guide-to-ffe-spec-sheets">fohlio.com/blog/the-complete-guide-to-ffe-spec-sheets</a>.
+                <div class="src-meta">Source as a structured supplier record; attachment at Family vs Item level &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l7-4">
+                Fohlio (2026). schema.graphql &mdash; domain entities: <code>Supplier</code>, <code>RFQ</code>, <code>Quote</code>, <code>PurchaseOrder</code>, PO statuses. Internal repository <code>fohlio-frontend/baghdad-v1</code>.
+                <div class="src-meta">PO statuses (draft / open / approved / received_partially / closed); Family Source / Item Source; invoice linkage &middot; internal primary source</div>
+            </li>
+            <li id="src-l7-5">
+                Programa (2024). &ldquo;The Ultimate Guide to FF&amp;E Procurement &amp; Furniture Schedules.&rdquo; <a href="https://programa.design/blog/ff-e-procurement">programa.design/blog/ff-e-procurement</a>.
+                <div class="src-meta">RFQ process, quote comparison, MOQ in FF&amp;E; enterprise vs SMB procurement patterns &middot; accessed 2026-05-31</div>
+            </li>
+            <li id="src-l7-6">
+                Beyer Brown (2023). &ldquo;FF&amp;E Procurement: A Comprehensive Guide.&rdquo; <a href="https://www.beyerbrown.com/ffe-procurement-comprehensive-guide/">beyerbrown.com/ffe-procurement-comprehensive-guide/</a>.
+                <div class="src-meta">Procurement pipeline practice; PO status control on multi-site projects &middot; accessed 2026-05-31</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] inside the lesson point to the entry with that number in this list. The characters (Dana, Marco, Priya, Helen, and the client faces) are composite illustrations, not real employees; Marriott and the Church of Jesus Christ are used as real archetypes of Fohlio&rsquo;s customer segments.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>The Fohlio Domain for Engineers &mdash; Lesson 7 of 10</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Why the spec goes stale &mdash; the sync engine</p>
+    </div>
+
+</div>
+
+</body>
+</html>
