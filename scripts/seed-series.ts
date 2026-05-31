@@ -47,6 +47,19 @@ const SERIES: SeriesSeed[] = [
       { courseId: "course-fohlio-tech-course", orderInSeries: 1 },
     ],
   },
+  {
+    id: "series-fohlio-domain",
+    slug: "fohlio-domain",
+    title: "The Fohlio Domain",
+    subtitle: "Understand the business we build for",
+    description:
+      "A domain onboarding track for Fohlio engineers — who our customers are (interior designers, FF&E specifiers, procurement), how they work, how they think, and the jobs-to-be-done our platform exists to close.",
+    coverImageUrl: null,
+    order: 3,
+    courses: [
+      { courseId: "course-fohlio-domain", orderInSeries: 1 },
+    ],
+  },
 ];
 
 async function main() {

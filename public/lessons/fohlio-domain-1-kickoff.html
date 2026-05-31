@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Fohlio Domain for Engineers — Lesson 1</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 1 of 10</div>
+        <h1>The Fohlio Domain for Engineers</h1>
+        <div class="subtitle">Chapter 1. An empty project and 60 chairs in the wrong finish</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>7:14 a.m. Dana Reyes sits in front of a blank project with a mug of coffee that went cold an hour ago. The cursor blinks in the &ldquo;Project name&rdquo; field. Outside, it&rsquo;s an ordinary Tuesday morning at a twenty-person design studio. Inside Dana, it&rsquo;s the thing she calls &ldquo;the chill before the spec.&rdquo;</p>
+
+    <p>Eighteen months ago she ignored that chill. She filled out the specification for a hotel lobby, sent it to procurement, and left for vacation. Six weeks later, 60 armchairs arrived at the warehouse. The upholstery was wrong. The manufacturer had quietly discontinued that exact shade while the chairs sat in the order queue, and substituted the &ldquo;closest match.&rdquo; Nobody caught it. The rework bill came to about forty thousand dollars. The schedule slipped by a month. Ever since, Dana opens every new project as if it could cost her forty thousand dollars all over again.</p>
+
+    <p>Today there isn&rsquo;t one project on her desk &mdash; there are three. And all three are completely different people who want completely different things. Dana is the person we&rsquo;ll follow for the next ten lessons. Not because she&rsquo;s a hero. Because her job <em>is</em> the domain we build software for.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <p>After this chapter you&rsquo;ll be able to:</p>
+        <ul>
+            <li>Explain what <strong>FF&amp;E</strong> is &mdash; and why it&rsquo;s a class of problems, not just &ldquo;furniture&rdquo;</li>
+            <li>Name the <strong>six phases</strong> of a project&rsquo;s lifecycle, from intent to handover</li>
+            <li>Tell apart Fohlio&rsquo;s three customer types and understand <em>why they think differently</em></li>
+            <li>See the entities behind the UI (<code>Project</code>, <code>Workspace</code>, roles)</li>
+            <li>Pin down which phase the $40k mistake actually happened in &mdash; and why the domain exists to catch it</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. Who Dana is, and what&rsquo;s on her desk</h2>
+
+    <p>Dana is a senior FF&amp;E specifier. Her job: decide <em>which</em> objects go into a building, pick them from suppliers, do the math on the money, and shepherd them to the moment they physically stand in their places. She is not an interior designer in the &ldquo;I pick curtain colors to match a mood&rdquo; sense. She&rsquo;s the person who turns a pretty picture into a list of a thousand line items you can actually buy.</p>
+
+    <p>The same people will show up around her throughout this course. Learn them now &mdash; they come back in every chapter.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4D0;</div>
+            <div class="layer-name" style="color: var(--blue);">Dana Reyes</div>
+            <div class="layer-desc">Specifier. Precise, dry, hates spreadsheets. The anchor across all three projects.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4B0;</div>
+            <div class="layer-name" style="color: var(--orange);">Marco</div>
+            <div class="layer-desc">The firm&rsquo;s buyer. Thinks in lead times and budgets. Purchases what Dana specs.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F331;</div>
+            <div class="layer-name" style="color: var(--purple);">Priya</div>
+            <div class="layer-desc">Junior designer. Asks the &ldquo;naive&rdquo; questions &mdash; that&rsquo;s how we&rsquo;ll introduce the terms.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F3DB;</div>
+            <div class="layer-name" style="color: var(--green);">Helen</div>
+            <div class="layer-desc">Founder of the studio. Owns the shared catalog and brand standards. Does not forgive inconsistency.</div>
+        </div>
+    </div>
+
+    <p>And then there are the clients &mdash; and this is where it gets interesting for us. But before the clients, we need to settle one word that gets said every five minutes in this domain.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. What FF&amp;E is (and why it isn&rsquo;t a trip to IKEA)</h2>
+
+    <p>FF&amp;E stands for <strong>Furniture, Fixtures &amp; Equipment</strong>. Bluntly: it&rsquo;s everything in a building you could (in theory) carry out without breaking the walls. Chairs, tables, lighting, rugs, mirrors, bar counters, lamps, door hardware, the dishes in the hotel restaurant. Walls, slabs, and ductwork are not FF&amp;E &mdash; that&rsquo;s the building&rsquo;s &ldquo;shell&rdquo; [2].</p>
+
+    <p>Sounds like a shopping list. That&rsquo;s the trap. A shopping list for an apartment is twenty rows. Here&rsquo;s the scale of a real project.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Guess before you read on</div>
+        <div class="recall-question">A 600-room Marriott hotel. How many <strong>distinct line items</strong> are in its FF&amp;E specification, and how many <strong>suppliers</strong> deliver them? Say a number out loud, or write it down.</div>
+        <div class="recall-hint">Being wrong here is fine &mdash; your brain just set a hook for the real number to land on.</div>
+    </div>
+
+    <p>A typical hospitality project runs <strong>500 to 5,000+ line items</strong>, <strong>30 to 100+ suppliers</strong>, and a procurement cycle of <strong>12&ndash;24 months</strong>. Custom and imported pieces ship in six months or more, so procurement runs <em>in parallel</em> with construction, not after it [3]. Each line item isn&rsquo;t &ldquo;a chair.&rdquo; It&rsquo;s a chair of a specific model, in a specific finish, in the right quantity, from a chosen supplier, at an agreed price, with a lead time and a status of &ldquo;ordered / in transit / received.&rdquo; Multiply by three thousand rows.</p>
+
+    <p>That&rsquo;s why Dana&rsquo;s mistake cost $40k, not forty dollars. On a twenty-row shopping list you catch the wrong color with your eyes. On a three-thousand-row spec, nobody catches it &mdash; until it shows up at the warehouse.</p>
+
+    <div class="pull-quote">
+        A spec isn&rsquo;t a document. It&rsquo;s a database that happens to know how to print itself on paper.
+    </div>
+
+    <p>That idea is the backbone of the whole course. Hold on to it. Everything we build in Fohlio exists for one reason: to keep each of those thousands of rows <em>true</em> all the way from intent to the loading dock.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4C4;</div>
+        Priya: &ldquo;Why can&rsquo;t we just keep it all in Excel? Everyone does.&rdquo;<br>
+        Dana: &ldquo;Open the project folder.&rdquo;<br>
+        *Priya opens it. Inside: <code>spec_FINAL.xlsx</code>, <code>spec_FINAL_v2.xlsx</code>, <code>spec_FINAL_USE_THIS.xlsx</code>, <code>spec_FINAL_USE_THIS_real.xlsx</code>.*<br>
+        <em>Excel doesn&rsquo;t lose data. It loses the answer to &ldquo;which version is true right now&rdquo; &mdash; and that answer is exactly what we get paid for.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. Six phases: the journey of one line item</h2>
+
+    <p>Behind the tidy word &ldquo;project&rdquo; hides a conveyor of six phases. Any line item &mdash; that one chair &mdash; passes through them in order. Understanding these phases matters more than knowing any single product screen: every later chapter of this course lives inside one of them [1].</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The six phases of an FF&E project lifecycle">
+            <rect x="0" y="0" width="760" height="300" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <defs>
+                <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#9CA3AF"/>
+                </marker>
+            </defs>
+            <text x="380" y="32" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">One line item&rsquo;s journey: six phases</text>
+
+            <!-- Row 1 -->
+            <rect x="30" y="60" width="210" height="62" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="135" y="86" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">1. Intent</text>
+            <text x="135" y="105" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">moodboard, idea, &ldquo;what we want&rdquo;</text>
+
+            <rect x="275" y="60" width="210" height="62" rx="10" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="2"/>
+            <text x="380" y="86" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">2. Specification</text>
+            <text x="380" y="105" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">product choice, catalog</text>
+
+            <rect x="520" y="60" width="210" height="62" rx="10" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="2"/>
+            <text x="625" y="86" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">3. Budget</text>
+            <text x="625" y="105" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">what it costs</text>
+
+            <!-- Row 2 -->
+            <rect x="30" y="188" width="210" height="62" rx="10" fill="#FFF3E5" stroke="#FBBF77" stroke-width="2"/>
+            <text x="135" y="214" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">4. Procurement</text>
+            <text x="135" y="233" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">RFQ, order (PO)</text>
+
+            <rect x="275" y="188" width="210" height="62" rx="10" fill="#FFF3E5" stroke="#FBBF77" stroke-width="2"/>
+            <text x="380" y="214" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">5. Delivery</text>
+            <text x="380" y="233" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">shipment, receiving</text>
+
+            <rect x="520" y="188" width="210" height="62" rx="10" fill="#E6F9F0" stroke="#8AD9B4" stroke-width="2"/>
+            <text x="625" y="214" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">6. Handover</text>
+            <text x="625" y="233" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">install, sign-off</text>
+
+            <!-- arrows row1 -->
+            <line x1="240" y1="91" x2="273" y2="91" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+            <line x1="485" y1="91" x2="518" y2="91" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+            <!-- wrap arrow 3->4 -->
+            <path d="M625 122 L625 155 L135 155 L135 186" fill="none" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+            <!-- arrows row2 -->
+            <line x1="240" y1="219" x2="273" y2="219" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+            <line x1="485" y1="219" x2="518" y2="219" stroke="#9CA3AF" stroke-width="2" marker-end="url(#arr)"/>
+        </svg>
+        <div class="diagram-caption">Every chapter (Lessons 2&ndash;10) takes one of these phases apart from the inside.</div>
+    </div>
+
+    <p>Notice the arrow that loops back from phase 3 to phase 4 &mdash; not in a straight line, but across the full width. Real life works the same way: weeks of approvals sit between &ldquo;budget is set&rdquo; and &ldquo;hit buy.&rdquo; And the chair from phase 2 can quietly &ldquo;go stale&rdquo; by phase 4 &mdash; the manufacturer drops the finish while the spec waits for sign-off. That exact gap in time is what cost Dana $40k. Lesson 8 is entirely about how Fohlio closes it.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Three clients, one concept</h2>
+
+    <p>Here&rsquo;s the main reason you can&rsquo;t learn the domain &ldquo;in general&rdquo;: Fohlio doesn&rsquo;t have one customer, it has several very different ones. They open the same spec screen with opposite goals. Keep only one type in your head and you&rsquo;ll design a feature that breaks for the other two.</p>
+
+    <p>Dana has exactly three on her desk right now, one from each world. Meet them &mdash; we&rsquo;ll come back to them in every chapter in a &ldquo;Three clients&rdquo; beat.</p>
+
+    <table>
+        <tr>
+            <th>Client</th>
+            <th>Who they are</th>
+            <th>How they think &mdash; and their core job (JTBD)</th>
+        </tr>
+        <tr>
+            <td><strong>Marriott</strong><br><span style="color: var(--gray-500); font-size: 13px;">enterprise, hospitality</span></td>
+            <td>A hotel chain. A 600-room refresh plus rolling the standard out across dozens of properties. Face of it: Linda, brand manager.</td>
+            <td>&ldquo;Make <strong>every</strong> hotel in the chain look identical.&rdquo; The brand book outranks personal taste. JTBD: replicate an approved standard with zero drift and control it across hundreds of line items.</td>
+        </tr>
+        <tr>
+            <td><strong>The Church of Jesus Christ</strong><br><span style="color: var(--gray-500); font-size: 13px;">enterprise, institutional</span></td>
+            <td>An institutional owner. A batch of standardized meetinghouses built to a fixed standard. Face of it: Brother Andersen, facilities &amp; purchasing.</td>
+            <td>&ldquo;Take one proven design and repeat it thousands of times, carefully with the money.&rdquo; They steward donated funds, so budget discipline is strict and the horizon is years. JTBD: replicate predictably and keep cost under control.</td>
+        </tr>
+        <tr>
+            <td><strong>Cedar &amp; Oak</strong><br><span style="color: var(--gray-500); font-size: 13px;">SMB, small business</span></td>
+            <td>A 12-room boutique inn. The owner, Grace, is her own designer, buyer, and bookkeeper.</td>
+            <td>&ldquo;I have no time, no procurement team, and I&rsquo;m scared of going over budget.&rdquo; Decides fast, on the fly. JTBD: get the project done solo without losing money or dropping a thread.</td>
+        </tr>
+    </table>
+
+    <div class="info-box orange">
+        <p><strong>Key idea:</strong> Marriott is obsessed with consistency, the Church with budget discipline and replication, Grace with speed and simply not dropping a single thread. <em>One</em> spec feature has to work for all three. When you argue about priorities in a ticket, ask yourself: &ldquo;is this for Linda, for Brother Andersen, or for Grace?&rdquo;</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. What we&rsquo;re actually modeling</h2>
+
+    <p>Now &mdash; from Dana&rsquo;s world to our entities. When Dana hits &ldquo;create project,&rdquo; a tree of objects is born under the hood &mdash; the thing we build. Here&rsquo;s the top level, just enough to keep the map in your head; the details come in later chapters [4].</p>
+
+    <div class="file-tree">
+<span class="dir">Workspace</span>            <span class="comment">&larr; the firm&rsquo;s account (Dana&rsquo;s studio). Data isolation boundary</span>
+├── <span class="dir">Members + Roles</span>   <span class="comment">&larr; who&rsquo;s inside and what they may do (Dana, Marco, Priya, Helen)</span>
+├── <span class="dir">Catalog</span>          <span class="comment">&larr; the firm&rsquo;s shared product library (Lesson 3)</span>
+└── <span class="dir">Projects</span>         <span class="comment">&larr; three projects: Marriott, the Church, Cedar &amp; Oak</span>
+    └── <span class="highlight">Project</span>      <span class="comment">&larr; the container: rooms, spec, budget, orders</span>
+        ├── <span class="file">Areas</span>      <span class="comment">&larr; rooms / zones (lobby, guest room, restaurant)</span>
+        └── <span class="file">Items</span>      <span class="comment">&larr; the thousands of spec line items</span>
+    </div>
+
+    <p>Three things worth taking away from this tree right now:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3E2;</div>
+            <div class="layer-name" style="color: var(--blue);">Workspace</div>
+            <div class="layer-desc">The multi-tenant boundary. One firm&rsquo;s data is invisible to another. Billing lives here too.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F511;</div>
+            <div class="layer-name" style="color: var(--purple);">Roles</div>
+            <div class="layer-desc">Dana edits the spec, Marco the procurement, the client sees only their own. Permissions aren&rsquo;t decoration.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--green);">Project</div>
+            <div class="layer-desc">The container for everything: rooms, line items, budget, orders. All work starts here.</div>
+        </div>
+    </div>
+
+    <p>And the one mental shift this whole chapter is written for: <strong>a Project is not &ldquo;a folder of documents.&rdquo; It&rsquo;s a live database where every line item knows its product, supplier, price, lead time, and status.</strong> That&rsquo;s the idea from Part 2 again. A document shows the past. A database answers &ldquo;what&rsquo;s true <em>right now</em>&rdquo; &mdash; which is exactly where Dana got burned.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Test yourself</div>
+        <div class="recall-question">Back to the $40k mistake. Which of the <strong>six phases</strong> did it actually happen in &mdash; and why didn&rsquo;t anyone catch it by eye? Answer in two or three sentences, without scrolling back up.</div>
+        <div class="recall-hint">Hint: the error <em>arose</em> between two phases and <em>surfaced</em> at a third. Those are different phases.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>What we took away from chapter one:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--blue);">FF&amp;E</div>
+            <div class="layer-desc">Furniture, fixtures, equipment &mdash; hundreds to thousands of line items, not a shopping list.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F504;</div>
+            <div class="layer-name" style="color: var(--purple);">Six phases</div>
+            <div class="layer-desc">Intent &rarr; spec &rarr; budget &rarr; procurement &rarr; delivery &rarr; handover.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F465;</div>
+            <div class="layer-name" style="color: var(--orange);">Three clients</div>
+            <div class="layer-desc">Marriott (consistency), the Church (budget + replication), Grace (speed, solo).</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F5C4;</div>
+            <div class="layer-name" style="color: var(--green);">Spec = database, not document</div>
+            <div class="layer-desc">Workspace &rarr; Project &rarr; Items. Every row has to stay true.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 2:</strong> where that very first line item comes from. Dana and Priya sit down with a client&rsquo;s moodboard, and we watch a fuzzy picture of &ldquo;I want it cozy and warm&rdquo; turn into the first real product in the spec. Phase 1 &mdash; intent.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; ≈ 35 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Walk one line item through the phases.</strong> Take any object near you right now (a chair, a lamp, a mug) and run it through the six phases as if it were a line item in Grace&rsquo;s Cedar &amp; Oak project.
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Describe each of the six phases for your object in one line (intent &rarr; spec &rarr; budget &rarr; procurement &rarr; delivery &rarr; handover).</li>
+                    <li>Mark the phase where <em>Grace</em> (SMB, no procurement team) has the highest risk of dropping the ball &mdash; and why.</li>
+                    <li><strong>AI-free segment:</strong> close the lesson and, from memory, spend 60 seconds explaining out loud or in writing how &ldquo;spec as a database&rdquo; differs from &ldquo;spec as a document.&rdquo; That&rsquo;s what the self-check below grades.</li>
+                    <li>Submit your answer (the phase list + the risk note) in the field under this lesson.</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Passes if: (1) all six phases are named in order and tied to the object, with &ldquo;budget&rdquo; and &ldquo;procurement&rdquo; not swapped; (2) the highest-risk phase for an SMB is identified &mdash; usually <em>procurement/delivery</em>, because Grace has no Marco; she catches lead times and discontinuations herself; (3) the &ldquo;database vs document&rdquo; explanation says a database answers &ldquo;what&rsquo;s true now&rdquo; (current price/lead time/status) while a document records the past. Example risk note: &ldquo;Grace&rsquo;s risk is at procurement: nobody tracks that the finish got discontinued &mdash; exactly Dana&rsquo;s mistake, but with no buyer as a backstop.&rdquo;
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Self-check on this chapter.</strong> Answer without scrolling back:
+                <p style="margin: 6px 0 0;">(a) What is and isn&rsquo;t FF&amp;E &mdash; give two examples of each. (b) List the six phases in order. (c) State each of the three clients&rsquo; JTBD in one sentence.</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Is FF&amp;E: furniture, lighting, rugs, mirrors (things you carry out). Isn&rsquo;t: walls, slabs, ductwork (the building shell). (b) Intent &rarr; specification &rarr; budget &rarr; procurement &rarr; delivery &rarr; handover. (c) Marriott &mdash; &ldquo;one standard across all properties, no drift&rdquo;; the Church &mdash; &ldquo;replicate a standard design, carefully with budget&rdquo;; Grace &mdash; &ldquo;finish the project solo without going over budget or losing threads.&rdquo;
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Argue with an AI.</strong> Ask any LLM: &ldquo;Why would an interior designer need special software if they have Excel?&rdquo; Copy the answer and dissect it the way Dana would: what does it miss about <em>scale</em> (thousands of line items) and the <em>time gap</em> (a product going stale between phases)? Add 2&ndash;3 sentences on what the AI left out and why you only noticed after this chapter.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why it&rsquo;s built this way.</strong> Why does Fohlio make <code>Workspace</code> the isolation boundary rather than, say, <code>Project</code>? And why is Dana&rsquo;s mistake a <em>procurement-phase</em> failure rather than &ldquo;a designer being careless&rdquo;? Answer both &ldquo;why&rdquo;s and explain why the obvious alternative (isolate at the project level; &ldquo;just be more careful&rdquo;) doesn&rsquo;t solve the problem.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li>
+                Layer (2024). &ldquo;The FF&amp;E Process: 6 Phases from Schematic Design to Handover.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team/blog/the-ff-e-process-explained</a>.
+                <div class="src-meta">Source of the six-phase model &middot; accessed 2026-05-31</div>
+            </li>
+            <li>
+                Fohlio (2023). &ldquo;What is FF&amp;E: The Ultimate Guide to Specification, Procurement, and More.&rdquo; <a href="https://www.fohlio.com/blog/what-is-ffe-the-ultimate-guide-specification-procurement-management">fohlio.com/blog</a>.
+                <div class="src-meta">FF&amp;E definition and scope &middot; accessed 2026-05-31</div>
+            </li>
+            <li>
+                Procurist (2024). &ldquo;FF&amp;E Schedules: The Complete Guide for Interior Designers.&rdquo; <a href="https://procurist.io/resources/ffe-schedules">procurist.io/resources/ffe-schedules</a>.
+                <div class="src-meta">Hospitality project scale: 500&ndash;5,000+ line items, 30&ndash;100+ suppliers, 12&ndash;24 month cycle &middot; accessed 2026-05-31</div>
+            </li>
+            <li>
+                Fohlio SpecHub (2026). &ldquo;architecture.md &mdash; platform domain model.&rdquo; Internal repository <code>fohlio-spechub</code>.
+                <div class="src-meta">Workspace / Project / Roles, multi-tenant isolation &middot; internal primary source</div>
+            </li>
+            <li>
+                Fohlio (2026). fohlio.com marketing material &mdash; positioning and customer segments. Internal repository <code>fohlio-website</code>.
+                <div class="src-meta">Segments: designers, architects; hospitality, institutional, SMB &middot; internal primary source</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] inside the lesson point to the entry with that number in this list. The characters (Dana, Marco, Priya, Helen, and the client faces) are composite illustrations, not real employees; Marriott and the Church of Jesus Christ are used as real archetypes of Fohlio&rsquo;s customer segments. The $40k mistake is a fictional case built on real industry practice.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>The Fohlio Domain for Engineers &mdash; Lesson 1 of 10</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Where the intent comes from</p>
+    </div>
+
+</div>
+
+</body>
+</html>
