@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 9</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 9 of 14</div>
+        <h1>Vendors, Manufacturers, Reps and Sources</h1>
+        <div class="subtitle">Chapter 9. Marco calls Tomás, and Tomás calls Greta</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Tomás Vega answers on the second ring. He is driving between a showroom in San Francisco and a jobsite meeting in Oakland, and he already knows why Marco is calling. There are forty-eight lounge chairs on a spec sheet, upholstered in a tight-weave fabric that Tomás represents for three different manufacturers. He carries the lines, he knows the factories, and he has sold into this kind of project a hundred times. He is not the manufacturer. He does not make the chairs. The manufacturer does not pay Marco for Tomás&rsquo;s time. The manufacturer pays <em>Tomás</em>, after the chairs ship, a commission out of the sale price.</p>
+
+    <p>&ldquo;Let me check with the factory,&rdquo; Tomás says. He says this in almost every call. He means it.</p>
+
+    <p>Greta, at the factory, picks up a few hours later. She is a production coordinator at a contract furniture manufacturer. She does not sell anything. She makes things &mdash; or more precisely, she manages the process of making things, in quantities that meet the minimums her factory requires to actually run a production line. &ldquo;We don&rsquo;t do under thirty units,&rdquo; she says, before Tomás has finished the sentence about the forty-eight chairs. Forty-eight clears the threshold. They talk about lead time.</p>
+
+    <p>This three-person chain &mdash; Marco the procurement lead, Tomás the rep, Greta the factory &mdash; is how most contract furniture in the United States actually moves from concept to chair. This lesson names every layer of it.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>Who the <strong>major US contract furniture manufacturers</strong> are and what distinguishes them from overseas sources</li>
+            <li>What <strong>custom millwork</strong> is and why it is the highest-risk, longest-lead category in any spec</li>
+            <li>How the <strong>manufacturer&rsquo;s rep model</strong> works &mdash; independent, commission-only, multi-line &mdash; and why it dominates contract furniture sales</li>
+            <li>What <strong>dealers, showrooms, distributors</strong> do and where each channel fits</li>
+            <li>How procurement teams make the <strong>domestic vs. import sourcing decision</strong> under real MOQ, lead-time, and tariff pressure</li>
+            <li>What a <strong>vendor scorecard</strong> tracks and why the data compounds in value over time</li>
+            <li>The difference between a <strong>GPO</strong> (like Avendra) and project FF&amp;E procurement &mdash; and where each works</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3 style="color: var(--gray-500); font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0;">Where we are</h3>
+    <div class="recap-grid">
+        <div class="recap-item"><strong>Lesson 2:</strong> The full value chain &mdash; owner, brand, designer, purchasing agent, supply side, logistics. Who pays vs who is invited. The division between specifying and buying.</div>
+        <div class="recap-item"><strong>Lesson 6:</strong> Brand standards as contractually enforceable; PIPs as the engine of recurring FF&amp;E spend; consistency across multi-property rollouts.</div>
+        <div class="recap-item"><strong>Lesson 8:</strong> The landed-cost stack (+15&ndash;35% over FOB); tariff and freight volatility; MOQ economics; the four budget states; contingency and VE timing.</div>
+        <div class="recap-item" style="background: var(--blue-light); border-left: 3px solid var(--blue);"><strong>Lesson 9 (today):</strong> The supply side in depth &mdash; manufacturers, reps, dealers, showrooms, distributors; sourcing decisions; vendor intelligence.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. Who actually makes the chairs</h2>
+
+    <p>The &ldquo;supply side&rdquo; in FF&amp;E is not one thing. It is a layered ecosystem of manufacturers, intermediaries, and channel partners that evolved over decades to get contract-grade furniture from factories to projects at the scale and customization level that branded hospitality requires. Understanding who does what is one of the most practically useful things a GTM team can know.</p>
+
+    <h3>US contract and hospitality furniture manufacturers</h3>
+
+    <p>The contract furniture industry has a defined group of domestic manufacturers that the hospitality market knows by name. Their products appear in spec sheets across Marriott, Hilton, Hyatt, and IHG properties because they have earned brand approval, passed fire-rating certification, and demonstrated the ability to produce consistent quality at hotel volume [1].</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--blue);">Kimball Hospitality</div>
+            <div class="layer-desc">Jasper, Indiana. Part of Kimball International. Supplies Marriott, Hilton, Hyatt, IHG. One of the largest US contract hospitality furniture makers.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--orange);">Bernhardt Hospitality</div>
+            <div class="layer-desc">North Carolina. Bernhardt traces to 1889. Full hospitality casegoods and seating; known for craftsmanship on upper-upscale and luxury projects.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--green);">OFS Brands / KI</div>
+            <div class="layer-desc">OFS (Indiana) and KI (Green Bay, WI) are strong in the corporate / contract side but appear in hospitality public-area and meeting-room specs.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--purple);">Global Furniture Group</div>
+            <div class="layer-desc">Canada-based, ~$1B in revenue. Contract and hospitality across healthcare, senior living, and hotel verticals.</div>
+        </div>
+    </div>
+
+    <p>These are domestic manufacturers in the sense that their main operations are in North America. Their lead times &mdash; typically 8&ndash;16 weeks for standard-finish items &mdash; are more predictable than overseas sourcing, and their goods face no import duties. In the current tariff environment (see Lesson 8), that last point has become a genuine competitive advantage rather than just a marketing line [2].</p>
+
+    <h3>Overseas manufacturers: China, Vietnam, Turkey, Indonesia</h3>
+
+    <p>A large share of hospitality furniture &mdash; particularly the volume casegoods (dressers, desks, nightstands) that fill hundreds of identical guestrooms &mdash; is manufactured overseas, primarily in China and Vietnam, with Turkey and Indonesia as significant secondary sources. The cost advantage is real: overseas production at volume can be 20&ndash;40% cheaper than equivalent domestic production before tariffs. After applying the full tariff stack from Lesson 8, that advantage narrows significantly, and the calculation changes again when freight rates spike [2].</p>
+
+    <p>Marco&rsquo;s current decision rule on sourcing country: &ldquo;If I can get a domestic manufacturer to produce within 15% of the overseas landed cost, I take the domestic source. The certainty of delivery is worth the premium every time I have a hard opening date.&rdquo;</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Work this out before reading the next section</div>
+        <div class="recall-question">A guestroom dresser has a China FOB price of $380. After applying the Lesson 8 landed-cost stack (tariffs, freight, brokerage, warehousing, install &mdash; total roughly +40% for China-origin goods in this environment), what is the approximate landed price? A domestic manufacturer quotes $510 per unit. Which is cheaper landed? Does Marco&rsquo;s rule change the answer?</div>
+        <div class="recall-hint">China landed: $380 &times; 1.40 = ? Compare to $510. Then consider what &ldquo;certainty of delivery&rdquo; and &ldquo;hard opening date&rdquo; do to the math when a late container costs $15,000 per day in lost revenue.</div>
+    </div>
+
+    <h3>Custom millwork: the longest lead, highest risk</h3>
+
+    <p>One category sits apart from all others: <strong>custom millwork</strong> &mdash; the built-in and bespoke joinery that a catalog cannot supply. Reception desks, custom headboard panels, vanity casework, bar fronts, decorative shelving built to a specific dimension. Millwork is made by specialized shops, not mass-production factories. It requires detailed shop drawings, sample approvals, and often multiple rounds of mock-ups.</p>
+
+    <p>Lead time: <strong>6&ndash;12 months</strong> for complex custom millwork. That is not a misprint. A hotel lobby reception desk that requires a custom stone inlay, a specific wood veneer, and a proprietary finish can take as long to produce as a mid-size factory needs to build a standard guestroom package. Procurement teams that treat millwork the same as standard furniture &mdash; starting the process when other items start &mdash; cause the single most common cause of delayed hotel openings that Marco knows [1].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. The rep model &mdash; the invisible layer in every spec</h2>
+
+    <p>Most people who buy furniture professionally have never spoken directly with a manufacturer. They speak with a manufacturer&rsquo;s rep, and they may not even know that&rsquo;s what they are doing. The rep model is the structural backbone of how contract furniture moves from maker to specifier.</p>
+
+    <h3>How it works</h3>
+
+    <p>A <strong>manufacturer&rsquo;s rep</strong> is an independent salesperson who represents multiple manufacturers&rsquo; product lines within a defined geographic territory. They are not employees of any manufacturer. They carry their lines under contract, earn commission on sales, and are free to carry other lines so long as those lines do not compete directly with one another [3].</p>
+
+    <p>Commission on contract furniture typically runs around <strong>5% of revenue</strong> for contract lines; in design contexts where the rep is actively managing A&D firm relationships and getting products specified, the effective rate can run higher &mdash; commonly cited as 7&ndash;15% from the manufacturer [3]. The commission is paid by the manufacturer, not by the buyer. From the buyer&rsquo;s perspective, the rep is free.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The rep model: manufacturer pays the rep, rep gets product specified, buyer pays manufacturer">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="26" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">The manufacturer&rsquo;s rep model: who pays whom</text>
+
+            <!-- Manufacturer box -->
+            <rect x="30" y="80" width="160" height="80" rx="10" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="2"/>
+            <text x="110" y="112" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Manufacturer</text>
+            <text x="110" y="130" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Makes the product</text>
+            <text x="110" y="146" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">sets list price</text>
+
+            <!-- Rep box -->
+            <rect x="295" y="60" width="170" height="120" rx="10" fill="#FFF3E5" stroke="#FBBF77" stroke-width="2"/>
+            <text x="380" y="100" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">Manufacturer&rsquo;s Rep</text>
+            <text x="380" y="118" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Independent, multi-line</text>
+            <text x="380" y="134" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">gets product &ldquo;specified&rdquo;</text>
+            <text x="380" y="150" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">earns commission from maker</text>
+            <text x="380" y="166" text-anchor="middle" font-family="Inter" font-size="11" fill="#E8790C" font-weight="600">free to buyer</text>
+
+            <!-- Designer / Purchasing Agent box -->
+            <rect x="560" y="80" width="170" height="80" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="645" y="112" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">Designer / Buyer</text>
+            <text x="645" y="130" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Dana / Marco</text>
+            <text x="645" y="146" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">writes the spec</text>
+
+            <!-- Arrow: manufacturer → rep (commission) -->
+            <defs>
+                <marker id="arr9a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#E8790C"/>
+                </marker>
+                <marker id="arr9b" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#3451B2"/>
+                </marker>
+                <marker id="arr9c" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#1A8F5C"/>
+                </marker>
+            </defs>
+
+            <!-- Manufacturer ↔ Rep: commission and product info -->
+            <line x1="192" y1="108" x2="293" y2="108" stroke="#E8790C" stroke-width="2" marker-end="url(#arr9a)"/>
+            <text x="240" y="100" text-anchor="middle" font-family="Inter" font-size="10" fill="#E8790C">5–15% commission</text>
+            <line x1="293" y1="120" x2="192" y2="120" stroke="#3451B2" stroke-width="1.5" marker-end="url(#arr9b)"/>
+            <text x="240" y="136" text-anchor="middle" font-family="Inter" font-size="10" fill="#3451B2">product data, samples</text>
+
+            <!-- Rep ↔ Designer: spec influence and price -->
+            <line x1="467" y1="108" x2="558" y2="108" stroke="#1A8F5C" stroke-width="2" marker-end="url(#arr9c)"/>
+            <text x="512" y="100" text-anchor="middle" font-family="Inter" font-size="10" fill="#1A8F5C">product info, samples</text>
+            <line x1="558" y1="120" x2="467" y2="120" stroke="#3451B2" stroke-width="1.5" marker-end="url(#arr9b)"/>
+            <text x="512" y="136" text-anchor="middle" font-family="Inter" font-size="10" fill="#3451B2">specifies the product</text>
+
+            <!-- Money flow: Buyer → Manufacturer (via PO) -->
+            <line x1="645" y1="162" x2="645" y2="230" stroke="#9CA3AF" stroke-width="1.5"/>
+            <line x1="645" y1="230" x2="110" y2="230" stroke="#9CA3AF" stroke-width="1.5"/>
+            <line x1="110" y1="230" x2="110" y2="162" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr9b)"/>
+            <text x="380" y="248" text-anchor="middle" font-family="Inter" font-size="11" fill="#9CA3AF">PO + payment flows directly from buyer to manufacturer (not through the rep)</text>
+
+            <text x="380" y="270" text-anchor="middle" font-family="Inter" font-size="10" fill="#9CA3AF">The rep&rsquo;s commission is the manufacturer&rsquo;s cost of distribution &mdash; invisible on the invoice.</text>
+        </svg>
+        <div class="diagram-caption">The rep&rsquo;s commission is embedded in the manufacturer&rsquo;s net pricing structure. It never appears on the buyer&rsquo;s invoice &mdash; but it is always there.</div>
+    </div>
+
+    <h3>What the rep actually does</h3>
+
+    <p>Tomás&rsquo;s job is <em>not</em> closing transactions. It is getting his lines&rsquo; products into designers&rsquo; specifications before the designer starts writing the spec. That process &mdash; called getting a product &ldquo;specified&rdquo; &mdash; requires years of relationship-building with A&D firms: leaving samples, hosting lunch-and-learns, walking into showrooms, following up when a designer is starting a project that might use a product from one of his lines.</p>
+
+    <p>When Tomás gets a product specified into Dana&rsquo;s drawings, his manufacturer&rsquo;s line has a structural advantage in the RFQ that follows. Dana already knows the product, has approved samples, and is unlikely to substitute unless the price is dramatically wrong or the lead time is impossible. That is the commercial logic behind the rep model: manufacturers outsource distribution and specification-development to independent reps who already have the relationships, rather than running their own national sales forces [3].</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4BC;</div>
+        Tomás carries six lines. He represents a high-end seating manufacturer, two casegoods factories, a lighting house, a decorative accessory supplier, and a company that makes the little things nobody specifies until they are missing from the room. He does not find this unusual.<br><br>
+        <em>A designer once asked him: &ldquo;Isn&rsquo;t it a conflict of interest to represent multiple manufacturers?&rdquo; Tomás explained that the lines are non-competing by design &mdash; you would never carry two seating factories with identical products. The whole system depends on that structure: one rep, complementary lines, one relationship for the designer to manage instead of six.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. Dealers, showrooms, distributors, and where they fit</h2>
+
+    <p>The rep is not the only channel between manufacturer and buyer. Depending on the product category and the scale of the project, goods may also move through dealers, showrooms, or distributors &mdash; each with a different role and a different cost structure.</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4C4;</div>
+            <div class="card-title" style="color: var(--blue);">Dealer</div>
+            <div class="card-subtitle" style="color: var(--blue);">Contracted reseller</div>
+            <div class="card-desc">Especially common in the office/contract furniture world. A dealer has a formal reseller agreement with a manufacturer (e.g. Steelcase, Herman Miller), carries their products, handles customer service and local installation. The manufacturer sells through them rather than direct. Dealers often have their own design services.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F3DB;</div>
+            <div class="card-title" style="color: var(--orange);">Showroom</div>
+            <div class="card-subtitle" style="color: var(--orange);">Where designers see product</div>
+            <div class="card-desc">Physical spaces &mdash; often in design-district buildings &mdash; where designers can touch, sit in, and view products in a curated environment. Major design centers include New York (D&amp;D Building), Chicago, Los Angeles, and Atlanta. Showrooms may carry multiple brands under one roof or be brand-exclusive.</div>
+        </div>
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F4E6;</div>
+            <div class="card-title" style="color: var(--green);">Distributor</div>
+            <div class="card-subtitle" style="color: var(--green);">Stock for faster fulfillment</div>
+            <div class="card-desc">Carries inventory, enabling faster delivery than a make-to-order manufacturer. More common for accessories, lighting, and standard (non-custom) items where speed matters more than customization. A distributor buys from the manufacturer and resells at a markup.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F3AA;</div>
+            <div class="card-title" style="color: var(--purple);">Trade shows</div>
+            <div class="card-subtitle" style="color: var(--purple);">Where relationships are made</div>
+            <div class="card-desc">The three dominant shows in hospitality FF&amp;E: <strong>HD Expo</strong> (Las Vegas, hospitality design), <strong>NeoCon</strong> (Chicago, contract / commercial), <strong>BDNY</strong> (New York, boutique design). Designers, reps, and manufacturers meet, new lines launch, sample rooms are previewed. Specifiers discover new lines here before they show up on any spec sheet.</div>
+        </div>
+    </div>
+
+    <p>About 75% of hospitality furniture still moves through offline channels &mdash; direct from manufacturer (via rep), through dealer, or through showroom relationship &mdash; rather than any digital procurement platform [1]. The rep model is old technology in the best sense: it has survived because the relationships and the specification process require human presence and trust that a catalog page cannot replicate.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. The sourcing decision: domestic vs. import, MOQ, and lead time</h2>
+
+    <p>When Marco receives Dana&rsquo;s spec for the forty-eight lounge chairs, the sourcing decision is not simply &ldquo;cheapest price.&rdquo; It is a structured calculation across four variables that all interact.</p>
+
+    <table>
+        <tr>
+            <th>Variable</th>
+            <th>What it means in practice</th>
+            <th>How it constrains the decision</th>
+        </tr>
+        <tr>
+            <td><strong>Unit cost</strong></td>
+            <td>The product price before landed-cost layers (see L8)</td>
+            <td>Overseas often wins on unit cost; domestic wins on landed cost after tariffs</td>
+        </tr>
+        <tr>
+            <td><strong>MOQ</strong></td>
+            <td>Minimum order quantity per SKU; typically 20&ndash;200 for hotel furniture [4]</td>
+            <td>An order that clears MOQ cleanly has pricing and timeline certainty; one that doesn&rsquo;t requires negotiation or a split-run premium</td>
+        </tr>
+        <tr>
+            <td><strong>Lead time</strong></td>
+            <td>Weeks from approved PO to goods at the warehouse; custom: 30&ndash;90 days production + 20&ndash;40 days transit for sea freight [4]</td>
+            <td>A hard hotel opening date sets a back-calculated PO deadline; any lead time that pushes past it forces a schedule decision</td>
+        </tr>
+        <tr>
+            <td><strong>Tariff exposure</strong></td>
+            <td>Current import duty stack for the specific HTS code and origin country (see L8 for current ranges)</td>
+            <td>China-origin furniture carries ~30&ndash;35%+ stacked duty as of mid-2026; Vietnam ~20%; domestic = no duty. Re-verify before any PO. [2]</td>
+        </tr>
+    </table>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Apply the framework before reading on</div>
+        <div class="recall-question">Greta&rsquo;s Vietnam factory quotes 48 lounge chairs at $290/unit, MOQ 30, lead time 14 weeks production + 5 weeks ocean freight. A US manufacturer offers the same chair at $420/unit, MOQ 12, lead time 10 weeks, no import duty. The hotel opens in 22 weeks from today&rsquo;s PO. Which source is cheaper landed? Which has more schedule risk? Does Marco&rsquo;s rule from Part 1 change the answer?</div>
+        <div class="recall-hint">Vietnam landed: add ~35% for tariff, freight, brokerage, warehousing, install from L8. Total lead time for Vietnam: 14 + 5 = 19 weeks. Buffer before 22-week deadline: how many weeks? What does a 3-week buffer mean in a hospitality context?</div>
+    </div>
+
+    <p>Marco&rsquo;s rule in practice: when domestic landed cost is within 15% of the overseas landed cost, take domestic. The buffer in schedule certainty, the elimination of tariff risk, and the ability to make a last-minute finish change without a transatlantic phone call are worth the premium on any project with a hard opening date and a brand standard that enforces consistency [2].</p>
+
+    <div class="info-box orange">
+        <p><strong>Tariff figures are dated and volatile.</strong> The rates cited above reflect public information as of mid-2026 and can change by presidential proclamation. Before making any sourcing decision, re-verify at <a href="https://hts.usitc.gov">hts.usitc.gov</a> and <a href="https://ustr.gov">ustr.gov</a>.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Vendor scorecards &mdash; the intelligence that compounds</h2>
+
+    <p>Marco has been working with Tomás for six years. He has a mental model of exactly what Tomás&rsquo;s factories deliver: which lines run on schedule, which have a tendency to substitute a &ldquo;close enough&rdquo; finish when the specified one runs out, which factories have expanded capacity in the last year and which are running at their ceiling. That mental model is vendor intelligence &mdash; and the risk is that it lives entirely in Marco&rsquo;s head. When Marco is on vacation, it is nowhere.</p>
+
+    <p>A vendor scorecard makes that intelligence structured and sharable. The fields that matter are not complicated, but they require discipline to populate after every project closes [1]:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4B0;</div>
+            <div class="layer-name" style="color: var(--blue);">PO volume</div>
+            <div class="layer-desc">Total dollar amount placed with this vendor across projects. Volume determines negotiating leverage and whether you qualify for volume incentive rebates.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--orange);">Spec count</div>
+            <div class="layer-desc">How many times this vendor&rsquo;s products have appeared in a specification. High spec count means the rep is doing their job and the product has designer traction.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x23F1;</div>
+            <div class="layer-name" style="color: var(--green);">Lead-time accuracy</div>
+            <div class="layer-desc">Did goods arrive when promised? Over time, a vendor with a consistent 2-week overrun should be booked 2 weeks earlier. That data is only useful if it is recorded.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x2B50;</div>
+            <div class="layer-name" style="color: var(--purple);">Quality rating</div>
+            <div class="layer-desc">How often did goods arrive as specified, undamaged, correct finish? A vendor with a beautiful catalog and a chronic damage rate is a budget risk on every project.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4C4;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Payment terms / credit limit</div>
+            <div class="layer-desc">The terms this vendor has extended and what credit limit is available. Purchasing firms managing cash flow across multiple projects track this carefully.</div>
+        </div>
+    </div>
+
+    <p>The insight from Lesson 2: the value chain in FF&amp;E runs from owner through designer through purchasing agent to the supply side and back. Every PO that closes is a data point about that supply side. Firms that capture that data &mdash; lead-time accuracy, quality ratings, actual vs. quoted price &mdash; arrive at every future project knowing things that competitors have to discover expensively from scratch.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. GPOs &mdash; what they are and where they don&rsquo;t work</h2>
+
+    <p>In Lesson 6 we saw how brand standards work at the property level: a flag like Marriott defines what a room must contain and enforces it through PIPs. There is a separate mechanism for aggregating <em>operational</em> spend across many properties: the <strong>Group Purchasing Organization</strong>, or GPO.</p>
+
+    <p>The largest GPO in North American hospitality is <strong>Avendra</strong>, now operating as Avendra International under Aramark, which acquired it for approximately <strong>$1.3 billion in 2017</strong> [5]. Avendra aggregates purchasing power across thousands of hotel properties to negotiate volume discounts on food, beverages, cleaning supplies, linens, and other OS&amp;E categories. At its peak, member spend ran in the billions of dollars annually.</p>
+
+    <p>GPOs work exceptionally well for <strong>standardized, recurring OS&amp;E spend</strong>: the kind of item that every property in a chain uses in the same quantity, at predictable intervals, without customization. A hotel chain using a GPO for its laundry detergent or its flat-screen televisions is getting real leverage on real volume.</p>
+
+    <p>GPOs work poorly &mdash; or not at all &mdash; for <strong>project FF&amp;E</strong>: the bespoke, one-time capital purchase that varies by property, requires brand standard compliance on specific finish details, and is not standardized across a portfolio. A boutique hotel&rsquo;s custom lounge chair with a proprietary fabric is not a GPO-compatible purchase. Neither is a luxury hotel&rsquo;s hand-knotted lobby rug. The sourcing has to happen at the project level, with the design intent preserved, through the procurement firm model described in Lesson 2 [1].</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x2705;</div>
+            <div class="card-title" style="color: var(--green);">GPO works for&hellip;</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Standardized OS&amp;E</div>
+            <div class="card-desc">Food and beverage, cleaning supplies, linens, towels, glassware, tech commodities. Same SKU across many properties. Volume = leverage.</div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x274C;</div>
+            <div class="card-title" style="color: var(--red);">GPO does NOT work for&hellip;</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Project FF&amp;E</div>
+            <div class="card-desc">Custom casegoods, branded fabric, bespoke millwork, proprietary finishes. Different every project. Requires design intent + brand standard compliance on each line item.</div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 7 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7. Vendors as structured data &mdash; a thin Fohlio aside</h2>
+
+    <p>Marco keeps a contact book. It started as a spreadsheet &mdash; company name, office location, contact person, what they sell. Over years it has grown into something closer to a vendor intelligence database: each entry carries the name of a firm and the specific office Marco deals with (the New York showroom of a manufacturer is a different commercial relationship than the Chicago rep office, even though both have the same company name on the door).</p>
+
+    <p>In the platform Fohlio&rsquo;s team uses internally, vendors live as <strong>sources</strong> in a contact book structured as company plus office. A single chair in a spec can carry multiple source entries &mdash; different vendors who can supply it &mdash; so the procurement team can compare options before committing. Each source record can carry the fields that make it vendor intelligence rather than just a directory: the SKU for that vendor&rsquo;s version of the product, the unit price and any discount tier, the lead time on record, the MOQ, the payment terms the vendor extends, and a preferred-source flag when one option is consistently the right call.</p>
+
+    <p>Over multiple projects, those records accumulate into exactly the scorecard described in Part 5 &mdash; the lead-time accuracy, the quality history, the volume-over-time that determines rebate eligibility. The difference between a contact book and a vendor intelligence system is not the data fields themselves: it is whether the data is updated after every project closes, and whether it is available to someone other than the person who collected it.</p>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>The supply side is not a monolith. It is a layered ecosystem: manufacturers who make, reps who specify, dealers and distributors who move product through channels, showrooms and trade shows where the relationships are built. Understanding who is who in that ecosystem is the difference between a procurement team that manages the supply side and one that is managed by it.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--blue);">Manufacturers</div>
+            <div class="layer-desc">US contract leaders (Kimball, Bernhardt, OFS, KI); overseas (China, Vietnam, Turkey); custom millwork = longest lead (6&ndash;12 mo), highest risk.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4BC;</div>
+            <div class="layer-name" style="color: var(--orange);">The rep model</div>
+            <div class="layer-desc">Independent, multi-line, commission-only (5&ndash;15% from maker). Gets product &ldquo;specified.&rdquo; Free to buyer. The backbone of how contract furniture is sold.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--green);">Channels</div>
+            <div class="layer-desc">Dealer (contracted reseller); showroom (where designers see product); distributor (stock for speed); trade shows (HD Expo, NeoCon, BDNY).</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F9EE;</div>
+            <div class="layer-name" style="color: var(--purple);">Sourcing calculus</div>
+            <div class="layer-desc">MOQ (20&ndash;200 units); lead time (custom 30&ndash;90 days production + transit); tariff stack (volatile &mdash; re-verify); certainty often beats marginal savings.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Vendor intelligence</div>
+            <div class="layer-desc">Scorecard: PO volume, spec count, lead-time accuracy, quality rating, payment terms. Compounds in value across projects. GPOs handle OS&amp;E; project FF&amp;E needs the procurement firm model.</div>
+        </div>
+    </div>
+
+    <div class="pull-quote">
+        The rep is invisible on the invoice and central to the spec. Understanding that one fact explains most of what looks mysterious about how contract furniture actually gets sold.
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 10:</strong> Marco has vendors, he has specs, and he understands the supply side. Now he needs to get real information back from those vendors &mdash; formal responses, not just a sales call. Lesson 10 is about the RFQ/RFP process in depth: structured bid packages, the construction submittal process (Approved / Approved as Noted / Revise &amp; Resubmit / Rejected), shop drawings, product data submittals, CFA and physical sample approval, and RFIs. The two approval loops that govern whether anything actually gets ordered.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Map the supply chain for a real product.</strong> Go to the public website of any major US contract furniture manufacturer (Kimball Hospitality, Bernhardt Contract, OFS Brands, or KI are all publicly accessible) and find one product you could imagine in a hotel guestroom. Then answer:
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Does the manufacturer sell direct, through a dealer network, through reps, or all three? (Check the &ldquo;find a rep&rdquo; or &ldquo;dealer locator&rdquo; section.)</li>
+                    <li>Is there a lead time or MOQ shown publicly? If not, what does that tell you about how you actually get that information?</li>
+                    <li>In which of the three channel types (dealer / showroom / distributor) would you expect this product to appear &mdash; and why?</li>
+                    <li><strong>AI-free recall:</strong> close the lesson and say out loud, from memory, what a manufacturer&rsquo;s rep is, why they are free to the buyer, and what &ldquo;getting a product specified&rdquo; means. The self-check below grades your conceptual recall.</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        A pass on the live-site portion requires any manufacturer from the list with a product named and a correct description of their channel model (most will show rep networks and/or dealer locators). Lead times are almost never published publicly &mdash; this is intentional; pricing and terms are quote-only for the trade. The answer &ldquo;I couldn&rsquo;t find it publicly&rdquo; is correct if followed by &ldquo;you get it from the rep or by requesting a quote.&rdquo; A pass on the AI-free recall portion requires: rep = independent salesperson, multi-line, non-employee of the manufacturer, earns commission from the maker not the buyer, therefore free to the buyer; &ldquo;getting specified&rdquo; = the rep convinces a designer to write the manufacturer&rsquo;s product into the spec before bidding begins, giving that product a structural advantage when the RFQ goes out.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Cross-lesson sourcing analysis (L2 + L6 + L8 + L9).</strong> A 150-room upper-upscale hotel is budgeting its guestroom casegoods package. Two options are on the table: (A) Vietnam-manufactured casegoods at $1,100/unit FOB, MOQ 50, lead time 16 weeks production + 5 weeks transit; (B) a US manufacturer at $1,480/unit, MOQ 24, lead time 12 weeks. There are 150 units to order. The hotel opens in 24 weeks from today.
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>(a) Apply a rough landed-cost stack for Vietnam (~35% total add for tariff, freight, brokerage, warehousing, install) and compare to the US manufacturer with no import duty but add freight + receiving + install (~15% total). Which option is cheaper landed?</li>
+                    <li>(b) How many weeks of buffer does each option provide before the opening date? Which has a riskier schedule?</li>
+                    <li>(c) If the hotel has a Marriott brand standard requiring specific finish compliance across the chain (from L6), does that change how you evaluate Option A vs. Option B?</li>
+                    <li>(d) From L2: the purchasing agent acts as the client&rsquo;s advocate. What does that mean for how Marco frames this decision to Sam, the owner&rsquo;s rep?</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Vietnam landed: $1,100 &times; 1.35 = $1,485/unit &times; 150 = $222,750. US landed: $1,480 &times; 1.15 = $1,702/unit &times; 150 = $255,300. Vietnam is cheaper by ~$32,550. (b) Vietnam total lead: 16 + 5 = 21 weeks vs. 24-week deadline = 3-week buffer. US: 12 weeks vs. 24-week deadline = 12-week buffer. Vietnam has a very tight buffer; any customs delay, production hold, or freight disruption closes it entirely. (c) Yes: Marriott brand standards require finish consistency. An overseas factory switching or substituting a finish detail at the last minute requires going through brand approval again, which takes time the schedule doesn&rsquo;t have. The US manufacturer&rsquo;s finish-change flexibility and shorter lead time are relevant to brand-standard compliance. (d) Marco frames it as a risk-adjusted decision: the $32,550 saving is real but represents approximately 2 days of lost revenue if the hotel&rsquo;s opening slips even slightly due to the 3-week buffer. Sam should make the call with that context, not just the unit-price delta. A pass requires addressing all four parts with directional reasoning.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Find a real rep (AI-resistant).</strong> Go to the MANA (Manufacturers&rsquo; Agents National Association) website at <a href="https://www.manaonline.org" style="color: var(--blue);">manaonline.org</a> or any contract furniture manufacturer&rsquo;s &ldquo;find a rep&rdquo; page and locate a manufacturer&rsquo;s rep who covers your region in the hospitality or contract furniture space. Describe: (1) what lines they carry; (2) what territory they cover; (3) whether they appear to have a specialization (hospitality, healthcare, education, corporate). This task is AI-resistant because live rep directories change and no language model reliably knows the current roster of any manufacturer&rsquo;s rep network. You have to look with your own eyes on the actual site.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why does the rep model persist?</strong> The manufacturer&rsquo;s rep model &mdash; independent, commission-only, multi-line &mdash; has been the dominant sales channel for contract furniture for decades despite the fact that digital catalogs, B2B e-procurement, and direct-from-manufacturer ordering are all technically feasible. Why hasn&rsquo;t the model been disrupted? Name at least three structural reasons why the rep model creates value that a digital catalog or a direct-to-manufacturer purchasing platform cannot replicate. Then explain what would have to change in the industry for the rep model to become less necessary &mdash; and whether any of those conditions exist today.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-l9-1">
+                Dataintelo (2025). &ldquo;Hospitality Furniture Market Report.&rdquo; <a href="https://dataintelo.com/report/hospitality-furniture-market">dataintelo.com/report/hospitality-furniture-market</a>; CenSo Home, &ldquo;Top Hotel Furniture Manufacturers in the USA&rdquo; and &ldquo;Best Hotel Furniture Manufacturers in the World,&rdquo; <a href="https://censohome.com/blog/top-hotel-furniture-manufacturers-in-usa">censohome.com</a>.
+                <div class="src-meta">Named US manufacturers (Kimball, Bernhardt, OFS, KI, Global Furniture Group); overseas sources (China, Vietnam, Turkey, Indonesia); 75% offline channel share; custom millwork lead times (6&ndash;12 months) &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l9-2">
+                Artone Manufacturing (2025). &ldquo;Domestic Hospitality Furniture and Tariffs.&rdquo; <a href="https://blog.artonemfg.com/blog/domestic-hospitality-furniture-tariffs">blog.artonemfg.com</a>; Lang &amp; Schwander (2024). &ldquo;Impacts of Trump Tariffs on Hospitality Furniture.&rdquo; <a href="https://www.langschwander.com/blog/2024/12/20/impacts-of-trump-tariffs-on-hospitality-furniture">langschwander.com</a>.
+                <div class="src-meta">Domestic vs. import sourcing calculus under current tariff environment; certainty-of-delivery premium; case for domestic sourcing; tariff figures are as of mid-2026 and volatile &mdash; re-verify at ustr.gov / hts.usitc.gov &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l9-3">
+                MANA &mdash; Manufacturers&rsquo; Agents National Association (2025). &ldquo;Understanding Manufacturers&rsquo; Reps.&rdquo; <a href="https://www.manaonline.org/understanding-manufacturers-reps">manaonline.org/understanding-manufacturers-reps</a>; Procurist (2024). &ldquo;Procurement Agents vs. Interior Designers.&rdquo; <a href="https://procurist.io/blog/procurement-agents-interior-designers">procurist.io</a>.
+                <div class="src-meta">Rep model mechanics: independent, multi-line, commission-only, territorial; commission ranges (5&ndash;15% from manufacturer); &ldquo;specified&rdquo; as the core commercial activity; free to buyer &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l9-4">
+                MingSun Group (2025). &ldquo;Ordering Process: Lead Times, MOQ, Samples, Costs.&rdquo; <a href="https://www.mingsungroup.com/article/ordering-process-lead-times-moq-samples-costs.html">mingsungroup.com</a>; Yanosaku (2025). &ldquo;MOQ &amp; Lead Time Guide.&rdquo; <a href="https://yanosaku.com/pages/moq-lead-time">yanosaku.com/pages/moq-lead-time</a>.
+                <div class="src-meta">MOQ ranges for hotel furniture (20&ndash;200 units per SKU); production lead times (custom 30&ndash;90 days); transit times (China&ndash;US West Coast 20&ndash;30 days, East Coast 30&ndash;35 days) &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l9-5">
+                Order.co (2025). &ldquo;Avendra GPO Alternatives for Hotels.&rdquo; <a href="https://www.order.co/blog/procurement/avendra-gpo-alternatives-hotels">order.co/blog</a>; Software Platform (2017). &ldquo;GPO Consolidation: Avendra / Aramark.&rdquo; <a href="https://www.softwareplatform.net/2017/10/19/group-purchasing-organization-gpo-consolidation">softwareplatform.net</a>.
+                <div class="src-meta">Avendra GPO: North America&rsquo;s largest hospitality GPO; acquired by Aramark for ~$1.3B in 2017; effective for standardized OS&amp;E, not for bespoke project FF&amp;E; boutique/independent inflexibility &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l9-6">
+                Beyer Brown (2025). &ldquo;FF&amp;E Procurement: A Comprehensive Guide.&rdquo; <a href="https://www.beyerbrown.com/ffe-procurement-comprehensive-guide">beyerbrown.com/ffe-procurement-comprehensive-guide</a>; Layer (2024). &ldquo;The FF&amp;E Process Explained.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team</a>.
+                <div class="src-meta">Purchasing agent role; vendor intelligence accumulation; design-vs-purchasing split; procurement firm as client advocate; custom millwork risk &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] reference the numbered entry above. Dana, Marco, Tomás, Greta, and other characters are composite illustrations, not real individuals. Named firms (Kimball, Bernhardt, Avendra, Aramark, Benjamin West, Marriott, etc.) are real companies referenced as industry archetypes. Tariff figures reflect public information as of mid-2026 and must be re-verified before any pricing decision.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 9 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: RFQs, submittals and samples</p>
+    </div>
+
+</div>
+
+</body>
+</html>

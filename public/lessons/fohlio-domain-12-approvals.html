@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 12</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 12 of 14</div>
+        <h1>Sign-offs and the Paper Trail</h1>
+        <div class="subtitle">Chapter 12. Three people in a model room, and why nothing ships without a signature</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Helen walks into Room 214 and stops. The prototype headboard is four inches too tall. It is exactly the color Linda approved two weeks ago &mdash; she has the email &mdash; but the height is wrong, and Linda is flying in tomorrow morning to look at this room. The opening is eleven weeks away. Helen does not panic. She reaches for her phone and pulls up the submittal record.</p>
+
+    <p>The shop drawing was stamped <strong>Approved as Noted</strong> six weeks ago, with a handwritten annotation: &ldquo;reduce overall height by 100mm before production.&rdquo; The annotation is right there. The manufacturer shipped anyway. Now Helen has a record, a timestamp, and a named vendor contact. She also has a repair path. Without the paper trail, she would have a headboard and a dispute.</p>
+
+    <p>This lesson is about that trail &mdash; who generates it, who holds it, and why it is the only thing that stands between a professional opinion and a multi-million-dollar argument.</p>
+
+    <!-- QUICK RECAP -->
+    <h3 style="margin-top: 40px;">Quick Recap &mdash; pull from memory before reading on</h3>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L2 &mdash; The Value Chain</strong><br>
+            Owner &ne; Brand &ne; Management Co. The designer specifies; the purchasing agent buys. They are different people at different firms.
+        </div>
+        <div class="recap-item">
+            <strong>L6 &mdash; Brand Standards &amp; PIPs</strong><br>
+            A flag&rsquo;s brand standard is contractually enforceable. A PIP can cost $500k+ and carries penalty fees for non-compliance.
+        </div>
+        <div class="recap-item">
+            <strong>L10 &mdash; Submittals &amp; Samples</strong><br>
+            Four actions: Approved / Approved as Noted / Revise &amp; Resubmit / Rejected. An RFI resolves ambiguity; a submittal proves conformance.
+        </div>
+        <div class="recap-item">
+            <strong>L11 &mdash; Procurement &amp; Delivery</strong><br>
+            PO &rarr; expediting &rarr; manufacturing &rarr; freight &rarr; receiving inspection. Skipping the receiving check is the costliest single failure.
+        </div>
+        <div class="recap-item" style="border-left-color: var(--orange); background: var(--orange-light);">
+            <strong>L12 &mdash; TODAY</strong><br>
+            The two approval loops in full. Model room. Punch list. Closeout package. Why the audit trail matters &mdash; and who can see what.
+        </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>The difference between <strong>Loop A</strong> (designer &harr; owner / brand sign-off) and <strong>Loop B</strong> (submittal: designer / contractor &harr; vendor)</li>
+            <li>What a <strong>model room</strong> is for, and why a flag requires one before full production begins</li>
+            <li>What the <strong>punch list</strong> is, who owns each item on it, and what happens when it&rsquo;s ignored</li>
+            <li>What goes into a <strong>closeout / handover package</strong> and why the owner cares</li>
+            <li>Why the <strong>audit trail</strong> matters &mdash; dye-lot disputes, price-change denials, &ldquo;I never approved that&rdquo;</li>
+            <li>Who can <strong>see and do what</strong> across the chain &mdash; roles and accountability</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. Two approval loops &mdash; and why people confuse them</h2>
+
+    <p>In a real FF&amp;E project there are two completely separate approval processes running at the same time. Mixing them up is a classic beginner error, so name them now and hold the distinction for the rest of the lesson [1].</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two approval loops in FF&amp;E: Loop A between designer and owner/brand, Loop B between designer or contractor and vendor">
+            <!-- Background -->
+            <rect x="0" y="0" width="760" height="320" rx="14" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Loop A -->
+            <rect x="20" y="30" width="340" height="260" rx="10" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="190" y="58" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#3451B2">Loop A — Design Sign-Off</text>
+            <text x="190" y="76" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Designer &harr; Owner (+ Brand on flagged hotels)</text>
+
+            <rect x="50" y="92" width="140" height="40" rx="8" fill="#3451B2"/>
+            <text x="120" y="115" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="white">Designer / Studio</text>
+
+            <rect x="210" y="92" width="120" height="40" rx="8" fill="#1A8F5C"/>
+            <text x="270" y="115" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="white">Owner / Brand</text>
+
+            <line x1="190" y1="132" x2="190" y2="155" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arrow)"/>
+            <text x="190" y="170" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Present selections (boards, schedules)</text>
+            <text x="190" y="184" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">phase by phase: SD &rarr; DD &rarr; final package</text>
+
+            <line x1="190" y1="196" x2="190" y2="218" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arrow)"/>
+            <text x="190" y="234" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Sign-off gate before proceeding</text>
+
+            <rect x="50" y="250" width="280" height="28" rx="6" fill="#FFF3E5" stroke="#E8790C"/>
+            <text x="190" y="268" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#E8790C">On flagged hotels: Brand also reviews for brand-standard compliance</text>
+
+            <!-- Loop B -->
+            <rect x="400" y="30" width="340" height="260" rx="10" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="1.5"/>
+            <text x="570" y="58" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#1A8F5C">Loop B — Submittal Process</text>
+            <text x="570" y="76" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Designer / GC &harr; Vendor / Manufacturer</text>
+
+            <rect x="420" y="92" width="140" height="40" rx="8" fill="#3451B2"/>
+            <text x="490" y="115" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="white">Designer / GC</text>
+
+            <rect x="590" y="92" width="120" height="40" rx="8" fill="#7C3AED"/>
+            <text x="650" y="115" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="white">Vendor / Mfr</text>
+
+            <line x1="570" y1="132" x2="570" y2="155" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arrowG)"/>
+            <text x="570" y="170" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Vendor submits: product data, shop drawings,</text>
+            <text x="570" y="184" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">CFA sample &rarr; designer reviews &amp; returns action</text>
+
+            <line x1="570" y1="196" x2="570" y2="218" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arrowG)"/>
+            <text x="570" y="233" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">4 actions: Approved / Approved as Noted /</text>
+            <text x="570" y="247" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Revise &amp; Resubmit / Rejected</text>
+
+            <rect x="420" y="260" width="290" height="18" rx="4" fill="#EDE9FE" stroke="#7C3AED"/>
+            <text x="565" y="273" text-anchor="middle" font-family="Inter" font-size="10" fill="#7C3AED">Work may NOT proceed until Approved or Approved as Noted</text>
+
+            <!-- Arrow markers -->
+            <defs>
+                <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M0,0 L8,4 L0,8 Z" fill="#9CA3AF"/>
+                </marker>
+                <marker id="arrowG" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M0,0 L8,4 L0,8 Z" fill="#9CA3AF"/>
+                </marker>
+            </defs>
+        </svg>
+        <div class="diagram-caption">Loop A = the owner says yes to the design. Loop B = the vendor proves the product matches the spec. Both are running at the same time. Confusing them is expensive.</div>
+    </div>
+
+    <p><strong>Loop A (designer &harr; owner / brand):</strong> The designer presents FF&amp;E selections to the client/owner for sign-off, phase by phase. Schematic Design gets a concept approval; Design Development gets specific product sign-off; the end of DD produces a full approved FF&amp;E package. On flagged hotels, the brand also reviews against its brand standards [1]. No product goes to the vendor without an owner-approved spec.</p>
+
+    <p><strong>Loop B (designer or GC &harr; vendor):</strong> Before fabrication, the designer &mdash; or on the construction side, the general contractor &mdash; collects product data, shop drawings, and physical samples from the vendor to prove each item actually matches the approved spec. The four possible actions come from the AIA&rsquo;s A201 contract framework and are used across the whole construction industry [2]. This is the submittal process Dana and Marco walked through in Lesson 10 &mdash; now we see where it lands in the full sign-off chain.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">A vendor returns a submittal for a custom headboard. The designer reviews it and writes &ldquo;Approved as Noted &mdash; reduce height by 100mm before production.&rdquo; The vendor ships the headboard at the original height. Who holds the risk &mdash; and what is the designer&rsquo;s first move? Say your answer out loud before scrolling.</div>
+        <div class="recall-hint">Think about what the annotation in the submittal log proves, and who issued it.</div>
+    </div>
+
+    <p>The answer is that the vendor holds the risk. &ldquo;Approved as Noted&rdquo; is a conditional action: the product may proceed <em>only after</em> incorporating the noted correction. The designer&rsquo;s annotation &mdash; timestamped, on record &mdash; is proof that the correction was required. If the vendor ships anyway, the vendor fabricated out of conformance with the approved submittal, which is on them [2]. The designer&rsquo;s first move is exactly what Helen did: pull the record, show the stamp, and put the vendor on notice for remedy.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. The model room &mdash; why you build one room before you build three hundred</h2>
+
+    <p>On branded hotel projects, there is a step that surprises non-industry observers: before any mass production begins, the team builds a fully furnished <strong>model room</strong> (sometimes called a mock-up room or prototype room) [3].</p>
+
+    <p>Sam, the owner&rsquo;s rep, scheduled the model-room walkthrough for a Tuesday. Linda flew in from corporate. Helen had the room ready: headboard, casegoods, drapery, lighting &mdash; the complete specified package, installed in one actual guest room. Linda walked through with a brand-standard checklist. Sam followed with a budget read on each item. The designer&rsquo;s FF&amp;E schedule was open on a tablet.</p>
+
+    <div class="story-box">
+        <p>Linda ran her hand along the dresser edge. &ldquo;This laminate is reading darker than the approved sample.&rdquo; She pulled out her phone and photographed the sample card she&rsquo;d kept from the CFA approval. Side by side on the screen, the difference was obvious. It was a dye-lot variance between the approved sample and the production run.</p>
+        <p>Helen pulled up the CFA record. The approved sample was logged with a date and a vendor batch number. The discrepancy was real. They flagged it, wrote it into the model-room sign-off document, and the vendor was notified before a single additional unit shipped. The correction cost two weeks. The alternative &mdash; 200 units in the wrong finish &mdash; would have cost months and an amount no one wanted to say out loud. (In Lesson 1, Dana paid $40k for a smaller version of the same problem.)</p>
+    </div>
+
+    <p>The model room serves two formal purposes. First, it is the <strong>owner and brand sign-off gate</strong>: nothing goes to mass production until the prototype has been approved in person. Second, it is a <strong>field integration test</strong>: it reveals whether the specified items actually work together in the real room &mdash; whether the headboard clears the HVAC duct, whether the chair rolls under the desk, whether the drapery stack clears the window frame. On paper they all fit. In a real room they sometimes don&rsquo;t [3].</p>
+
+    <p>Any item that fails the model-room review gets a corrective action before production. Items that pass are locked. The model-room sign-off document becomes part of the project record &mdash; another layer of the paper trail.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6CF;</div>
+        Sam, signing the model-room form: &ldquo;Do we really need to approve every single pillow separately?&rdquo;<br>
+        Linda, without looking up: &ldquo;We approved a pillow once without doing this. The guest-satisfaction scores called it a &lsquo;scratchy gray rectangle.&rsquo; We approved the wrong sample.&rdquo;<br>
+        <em>The model room exists because the difference between &ldquo;we approved the sample&rdquo; and &ldquo;we approved the thing we actually put in 200 rooms&rdquo; can be measured in guest-review stars and five-figure rework bills.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The submittal log in practice &mdash; a real walk through Loop B</h2>
+
+    <p>From the outside, &ldquo;submittal&rdquo; sounds like a bureaucratic formality. Inside a real project, it is the only structured mechanism that proves a product meets the spec before the money leaves the account. Here is what the process actually looks like for a standard FF&amp;E category [2].</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Required submittals are identified at kickoff</span>
+        <div class="step-desc">At the start of procurement, the team logs every item and the evidence needed from the vendor: product data sheet (cut sheet), shop drawings for custom or built-in pieces, and a CFA (Cutting for Approval) swatch from the actual production dye lot. The log sets target dates. Missing a target date is a schedule risk, tracked actively.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Vendor prepares and submits the package</span>
+        <div class="step-desc">The vendor assembles the required documentation &mdash; cut sheet, dimensions, finish samples, material data, any required fire-rating certifications &mdash; and submits the package to the designer or procurement agent. For construction submittals, the GC reviews it first and stamps it (warranting they&rsquo;ve checked field measurements) before routing it to the architect.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Designer reviews and returns one of four actions</span>
+        <div class="step-desc"><strong>Approved:</strong> proceed exactly as submitted. <strong>Approved as Noted:</strong> proceed after incorporating the stated corrections &mdash; no re-review required. <strong>Revise and Resubmit:</strong> material deficiency; stop, fix, send again. <strong>Rejected:</strong> does not conform to the spec; select a different product or approach. The review is for conformance with the design intent only &mdash; it does not relieve the vendor of responsibility for their own errors [2].</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Action is logged and work proceeds (or not)</span>
+        <div class="step-desc">The action and date go into the submittal log. If the action is Approved or Approved as Noted, the PO is confirmed and production proceeds. If it&rsquo;s Revise and Resubmit or Rejected, the item is on hold. No exceptions &mdash; the log is the authority.</div>
+    </div>
+
+    <p>The physical CFA sample &mdash; a swatch cut from the actual production dye lot and sent for sign-off &mdash; deserves particular attention. It is the only thing that guarantees the delivered goods match what was approved. Without a CFA, the client approves a color on a computer screen or a catalog card, and the production run could be a noticeably different shade. The CFA loop closes the dye-lot gap that Dana&rsquo;s $40k problem was exactly about.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Reconstruct the four actions</div>
+        <div class="recall-question">Without looking up at the diagram: name all four submittal-review actions and say, in one sentence each, what happens next in each case. Then explain why &ldquo;Approved as Noted&rdquo; is <em>not</em> the same as &ldquo;Approved.&rdquo;</div>
+        <div class="recall-hint">One of the four stops all production. One requires no further review. One requires a new round. One is unconditional.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. The punch list &mdash; what is wrong, who fixes it, and by when</h2>
+
+    <p>Install is complete. The rooms are furnished. The opening is two weeks away. Helen and Reggie walk the floors with clipboards. What they are doing is producing the <strong>punch list</strong> &mdash; also called the deficiency log in some firms [4].</p>
+
+    <p>A punch list is a systematic written record of everything that is wrong or incomplete: damaged items, wrong finishes, missing pieces, items installed in the wrong room, items that were approved in the submittal but arrived different, fasteners missing, upholstery seams running the wrong direction. Every single item gets a description, a responsible party, and a target completion date. Nothing is &ldquo;noted verbally.&rdquo; If it isn&rsquo;t on the list, it doesn&rsquo;t exist.</p>
+
+    <p>Sam, the owner&rsquo;s rep, walks the punch list with Helen and Reggie and adds his own observations. On flagged hotels, a brand representative may also participate, marking items against the brand standard checklist. The final sign-off on punch-list completion is typically Sam&rsquo;s &mdash; the owner&rsquo;s representative is the last approver before the owner accepts the space [4].</p>
+
+    <p>Punch-list items sort into two buckets by urgency. <strong>Pre-opening items</strong> must be resolved before the first guest checks in. <strong>Post-opening items</strong> can be remedied in the first weeks of operation without closing rooms. The procurement agent tracks both, chasing vendors and the GC for resolution, and reporting status to Sam on a short cycle. The opening date does not move because of a punch-list item that nobody tracked.</p>
+
+    <div class="info-box orange">
+        <p><strong>Who owns a punch-list item?</strong> Ownership depends on cause. A damaged item that arrived from the vendor is on the vendor (and the logistics provider if damage occurred in transit). An item installed in the wrong location is on the installer. A finish discrepancy caught at punch that should have been caught at the submittal review is an uncomfortable conversation &mdash; but the submittal log shows exactly when and by whom it was approved. The paper trail determines who pays to fix it.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Closeout and handover &mdash; what the owner actually receives</h2>
+
+    <p>When all punch-list items are resolved and Sam signs the final inspection, the project moves to <strong>closeout</strong>. The procurement agent assembles the <strong>handover package</strong> and transfers it to the owner/operator at substantial completion [4].</p>
+
+    <p>A handover package for a hotel FF&amp;E project typically contains:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--blue);">Warranties</div>
+            <div class="layer-desc">Product warranties from every manufacturer, organized by item and covering the terms and contact for claims.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F525;</div>
+            <div class="layer-name" style="color: var(--green);">FR Certificates</div>
+            <div class="layer-desc">Fire-retardancy certifications for all upholstery, drapery, and soft goods. Required by code; often audited by the brand and by the local authority.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--orange);">Asset Records</div>
+            <div class="layer-desc">A full inventory of every FF&amp;E item: manufacturer, model, finish, quantity, room location, purchase price, and in-service date. The foundation for the FF&amp;E reserve and the next PIP.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4D1;</div>
+            <div class="layer-name" style="color: var(--purple);">Closeout Financials</div>
+            <div class="layer-desc">Final reconciliation: all POs, invoices, and payments; any credits or open claims. The owner&rsquo;s accountant closes the capital account from this.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F9F9;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Attic Stock</div>
+            <div class="layer-desc">Spare parts and materials held on-site for future repairs &mdash; typically ~1% of item count. Matching dye-lot fabric swatches, extra tile, touch-up paint.</div>
+        </div>
+    </div>
+
+    <p>The asset records deserve a closer look. They feed directly into two things the owner needs immediately after opening. First, the <strong>FF&amp;E reserve</strong> &mdash; the 2&ndash;5% of gross revenue the operator sets aside every year for the next refresh. You cannot calculate a credible reserve without knowing what every asset cost and when it was installed. Second, the next <strong>PIP</strong>: when Marriott or Hilton audits the property in five years, their checkpoints reference the brand-standard version in force at the last refresh. The handover package is the baseline record.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Why the audit trail matters &mdash; &ldquo;I never approved that&rdquo;</h2>
+
+    <p>The whole approval and submittal machine exists for a reason that has nothing to do with paperwork for its own sake. In a project with hundreds of vendors, thousands of items, and a timeline measured in months, disputes happen. The most common ones sound like this:</p>
+
+    <ul style="margin: 0 0 16px 24px; color: var(--gray-700);">
+        <li style="margin-bottom: 8px;">&ldquo;You changed the price after I approved it.&rdquo;</li>
+        <li style="margin-bottom: 8px;">&ldquo;I never approved that finish &mdash; the sample you showed me was different.&rdquo;</li>
+        <li style="margin-bottom: 8px;">&ldquo;That headboard dimension wasn&rsquo;t in the submittal I signed.&rdquo;</li>
+        <li style="margin-bottom: 8px;">&ldquo;The dye lot doesn&rsquo;t match. I rejected that sample.&rdquo;</li>
+    </ul>
+
+    <p>Each of these is a factual dispute about a historical moment. The audit trail &mdash; every submittal, every stamp, every CFA sample with its approval date, every owner sign-off &mdash; turns the dispute from a memory contest into a document review. Either the record shows approval or it doesn&rsquo;t. Either the timestamp predates or postdates the event. Either the annotation was on the submittal or it wasn&rsquo;t [1, 2].</p>
+
+    <div class="pull-quote">
+        &ldquo;I never approved that&rdquo; is a very strong position to take when the approval is sitting in the submittal log with your name and a timestamp.
+    </div>
+
+    <p>This is why modern teams care about keeping the conversation tied to the item. When a design change is discussed by email, the email can get lost, filtered, or its thread misread. When the same conversation is anchored to a specific line item on the spec &mdash; with comments that are timestamped, attributed, and permanently associated with that item &mdash; the record is clear. That is the thin Fohlio-style layer worth naming here: a platform where comments, history, and notifications live on the item itself rather than scattered across inboxes means the audit trail stays intact by default, not by effort [5].</p>
+
+    <div class="info-box blue">
+        <p><strong>The accountability chain across roles:</strong> In a typical branded hotel project, the trail has to be defensible to multiple parties &mdash; the owner (who funds the project), the brand (whose standards govern), the designer (who specifies), the procurement agent (who orders), and the GC (who coordinates install). Each party can see the records relevant to their scope. The designer&rsquo;s internal deliberation stays internal. The vendor sees only their submittal scope. The owner sees the approval package. This scoping is not an accident &mdash; it is how accountability is distributed without giving everyone access to everything [5].</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--blue);">Two loops</div>
+            <div class="layer-desc">Loop A = owner/brand design sign-off, phase by phase. Loop B = vendor submittal process (product data, shop drawings, CFA). Both run simultaneously. Both produce records.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F6CF;</div>
+            <div class="layer-name" style="color: var(--orange);">Model room</div>
+            <div class="layer-desc">Build one before producing hundreds. Owner + brand sign off in person. Dye-lot and fit discrepancies caught here cost two weeks; caught at delivery they cost months.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2714;</div>
+            <div class="layer-name" style="color: var(--green);">Punch list</div>
+            <div class="layer-desc">Every deficiency, every responsible party, every date. Pre-opening vs. post-opening. Owner&rsquo;s rep signs off last. The list is the contract for final remediation.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4BC;</div>
+            <div class="layer-name" style="color: var(--purple);">Handover package</div>
+            <div class="layer-desc">Warranties, FR certs, asset records, closeout financials, attic stock. The asset records feed the FF&amp;E reserve and the next PIP cycle.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4C4;</div>
+            <div class="layer-name" style="color: var(--gray-700);">The audit trail</div>
+            <div class="layer-desc">Timestamps + names + item-level records turn memory contests into document reviews. Comments tied to items &mdash; not scattered across email &mdash; keep accountability intact.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 13:</strong> Dana and Marco take stock of everything that went wrong &mdash; and almost went wrong &mdash; on this project. Long lead times, a discontinued finish that nearly sailed through, tariff-driven budget surprises, version chaos in Excel. Then we map the full tool landscape &mdash; from the Excel incumbent that every team starts with to the purpose-built categories that catch these problems before they become crises. And we close the $40k gap Dana opened in Lesson 1.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Decision walk: submittal actions and what follows.</strong>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);">This lesson&rsquo;s widget is a decision-tree exercise on submittal review and post-sign-off change requests. Work through it in the widget panel. For each decision node, choose an action and follow the path to its outcome. Pay particular attention to the &ldquo;what happens when an owner wants a change after sign-off&rdquo; branch &mdash; it comes up on every real project.</p>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);" data-widget="decision-tree">[ Widget: Submittal &amp; Approval Decision Walk ]</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after completing the widget</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        <strong>Approved:</strong> proceed as submitted, no further review needed.<br>
+                        <strong>Approved as Noted:</strong> proceed only after incorporating the stated correction &mdash; a conditional pass. Not the same as Approved; the correction is binding.<br>
+                        <strong>Revise and Resubmit:</strong> halt; material deficiency; vendor corrects and resubmits for a fresh review cycle.<br>
+                        <strong>Rejected:</strong> this item/product does not conform to the spec; select a replacement or fundamentally different approach.<br><br>
+                        <strong>Owner wants a change after sign-off:</strong> This is the most expensive moment in a project. If production has not started, the change can be incorporated, but it restarts the relevant submittal steps. If production has started or POs have been issued, the change may trigger cancellation fees, re-tooling costs, and schedule impacts. The owner&rsquo;s rep should quantify those costs before approving the change. The audit trail shows exactly when the original sign-off occurred, which determines what the change actually costs.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>Map a dispute to the paper trail.</strong>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);">Pick one of the four dispute scenarios from Part 6 (&ldquo;you changed the price after I approved it&rdquo; / &ldquo;I never approved that finish&rdquo; / &ldquo;that dimension wasn&rsquo;t in the submittal&rdquo; / &ldquo;the dye lot doesn&rsquo;t match&rdquo;). Write 3&ndash;4 sentences explaining: (a) which document in the paper trail resolves it, (b) what the document should contain that settles the question, and (c) who bears the cost if the record shows the client is right vs. if it shows the vendor is right.</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        <strong>Example: &ldquo;The dye lot doesn&rsquo;t match.&rdquo;</strong><br>
+                        The CFA (Cutting for Approval) record resolves it. It should contain the date and name of who approved the swatch, the vendor&rsquo;s batch/dye-lot number for that sample, and the sign-off. If the delivered goods show a different lot number or a visible color variance versus the approved swatch, the vendor produced outside the approved specification. The vendor bears the cost of replacement or remediation. If the CFA was never done &mdash; if the team approved a color off a catalog card without a production-run sample &mdash; there is no record and the dispute becomes a negotiation. That is why the CFA step exists.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Interview the paper trail (AI-resilient).</strong>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);">Think of a real project or process in your own work where something was agreed verbally or by email but later disputed or forgotten. (It does not have to be FF&amp;E-related.) Write a short account of what record, if any, existed &mdash; and what a structured paper trail would have contained that would have resolved the dispute without a conversation. This is about your own experience; an AI cannot write it for you.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why these two loops are separate by design.</strong>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);">Loop A (owner sign-off) and Loop B (vendor submittal) could theoretically be combined into one process. Explain why they are <em>not</em> combined &mdash; what would go wrong if the owner signed off on a product before the vendor submittal was reviewed, or if vendor submittals were sent directly to the owner for approval. What is each loop actually checking, and why do they require different expertise?</p>
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li>
+                Layer. &ldquo;FF&amp;E Procurement Explained: 6 Phases&rdquo; and &ldquo;The FF&amp;E Process.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team/blog/the-ff-e-process-explained</a>
+                <div class="src-meta">Loop A design sign-off process phase by phase; flagged hotel brand review; model-room / prototype room sign-off before production &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Procore. &ldquo;Construction Submittals: A Complete Guide.&rdquo; <a href="https://www.procore.com/library/construction-submittals">procore.com/library/construction-submittals</a>; Frantz Ward. &ldquo;Submittals, Shop Drawings, and RFIs.&rdquo; <a href="https://www.frantzward.com/submittals-shop-drawings-and-rfis-oh-my">frantzward.com</a>
+                <div class="src-meta">Loop B: four submittal-review actions (Approved / Approved as Noted / Revise &amp; Resubmit / Rejected); AIA A201 framework; &ldquo;conformance with design intent&rdquo; scope; vendor liability for out-of-conformance production &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Curve Hospitality. &ldquo;FF&amp;E Procurement Guide for Hotels.&rdquo; <a href="https://curvehospitality.com/blogs_posts/ffe-procurement-hotels-guide">curvehospitality.com</a>; Bailey&rsquo;s Allied. &ldquo;FF&amp;E Logistics Guide.&rdquo; <a href="https://www.baileysallied.com/workplace/resources/ffe-logistics-guide">baileysallied.com</a>
+                <div class="src-meta">Model / prototype / mock-up rooms for owner and brand sign-off before full production; room-by-room delivery sequencing &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Beyer Brown &amp; Associates. &ldquo;FF&amp;E Procurement Process.&rdquo; <a href="https://www.beyerbrown.com/services/ffe-procurement-process">beyerbrown.com/services/ffe-procurement-process</a>; Layer. &ldquo;6 Phases.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team</a>
+                <div class="src-meta">Punch list / deficiency log; owner&rsquo;s rep final sign-off; closeout / handover package contents (warranties, FR certs, asset records) &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Fohlio SpecHub internal documentation (Fohlio v2 / SpecHub platform). Collaboration system PRD; Comments PRD; History Log PRD.
+                <div class="src-meta">Fohlio thin overlay: comments and history tied to spec items for audit trail; scoped visibility by role (vendor sees only their items; owner sees approval package; internal deliberation stays internal) &middot; 2026 internal, cited for light product overlay only</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] correspond to numbered entries above. Dana, Helen, Linda, Sam, and Reggie are composite characters illustrating real industry roles. Named firms (Marriott, Hilton, Procore, Beyer Brown, Curve Hospitality, Bailey&rsquo;s Allied) are real and used as industry archetypes. The headboard and model-room scenarios are fictional but grounded in documented industry practice.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 12 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Why it goes wrong &mdash; and the tools that catch it</p>
+    </div>
+
+</div>
+
+</body>
+</html>

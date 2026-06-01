@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 6</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 6 of 14</div>
+        <h1>Brand Standards and the PIP Machine</h1>
+        <div class="subtitle">Chapter 6. Linda&rsquo;s brand book meets a real renovation budget &mdash; and the flag is on the line</div>
+    </div>
+
+    <!-- HOOK (scene anchor, &lt;200 words) -->
+    <p>Linda Marsh arrives at the property at 8:40 a.m. with a clipboard and a twelve-page checklist. She has been a brand standards manager for nine years &mdash; long enough that she no longer needs to consult the document; she walks a room and sees the deviations before she even reaches for a pen. The desk lamp shade: wrong ivory. The headboard fabric: the right color family, wrong texture grade. The bedding stack: correct items, incorrect layering sequence. In fifteen minutes she has flagged thirty-one items.</p>
+
+    <p>This is not a surprise inspection. The owner was notified sixty days ago. The hotel has been flying the flag for seven years without a major issue. But the franchise renewal is due, and the brand has revised its standard for soft goods across all midscale properties. Three thousand hotels have to catch up. This one is &ldquo;Category B&rdquo; &mdash; non-compliant on soft goods and guestroom seating. The clock is now running.</p>
+
+    <p>A brand standard is not a style guide. It is a contract clause, and Linda&rsquo;s clipboard is how it gets enforced.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>What a brand standard actually is and why it is contractually enforceable, not advisory</li>
+            <li>What triggers a PIP, what it covers, and what it costs (from $50k to $500k+)</li>
+            <li>Why the 12&ndash;18 month deadline matters: the real penalties for non-compliance</li>
+            <li>How brand standards create the need for <em>multi-property consistency</em> &mdash; and what golden samples and first-article validation are</li>
+            <li>The difference between a flagged property and an independent one, and what that means for who controls the spec</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <h3 style="margin-top: 48px; margin-bottom: 12px; color: var(--gray-500); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Quick recap &mdash; cold recall before you read on</h3>
+    <p style="font-size: 14px; color: var(--gray-500); margin-bottom: 16px;">Without scrolling back, answer these in your head. Then check.</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L1 &mdash; The $40k mistake</strong><br>
+            Dana&rsquo;s error: a fabric was discontinued mid-order and silently substituted. The spec stopped being true and nobody noticed until the dock. What two moments separated the error from the discovery?
+        </div>
+        <div class="recap-item">
+            <strong>L2 &mdash; The whole cast</strong><br>
+            Name the foundational split: who <em>specifies</em> FF&amp;E vs who <em>buys</em> it. And who owns the budget?
+        </div>
+        <div class="recap-item">
+            <strong>L3 &mdash; One chair&rsquo;s journey</strong><br>
+            Procurement runs <em>parallel</em> to construction, not after. Why? And roughly how long does a custom hospitality lead time run?
+        </div>
+        <div class="recap-item" style="background: var(--blue-light); border-left: 3px solid var(--blue);">
+            <strong style="color: var(--blue);">L6 &mdash; TODAY</strong><br>
+            Brand standards as contract. The PIP machine. What happens to a hotel that misses the deadline?
+        </div>
+        <div class="recap-item">
+            <strong>L4 &mdash; Moodboard to spec</strong><br>
+            What is the difference between an FF&amp;E <em>specification</em> and an FF&amp;E <em>schedule</em>? Which one describes the product; which one tracks the project?
+        </div>
+        <div class="recap-item">
+            <strong>L5 &mdash; The library and the takeoff</strong><br>
+            What is a &ldquo;takeoff&rdquo; and why does it matter when a building has twenty room types? What does reusing a spec library save vs. starting from scratch?
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. What a brand standard actually is</h2>
+
+    <p>Here is the misconception to clear up first: a brand standard is not a Pinterest board with requirements. It is a schedule of contractually mandated specifications &mdash; the franchisor&rsquo;s design and operations requirements that the property owner must meet to keep the right to fly the flag. The document has legal teeth because it lives inside the franchise agreement. Breach it, and the consequences are financial penalties, then flag removal [1].</p>
+
+    <p>What does it cover? Everything a guest experiences. For a Marriott-family brand, that means finish schedules (paint color, flooring material, wallcovering pattern), lighting levels in specific room zones, bedding composition and layering, towel GSM weight, signage dimensions, and &mdash; critically for our purposes &mdash; approved FF&amp;E: specific furniture families, specific upholstery grades, specific suppliers, and sometimes a list of approved alternates [2].</p>
+
+    <p>The scope is not small. Brands like Marriott, Hilton, Hyatt, and IHG audit against <strong>80 to 120 checkpoints</strong> per inspection, and they run both announced and unannounced audits [1]. Linda&rsquo;s thirty-one flagged items in fifteen minutes is a fast morning for a competent auditor &mdash; not an edge case.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Think before reading on</div>
+        <div class="recall-question">A hotel owner replaces the guestroom lounge chairs with a comparable model from an approved supplier &mdash; same finish grade, similar price &mdash; but forgets to check whether the chair model itself is on the approved list. The chairs arrive and look right. At the next audit, Linda flags them. Why? And what happens next?</div>
+        <div class="recall-hint">Think about what &ldquo;contractually enforceable&rdquo; means in practice. Comparable is not the same as <em>approved</em>.</div>
+    </div>
+
+    <p>The answer: comparable is irrelevant. Brand standards specify approved models, not approved categories. A chair that is not on the approved-product list is non-compliant regardless of quality, regardless of price, regardless of the owner&rsquo;s intentions. The brand auditor marks it. That item now has to be replaced or formally submitted for approval &mdash; a process that can take months and may simply be denied. This is exactly why, in Lesson 5, Helen runs the studio&rsquo;s spec library against the brand standards document before the design is even submitted: if you specify it wrong, you pay to fix it [3].</p>
+
+    <div class="info-box blue">
+        <p><strong>Why this matters for the value chain:</strong> brand standards are where the brand&rsquo;s design intent meets the owner&rsquo;s real budget &mdash; and they often disagree. The designer (Dana) has to navigate both. Specifying to brand standard is not optional on flagged properties; it is a legal condition. And it adds significant complexity to the spec (more constraints, more cross-referencing, more lead-time risk on approved-but-scarce suppliers).</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. The PIP machine &mdash; how it starts</h2>
+
+    <p>A <strong>PIP</strong> &mdash; Property Improvement Plan &mdash; is a brand-issued document that tells a hotel owner exactly what has to change, when, and at whose cost. It is mandatory, not advisory. There is no version where the owner reads it and decides to defer [1].</p>
+
+    <p>Four events reliably trigger a PIP. A hotel does not have to fail an inspection to get one; any one of these is sufficient:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F504;</div>
+            <div class="layer-name" style="color: var(--red);">Franchise renewal</div>
+            <div class="layer-desc">The franchise agreement expires (typically every 10&ndash;15 years). The brand issues a PIP as a condition of renewal. Non-negotiable.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F3E0;</div>
+            <div class="layer-name" style="color: var(--orange);">Change of ownership</div>
+            <div class="layer-desc">The property sells. The new owner must meet current standards, not the legacy standard the previous owner was grandfathered into.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F3F7;</div>
+            <div class="layer-name" style="color: var(--purple);">Conversion / rebrand</div>
+            <div class="layer-desc">Moving from one brand family to another (or from independent to flagged) triggers a full compliance review against the new standard.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4C9;</div>
+            <div class="layer-name" style="color: var(--blue);">Low audit or guest scores</div>
+            <div class="layer-desc">Poor inspection results or guest satisfaction drops below brand thresholds can trigger a targeted PIP without waiting for renewal.</div>
+        </div>
+    </div>
+
+    <p>Beyond those four triggers, brands also issue <strong>brand-wide refresh cycles</strong> &mdash; typically every 5&ndash;7 years &mdash; where the standard itself is updated and all properties under that flag must catch up within a window [1]. This is the mechanism that turns individual hotel upgrades into a recurring industry-wide demand cycle. It is one of the two structural forces that make FF&amp;E spend never-ending &mdash; the other being simple wear, which we covered in Lesson 1.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4CB;</div>
+        Helen, reading a PIP for the third time: &ldquo;They want us to replace the headboard, the desk chair, and the lounge chair &mdash; all in the same room &mdash; but the approved supplier for the desk chair has a 22-week lead time and the brand wants it done in eighteen months.&rdquo;<br>
+        Linda, without looking up: &ldquo;That is a problem for the purchasing agent.&rdquo;<br>
+        Helen: &ldquo;The purchasing agent is Marco. Marco already knows.&rdquo;<br>
+        Linda: &ldquo;Good. Then he can be stressed about it too.&rdquo;<br>
+        <em>The dirty secret of a PIP: it sets the scope and the deadline, but the supply chain is not consulted when those numbers are chosen.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The cost and the clock</h2>
+
+    <p>Two numbers define whether a PIP is survivable or existential for an owner: the cost, and the deadline.</p>
+
+    <h3>What a PIP costs</h3>
+
+    <p>The range is wide because the scope varies enormously. A <strong>soft-goods PIP</strong> &mdash; bedding, drapery, upholstery, carpet &mdash; typically runs <strong>$50,000 to $150,000</strong> per property. A <strong>full renovation PIP</strong> that touches casegoods, public areas, and the corridors can exceed <strong>$500,000</strong>, and for large full-service hotels, seven figures is not unheard of [1][2].</p>
+
+    <p>Furniture is consistently the single largest budget line in a PIP because it is visible, because it wears, and because the brand standard is most detailed about it. A soft-goods PIP that leaves the casegoods intact might spend the bulk of its budget on lounge seating, side chairs, and desk chairs &mdash; exactly the items that accumulate the most guest contact hours [2].</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PIP cost spectrum from soft-goods refresh at $50k-$150k up to full renovation at $500k+, with timelines">
+            <rect x="0" y="0" width="720" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="360" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">The PIP cost and timeline spectrum</text>
+
+            <!-- Soft goods -->
+            <rect x="28" y="54" width="195" height="160" rx="10" fill="#FFF3E5" stroke="#FBBF77" stroke-width="2"/>
+            <text x="126" y="82" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#E8790C">Soft-goods PIP</text>
+            <text x="126" y="102" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Bedding, drapery,</text>
+            <text x="126" y="118" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">upholstery, carpet</text>
+            <text x="126" y="148" text-anchor="middle" font-family="Inter" font-weight="700" font-size="18" fill="#E8790C">$50k&ndash;$150k</text>
+            <text x="126" y="170" text-anchor="middle" font-family="Inter" font-size="11" fill="#9CA3AF">per property</text>
+            <text x="126" y="196" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">12&ndash;18 month window</text>
+
+            <!-- Mid renovation -->
+            <rect x="263" y="54" width="195" height="160" rx="10" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="2"/>
+            <text x="360" y="82" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#3451B2">Mid-scope PIP</text>
+            <text x="360" y="102" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Guestroom FF&amp;E,</text>
+            <text x="360" y="118" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">corridors, lobby refresh</text>
+            <text x="360" y="148" text-anchor="middle" font-family="Inter" font-weight="700" font-size="18" fill="#3451B2">$150k&ndash;$500k</text>
+            <text x="360" y="170" text-anchor="middle" font-family="Inter" font-size="11" fill="#9CA3AF">per property</text>
+            <text x="360" y="196" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">12&ndash;24 month window</text>
+
+            <!-- Full renovation -->
+            <rect x="498" y="54" width="195" height="160" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="595" y="82" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#7C3AED">Full renovation PIP</text>
+            <text x="595" y="102" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">All FF&amp;E + finishes,</text>
+            <text x="595" y="118" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">public areas, structure</text>
+            <text x="595" y="148" text-anchor="middle" font-family="Inter" font-weight="700" font-size="18" fill="#7C3AED">$500k+</text>
+            <text x="595" y="170" text-anchor="middle" font-family="Inter" font-size="11" fill="#9CA3AF">per property</text>
+            <text x="595" y="196" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">12&ndash;24+ month window</text>
+
+            <!-- Arrow -->
+            <line x1="30" y1="248" x2="690" y2="248" stroke="#D1D5DB" stroke-width="2"/>
+            <polygon points="690,244 700,248 690,252" fill="#D1D5DB"/>
+            <text x="30" y="268" font-family="Inter" font-size="11" fill="#9CA3AF">smaller scope, lower risk</text>
+            <text x="620" y="268" font-family="Inter" font-size="11" fill="#9CA3AF">flag at risk</text>
+        </svg>
+        <div class="diagram-caption">PIP costs vary widely by scope. The deadline is set by the brand, not negotiated by the owner.</div>
+    </div>
+
+    <h3>The deadline and the penalties</h3>
+
+    <p>Hilton typically allows <strong>12 to 18 months</strong> to complete a PIP from the date of issuance. Other brands have similar windows. The penalties for missing that deadline are structured in escalating layers [1]:</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Non-compliance fee</span>
+        <div class="step-desc">An additional <strong>1&ndash;3% of gross room revenue</strong> per month is charged as a penalty during the non-compliant period. On a 150-room property doing $4M/year in room revenue, that is $40,000&ndash;$120,000/year in extra fees on top of the PIP cost itself.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Cure period and reinspection</span>
+        <div class="step-desc">The brand issues a cure notice with a final deadline. If the property misses that too, the brand escalates &mdash; typically to the brand&rsquo;s compliance committee.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Flag removal</span>
+        <div class="step-desc"><strong>The flag is pulled.</strong> The hotel loses the right to operate under the brand name, its distribution through the brand&rsquo;s reservation system, and its loyalty program participation. For most flagged properties, this is an existential financial event.</div>
+    </div>
+
+    <p>Flag removal is rare but real. The penalty fee structure exists precisely because it gives the brand a cash incentive to maintain compliance pressure without immediately reaching for the nuclear option. But it also means the owner is paying a percentage of revenue <em>plus</em> executing the renovation at the same time. This is why PIP financing is its own specialty, and why the timeline the brand sets is not something a purchasing team can casually slip.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Consistency without rigidity &mdash; how it works across multiple properties</h2>
+
+    <p>A brand like Marriott Midscale does not have one hotel. It has hundreds, potentially thousands, under the same flag. The brand standard has to produce a <strong>consistent guest experience</strong> across all of them &mdash; a guest checking into a Courtyard in Phoenix should find the same headboard grade, the same desk-lamp quality, the same bedding composition as the one in Columbus. That consistency is what makes the brand worth something to travelers who rely on it.</p>
+
+    <p>But the properties are not identical buildings. Floor plans differ. Room sizes differ. Local suppliers differ. So the brand standard must be <strong>consistent in output</strong> (what the guest sees and feels) while being <strong>flexible enough in specification</strong> to accommodate a thousand different building configurations. This is where the standard is not a single list of SKUs &mdash; it is a specification of <em>parameters</em>: minimum dimensions, approved material grades, permitted finish families, and a list of approved suppliers, sometimes with alternates [3][4].</p>
+
+    <h3>The golden sample and first-article validation</h3>
+
+    <p>When a brand mandates a specific finish or product, it cannot physically inspect every unit before it ships to every property. The mechanism it uses instead is the <strong>golden sample</strong> (sometimes called the <strong>first article</strong>): a single fully-fabricated unit, built to spec, reviewed and signed off by the brand before production runs.</p>
+
+    <div class="story-box">
+        <p>Helen has been through this process four times in the last two years. The brand&rsquo;s technical services team visits the factory, inspects the sample against the spec, and issues a written approval. That approval covers color, material, construction, and finish. The factory then produces against that approved unit &mdash; and if anything delivered to any property in the rollout deviates from it, the deviation is the factory&rsquo;s liability, not the brand&rsquo;s and not the designer&rsquo;s. The golden sample is the point of accountability.</p>
+        <p>It also takes six to eight weeks and costs the project nothing directly, but it consumes a slot in the timeline that the purchasing team (Marco&rsquo;s team, in this project) has to account for before the first production PO goes out.</p>
+    </div>
+
+    <p>The first-article process maps directly to the broader submittal and sample-approval world we previewed in Lesson 3: every line item that runs through a formal brand-compliance review is essentially going through a rigorous first-article process. The brand is the architect of record for its own standard, and approval must be obtained before fabrication runs [4].</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Test yourself</div>
+        <div class="recall-question">Without looking back: (a) In your own words, what is a &ldquo;golden sample&rdquo; and what problem does it solve? (b) Why does a brand standard need to specify parameters rather than exact SKUs when it applies to hundreds of properties? (c) Name two events that trigger a PIP and give one example of a financial penalty for missing the deadline.</div>
+        <div class="recall-hint">Aim for three concrete sentences per question. If you can say it in plain English without re-reading, it has stuck.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Flagged vs. independent &mdash; two different games</h2>
+
+    <p>Not every hotel is flagged. An independent boutique &mdash; think Grace&rsquo;s inn, which we met briefly in Lesson 2 &mdash; has no brand standards to satisfy. Grace chooses the chair because she likes it. She calls the supplier, places the order, and that&rsquo;s the spec. There is no audit, no approved-product list, no golden-sample process. If the chair is wrong, she fixes it at her own expense and moves on.</p>
+
+    <p>The difference in how these two types of property procure FF&amp;E is enormous:</p>
+
+    <table>
+        <tr>
+            <th>Dimension</th>
+            <th>Flagged property</th>
+            <th>Independent property</th>
+        </tr>
+        <tr>
+            <td><strong>Who controls the spec</strong></td>
+            <td>Brand sets the parameters; designer works within them</td>
+            <td>Owner / designer chooses freely</td>
+        </tr>
+        <tr>
+            <td><strong>Approved suppliers</strong></td>
+            <td>Limited list; alternates require brand approval</td>
+            <td>Any supplier the owner likes</td>
+        </tr>
+        <tr>
+            <td><strong>Audit / compliance</strong></td>
+            <td>80&ndash;120 checkpoints, announced + unannounced</td>
+            <td>None (unless a lender or operator has requirements)</td>
+        </tr>
+        <tr>
+            <td><strong>Renovation cycle</strong></td>
+            <td>Externally imposed every 5&ndash;7 years via PIP</td>
+            <td>Owner&rsquo;s discretion, tied to wear and revenue</td>
+        </tr>
+        <tr>
+            <td><strong>Cost of non-compliance</strong></td>
+            <td>Penalty fee 1&ndash;3% revenue + ultimate flag loss</td>
+            <td>None (no external standard to breach)</td>
+        </tr>
+        <tr>
+            <td><strong>Design complexity</strong></td>
+            <td>Higher &mdash; brand constraints layer over design intent</td>
+            <td>Lower constraint burden, higher creative latitude</td>
+        </tr>
+    </table>
+
+    <p>For a GTM team, this distinction matters because the sales conversation is fundamentally different. An independent property owner&rsquo;s pain is speed and cost and keeping a clean record for their own reference. A flagged property owner&rsquo;s pain is compliance, documentation, multi-property rollout consistency, and a fixed deadline that does not move. These are different problems and different conversations &mdash; a point we will return to in the capstone.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. The spec in a PIP world &mdash; what it changes for Dana and Helen</h2>
+
+    <p>Let&rsquo;s bring this back to the ground level. Dana is specifying a 120-room select-service hotel mid-PIP. The brand has issued a 47-item compliance requirement covering guestroom seating, soft goods, and corridor carpet. Her job is not simply to make the rooms look good &mdash; it is to make them <em>compliant and documented</em> while still making them look good.</p>
+
+    <p>That changes the spec in three concrete ways. First, every item that appears on the brand&rsquo;s approved list must be referenced by the brand&rsquo;s reference number, not just the manufacturer model number. This is the audit trail Linda&rsquo;s clipboard will check against. Second, substitutions &mdash; even well-intentioned value-engineering swaps of the kind we discussed in Lesson 3 &mdash; require brand pre-approval, which takes time. Third, the spec has to be versioned against the brand standard revision that governs this PIP, because a brand can issue a revised standard before the PIP is complete, and knowing which version governs a given hotel&rsquo;s obligation is a legal question, not a design one [1][3].</p>
+
+    <p>Helen manages this with a simple rule: nothing goes into the spec that has not been cross-referenced against the current brand standard document. She does this before the spec is even shared with the client. The alternative &mdash; specifying freely and then filtering for compliance &mdash; is the approach that generates rework bills.</p>
+
+    <div class="info-box orange">
+        <p><strong>The thin Fohlio aside:</strong> a reusable brand-standards library solves a specific pain here: the studio can tag which items in their catalog are approved under which brand family, and filter the spec to show only compliant options. This is the practical value of the spec library Lesson 5 introduced &mdash; it isn&rsquo;t just about not starting from scratch, it&rsquo;s about not starting from scratch <em>and</em> having brand compliance built into the reuse. We won&rsquo;t dwell on this, but it&rsquo;s the concrete reason firms invest in maintaining that library.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>What we took away from chapter six:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4DC;</div>
+            <div class="layer-name" style="color: var(--red);">Brand standards = contract</div>
+            <div class="layer-desc">Enforceable, auditable against 80&ndash;120 checkpoints. &ldquo;Comparable&rdquo; is not &ldquo;approved.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F6A8;</div>
+            <div class="layer-name" style="color: var(--orange);">PIP = mandatory deadline</div>
+            <div class="layer-desc">Triggered by renewal, sale, rebrand, or low scores. $50k&ndash;$500k+. 12&ndash;18 months. Non-compliance = 1&ndash;3% penalty fee + flag risk.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3C6;</div>
+            <div class="layer-name" style="color: var(--blue);">Golden sample</div>
+            <div class="layer-desc">One approved unit governs the whole production run across all properties. The point of accountability for brand and supplier.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F3E8;</div>
+            <div class="layer-name" style="color: var(--purple);">Flagged vs. independent</div>
+            <div class="layer-desc">Two different customer conversations. Flagged = compliance, deadlines, multi-property rollout. Independent = creative latitude, self-imposed cycle.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 7:</strong> the same chair that has to meet Linda&rsquo;s brand standard has three different price tags depending on who is buying it and how. Marco (the purchasing agent) buys it at a price Dana never sees. The owner pays something different from either of them. We follow the money: retail vs. trade pricing, the keystone markup, how designers and purchasing agents actually earn their fees, and what a &ldquo;fiduciary&rdquo; model means in practice.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Map the PIP triggers to a real property.</strong> Find a publicly available hotel franchise disclosure document or a news article describing a real hotel PIP (search: &ldquo;hotel property improvement plan PIP franchise renewal&rdquo;). Identify: (a) which trigger applies &mdash; renewal, sale, conversion, or low scores; (b) the approximate cost range described; (c) the deadline given. Then write two sentences explaining why the deadline is structurally difficult to meet once the supply-chain constraints from Lesson 3 (custom lead times of 16&ndash;26+ weeks) are factored in.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Passes if: a real source is cited (not invented); the correct trigger category is identified from the four listed in the lesson; the cost range is realistic for the property tier; the two deadline sentences demonstrate understanding that a 12&ndash;18 month PIP window leaves roughly 6&ndash;10 months of actual execution time once design, brand review, golden-sample approval, and ordering are complete &mdash; and custom-furniture lead times of 16&ndash;26 weeks can easily consume all of that slack. The core insight: the brand sets the timeline; the supply chain does not consult.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Self-check &mdash; without scrolling.</strong> Answer these three questions from memory: (a) State the four PIP triggers. (b) What is a golden sample and what problem does it solve across a multi-property brand rollout? (c) A hotel misses its PIP deadline by four months. Name the two-step consequence described in this lesson.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Franchise renewal; change of ownership; conversion/rebrand; low audit or guest-satisfaction scores. (b) A golden sample is a single fully-fabricated unit reviewed and approved by the brand before production runs; it sets the physical standard that all units across all properties in the rollout are measured against, creating a clear accountability point and preventing the kind of &ldquo;I never approved that&rdquo; dispute that arises when delivered goods deviate from the intent. (c) First: a non-compliance fee of 1&ndash;3% of gross room revenue per month during the non-compliant period. Second, if still uncured after a cure notice: flag removal &mdash; the property loses the right to operate under the brand name and its distribution through the brand&rsquo;s reservation system.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Interview a real user.</strong> If you have access to anyone on the Fohlio customer side &mdash; a designer, a hotel operations manager, or someone who has been through a PIP &mdash; ask them: what was the hardest part of satisfying a brand standard during a renovation? What information was hardest to get? Compare their answer to the mechanisms in this lesson and write a short paragraph on where the real pain was vs. where this lesson predicted it would be. This task requires personal or work context that a chatbot cannot fabricate.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Elaborate on the flagged vs. independent split.</strong> Why does the existence of brand standards create a structurally <em>higher</em> demand for reliable FF&amp;E tracking than independent properties &mdash; even though independent properties have more creative freedom? And: if a brand decides to relax its approved-product list to give owners more flexibility, what does that do to the brand&rsquo;s value proposition to travelers? Explain the tension between &ldquo;consistency without rigidity&rdquo; as a design principle and the economics that make rigidity commercially useful.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-axis-pip">
+                Axis Hospitality Consulting. &ldquo;Hotel Property Improvement Plan (PIP): Brand Standards, Enforcement &amp; Compliance.&rdquo; <a href="https://axishc.net/hotel-property-improvement-plan-pip">axishc.net/hotel-property-improvement-plan-pip</a>.
+                <div class="src-meta">PIP triggers (renewal/sale/conversion/scores); 80&ndash;120 audit checkpoints; 12&ndash;18 month Hilton window; 1&ndash;3% penalty fee; flag-loss consequence; brand audit types (announced + unannounced) &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Oxmaint / Hotel Brand Compliance. &ldquo;Hotel Brand &amp; Franchise Maintenance Standards Enforcement.&rdquo; <a href="https://oxmaint.com/industries/hospitality/hotel-brand-franchise-maintenance-standards-enforcement">oxmaint.com/industries/hospitality/hotel-brand-franchise-maintenance-standards-enforcement</a>.
+                <div class="src-meta">Franchise enforcement mechanics; penalty escalation structure; Marriott/Hilton/Hyatt/IHG audit checkpoint counts; cost range for modest vs major PIPs &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Sara Hospitality. &ldquo;Hotel Property Improvement Plan (PIP) Guide: Costs, Checklist &amp; Strategy.&rdquo; <a href="https://sarahospitalityusa.home.blog/2026/03/12/hotel-property-improvement-plan-pip-guide-costs-checklist-strategy">sarahospitalityusa.home.blog</a>.
+                <div class="src-meta">PIP scope breakdown; furniture as the primary budget-driving line item; brand-standard document versioning during renovation; value-engineering constraints on flagged properties &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                One Stop Hotel FF&amp;E. &ldquo;Hotel FF&amp;E Procurement &amp; Sourcing Guide: Brand Standards Compliance.&rdquo; <a href="https://onestophotelffe.com/hotel-ffe-procurement-sourcing-guide">onestophotelffe.com/hotel-ffe-procurement-sourcing-guide</a>.
+                <div class="src-meta">Brand-standard approved-product lists; golden-sample / first-article validation; multi-property consistency mechanics; supplier first-article approval process in PIP context &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                King Construction. &ldquo;Hotel Property Improvement Plans: What to Expect.&rdquo; <a href="https://www.kingconstruction-usa.com/blog-articles/hotel-property-improvement-plan">kingconstruction-usa.com</a> (Hilton PIP article).
+                <div class="src-meta">Hilton PIP timeline specifics (12&ndash;18 months); brand-wide refresh cycle cadence (5&ndash;7 years); conversion/rebrand trigger mechanics &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Inline [N] markers point to the entry with that number above. Linda, Helen, Dana, Marco, and Grace are composite narrative characters, not real people. Named brands (Marriott, Hilton, IHG, Hyatt) are used as industry archetypes to illustrate documented, publicly sourced mechanisms. PIP cost figures are benchmarks from the cited sources and vary significantly by property size, tier, and scope.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 6 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Three prices for the same chair</p>
+    </div>
+
+</div>
+
+</body>
+</html>

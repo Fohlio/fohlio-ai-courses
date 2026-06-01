@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 14</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 14 of 14 &mdash; Capstone</div>
+        <h1>The Building Opens</h1>
+        <div class="subtitle">Chapter 14. One chair, every actor &mdash; and the loop that starts again</div>
+    </div>
+
+    <!-- HOOK (in-medias-res scene anchor, bookend to L1) -->
+    <p>The doors open at 3:00 p.m. Not a soft open, not a preview. The doors open, the first guests check in, and every chair that should be in every room is in every room, in the right finish. Dana Reyes is standing in the lobby. It is not 7:14 a.m. and there is no cold coffee and no blank spec. The spec ran to 4,300 line items and took fourteen months to keep true. She is not celebrating yet &mdash; she is doing a quiet, private count, the way anyone does after a project this long. One chair. Then the next. All correct.</p>
+
+    <p>This is the moment the course has been building toward. Not because the opening is the end &mdash; it isn&rsquo;t, and we&rsquo;ll come back to that &mdash; but because it is the only place where every actor, every phase, and every decision from the previous thirteen lessons is visible at once. In this chapter we don&rsquo;t introduce anything new. We trace one chair through every hand it passed through, put three very different projects side by side, and close with what you should now be able to say to any prospect about their real world.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll synthesize by the end of this lesson</h3>
+        <ul>
+            <li>Trace a single piece of furniture through every phase and every actor from L1&ndash;L13</li>
+            <li>Compare how the same journey differs across three property types: luxury flag, select-service brand rollout, independent boutique</li>
+            <li>Understand why the project doesn&rsquo;t actually end at opening &mdash; the FF&amp;E reserve, the next PIP, and the compounding value of institutional knowledge</li>
+            <li>Know what a GTM person can now say to any prospect that they couldn&rsquo;t have said before this course</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID (lessons 2+; capstone uses cold-recall spanning the course) -->
+    <h3 style="margin-top: 40px;">Cold recall before we begin</h3>
+    <p>Close the other tabs. Retrieve from memory. Answer these three before scrolling &mdash; then compare.</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L1 &mdash; The core test:</strong> what is the fastest, most industry-standard definition of FF&amp;E? And what is the dollar cost of a ten-day install delay on a 100-room hotel?
+        </div>
+        <div class="recap-item">
+            <strong>L3 &mdash; The timeline:</strong> procurement must run <em>parallel</em> to construction, not after it. Why? Name the two lead-time ranges: domestic furniture vs. custom imported.
+        </div>
+        <div class="recap-item">
+            <strong>L7 &mdash; The three prices:</strong> a designer, a purchasing agent, and a brand rep all touch one chair&rsquo;s transaction. Who earns what, and from whom?
+        </div>
+        <div class="recap-item" style="background: var(--blue-light); border-left-color: var(--blue);">
+            <strong style="color: var(--blue);">L14 &mdash; Today:</strong> synthesis. One chair, every phase, every actor. Three property types. The loop that restarts. What a GTM team can now say.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. One chair &mdash; every hand it passed through</h2>
+
+    <p>The chair in Dana&rsquo;s lobby is a lobby lounge chair. It weighs 34 kilograms. It has a particular frame in walnut veneer, an upholstered seat in a COM fabric the design studio sourced separately, and four solid-brass feet that took a custom mill eight weeks to produce. Here is every hand it passed through, in order.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Owner &amp; brand decided the budget and the standard</span>
+        <div class="step-desc">The owner approved the FF&amp;E budget per key during programming &mdash; the first phase we covered in Lesson 3. The brand (think a Marriott-scale flag) set the brand standard that dictated materials, minimum durability ratings, and finish palette. Neither of them chose this specific chair. They set the rules within which the chair could exist.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Dana specified it (L4)</span>
+        <div class="step-desc">In Design Development, Dana selected the chair family, specified the COM fabric, the brass-foot detail, and the dimensions. She created a spec sheet &mdash; a full product record, not a picture &mdash; that described the chair precisely enough to be manufactured, verified, and installed by people who had never seen her moodboard. That spec sheet went into the FF&amp;E schedule, which (as we established in Lesson 1) is a living document, not a filing cabinet.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Helen&rsquo;s library held the product knowledge (L5)</span>
+        <div class="step-desc">The chair manufacturer had appeared in the studio&rsquo;s reusable spec library from a previous project. Dana didn&rsquo;t start from scratch: she pulled the existing entry, verified that the family was still in production, and confirmed the lead time. The library shortened her specification time by two days. Those two days mattered.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Linda&rsquo;s brand standards approved the finish (L6)</span>
+        <div class="step-desc">Because this is a flagged property, the chair couldn&rsquo;t simply be beautiful &mdash; it had to pass the brand&rsquo;s approved-material list and durability standard. Linda&rsquo;s team reviewed the spec and approved the fabric on the second pass (the first pass required the studio to supply FR certification documentation). That back-and-forth took three weeks. On a tight timeline, three weeks is not a footnote.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">5</span>
+        <span class="step-title">Marco priced it at three levels (L7)</span>
+        <div class="step-desc">Marco, the purchasing agent at a Benjamin West-style firm, received the spec and issued an RFQ to four vendors. Tomás &mdash; the manufacturer&rsquo;s rep &mdash; brought back the net/trade price; Marco compared it against two alternate sources. The chair had a retail list of $3,200. The purchasing firm&rsquo;s trade price: $1,760. The client-approved price, after disclosed fee: $1,938. Tomás earned his commission from the manufacturer, not from the owner. Nobody&rsquo;s incentives were hidden.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">6</span>
+        <span class="step-title">The budget absorbed it (L8)</span>
+        <div class="step-desc">The chair&rsquo;s $1,938 trade price was the approved number. But the budget line tracked the landed cost: freight, receiving, warehousing, and install added $287 per unit. The chair cost the project $2,225 fully loaded &mdash; and the budget had room for that because Marco had flagged the landed-cost stack during value engineering two months earlier, not at invoice time.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">7</span>
+        <span class="step-title">Greta&rsquo;s factory manufactured it (L9)</span>
+        <div class="step-desc">The manufacturer &mdash; a contract-furniture factory in North Carolina, chosen in part because its domestic production avoided the 25%+ China tariff stack &mdash; ran a production lot of 48 chairs for the project. MOQ was 24; the project ordered 48, which earned a tiered discount. The brass feet were a separate custom-millwork sub-order that nearly missed the assembly window.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">8</span>
+        <span class="step-title">Tomás&rsquo;s submittal and CFA sample were approved (L10)</span>
+        <div class="step-desc">Before production started, the factory submitted a shop drawing and a CFA swatch &mdash; a cutting from the actual production dye-lot of the COM fabric &mdash; for Dana&rsquo;s approval. Dana reviewed, noted that the grain direction was off, and returned it as &ldquo;Revise and Resubmit.&rdquo; The corrected CFA came back in five days and was approved. That five-day loop is why the delivery color matched the approved sample exactly when Reggie&rsquo;s crew unwrapped the crate.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">9</span>
+        <span class="step-title">Marco issued the PO and expedited the order (L11)</span>
+        <div class="step-desc">Once approved, a binding purchase order issued with a 50% deposit. Marco&rsquo;s team then chased the factory through ten weeks of production: two status calls per week, a factory QC photo at crate-up, and one near-crisis when the brass-foot sub-supplier went silent for eight days. That is what expediting actually looks like. The chairs shipped domestically by flatbed; no customs brokerage needed.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">10</span>
+        <span class="step-title">Reggie received, inspected, and installed (L11)</span>
+        <div class="step-desc">The chairs arrived at Reggie&rsquo;s regional warehouse six weeks before the opening date. His crew opened and inspected each crate against the PO within 24 hours. One chair had a hairline crack in the veneer that was invisible in the factory photo. The receiving report caught it. A replacement was expedited in three weeks &mdash; tight, but inside the window. Without the receiving inspection, that damaged chair would have reached the lobby and been discovered by a guest.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">11</span>
+        <span class="step-title">Helen and Linda signed off; the punch list closed (L12)</span>
+        <div class="step-desc">Delivery was phased, lobby first. After the lobby chairs were placed, Helen walked the room against the spec, Linda&rsquo;s brand representative walked the room against the brand checklist, and Sam &mdash; the owner&rsquo;s rep &mdash; walked it against the schedule. Four items went on the punch list. Three were resolved in the next 48 hours. One finish dispute &mdash; &ldquo;the brass looks more gold than the approved sample&rdquo; &mdash; was resolved by pulling the approved CFA and comparing side by side. The CFA was the record. The argument lasted four minutes.</div>
+    </div>
+
+    <div class="story-box">
+        <p>Dana, on the day the lobby opened: &ldquo;That chair took eleven months to get right. The spec was exactly right on day one and still almost went wrong on day three hundred and forty. The only thing that made it right at the end was that every step had a record.&rdquo;</p>
+        <p style="margin-top: 12px;">That observation &mdash; every step had a record &mdash; is the answer to the $40k question from Lesson 1. The $40k mistake happened because one step, in one gap, had no record that anyone was watching.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. The same chair &mdash; three different projects</h2>
+
+    <p>The lobby chair is a useful baseline. Now put three property types side by side and watch how the identical journey changes in scale, standard strictness, and who does the buying [1][2].</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three property types compared: luxury flag, select-service brand rollout, and independent boutique — showing how the FF&E journey differs across scale, standard strictness, and buying structure">
+            <!-- Background -->
+            <rect x="0" y="0" width="760" height="380" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Column headers -->
+            <rect x="16" y="14" width="228" height="44" rx="8" fill="#3451B2"/>
+            <text x="130" y="41" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="white">Luxury Flag</text>
+            <text x="130" y="54" text-anchor="middle" font-family="Inter" font-size="11" fill="#C5D0F6">(e.g. Four Seasons)</text>
+
+            <rect x="254" y="14" width="228" height="44" rx="8" fill="#E8790C"/>
+            <text x="368" y="41" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="white">Select-Service Rollout</text>
+            <text x="368" y="54" text-anchor="middle" font-family="Inter" font-size="11" fill="#FFD9B0">(e.g. Courtyard by Marriott)</text>
+
+            <rect x="492" y="14" width="252" height="44" rx="8" fill="#1A8F5C"/>
+            <text x="618" y="41" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="white">Independent Boutique</text>
+            <text x="618" y="54" text-anchor="middle" font-family="Inter" font-size="11" fill="#A7F0CB">(e.g. Grace&rsquo;s 28-room inn)</text>
+
+            <!-- Row labels + data -->
+            <!-- Row 1: Budget per key -->
+            <text x="8" y="86" font-family="Inter" font-size="10" font-weight="600" fill="#6B7280" transform="rotate(-90, 8, 86)">&#x25B6;</text>
+            <rect x="16" y="72" width="228" height="40" rx="4" fill="#E8EDFF"/>
+            <text x="130" y="88" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">$35,000&ndash;$58,000+ / key</text>
+            <text x="130" y="103" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">FF&amp;E budget per room</text>
+            <rect x="254" y="72" width="228" height="40" rx="4" fill="#FFF3E5"/>
+            <text x="368" y="88" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">$8,000&ndash;$14,000 / key</text>
+            <text x="368" y="103" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">FF&amp;E budget per room</text>
+            <rect x="492" y="72" width="252" height="40" rx="4" fill="#E6F9F0"/>
+            <text x="618" y="88" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">$12,000&ndash;$25,000 / key</text>
+            <text x="618" y="103" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">FF&amp;E budget per room</text>
+
+            <!-- Row 2: Brand standard -->
+            <rect x="16" y="120" width="228" height="48" rx="4" fill="white" stroke="#E5E7EB"/>
+            <text x="130" y="138" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Rigid proprietary standard.</text>
+            <text x="130" y="153" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Custom specs, proprietary SKUs.</text>
+            <text x="130" y="163" text-anchor="middle" font-family="Inter" font-size="10" fill="#9CA3AF">Brand approves every finish</text>
+            <rect x="254" y="120" width="228" height="48" rx="4" fill="white" stroke="#E5E7EB"/>
+            <text x="368" y="138" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Brand-approved product lists.</text>
+            <text x="368" y="153" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Standard SKUs across 100+ props.</text>
+            <text x="368" y="163" text-anchor="middle" font-family="Inter" font-size="10" fill="#9CA3AF">Consistency over customization</text>
+            <rect x="492" y="120" width="252" height="48" rx="4" fill="white" stroke="#E5E7EB"/>
+            <text x="618" y="138" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">No brand standard.</text>
+            <text x="618" y="153" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Owner decides everything.</text>
+            <text x="618" y="163" text-anchor="middle" font-family="Inter" font-size="10" fill="#9CA3AF">Freedom = risk; no backstop</text>
+
+            <!-- Row 3: Who buys -->
+            <rect x="16" y="176" width="228" height="48" rx="4" fill="#E8EDFF"/>
+            <text x="130" y="194" text-anchor="middle" font-family="Inter" font-size="12" fill="#3451B2">Dedicated purchasing firm</text>
+            <text x="130" y="209" text-anchor="middle" font-family="Inter" font-size="12" fill="#3451B2">(Benjamin West-style fiduciary)</text>
+            <text x="130" y="219" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">+ brand&rsquo;s own procurement team</text>
+            <rect x="254" y="176" width="228" height="48" rx="4" fill="#FFF3E5"/>
+            <text x="368" y="194" text-anchor="middle" font-family="Inter" font-size="12" fill="#E8790C">Brand-managed rollout team</text>
+            <text x="368" y="209" text-anchor="middle" font-family="Inter" font-size="12" fill="#E8790C">or mid-tier purchasing agent</text>
+            <text x="368" y="219" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Volume = leverage; standardized POs</text>
+            <rect x="492" y="176" width="252" height="48" rx="4" fill="#E6F9F0"/>
+            <text x="618" y="194" text-anchor="middle" font-family="Inter" font-size="12" fill="#1A8F5C">The owner, often solo</text>
+            <text x="618" y="209" text-anchor="middle" font-family="Inter" font-size="12" fill="#1A8F5C">(Grace handles it herself)</text>
+            <text x="618" y="219" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">No purchasing firm; no backstop</text>
+
+            <!-- Row 4: Submittal / approval -->
+            <rect x="16" y="232" width="228" height="48" rx="4" fill="white" stroke="#E5E7EB"/>
+            <text x="130" y="250" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Three approval loops:</text>
+            <text x="130" y="265" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">owner + brand + purchasing agent</text>
+            <text x="130" y="275" text-anchor="middle" font-family="Inter" font-size="10" fill="#9CA3AF">Every CFA physically approved</text>
+            <rect x="254" y="232" width="228" height="48" rx="4" fill="white" stroke="#E5E7EB"/>
+            <text x="368" y="250" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Brand pre-approved product list</text>
+            <text x="368" y="265" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">cuts approval cycles sharply</text>
+            <text x="368" y="275" text-anchor="middle" font-family="Inter" font-size="10" fill="#9CA3AF">Speed is the brand promise here</text>
+            <rect x="492" y="232" width="252" height="48" rx="4" fill="white" stroke="#E5E7EB"/>
+            <text x="618" y="250" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Owner is the only approver.</text>
+            <text x="618" y="265" text-anchor="middle" font-family="Inter" font-size="12" fill="#374151">Fast decisions, high risk of</text>
+            <text x="618" y="275" text-anchor="middle" font-family="Inter" font-size="10" fill="#9CA3AF">&ldquo;I thought that was different&rdquo;</text>
+
+            <!-- Row 5: PIP exposure -->
+            <rect x="16" y="288" width="228" height="40" rx="4" fill="#E8EDFF"/>
+            <text x="130" y="310" text-anchor="middle" font-family="Inter" font-size="12" fill="#3451B2">Major PIP every 5&ndash;7 yrs;</text>
+            <text x="130" y="323" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">$500k+ possible; flag risk</text>
+            <rect x="254" y="288" width="228" height="40" rx="4" fill="#FFF3E5"/>
+            <text x="368" y="310" text-anchor="middle" font-family="Inter" font-size="12" fill="#E8790C">Brand-driven refresh cycles;</text>
+            <text x="368" y="323" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">standardized PIP playbook</text>
+            <rect x="492" y="288" width="252" height="40" rx="4" fill="#E6F9F0"/>
+            <text x="618" y="310" text-anchor="middle" font-family="Inter" font-size="12" fill="#1A8F5C">No PIP. Refresh when budget</text>
+            <text x="618" y="323" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">allows &mdash; or when guests complain</text>
+
+            <!-- Footer label -->
+            <text x="380" y="368" text-anchor="middle" font-family="Inter" font-size="11" fill="#9CA3AF">Same chair, same phases &mdash; very different scale, standard, and accountability</text>
+        </svg>
+        <div class="diagram-caption">Three property types, one FF&amp;E journey &mdash; scale, standard strictness, and who does the buying determine everything about how it runs.</div>
+    </div>
+
+    <p>The most important contrast is the independent boutique. Grace &mdash; the owner of a 28-room inn &mdash; does not have Linda enforcing a brand standard, or Marco tracking a PO, or Reggie running a professional receiving inspection. She specifies, she buys, she decides whether to look inside the crate before it goes in the room. When it goes wrong &mdash; and without that inspection backstop, it eventually does &mdash; there is no one else to call. The independence is real, and so is the exposure.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before you read on</div>
+        <div class="recall-question">A select-service brand like Courtyard uses pre-approved product lists instead of custom specs. That speeds up the approval loop. But it creates a different problem at scale. Without reading further: <strong>what does the brand sacrifice when it standardizes, and what does the owner sacrifice?</strong></div>
+        <div class="recall-hint">Think about the tension between speed and specificity; between consistency and character. The brand&rsquo;s answer and the independent boutique&rsquo;s answer are opposite extremes.</div>
+    </div>
+
+    <p>The brand&rsquo;s pre-approved list is a trade against customization. A Courtyard in Denver and a Courtyard in Dallas have the same chairs because Marriott negotiated volume pricing for tens of thousands of units at a time, absorbed the learning cost of the supply chain once, and replicated it. The owner gets lower per-key cost and a faster path to opening. What the brand sacrifices is local character; what the owner sacrifices is the ability to say &ldquo;this one is ours.&rdquo; The independent boutique makes the opposite trade &mdash; and pays for it in risk and process overhead [1][3].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The loop that starts again</h2>
+
+    <p>This is the part that surprises guests but never surprises operators: the hotel that opened today is already on a clock toward its next renovation. It was on that clock the day the first chair was delivered.</p>
+
+    <p>Two forces drive the restart, both of which appeared in earlier lessons and both of which return here for good reason:</p>
+
+    <p><strong>Wear and reserve:</strong> hotels set aside roughly 2&ndash;5% of gross revenue every year into an FF&amp;E reserve account &mdash; money held specifically for future refresh cycles [2][4]. On a full-service property generating $8M in annual revenue, that is $160k&ndash;$400k per year accumulating toward the next FF&amp;E round. The comprehensive refresh comes roughly every 7&ndash;10 years. That means procurement starts planning the next round while guests are still checking into this one.</p>
+
+    <p><strong>Brand standards and PIPs:</strong> on a flagged property, the brand audits against 80&ndash;120 checkpoints on an ongoing basis. The next Property Improvement Plan is already latent in the brand agreement, triggered by the next franchise renewal, the next change of ownership, or the brand&rsquo;s own refresh cycle [3]. A modest PIP costs $50k&ndash;$150k; a major one can exceed $500k, and ignoring it risks losing the flag. This is not a threat that materializes once and goes away. It is the structural drumbeat of the branded-hospitality business [3].</p>
+
+    <div class="info-box orange">
+        <p><strong>For OS&amp;E, the loop is even tighter.</strong> The consumable layer &mdash; linens, towels, glassware, amenities &mdash; never ends at all. A hotel that opened Monday is already replenishing OS&amp;E on Tuesday. We established this in Lesson 1 as the &ldquo;never truly ends&rdquo; layer, and it is worth repeating here because OS&amp;E's SKU count is typically <em>vastly larger</em> than FF&amp;E, it is an operating expense (not a capital asset), and it is procured continuously rather than in project cycles [4].</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Institutional knowledge compounds</h2>
+
+    <p>Here is the economic argument that sits under everything Dana&rsquo;s project produced:</p>
+
+    <p>The first time Dana&rsquo;s studio specified this chair manufacturer, someone spent three days researching the factory, verifying lead times, requesting a sample, confirming the MOQ, and getting the trade account set up. The second time, Helen pulled the verified record from the library. The research took twenty minutes. The institutional knowledge &mdash; the product record, the confirmed lead time, the approved CFA, the vendor contact, the pricing history &mdash; compounded into the next project as a structural advantage.</p>
+
+    <p>This is the argument for a reusable spec library (which we built in Lesson 5), and it is also the argument for keeping every record during the project, not just at the end. The vendor scorecard that Marco maintained &mdash; tracking Greta&rsquo;s factory on lead-time accuracy, defect rate, and responsiveness &mdash; is worth money on the next RFQ. A manufacturer with a documented track record of on-time delivery is worth a premium over an untested source at a lower quote, because the true cost of a late chair is not the chair. It is the day rate of a missed opening [4].</p>
+
+    <div class="pull-quote">
+        The data from this project is the most valuable thing it produced &mdash; more valuable than the chair. The chair lasts ten years. The verified sourcing record lasts every project after it.
+    </div>
+
+    <p>This is also the answer to the question a prospect sometimes asks without saying it out loud: <em>why would a firm pay for software to manage this when they already have spreadsheets?</em> The honest answer is that spreadsheets do not compound. A spreadsheet from 2019 is not searchable in 2026. A product record that links the original spec, the CFA approval, the vendor contact, the PO, and the receiving report &mdash; in one place, still connected &mdash; is. The tools in the competitive landscape we covered in Lesson 13 exist precisely to make institutional knowledge reusable [5].</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Reconstruct from memory</div>
+        <div class="recall-question">Without scrolling back to Lesson 13: name <strong>two categories</strong> of FF&E software and one example of each. Then explain in one sentence why Procore is <em>not</em> a competitor to Fohlio, even though both handle something called &ldquo;submittals&rdquo; and &ldquo;punch lists.&rdquo;</div>
+        <div class="recall-hint">The distinction is which actor&rsquo;s work each tool manages and which deliverable it tracks.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. The post-handover world &mdash; facility management and operations</h2>
+
+    <p>Closeout is a real milestone &mdash; warranties transferred, asset records handed over, FR certificates filed &mdash; but it is not the end of the story. Once the hotel operator takes over, the FF&amp;E that Dana specified becomes an operational asset managed by facility management, not a design project.</p>
+
+    <p>At that point, the things that matter are not the same as the things that mattered during procurement. The designer cared about finish and proportion. Facility management cares about whether a chair is still under warranty when its base cracks, whether the replacement fabric is in attic stock, and which vendor to call. The closeout package Dana handed over &mdash; manuals, warranty terms, vendor contacts, FR certifications &mdash; becomes the facility team&rsquo;s operating manual.</p>
+
+    <p>The FF&amp;E reserve account starts earning interest on the day the hotel opens. By year three, it is already funding the contingency assessment for the next refresh. By year seven, the brand&rsquo;s next PIP cycle is arriving. The people in the room at that point &mdash; Dana if she&rsquo;s retained, or whoever is hired for the next round &mdash; will be looking at the original asset records and asking: what did this chair cost? What was the lead time? Is this manufacturer still producing this finish? The quality of those records determines how expensive the next round is to start.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4CB;</div>
+        Reggie, two years after the opening: &ldquo;One of the lobby chairs got a hairline crack in the base. Owner wants it replaced. I need the manufacturer contact, the spec number, and the COM fabric source.&rdquo;<br><br>
+        Marco pulls up the project record in thirty seconds. Sends the vendor contact, the COM supplier, and notes that the factory requires a minimum of six units for a reorder.<br><br>
+        Reggie: &ldquo;Six units. We need one.&rdquo;<br>
+        Marco: &ldquo;I know. That&rsquo;s why Dana ordered two extra as attic stock in the original PO.&rdquo;<br><br>
+        <em>The attic stock. In a real project, this is not a footnote. It is the decision that saves a two-month wait and an emergency premium freight bill &mdash; made on day one of procurement, paid off on day seven hundred and forty.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. What a GTM person can now say</h2>
+
+    <p>This is the practical close. Fourteen lessons ago, someone on a GTM team could describe what Fohlio does functionally. Now they can describe what <em>the customer&rsquo;s world</em> looks like from the inside &mdash; and that is a different, harder, more valuable thing to be able to do.</p>
+
+    <p>Here is what a well-prepared GTM conversation sounds like on the other side of this course:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3E8;</div>
+            <div class="layer-name" style="color: var(--blue);">To an owner or developer</div>
+            <div class="layer-desc">&ldquo;The FF&amp;E reserve you&rsquo;re setting aside becomes the budget for the next cycle. The data accuracy on this project determines how fast you can budget the next one.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4D0;</div>
+            <div class="layer-name" style="color: var(--purple);">To a designer or specifier</div>
+            <div class="layer-desc">&ldquo;Your spec library is a capital asset. Every verified product record you add to it shortens the next project by days. The question is whether that knowledge lives in a file or in a system.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4B0;</div>
+            <div class="layer-name" style="color: var(--orange);">To a purchasing agent</div>
+            <div class="layer-desc">&ldquo;Your vendor scorecard &mdash; lead-time accuracy, defect rate, responsiveness &mdash; is the thing that makes your next RFQ faster and your recommendation to the client credible. Where does that data live between projects?&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F3F7;</div>
+            <div class="layer-name" style="color: var(--green);">To a brand or flag</div>
+            <div class="layer-desc">&ldquo;Your brand standard is only as strong as the process that enforces it. If a property can&rsquo;t produce the CFA at closeout, you can&rsquo;t prove compliance at the next audit.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6A8;</div>
+            <div class="layer-name" style="color: var(--red);">To anyone who says &ldquo;we use Excel&rdquo;</div>
+            <div class="layer-desc">&ldquo;That works until about a hundred items and two people. How many items is your current project? How many people touch that file?&rdquo; (Then wait.)</div>
+        </div>
+    </div>
+
+    <p>These are not sales scripts. They are demonstrations that you understand the customer&rsquo;s real operational world &mdash; the deadlines, the actors, the money, the pain. A prospect who hears those questions from a vendor representative understands, often for the first time, that the person across the table has been inside the problem, not just selling a solution to it.</p>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Course summary &mdash; the whole arc in one place</h2>
+
+    <p>Fourteen chapters. One project. Here is the spine:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F6CB;</div>
+            <div class="layer-name" style="color: var(--orange);">What FF&amp;E is (L1)</div>
+            <div class="layer-desc">Shake the building. Four segments. $60B market. A spec is a living schedule, not a document.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F465;</div>
+            <div class="layer-name" style="color: var(--blue);">Who is in the room (L2)</div>
+            <div class="layer-desc">Owner vs. brand vs. management company. Specifier vs. purchasing agent. The full value chain.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F69A;</div>
+            <div class="layer-name" style="color: var(--purple);">One chair&rsquo;s journey (L3)</div>
+            <div class="layer-desc">Programming &rarr; spec &rarr; RFQ &rarr; PO &rarr; manufacture &rarr; freight &rarr; receiving &rarr; install &rarr; punch list &rarr; closeout. 16&ndash;26 weeks; custom 6&ndash;12 months.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4C4;</div>
+            <div class="layer-name" style="color: var(--green);">Spec &amp; library (L4, L5)</div>
+            <div class="layer-desc">A moodboard becomes a spec sheet. A spec library compounds across projects. OS&amp;E adds vastly more SKUs.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F3F7;</div>
+            <div class="layer-name" style="color: var(--orange);">Brand standards &amp; PIPs (L6)</div>
+            <div class="layer-desc">Contractually enforceable. 80&ndash;120 audit checkpoints. $50k&ndash;$500k+. Every 5&ndash;7 years. Non-compliance = flag risk.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4B5;</div>
+            <div class="layer-name" style="color: var(--blue);">The money (L7, L8)</div>
+            <div class="layer-desc">Three prices, three fee models. Landed-cost stack +15&ndash;35%. Spec vs. quoted vs. approved vs. actual. Tariffs and freight volatility as live budget risk.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--purple);">The supply side (L9)</div>
+            <div class="layer-desc">Manufacturers, reps, dealers, distributors. Commission-only reps. MOQ 20&ndash;200. Vendor scorecards. GPOs (Avendra) vs. project FF&amp;E.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--green);">Submittals &amp; samples (L10)</div>
+            <div class="layer-desc">RFQ &rarr; quotes &rarr; shop drawings &rarr; CFA approval. Four actions: Approved / Approved as Noted / Revise &amp; Resubmit / Rejected. The record that ends disputes.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--orange);">PO to dock (L11)</div>
+            <div class="layer-desc">50% deposit, expediting, receiving inspection (skipping it = #1 costliest failure). White-glove phased delivery. Attic stock.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x2705;</div>
+            <div class="layer-name" style="color: var(--blue);">Approvals &amp; closeout (L12)</div>
+            <div class="layer-desc">Two loops: owner/brand sign-off; submittal loop. Punch list. Closeout package. The audit trail that protects everyone.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x26A0;</div>
+            <div class="layer-name" style="color: var(--purple);">Why it goes wrong (L13)</div>
+            <div class="layer-desc">Lead times, discontinued finishes, tariff volatility, version chaos. Excel breaks at 100+ items / 3+ projects. The tool landscape and where Fohlio sits.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light); border: 2px solid var(--orange);">
+            <div class="layer-icon">&#x1F3C6;</div>
+            <div class="layer-name" style="color: var(--orange);">The building opens (L14)</div>
+            <div class="layer-desc">Synthesis. One chair, every actor. Three property types. The FF&amp;E reserve restarts the loop. Institutional knowledge compounds. What GTM can now say.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>There is no Lesson 15.</strong> What comes next is not a chapter &mdash; it is your first real conversation with a prospect where you understand their world well enough to ask the right question before offering a solution. The measure of this course is not what you can recite; it is whether you can listen to a prospect describe a missed opening or a PIP deadline or a discontinued finish, and hear what they&rsquo;re actually telling you. You now have the vocabulary and the map to do that. The rest is practice.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 50 min</span></h2>
+
+        <p style="font-size: 14px; color: var(--gray-700); margin-bottom: 20px;">This lesson also has an interactive widget (Concept Match) for actor&ndash;role matching. The exercises below go deeper.</p>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Trace a different chair through the full chain.</strong> Pick any hotel you know or can find photos of &mdash; brand-flagged or independent &mdash; and pick one piece of furniture in it. Working from memory and your notes from this course (not the lesson text), write a 12&ndash;15 step trace of that item through the full FF&amp;E process: from who decided the budget, through spec, through RFQ and approval, through production and receiving, to the punch list. For each step, name the actor responsible. Mark two steps where you think a real mistake would most likely happen on that specific project and explain why.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        A strong answer covers: (1) owner/brand sets budget and standard; (2) designer specifies; (3) spec library checked; (4) brand standard approval (if flagged); (5) RFQ issued, 3&ndash;5 vendors; (6) quotes received, value engineering if over budget; (7) sample/CFA approval; (8) PO issued with 50% deposit; (9) expediting during production; (10) freight and customs (if imported); (11) receiving inspection with receiving report; (12) phased white-glove delivery; (13) punch list; (14) closeout. The two most common failure points are the receiving inspection (if skipped, damage discovered on install day) and the gap between the approved spec and what the manufacturer actually ships (the discontinued finish / substitution problem from L1). For an independent boutique, the absence of a dedicated purchasing agent and the lack of attic stock are the likely structural weaknesses.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>Self-check: the three property types.</strong> Without referring back to Part 2: describe in your own words how the FF&amp;E journey for a Four Seasons-level property differs from a Courtyard by Marriott rollout and an independent boutique inn on these three dimensions: (a) who does the buying; (b) how brand standard approval works; (c) the nature of PIP risk. Write two to three sentences per dimension.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Luxury: dedicated fiduciary purchasing firm + brand&rsquo;s own team. Select-service: brand-managed rollout team or mid-tier agent buying at volume with standardized POs. Independent: the owner, usually alone, with no dedicated purchasing backstop. (b) Luxury: every finish, every CFA physically approved; three distinct sign-off loops (owner, brand, purchasing agent); timeline is long and strict. Select-service: brand pre-approved product lists cut approval cycles dramatically &mdash; speed and consistency over customization. Independent: owner is the only approver; fast, but no external check on &ldquo;I thought that looked different.&rdquo; (c) Luxury: major PIP every 5&ndash;7 years, can exceed $500k, flag removal risk if non-compliant. Select-service: brand-standardized PIP playbook with clear timelines; lower per-property cost because the brand buys at scale. Independent: no PIP, but no protection either &mdash; refresh happens when budget allows or when guests complain, whichever comes first.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>The prospect call you weren&rsquo;t ready for before this course.</strong> Find a real hotel property in your city &mdash; preferably one you&rsquo;ve been in or can walk through. Determine whether it is brand-flagged or independent. Based on what you now know: (a) estimate the FF&amp;E budget per key for its category and what a full-room refresh might cost; (b) if it is flagged, identify the brand family and describe what the PIP process would look like for that brand; (c) describe the most likely pain point this specific property&rsquo;s procurement team would have. Write the first four questions you would ask in a discovery call with their purchasing or operations lead. This exercise cannot be answered accurately by pasting it into an AI &mdash; it requires you to apply the course framework to a specific, real property you have actually investigated.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>The structural question: why is this industry built this way?</strong> The FF&amp;E industry separates the designer who specifies from the agent who buys, runs procurement in parallel with construction (not after it), and maintains FF&amp;E reserves rather than paying for renovation as a surprise. Each of these structural choices looks inefficient from the outside. Explain why each one is actually the rational response to a specific constraint of the business &mdash; and what would break if you removed it. Go further: which of these structural choices creates the most friction for your customers today, and why? Answer from your own knowledge of your customer base, not from the lesson text.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-layer-ffe-process">
+                Layer. &ldquo;The FF&amp;E Process: 6 Phases &mdash; FF&amp;E Procurement Explained.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team/blog/the-ff-e-process-explained</a>.
+                <div class="src-meta">Full phase sequence (programming &rarr; closeout); procurement running parallel to construction; phase-by-phase actor roles &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-hvs-cost-guide">
+                HVS / JN+A &mdash; Hotel Cost Estimating Guide; Stroud Group, &ldquo;Hotel FF&amp;E Budgeting.&rdquo; <a href="https://www.stroudgroup.com/hotel-ffe-budgeting-expert-tips-on-how-much-money-to-allocate">stroudgroup.com</a>; DataDrivenAEC, &ldquo;FF&amp;E Specification for Hospitality.&rdquo; <a href="https://datadrivenaec.com/insights/ffe-specification-hospitality-projects">datadrivenaec.com</a>.
+                <div class="src-meta">FF&amp;E per key by tier ($3k economy &rarr; $58k+ luxury); FF&amp;E reserve 2&ndash;5%/yr; three-property-type budget ranges &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-axis-pip">
+                Axis Hospitality Consulting. &ldquo;Hotel Property Improvement Plan (PIP).&rdquo; <a href="https://axishc.net/hotel-property-improvement-plan-pip">axishc.net/hotel-property-improvement-plan-pip</a>. Also: King Construction, &ldquo;Hotel Property Improvement Plan&rdquo;; Oxmaint, &ldquo;Hotel Brand Franchise Maintenance Standards.&rdquo;
+                <div class="src-meta">PIP cadence (5&ndash;7 yrs), 80&ndash;120 audit checkpoints, $50k&ndash;$500k+ cost range, 12&ndash;18 months completion window, 1&ndash;3% penalty fee, flag-removal risk &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-beyer-brown-guide">
+                Beyer Brown &amp; Associates. &ldquo;FF&amp;E Procurement Comprehensive Guide / FF&amp;E vs OS&amp;E.&rdquo; <a href="https://www.beyerbrown.com/ffe-procurement-comprehensive-guide">beyerbrown.com/ffe-procurement-comprehensive-guide</a>.
+                <div class="src-meta">Purchasing-agent scope (budgeting, take-off, CFA, PO, expediting, receiving, closeout); fiduciary vs. principal model; attic stock and FF&amp;E reserve mechanics &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-baileys-logistics">
+                Bailey&rsquo;s Allied. &ldquo;FF&amp;E Logistics Guide (receiving, warehousing, installation).&rdquo; <a href="https://www.baileysallied.com/workplace/resources/ffe-logistics-guide">baileysallied.com/workplace/resources/ffe-logistics-guide</a>.
+                <div class="src-meta">~$15k/day missed-opening cost; receiving inspection as #1 most common and most expensive logistics failure; white-glove phased install; 24-hour inspection window &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-programa-choose">
+                Programa. &ldquo;How to Choose FF&amp;E Specification Software.&rdquo; <a href="https://programa.design/how-to-choose-ffe-specification-software">programa.design/how-to-choose-ffe-specification-software</a>.
+                <div class="src-meta">Tool-landscape categories; spreadsheet break-point (~100 items, 3+ projects); Fohlio vs. Programa vs. Studio Designer positioning; Excel as incumbent &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] point to the numbered entry above. Dana, Priya, Marco, Helen, Tomás, Greta, Reggie, Sam, Linda, Brother Andersen, and Grace are composite illustrations, not real people. Real firms (Benjamin West, HBA, Marriott, Four Seasons, Courtyard, Avendra, Beyer Brown, Bailey&rsquo;s Allied, Procore, Fohlio, Programa, Studio Designer) are used as industry archetypes and are named with factual accuracy to their documented business models. The $40k case is fictional but built on documented industry practice. Budget figures are benchmarks and vary by source, segment, and year. Tariff rates reflect conditions as of mid-2026 and change by proclamation; verify at ustr.gov before quoting to a client.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 14 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">End of course</p>
+    </div>
+
+</div>
+
+</body>
+</html>

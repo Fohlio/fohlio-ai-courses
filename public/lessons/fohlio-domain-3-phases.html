@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 3 of 14</div>
+        <h1>How Buildings Get Furnished</h1>
+        <div class="subtitle">Chapter 3. One chair&rsquo;s journey: the real phases</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>The chair is already on a ship before Dana has finished the drawings.</p>
+
+    <p>That sentence sounds wrong. It is also true. The Austin hotel project is seven months into design development &mdash; walls are going up on site, the GC is running concrete &mdash; and Marco has already placed a purchase order for 240 lounge chairs. They are being fabricated in North Carolina right now. By the time the construction crew finishes the rooms, the chairs will be waiting in a warehouse twelve miles away, inspected and barcoded, ready to be carried in.</p>
+
+    <p>This is the central fact about FF&amp;E that almost nobody outside the industry knows: <strong>procurement does not wait for construction to finish.</strong> It runs in parallel, on its own track, because the time it takes to order, make, ship, and inspect a chair is longer than the time it takes to build the room that will hold it. If you wait for the building to be done before you order the furniture, the hotel opens late. And a late opening, as we learned in Lesson 1, costs about $15,000 a day [1].</p>
+
+    <p>This chapter is the map of that parallel track, walked one chair at a time.</p>
+
+    <!-- QUICK RECAP -->
+    <h3>Quick recall &mdash; from prior lessons</h3>
+    <p style="font-size: 14px; color: var(--gray-500);">Answer in your head before reading today&rsquo;s material.</p>
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Lesson 2 &mdash; Predict</strong><br>
+            From memory: name three real FF&amp;E purchasing firms and state whether each operates on a fiduciary, percentage, or markup fee model. Then name one manufacturer&rsquo;s rep and explain what &ldquo;commission-only&rdquo; means for whose interests they serve.
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 1 &mdash; Predict</strong><br>
+            The $40k mistake arose at one phase and surfaced at a different one. Without looking back: name both phases. Then predict &mdash; in today&rsquo;s lesson you&rsquo;ll see the full phase map. Where exactly does the mistake fit?
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 2 &mdash; Explain</strong><br>
+            Explain in one sentence why the designer who specifies the furniture and the purchasing agent who buys it are almost always different people at different companies.
+        </div>
+        <div class="recap-item">
+            <strong>Today &mdash; Lesson 3</strong><br>
+            <strong style="color: var(--orange);">One chair&rsquo;s journey.</strong> Fifteen phases from blank spec to a room that opens. Why procurement runs parallel to construction. Where lead time bites. Where Dana&rsquo;s $40k mistake actually lives in the timeline.
+        </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>Name and place the <strong>fifteen phases</strong> of a real FF&amp;E project in order, using AIA vocabulary</li>
+            <li>Explain why FF&amp;E procurement is a <strong>parallel track to construction</strong>, not a sequential one</li>
+            <li>State real lead-time ranges: domestic, overseas, and custom &mdash; and why they determine when procurement must begin</li>
+            <li>Locate Dana&rsquo;s $40k mistake precisely in the phase map and name the phase where it arose vs. the phase where it surfaced</li>
+            <li>Distinguish what the <strong>FF&amp;E schedule</strong> tracks from what the <strong>specification</strong> describes</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. The AIA vocabulary &mdash; why the phases have the names they do</h2>
+
+    <p>Interior designers and architects use the same project-phase vocabulary, because for decades the American Institute of Architects has published contract documents &mdash; forms that define what the designer does in each phase and when. For FF&amp;E specifically, the AIA publishes contracts B152, B153, and B252 &mdash; a dedicated interiors family that splits FF&amp;E services into the same named phases as building design [2].</p>
+
+    <p>This matters for one practical reason: when a purchasing agent, a designer, and an owner&rsquo;s rep are in the same room, they all use these phase names to mean the same thing. They are a shared lingua franca. If you know them, you can follow any project conversation. If you don&rsquo;t, you spend half the meeting catching up.</p>
+
+    <p>The phases are: <strong>Programming &rarr; Schematic Design (SD) &rarr; Design Development (DD) &rarr; Construction Documents / FF&amp;E Documents (CD) &rarr; Budgeting &amp; Value Engineering &rarr; Bidding / RFQ &rarr; Purchase Orders (PO) &rarr; Expediting &rarr; Manufacturing &rarr; Freight &amp; Import &rarr; Receiving &amp; Warehousing &rarr; Delivery &amp; Installation &rarr; Punch List &rarr; Closeout &rarr; OS&amp;E &amp; Operations.</strong></p>
+
+    <p>Fifteen phases. One chair moves through all of them.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. The design half &mdash; phases 1 through 6</h2>
+
+    <p>These are the phases where the chair does not exist yet. It is an idea, then a description, then a budget line, then a purchase order.</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Programming (Pre-Design)</span>
+        <div class="step-desc">The studio establishes scope and preliminary budget before any product is chosen. For the Austin hotel: 180 rooms, what room mix (kings, queens, suites), how many F&amp;B seats, and a rough FF&amp;E budget per key. Is the property flagged? If so, which brand standard applies and which approved-vendor lists are mandatory? [3]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Schematic Design (SD)</span>
+        <div class="step-desc">Dana&rsquo;s team produces furniture layouts using generic placeholder blocks &mdash; no specific products yet, just approximate size and type. They test ADA clearances and circulation. The budget carries a large contingency (25&ndash;30%). Dana attends HD Expo this month, walking every showroom with Priya and collecting tear sheets for the categories she knows she&rsquo;ll need. [3]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Design Development (DD)</span>
+        <div class="step-desc">Specific product families get selected. Dana produces FF&amp;E cut sheets with exact dimensions, finishes, and COM specifications &mdash; customer&rsquo;s own material, meaning she has sourced the fabric separately and the manufacturer will upholster the chair in it. She coordinates against the brand standards. This is the phase where the specification is effectively built &mdash; and where a purchasing agent like Marco needs to be engaged, because value-engineering must happen now, before orders are placed. [3]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Construction Documents / FF&amp;E Documents (CD)</span>
+        <div class="step-desc">The deliverable is the complete FF&amp;E specification book: every item, by room type &mdash; model number, finish, fabric, dimensions, installation requirements, quantity. Alongside it, the FF&amp;E schedule cross-references item code, quantity, unit cost, and total. At the end of this phase, RFQs go to shortlisted vendors. [3]</div>
+    </div>
+
+    <div class="info-box blue">
+        <p><strong>Schedule vs. Specification &mdash; the distinction that confuses everyone.</strong> The <strong>specification</strong> describes what a product <em>is</em>: model, finish, fabric, dimensions, manufacturer. The <strong>FF&amp;E schedule</strong> tracks the project status of every product: vendor, quantity, unit cost, total, lead time, order status, delivery date, budget position. The specification is written once (and updated when something changes). The schedule has to be accurate right now, every day, for the life of the project. Dana&rsquo;s $40k mistake happened because the specification changed &mdash; the fabric was discontinued &mdash; but the schedule was never updated to reflect it [4].</p>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">5</span>
+        <span class="step-title">Budgeting &amp; Value Engineering</span>
+        <div class="step-desc">Budgets are refined continuously through DD and CD. When the specified package comes in over budget &mdash; which it reliably does &mdash; the team runs value engineering: substituting equal-or-better, lower-cost alternates without sacrificing design intent. On flagged hotels, the brand may approve stock items from a major vendor to speed timelines and cut cost. This negotiation is Marco&rsquo;s least glamorous and most important job. [3]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">6</span>
+        <span class="step-title">Bidding / RFQ</span>
+        <div class="step-desc">Marco sources 3&ndash;5 vendors per item category, comparing quality, price, and lead time. An RFQ (Request for Quotation) asks for price on an already-defined spec &mdash; the chair, in the exact finish and COM, at 240 units. Vendors return quotes; the team negotiates and selects. Tomás, the manufacturer&rsquo;s rep, is usually the person on the other end of the call. [5]</div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict the gap</div>
+        <div class="recall-question">You have just read the six design phases. Now think about the chair that will eventually sit in room 412 of the Austin hotel. At the end of Phase 6, where in its lifecycle is that chair? It has not been ordered, manufactured, or shipped. Given the lead times you learned about in Lesson 2 (designer/purchasing agent intro, not yet stated precisely here), how long before the opening date should Phase 6 be complete? Make your best estimate before reading Part 3.</div>
+        <div class="recall-hint">The answer is in the lead-time numbers &mdash; and it is probably longer than your instinct suggests.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The parallel track &mdash; phases 7 through 15</h2>
+
+    <p>Here is where the industry&rsquo;s central logic becomes visible. Construction is still underway. The GC is building the shell. The floors are not poured. The rooms do not exist. And Marco cuts the purchase orders anyway.</p>
+
+    <p>This is not recklessness. It is the only way to open on time.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FF&amp;E parallel track alongside construction, showing lead times and the convergence at installation">
+
+            <rect x="0" y="0" width="760" height="340" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">FF&amp;E Parallel Track &mdash; Why Procurement Starts Before Construction Ends</text>
+
+            <!-- Timeline bar -->
+            <rect x="30" y="55" width="700" height="8" rx="4" fill="#E5E7EB"/>
+            <!-- Timeline labels -->
+            <text x="30" y="50" font-family="Inter" font-size="10" fill="#9CA3AF">Month 0</text>
+            <text x="330" y="50" font-family="Inter" font-size="10" fill="#9CA3AF" text-anchor="middle">Month 12</text>
+            <text x="730" y="50" font-family="Inter" font-size="10" fill="#9CA3AF" text-anchor="end">Month 24+</text>
+
+            <!-- CONSTRUCTION TRACK -->
+            <text x="30" y="95" font-family="Inter" font-weight="700" font-size="12" fill="#374151">CONSTRUCTION</text>
+            <rect x="30" y="102" width="560" height="36" rx="6" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"/>
+            <text x="310" y="125" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Building shell, rough-in, finishes &mdash; GC&rsquo;s track</text>
+            <!-- Opening marker -->
+            <line x1="590" y1="55" x2="590" y2="310" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="6,3"/>
+            <text x="596" y="75" font-family="Inter" font-size="11" font-weight="700" fill="#DC2626">Opening</text>
+            <text x="596" y="89" font-family="Inter" font-size="10" fill="#DC2626">date</text>
+
+            <!-- FF&E DESIGN TRACK -->
+            <text x="30" y="165" font-family="Inter" font-weight="700" font-size="12" fill="#7C3AED">FF&amp;E DESIGN</text>
+            <!-- Programming -->
+            <rect x="30" y="172" width="120" height="30" rx="5" fill="#EDE9FE" stroke="#7C3AED"/>
+            <text x="90" y="191" text-anchor="middle" font-family="Inter" font-size="10" fill="#7C3AED">Programming</text>
+            <!-- SD -->
+            <rect x="155" y="172" width="100" height="30" rx="5" fill="#EDE9FE" stroke="#7C3AED"/>
+            <text x="205" y="191" text-anchor="middle" font-family="Inter" font-size="10" fill="#7C3AED">SD</text>
+            <!-- DD -->
+            <rect x="260" y="172" width="100" height="30" rx="5" fill="#EDE9FE" stroke="#7C3AED"/>
+            <text x="310" y="191" text-anchor="middle" font-family="Inter" font-size="10" fill="#7C3AED">DD / CD</text>
+            <!-- Bidding -->
+            <rect x="365" y="172" width="90" height="30" rx="5" fill="#EDE9FE" stroke="#7C3AED"/>
+            <text x="410" y="191" text-anchor="middle" font-family="Inter" font-size="10" fill="#7C3AED">Bidding/RFQ</text>
+
+            <!-- FF&E PROCUREMENT TRACK -->
+            <text x="30" y="230" font-family="Inter" font-weight="700" font-size="12" fill="#1A8F5C">FF&amp;E PROCUREMENT</text>
+            <!-- PO -->
+            <rect x="280" y="237" width="60" height="30" rx="5" fill="#E6F9F0" stroke="#1A8F5C"/>
+            <text x="310" y="256" text-anchor="middle" font-family="Inter" font-size="10" fill="#1A8F5C">PO</text>
+            <!-- Manufacturing domestic -->
+            <rect x="345" y="237" width="120" height="30" rx="5" fill="#E6F9F0" stroke="#1A8F5C"/>
+            <text x="405" y="256" text-anchor="middle" font-family="Inter" font-size="10" fill="#1A8F5C">Manufacturing 6&ndash;10wk</text>
+            <!-- Overseas manufacturing (longer bar) -->
+            <rect x="280" y="200" width="220" height="30" rx="5" fill="#FFF3E5" stroke="#E8790C"/>
+            <text x="390" y="219" text-anchor="middle" font-family="Inter" font-size="10" fill="#E8790C">Overseas / custom: 18&ndash;52wk</text>
+            <!-- Freight / receiving -->
+            <rect x="470" y="237" width="80" height="30" rx="5" fill="#E6F9F0" stroke="#1A8F5C"/>
+            <text x="510" y="252" text-anchor="middle" font-family="Inter" font-size="10" fill="#1A8F5C">Freight &amp;</text>
+            <text x="510" y="264" text-anchor="middle" font-family="Inter" font-size="10" fill="#1A8F5C">Receiving</text>
+            <!-- Install -->
+            <rect x="555" y="237" width="55" height="30" rx="5" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="582" y="256" text-anchor="middle" font-family="Inter" font-size="10" font-weight="700" fill="#1A8F5C">Install</text>
+
+            <!-- Convergence annotation -->
+            <text x="582" y="285" text-anchor="middle" font-family="Inter" font-size="10" fill="#DC2626">&#x21D1; Convergence</text>
+            <text x="582" y="298" text-anchor="middle" font-family="Inter" font-size="10" fill="#DC2626">point</text>
+
+            <!-- $40k mistake marker -->
+            <rect x="345" y="275" width="125" height="22" rx="4" fill="#FEE2E2" stroke="#DC2626"/>
+            <text x="407" y="290" text-anchor="middle" font-family="Inter" font-size="10" fill="#DC2626">&#x26A0; $40k mistake arose here</text>
+
+            <!-- $40k surface marker -->
+            <rect x="470" y="275" width="80" height="22" rx="4" fill="#FEE2E2" stroke="#DC2626" stroke-dasharray="3,2"/>
+            <text x="510" y="290" text-anchor="middle" font-family="Inter" font-size="10" fill="#DC2626">surfaced here</text>
+
+            <!-- Legend -->
+            <rect x="20" y="312" width="720" height="22" rx="4" fill="white" stroke="#E5E7EB"/>
+            <rect x="30" y="318" width="14" height="10" rx="2" fill="#EDE9FE" stroke="#7C3AED"/>
+            <text x="50" y="327" font-family="Inter" font-size="10" fill="#6B7280">Design phases</text>
+            <rect x="130" y="318" width="14" height="10" rx="2" fill="#E6F9F0" stroke="#1A8F5C"/>
+            <text x="150" y="327" font-family="Inter" font-size="10" fill="#6B7280">FF&amp;E procurement (domestic)</text>
+            <rect x="320" y="318" width="14" height="10" rx="2" fill="#FFF3E5" stroke="#E8790C"/>
+            <text x="340" y="327" font-family="Inter" font-size="10" fill="#6B7280">Overseas / custom (longer)</text>
+            <line x1="510" y1="323" x2="530" y2="323" stroke="#DC2626" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="536" y="327" font-family="Inter" font-size="10" fill="#DC2626">Opening date</text>
+        </svg>
+        <div class="diagram-caption">FF&amp;E design and procurement are parallel tracks. POs are cut months before the building is done. For overseas or custom items, the order goes in before construction is even close to finished. Both tracks converge at installation, days before opening.</div>
+    </div>
+
+    <h3>Lead times: the number that drives everything</h3>
+
+    <p>If you remember one set of numbers from this lesson, let them be these. They are not estimates &mdash; they are the operational reality that every project schedule is built around [3]:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F1FA;&#x1F1F8;</div>
+            <div class="card-title" style="color: var(--green);">6&ndash;10 weeks</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Domestic furniture</div>
+            <div class="card-desc">Standard domestic contract furniture, already in stock or short-run production. The fastest category. Still six weeks minimum &mdash; not &ldquo;I need it next week.&rdquo;</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F6A2;</div>
+            <div class="card-title" style="color: var(--orange);">18&ndash;24 weeks</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Overseas production</div>
+            <div class="card-desc">China, Vietnam, Turkey &mdash; production plus ocean freight plus customs. Four to six months. A project that opens in Month 24 needs POs cut around Month 18 or earlier.</div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F528;</div>
+            <div class="card-title" style="color: var(--red);">6&ndash;12 months</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Custom / millwork</div>
+            <div class="card-desc">Bespoke headboards, custom millwork reception desks, handmade lighting. The longest-lead, highest-risk items. Order them at DD, not at CD. [3]</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x23F0;</div>
+            <div class="card-title" style="color: var(--blue);">16&ndash;20 weeks total</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Typical domestic end-to-end</div>
+            <div class="card-desc">Design &amp; spec (2&ndash;4 wks) &rarr; approval (3&ndash;5 wks) &rarr; production (6&ndash;8 wks) &rarr; freight/customs (2&ndash;3 wks) &rarr; install (3&ndash;4 wks) &asymp; 16&ndash;20 weeks total [3].</div>
+        </div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4AC;</div>
+        Priya, the first time she hears the lead-time numbers: &ldquo;Wait. Six months for a custom headboard? That&rsquo;s before we even know what the room looks like.&rdquo;<br>
+        Marco: &ldquo;No, that&rsquo;s after you&rsquo;ve designed it, specified it, had it approved by the owner and the brand, run value engineering, and gotten a confirmed quote. Then you wait six months.&rdquo;<br>
+        Priya: &ldquo;What happens if it&rsquo;s wrong?&rdquo;<br>
+        Marco: <em>&ldquo;You call Dana. Dana gets very quiet. We figure out if we can ship something that&rsquo;s almost right.&rdquo;</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Phases 7 through 15 &mdash; the procurement half</h2>
+
+    <div class="step-card">
+        <span class="step-number">7</span>
+        <span class="step-title">Purchase Orders (POs)</span>
+        <div class="step-desc">Marco converts approved selections into purchase orders &mdash; binding contracts with the vendor. Typically 50% deposit on the PO, 50% before or on delivery. Net 30 or Net 60 payment terms for established vendors; proforma (pay first) for new or overseas relationships. The PO is the moment the chair officially exists as a transaction. [4]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">8</span>
+        <span class="step-title">Expediting</span>
+        <div class="step-desc">After the PO is cut, nothing moves automatically. Marco, or someone on his team, actively chases each order: tracking factory progress, answering vendor questions, evaluating alternates when items are discontinued. This is the phase where Dana&rsquo;s $40k mistake was born &mdash; the fabric went stale, the manufacturer substituted silently, and nobody was looking closely enough. [5]</div>
+    </div>
+
+    <div class="info-box red">
+        <p><strong>This is where the $40k mistake arose.</strong> Expediting &mdash; Phase 8 &mdash; is the long silent gap after the PO and before the goods ship. It is the phase nobody outside the industry pictures when they think of &ldquo;buying furniture.&rdquo; The chair existed on paper (the spec), in a contract (the PO), and nominally in production &mdash; but nobody was watching the finish closely enough to catch when it changed. The mistake surfaced later, at Phase 11, when Reggie&rsquo;s team inspected the arriving chairs at the warehouse. By then the only fix was a rework at $40,000.</p>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">9</span>
+        <span class="step-title">Manufacturing &amp; Lead Times</span>
+        <div class="step-desc">The factory produces the goods. For the Austin lounge chairs (domestic contract, COM fabric): 8 weeks from confirmed PO. For a custom millwork reception desk: 5 months. For imported lighting fixtures from a Turkish supplier: 22 weeks including ocean freight. Each item runs its own lead-time clock, independently, and they all have to converge at the warehouse in time for install. [3]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">10</span>
+        <span class="step-title">Freight &amp; Import</span>
+        <div class="step-desc">Items ship via ocean, air, or road. Imported FF&amp;E needs customs brokerage; specialist freight forwarders handle ocean/air/road plus in-house customs and warehousing. Logistics typically costs 6&ndash;25% of total FF&amp;E product spend &mdash; an often-underestimated budget line. [5] In 2025&ndash;26, a tariff on a container of Chinese furniture can add tens of thousands of dollars to a project that was budgeted at pre-tariff rates.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">11</span>
+        <span class="step-title">Receiving &amp; Warehousing</span>
+        <div class="step-desc">Goods from many manufacturers converge at a third-party warehouse. Reggie&rsquo;s team inspects everything against the purchase orders, photographs each piece, and barcodes it. The output is a receiving report. Skipping this step &mdash; letting trucks go straight to site &mdash; is the single most common and most expensive logistics failure: damage discovered on install day instead of at the dock means reorders on a hard opening deadline. [5]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">12</span>
+        <span class="step-title">Delivery &amp; Installation</span>
+        <div class="step-desc">Items are staged and delivered to site in install sequence. White-glove: unpack, place, assemble, remove debris. Scheduled 4&ndash;6 weeks before opening. Reggie&rsquo;s crew works room by room, matching each piece to the hotel&rsquo;s room-numbering scheme. The model room &mdash; a single fully-furnished room &mdash; goes first, so the owner and brand can sign off on the actual result before 179 more rooms are fitted. [5]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">13</span>
+        <span class="step-title">Punch List</span>
+        <div class="step-desc">A walkthrough generates the punch list &mdash; everything wrong or incomplete: damaged items, wrong finishes, missing pieces. The purchasing agent and GC resolve each item. Sam, the owner&rsquo;s rep, typically co-signs the final inspection. A clean punch list is the last gate before opening. [4]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">14</span>
+        <span class="step-title">Closeout / Handover</span>
+        <div class="step-desc">Final accounting, reports, and a handover package: manuals, warranties, fire-rating certificates, and asset records transferred to the owner/operator. This is the paper trail that lives in a drawer for the next five to ten years, until the next renovation or PIP audit. Dana learned from the $40k mistake that the closeout record is also where &ldquo;I never approved that&rdquo; gets resolved &mdash; or doesn&rsquo;t. [4]</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">15</span>
+        <span class="step-title">OS&amp;E &amp; Operations</span>
+        <div class="step-desc">As we learned in Lesson 1, OS&amp;E &mdash; the consumables layer (towels, linens, glassware, amenities) &mdash; runs on a parallel procurement track because it too is tied to the opening date. It starts later than FF&amp;E (3&ndash;6 months before opening rather than 12&ndash;18), has vastly more SKUs, and never truly ends. It is the phase that outlasts everyone else on the project list. [1]</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. What the mistake tells us about the pipeline</h2>
+
+    <p>Let&rsquo;s now place Dana&rsquo;s $40k mistake precisely in the phase map.</p>
+
+    <p>The chair was specified correctly in Phase 3 (Design Development). The finish &mdash; a specific fabric SKU &mdash; was written into the spec. The purchase order was cut in Phase 7 with that finish on it. So far, everything was correct.</p>
+
+    <p>The mistake arose in <strong>Phase 8: Expediting</strong>. During the months between the PO and the shipment, the manufacturer quietly discontinued the exact fabric and substituted the &ldquo;closest match.&rdquo; Nobody caught it because the expediting process was not detailed enough to flag a finish substitution as requiring re-approval. The spec said one thing. The factory was making another. And the schedule was never updated.</p>
+
+    <p>The mistake surfaced in <strong>Phase 11: Receiving</strong>, when Reggie&rsquo;s crew opened the containers at the warehouse and compared the delivered goods to the purchase orders. The finish was wrong. By then the options were: ship the chairs to site anyway and hope the owner doesn&rsquo;t notice (they did), or pay for reupholstery on sixty chairs. The bill came to forty thousand dollars.</p>
+
+    <div class="pull-quote">
+        The spec was right the day Dana sent it. It stopped being right somewhere in Phase 8, and nobody noticed until Phase 11. That is the gap the whole industry is built around closing.
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Test yourself &mdash; both mistakes and both phases</div>
+        <div class="recall-question">Without looking back: (a) In which numbered phase did the $40k mistake <strong>arise</strong>? (b) In which phase did it <strong>surface</strong>? (c) What is the specific thing that happened in between &mdash; not &ldquo;nobody checked,&rdquo; but the precise event? (d) From Lesson 2, which actor is responsible for running Phase 8, and what company does he represent in our story?</div>
+        <div class="recall-hint">Part (d) is a callback to last lesson &mdash; the cast is useful here.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. The three client types in the phase timeline</h2>
+
+    <p>One more layer of complexity, and then we&rsquo;re done for today. The fifteen-phase pipeline does not run the same way for every project. Dana&rsquo;s three client types &mdash; Linda (luxury flag), Brother Andersen (institutional), and Grace (independent boutique) &mdash; experience radically different versions of the same pipeline.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Phase cluster</th>
+                <th>Linda (luxury flag)</th>
+                <th>Brother Andersen (institutional)</th>
+                <th>Grace (independent boutique)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Programming &ndash; DD</strong></td>
+                <td>Brand standards from the flag constrain product choices from Phase 1. Approved vendor lists. Linda must sign off at every gate.</td>
+                <td>Long committee process. Scope changes slowly. Budget is strict from donated funds. Programming alone can take months.</td>
+                <td>Grace decides the vibe over a phone call and a Pinterest board. No formal gates. Fast.</td>
+            </tr>
+            <tr>
+                <td><strong>Bidding &ndash; PO</strong></td>
+                <td>Purchasing agent (Marco-type) runs a formal RFQ. POs issued after brand approval. Deposit terms strictly documented.</td>
+                <td>Sometimes a formal procurement process. Often slow to approve POs because of internal sign-off chains.</td>
+                <td>Grace calls one or two vendors she knows. Pays by credit card where possible. PO is a word document, if it exists at all.</td>
+            </tr>
+            <tr>
+                <td><strong>Expediting &ndash; Receiving</strong></td>
+                <td>Professional logistics firm (Reggie-type). Receiving report, photos, barcodes. Model room sign-off by brand before full install.</td>
+                <td>Expediting often handled by Dana on behalf of an under-resourced client. Receiving may be informal if no purchasing agent is engaged.</td>
+                <td>Grace is usually the receiving crew. She&rsquo;s also the expediting crew. If something goes wrong in Phase 8, she finds out in Phase 11, alone, on her phone.</td>
+            </tr>
+            <tr>
+                <td><strong>Closeout</strong></td>
+                <td>Full warranty package, FR certificates, asset register. Brand may audit at any point afterward.</td>
+                <td>Minimal if no purchasing agent. Dana often assembles the closeout documents herself.</td>
+                <td>Whatever Grace can find in her email inbox. No asset register. No backstop for the next PIP &mdash; because there is no PIP.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Grace&rsquo;s project is both the simplest and the most fragile. She skips most of the process friction that Linda and Brother Andersen have to navigate &mdash; but she also skips most of the checkpoints that catch mistakes. For a small inn, a $40k rework bill is not an inconvenience; it is a crisis.</p>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>What we followed through fifteen phases:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--purple);">The AIA vocabulary</div>
+            <div class="layer-desc">Fifteen named phases, from Programming to OS&amp;E &amp; Operations. Published in AIA contracts B152/B153/B252. The shared language of the industry.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x27A1;</div>
+            <div class="layer-name" style="color: var(--green);">Parallel tracks</div>
+            <div class="layer-desc">FF&amp;E procurement runs alongside construction, not after. POs cut during the build; goods in a warehouse before the rooms exist. The only way to open on time.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x23F1;</div>
+            <div class="layer-name" style="color: var(--orange);">Lead times govern everything</div>
+            <div class="layer-desc">Domestic 6&ndash;10 weeks. Overseas 18&ndash;24 weeks. Custom 6&ndash;12 months. These numbers determine when Phase 7 has to start &mdash; which determines when Phase 5 has to be done.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x26A0;</div>
+            <div class="layer-name" style="color: var(--red);">The $40k mistake, located</div>
+            <div class="layer-desc">Arose in Phase 8 (Expediting) &mdash; a silent substitution nobody caught. Surfaced in Phase 11 (Receiving) &mdash; the last moment where anything could be fixed.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4C5;</div>
+            <div class="layer-name" style="color: var(--blue);">Schedule vs. Specification</div>
+            <div class="layer-desc">The spec describes what a product is. The schedule tracks what is true right now: status, price, lead time, delivery date. The mistake lived in the gap between the two.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 4:</strong> we zoom into Phases 2&ndash;4 &mdash; the design half in detail. How does a moodboard become a specification? What is a cut sheet, a tear sheet, a spec book, and a finish schedule? And what does Dana&rsquo;s studio principal Helen mean when she says the spec library is &ldquo;the firm&rsquo;s real asset&rdquo; &mdash; the thing that makes next project faster than this one?</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 45 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Phase map a real project.</strong> Think of a building renovation, office refit, or hospitality property that opened recently. (Pick something you know about &mdash; a hotel stay, a news story, your own office.) Walk it through all fifteen phases from memory, noting: (a) which phases you have enough information to describe, (b) which phases you cannot see from the outside, and (c) one phase where you suspect the parallel-track challenge would have been most painful for that specific project. Write 4&ndash;6 sentences.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Passes if: the student identifies at least seven of the fifteen phases and correctly places them in order; correctly distinguishes the design phases (visible to the designer and client) from the procurement phases (largely invisible from outside); and identifies a specific phase where the parallel-track constraint was the likely stressor. Full credit if the student correctly notes that Phases 7&ndash;9 are invisible from the outside (the chair is being made; nobody announces it) while Phases 11&ndash;12 are the first visible evidence that procurement has been happening in parallel.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Cumulative self-check (L1 + L2 + L3).</strong> Answer each part without looking back at any lesson:
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>(a) Name the four segments of what goes into a finished building (Lesson 1). Which one is an operating expense, not a capital asset?</li>
+                    <li>(b) Name the two actors in the chain who both attend trade shows but for completely different reasons (Lesson 2). What is each one&rsquo;s job there?</li>
+                    <li>(c) State the three lead-time ranges (Lesson 3). Why does the overseas lead time mean a purchasing agent must cut POs before construction is finished?</li>
+                    <li>(d) In one sentence: where in the fifteen phases did Dana&rsquo;s $40k mistake arise, and where did it surface?</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) FF&amp;E, OS&amp;E, Finishes, Architectural. OS&amp;E is an operating expense (consumables, replaced continuously). (b) Dana (the designer) attends trade shows to discover and evaluate product for specification. Marco (the purchasing agent) attends to build vendor relationships and compare pricing and lead times for items he will bid. (c) Domestic 6&ndash;10 wks; overseas 18&ndash;24 wks; custom 6&ndash;12 months. Overseas: a 24-week lead time on a hotel that opens in Month 24 means the PO must be cut by Month 18 at the latest &mdash; well before construction is done. (d) Arose in Phase 8 (Expediting): the manufacturer discontinued the fabric and substituted silently, and nobody was watching closely enough. Surfaced in Phase 11 (Receiving): the inspection compared the delivered chairs to the purchase order and found the wrong finish.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>The expediting gap (AI-resilient).</strong> Phase 8 (Expediting) is described in this lesson as the phase where mistakes are born. Find a real FF&amp;E procurement firm&rsquo;s public website (Benjamin West, Beyer Brown, Stroud Group, or any similar firm) and look for how they describe their expediting process. What specific things do they say they track or check during the period between PO and shipment? Write 3&ndash;4 sentences comparing their public description to what this lesson says happens in Phase 8. Note: this task requires you to look at a real firm&rsquo;s current website &mdash; an AI cannot browse it for you.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why does lead time force parallel tracks?</strong> (Elaborative interrogation.) The parallel-track model &mdash; where purchasing runs at the same time as construction &mdash; is a direct consequence of lead times. Work through this: (a) If domestic furniture lead time were 2 weeks instead of 6&ndash;10, would the parallel track still be necessary? Explain your reasoning. (b) What happens to a project&rsquo;s risk profile when it mixes domestic, overseas, and custom items &mdash; each on a different lead-time clock? (c) Why does Grace, the independent boutique owner with 40 chairs instead of 2,400, still face a version of this problem? Show your reasoning, not just the conclusion.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-l3-1">
+                Bailey&rsquo;s Allied. &ldquo;FF&amp;E Logistics Guide.&rdquo; <a href="https://www.baileysallied.com/workplace/resources/ffe-logistics-guide">baileysallied.com/workplace/resources/ffe-logistics-guide</a>.
+                <div class="src-meta">Cost of a missed opening (~$15k/day for a 100-room hotel); receiving inspection as the critical failure point; OS&amp;E as a parallel track to FF&amp;E; white-glove install best practices &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l3-2">
+                AIA (American Institute of Architects). &ldquo;Interiors Family Contracts: B152, B153, B252.&rdquo; <a href="https://learn.aiacontracts.com/contract-doc-pages/27081-interiors-family">learn.aiacontracts.com/contract-doc-pages/27081-interiors-family</a>.
+                <div class="src-meta">AIA FF&amp;E contract structure; named phases (Programming, SD, DD, CD, FF&amp;E Documents, Procurement, Administration); the phases apply to interior design and FF&amp;E as well as architecture &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l3-3">
+                DataDrivenAEC. &ldquo;FF&amp;E Specification for Hospitality Projects.&rdquo; <a href="https://datadrivenaec.com/insights/ffe-specification-hospitality-projects">datadrivenaec.com/insights/ffe-specification-hospitality-projects</a>; and Layer. &ldquo;The FF&amp;E Process: 6 Phases Explained.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team/blog/the-ff-e-process-explained</a>.
+                <div class="src-meta">Phase descriptions (Programming through OS&amp;E); lead-time ranges (domestic 6&ndash;10 wks, overseas 18&ndash;24 wks, custom 6&ndash;12 mo); procurement starts while construction is underway; 16&ndash;20 week total end-to-end domestic timeline; COM specification &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l3-4">
+                Procurist. &ldquo;FF&amp;E Schedules: The Complete Guide for Interior Designers.&rdquo; <a href="https://procurist.io/resources/ffe-schedules">procurist.io/resources/ffe-schedules</a>; and Beyer Brown &amp; Associates. &ldquo;FF&amp;E Procurement Process.&rdquo; <a href="https://www.beyerbrown.com/services/ffe-procurement-process">beyerbrown.com/services/ffe-procurement-process</a>.
+                <div class="src-meta">FF&amp;E schedule vs. specification distinction; PO deposit terms (50% on PO); punch list; closeout/handover package (warranties, FR certs, asset records); expediting as a distinct managed phase &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l3-5">
+                Layer. &ldquo;FF&amp;E Procurement Explained.&rdquo; <a href="https://layer.team/blog/ff-e-procurement-explained">layer.team/blog/ff-e-procurement-explained</a>; and Worldwide Logistics. &ldquo;FF&amp;E Logistics.&rdquo; <a href="https://worldwidelogisticsltd.com/vertical-markets/ffe-logistics">worldwidelogisticsltd.com/vertical-markets/ffe-logistics</a>.
+                <div class="src-meta">Logistics cost 6&ndash;25% of product spend; expediting defined (chasing factory, catching discontinued items); freight &amp; customs brokerage for imported FF&amp;E; procurement runs parallel to construction &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Inline references [N] point to the numbered source above. Lead-time ranges are well-corroborated industry benchmarks; individual projects vary by manufacturer, category, and season. The fifteen-phase structure is consistent with AIA contract documents and multiple industry guides; some practitioners use fewer named phases or different groupings. Dana&rsquo;s $40k scenario is fictional, constructed from documented industry failure modes (silent substitution, inadequate expediting, late-stage receiving discovery). Tariff observations reflect 2025&ndash;26 U.S. trade policy environment and are explicitly volatile.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 3 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: From a moodboard to a spec</p>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 7</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 7 of 14</div>
+        <h1>Three Prices for the Same Chair</h1>
+        <div class="subtitle">Chapter 7. Money, Part 1 &mdash; how retail, trade, and fee actually stack up, and who keeps what</div>
+    </div>
+
+    <!-- HOOK (scene anchor, &lt;200 words) -->
+    <p>Tomás Vega slides a price list across the table. Marco glances at it and smiles, which is the professional version of rolling his eyes. The number on the page &mdash; $1,240 per unit for the lounge chair &mdash; is the retail price, which is roughly what a member of the public would pay if they walked into a showroom and pointed at it. Tomás knows Marco has no intention of paying that. Marco knows Tomás knows. They both know the real conversation is about the trade price.</p>
+
+    <p>The trade price for this chair, for a buyer like Marco&rsquo;s firm, is somewhere around $620 &mdash; fifty percent off list. That is not a promotional discount or a favor. It is the price that professional purchasing firms pay because they are essentially operating as a wholesale channel for the manufacturer. They order in volume, they specify in advance, they handle client management, they take on a share of the risk. The manufacturer prices accordingly.</p>
+
+    <p>Which brings up the question the owner&rsquo;s rep Sam will ask at the budget meeting next Thursday: if the chair is $620 to Marco, why does it show up in the project budget at $890?</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>The difference between retail (list), trade (net), and the landed price the client actually pays</li>
+            <li>What &ldquo;keystone&rdquo; means and why it is only a starting point, not a rule</li>
+            <li>The three main fee models designers and purchasing firms use &mdash; and the fiduciary model specific to hospitality</li>
+            <li>How a manufacturer&rsquo;s rep earns without the buyer ever writing them a check</li>
+            <li>Where each actor in the value chain captures (or passes through) margin</li>
+        </ul>
+    </div>
+
+    <!-- QUICK RECAP -->
+    <h3 style="margin-top: 48px; margin-bottom: 12px; color: var(--gray-500); font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Quick recap &mdash; cold recall, no scrolling</h3>
+    <p style="font-size: 14px; color: var(--gray-500); margin-bottom: 16px;">These span L6, L4, and L2. Answer in your head before you read on.</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L6 &mdash; Brand standards &amp; PIP</strong><br>
+            Name the two-step financial penalty for a hotel that misses its PIP deadline. And what is a &ldquo;golden sample&rdquo;?
+        </div>
+        <div class="recap-item">
+            <strong>L4 &mdash; From moodboard to spec</strong><br>
+            What is the difference between a <em>spec sheet</em> and an <em>FF&amp;E schedule</em>? Which carries the price; which carries the status?
+        </div>
+        <div class="recap-item">
+            <strong>L2 &mdash; The whole cast</strong><br>
+            Name the core division of labor: who specifies vs. who buys FF&amp;E. And who actually owns the budget on a hotel project?
+        </div>
+        <div class="recap-item" style="background: var(--blue-light); border-left: 3px solid var(--blue);">
+            <strong style="color: var(--blue);">L7 &mdash; TODAY</strong><br>
+            Three prices for the same chair. Retail vs. trade. How the purchasing agent and the designer each earn money without being on the same payroll.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. Two prices before you even start negotiating</h2>
+
+    <p>Almost every product in the contract-furniture and hospitality-furnishing world has two prices: the <strong>retail price</strong> (also called the list price or MSRP) and the <strong>trade price</strong> (also called the net price). They are not the same number, they do not move together, and understanding the gap between them is the first prerequisite for understanding anything else about how money flows in FF&amp;E.</p>
+
+    <h3>The retail price</h3>
+
+    <p>The retail price is what the public pays. It is the number on the showroom tag. It is also, in the contract world, largely theatrical &mdash; because almost nobody in a professional hospitality project pays it. It exists as a reference point, a baseline, and occasionally as a marketing tool (discounts are easier to communicate when there is a number to discount from).</p>
+
+    <h3>The trade price</h3>
+
+    <p>The trade price is available to verified design professionals and purchasing firms through a manufacturer&rsquo;s trade program. Getting access requires a business registration, a tax ID or resale certificate, and proof of active professional practice &mdash; typically a portfolio or business website. The application takes one to two weeks per brand. Once approved, the firm buys at a <strong>wholesale-equivalent rate</strong> that is typically <strong>20 to 60% below retail</strong>, depending on the manufacturer [1]:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3EA;</div>
+            <div class="layer-name" style="color: var(--blue);">Retail brands with trade program</div>
+            <div class="layer-desc">10&ndash;20% off retail. Names available in consumer showrooms that also serve the trade.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--orange);">Trade-only manufacturers</div>
+            <div class="layer-desc">30&ndash;50% off list. Not available in consumer retail; only sold through approved design professionals.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F30D;</div>
+            <div class="layer-name" style="color: var(--purple);">European / factory-direct</div>
+            <div class="layer-desc">40&ndash;60% off retail. Typically accessed through specialized importers or direct trade accounts.</div>
+        </div>
+    </div>
+
+    <p>Why does this gap exist? Because the manufacturer is using designers and purchasing firms as a distribution channel. The designer specifies the product into a project; the purchasing firm orders it in volume and manages delivery. The manufacturer saves on retail infrastructure, showroom costs, and direct sales effort. The trade discount is the manufacturer&rsquo;s cost of using that channel [1].</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading</div>
+        <div class="recall-question">Marco&rsquo;s firm buys a lounge chair at $620 (50% off the $1,240 list price). The owner sees a budget line of $890 for the same chair. Where does the $270 difference go &mdash; and is that difference necessarily wrong, or even unusual? Think through who in the value chain might hold it before reading Part 2.</div>
+        <div class="recall-hint">Think about the designer who specified the chair, the purchasing firm that ordered it, and the owner who is paying the project budget.</div>
+    </div>
+
+    <h3>The keystone markup</h3>
+
+    <p>The classic rule of thumb in furniture retail is <strong>keystone pricing</strong>: the retailer doubles the wholesale cost to set the retail price. A 100% markup means the retailer&rsquo;s gross margin is 50% &mdash; they paid $500 for something they sell at $1,000 [2].</p>
+
+    <p>Keystone is a starting point, not a law. Real furniture markups range from 20% to 400% over wholesale depending on the item, the brand, the service burden, and whether the sale includes white-glove delivery, warranty, and damage liability. A high-end custom lounge chair with a 12-week lead time and complex COM upholstery carries a different margin economics than a commodity side table. But if you are in a negotiation and someone says &ldquo;keystone&rdquo;, now you know: they mean the retail price is roughly twice the trade price, and they are working backward from that [2].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. The three ways a designer earns on product</h2>
+
+    <p>The $270 gap in the question above is not a hidden fee. It is the fee &mdash; or the markup &mdash; depending on which model the designer or purchasing firm uses. There are three main models, and they are all legitimate and all common [3]:</p>
+
+    <table>
+        <tr>
+            <th>Model</th>
+            <th>Mechanic</th>
+            <th>Typical number</th>
+            <th>Client sees net price?</th>
+        </tr>
+        <tr>
+            <td><strong>Retail / spread</strong></td>
+            <td>Buy at trade (net), sell at or near list price, keep the spread</td>
+            <td>Net &times; 2&ndash;3.5&times;; ASID survey: markup 30&ndash;50% above trade</td>
+            <td>No &mdash; client sees retail only</td>
+        </tr>
+        <tr>
+            <td><strong>Cost-plus / markup</strong></td>
+            <td>Quote the net cost plus a stated percentage</td>
+            <td>20&ndash;35% markup over trade (30&ndash;35%+ in major markets)</td>
+            <td>Yes &mdash; both numbers disclosed</td>
+        </tr>
+        <tr>
+            <td><strong>Hybrid</strong></td>
+            <td>Design fee for creative work; product billed separately at cost-plus or retail depending on item</td>
+            <td>Varies by engagement structure</td>
+            <td>Partial &mdash; depends on the item</td>
+        </tr>
+    </table>
+
+    <p>In the cost-plus model, a worked example from an actual designer&rsquo;s published rate card: $8,999 retail &minus; 40% designer discount = $5,399 net &times; 1.35 markup = $7,289 client price [3]. The client pays less than retail, the designer earns on the product, and the math is visible to everyone. That transparency is the whole point of cost-plus &mdash; it is the response to clients who ask &ldquo;but what did you pay for it?&rdquo;</p>
+
+    <p>BIID research found that roughly 35% of UK designers work as &ldquo;principal&rdquo; &mdash; they buy at trade and resell at retail, taking full legal liability for the goods &mdash; while another 35% blend models; about 68% do not disclose the trade price to clients at all [3]. In residential design, the spread model is the norm. In hospitality procurement, the norm is different &mdash; and it is worth understanding why.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The fiduciary model &mdash; how Marco actually gets paid</h2>
+
+    <p>Marco&rsquo;s firm is not a design firm. It is an FF&amp;E purchasing agent &mdash; specifically, a <strong>fiduciary purchasing agent</strong>, which means something precise in the hospitality world: the agent works <em>for</em> the owner, passes <strong>all</strong> trade discounts to the client, and is compensated only by a disclosed fee. The trade discount is not the agent&rsquo;s income &mdash; it belongs to the owner [4].</p>
+
+    <p>This is the model Benjamin West describes as its operating structure, and it is increasingly the hospitality standard. The logic is clean: the owner is trusting the purchasing agent to make decisions on their behalf &mdash; vendor selection, pricing negotiations, quality oversight. If the agent also keeps a portion of every discount they negotiate, their incentive is misaligned. A fiduciary agent has no reason to prefer any vendor over another for financial reasons; their only income is the disclosed fee.</p>
+
+    <div class="story-box">
+        <p>Sam (the owner&rsquo;s rep) asked Marco the question directly at the project kickoff: &ldquo;How do you make money?&rdquo; Marco answered in one sentence: &ldquo;We charge 4% of the FF&amp;E procurement value. On a &euro;3M package, that is &euro;120,000. Every trade discount we negotiate comes off your budget, not into our pocket.&rdquo; Sam wrote the number down. Then he asked who verified that the discounts actually moved. Marco said: &ldquo;Your auditor can review every PO and every supplier invoice. That&rsquo;s what the disclosed part means.&rdquo;</p>
+        <p>Sam hired them.</p>
+    </div>
+
+    <h3>The other purchasing-agent models</h3>
+
+    <p>The fiduciary/disclosed-fee model is not the only one. Two others are common [4]:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4CA;</div>
+            <div class="card-title" style="color: var(--orange);">Management fee</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Agent model, with a percentage</div>
+            <div class="card-desc">The agent charges <strong>10&ndash;20% of FF&amp;E trade value</strong> as a management fee; discounts still pass to the client. The BIID recommends 15% as the standard for commercial projects. Higher rate than the fiduciary model but covers more active management on smaller or more complex projects.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x1F4B0;</div>
+            <div class="card-title" style="color: var(--purple);">Principal / markup</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Buy and resell</div>
+            <div class="card-desc">The firm buys at trade (<strong>20&ndash;40% below retail</strong>) and resells at or near retail, keeping the spread. Industry average markup <strong>~35%</strong> (range 30&ndash;50%). More common in residential design than hospitality. The firm takes on full retailer legal liability for the goods.</div>
+        </div>
+    </div>
+
+    <p>There is also a <strong>tiered percentage</strong> structure: for example, 8% on the first &pound;50,000 of FF&amp;E value, then 4% above that. This rewards agents for bringing larger projects (lower rate on volume) while covering the fixed overhead on smaller ones [4].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Tomás &mdash; the invisible commission</h2>
+
+    <p>Back to Tomás Vega. He is a manufacturer&rsquo;s rep &mdash; an independent salesperson who carries multiple non-competing furniture lines across a defined territory. He is not employed by any one manufacturer. He earns on commission.</p>
+
+    <p>Here is the structural fact that surprises most people: <strong>Tomás is paid by the manufacturer, not by the buyer.</strong> Marco&rsquo;s firm does not write Tomás a check. The manufacturer pays Tomás a commission &mdash; typically <strong>5 to 15% of the sale value</strong> depending on the product and market [5] &mdash; after the order ships. From Marco&rsquo;s perspective, Tomás&rsquo;s commission is invisible: it does not appear on the invoice, it does not change the trade price, and Marco has no direct obligation to it. It is the manufacturer&rsquo;s cost of using an outside sales force instead of salaried staff.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F91D;</div>
+        Marco: &ldquo;So Tomás, if I bring this project to you and it&rsquo;s three hundred chairs, what are you going to do for me?&rdquo;<br>
+        Tomás: &ldquo;I&rsquo;ll give you a great price, a fast lead time, a factory visit, and I will personally call the plant manager every week until the order ships.&rdquo;<br>
+        Marco: &ldquo;And what does the manufacturer think about all that personal attention?&rdquo;<br>
+        Tomás: &ldquo;They&rsquo;re paying for it.&rdquo;<br>
+        <em>The rep model is elegant: the manufacturer gets a motivated salesperson who only earns if they close. Marco gets a point of contact with a factory relationship. Nobody tells Dana any of this unless she asks.</em>
+    </div>
+
+    <p>Tomás&rsquo;s core job is not the transaction &mdash; it is <strong>getting the product specified</strong>. If Dana writes the chair into the spec at the DD phase (the design development stage we covered in Lesson 4), the manufacturer&rsquo;s rep has effectively won the sale before a quote was ever issued. This is why Tomás spends considerable time building relationships with design firms, attending showrooms and trade shows like HD Expo and BDNY, and leaving product samples with studios. The specification is the revenue event; the purchase order is just the paperwork [5].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Volume rebates and what large buyers actually pay</h2>
+
+    <p>The trade price is not the floor. For large orders, manufacturers offer additional reductions &mdash; either negotiated at the time of the order or paid back as <strong>volume rebates</strong> at the end of a period once purchasing thresholds are met.</p>
+
+    <p>Volume rebates are returned as cash, credit, or future discounts after the buyer has hit a spend threshold with that manufacturer. They typically deliver <strong>3 to 15% additional savings</strong> on purchasing volume, and they are specifically designed to protect the list price (the reward is earned only after volume is achieved, so the manufacturer doesn&rsquo;t have to publicly lower prices) [6].</p>
+
+    <p>For large hospitality purchasing firms that are placing orders across dozens of properties at the same brand flag &mdash; the same chair across two hundred hotels in a brand refresh cycle &mdash; volume rebates become a meaningful part of the economics. The firm&rsquo;s ability to aggregate spend across a client portfolio and earn rebates is part of the case for hiring a purchasing agent rather than managing procurement property by property. This is the parallel to what we saw in Lesson 6: brand standards create not just compliance requirements but also <em>procurement scale</em> &mdash; because if every property in a flag needs the same chair, that is a consolidated order, which is a volume negotiation, which is a rebate [6].</p>
+
+    <p>On top of volume rebates, large orders often attract a separate <strong>project discount</strong> of 5 to 15% off standard trade pricing &mdash; but only if you ask for it, and only if you consolidate enough spec around fewer vendors to create real volume for that manufacturer [1]. The industry phrase for this is &ldquo;earned discount,&rdquo; and it disappears the moment the project is fragmented across too many suppliers.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Who captures margin at each step &mdash; the map</h2>
+
+    <p>This is the lesson&rsquo;s core diagram. Every dollar that the owner pays for a piece of furniture passes through this chain. Where it stops &mdash; and how much sticks to each actor &mdash; depends on which models are in use.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Margin map: how a dollar moves from manufacturer list price to owner payment, with who captures what at each step">
+            <rect x="0" y="0" width="720" height="360" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="360" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Where the margin goes &mdash; illustrative $1,000 list-price chair</text>
+
+            <!-- Manufacturer -->
+            <rect x="28" y="54" width="150" height="80" rx="10" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="2"/>
+            <text x="103" y="82" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#7C3AED">Manufacturer</text>
+            <text x="103" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Sets list: $1,000</text>
+            <text x="103" y="116" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Sells to trade: ~$500</text>
+
+            <!-- Arrow 1 -->
+            <line x1="178" y1="94" x2="218" y2="94" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+            <text x="198" y="86" text-anchor="middle" font-family="Inter" font-size="10" fill="#9CA3AF">pays</text>
+
+            <!-- Rep -->
+            <rect x="218" y="54" width="140" height="80" rx="10" fill="#FFF3E5" stroke="#FBBF77" stroke-width="2"/>
+            <text x="288" y="82" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#E8790C">Rep (Tomás)</text>
+            <text x="288" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Earns 5&ndash;15% from mfr</text>
+            <text x="288" y="116" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">~$50 (invisible to buyer)</text>
+
+            <!-- Arrow 2 -->
+            <line x1="358" y1="94" x2="398" y2="94" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Purchasing agent -->
+            <rect x="398" y="54" width="150" height="80" rx="10" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="2"/>
+            <text x="473" y="77" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">Purchasing agent</text>
+            <text x="473" y="93" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Buys at $500 trade</text>
+            <text x="473" y="109" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Fee: 4% of FF&amp;E value</text>
+            <text x="473" y="124" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">or markup: +35%</text>
+
+            <!-- Arrow 3 -->
+            <line x1="548" y1="94" x2="588" y2="94" stroke="#D1D5DB" stroke-width="2" marker-end="url(#arr)"/>
+
+            <!-- Owner -->
+            <rect x="588" y="54" width="110" height="80" rx="10" fill="#E6F9F0" stroke="#8AD9B4" stroke-width="2"/>
+            <text x="643" y="82" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">Owner</text>
+            <text x="643" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Fiduciary: pays</text>
+            <text x="643" y="116" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">$500 + 4% fee</text>
+
+            <!-- Below: model rows -->
+            <text x="28" y="168" font-family="Inter" font-weight="600" font-size="13" fill="#374151">Fiduciary/disclosed-fee model (Marco&rsquo;s model)</text>
+            <rect x="28" y="178" width="664" height="44" rx="8" fill="white" stroke="#E5E7EB"/>
+            <text x="42" y="202" font-family="Inter" font-size="12" fill="#6B7280">Manufacturer sells at $500 trade &bull; Discounts pass to owner &bull; Agent charges disclosed fee (e.g. 4% of $3M = $120k total) &bull; Owner keeps discount savings</text>
+
+            <text x="28" y="244" font-family="Inter" font-weight="600" font-size="13" fill="#374151">Principal/markup model</text>
+            <rect x="28" y="254" width="664" height="44" rx="8" fill="white" stroke="#E5E7EB"/>
+            <text x="42" y="278" font-family="Inter" font-size="12" fill="#6B7280">Manufacturer sells at $500 trade &bull; Agent marks up ~35% &bull; Sells to owner at ~$675 &bull; Agent keeps $175 spread &bull; Owner doesn&rsquo;t see trade price</text>
+
+            <text x="28" y="320" font-family="Inter" font-weight="600" font-size="13" fill="#374151">Management fee model</text>
+            <rect x="28" y="330" width="664" height="20" rx="8" fill="white" stroke="#E5E7EB"/>
+            <text x="42" y="344" font-family="Inter" font-size="12" fill="#6B7280">Agent charges 10&ndash;20% of trade value as admin fee; discounts still pass to client</text>
+
+            <defs>
+                <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#D1D5DB"/>
+                </marker>
+            </defs>
+        </svg>
+        <div class="diagram-caption">Same chair. Three price points. Who earns what depends entirely on which model is in play &mdash; and whether the client knows which model they agreed to.</div>
+    </div>
+
+    <div class="pull-quote">
+        In the fiduciary model, the owner&rsquo;s interests and the agent&rsquo;s interests are structurally aligned. In the principal model, they may not be. The model matters more than the price on the quote.
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Test yourself</div>
+        <div class="recall-question">Without looking back: (a) A purchasing agent passes all trade discounts to the owner and charges a disclosed 4% of FF&amp;E value. What model is this called, and what is the fee on a $2.5M project? (b) Tomás earns 8% commission on a $500 trade-price order. Who pays that commission, and does it appear on the buyer&rsquo;s invoice? (c) What is a volume rebate and why does it protect the manufacturer&rsquo;s list price?</div>
+        <div class="recall-hint">Three separate mechanisms. Aim for a clean sentence on each before checking the answers in Lesson 8.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 7 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7. Why this matters beyond the math</h2>
+
+    <p>Understanding the pricing structure is not a finance exercise. It changes the conversation at every level of the value chain, and it is the kind of knowledge that distinguishes a GTM team that can speak fluently to customers from one that cannot.</p>
+
+    <p>Three practical implications:</p>
+
+    <p><strong>For the owner:</strong> the question is not &ldquo;what is the trade price?&rdquo; &mdash; it is &ldquo;which model am I on, and does my agent&rsquo;s income depend on which supplier they choose?&rdquo; A fiduciary model answers that question structurally. A principal model doesn&rsquo;t, and the owner should ask the question explicitly.</p>
+
+    <p><strong>For the designer:</strong> the choice of pricing model affects the client relationship fundamentally. A cost-plus model builds trust through transparency; a spread model maximizes income on popular items but creates adversarial dynamics the moment the client asks about it. Most experienced studios use a hybrid &mdash; cost-plus on items where they are adding real specification value, retail or near-retail on commodity goods [3].</p>
+
+    <p><strong>For the whole chain:</strong> the brand-standard world (Lesson 6) and the pricing world (this lesson) intersect precisely at the approved-supplier list. When a brand mandates specific suppliers, it constrains the purchasing agent&rsquo;s ability to negotiate on price &mdash; there is no competitive bidding if there is only one approved vendor. This is a structural tension that no pricing model resolves; it is a cost of brand consistency, and it goes directly to the PIP budget calculations owners have to make when they receive the renovation mandate.</p>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 8:</strong> the three prices (retail, trade, and net-landed) are only the product price. There is a second, parallel cost stack that shows up on every project invoice and almost never in the early budget: freight, duties, warehousing, receiving, installation, taxes, and contingency &mdash; together adding 15 to 35% on top of the product price. We follow the budget from the first spec estimate to the actual invoiced cost, and look at where the gaps open and why.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Trace the money through a worked example.</strong> A purchasing agent buys a hotel guestroom lounge chair at a trade price of $480 (40% off $800 list). The agent is on a cost-plus model, charging a 30% markup to the client. (a) What does the client pay? (b) How much does the agent earn per unit? (c) If the manufacturer&rsquo;s rep earns a 10% commission from the manufacturer on the trade price, what is the rep&rsquo;s commission per unit, and does the client&rsquo;s price change because of it? Now restate the same scenario but with the agent on a fiduciary model charging a 4% flat fee on $200,000 total FF&amp;E value. Compare who ends up ahead in each scenario: the agent, or the owner?
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Cost-plus scenario: (a) Client pays $480 &times; 1.30 = <strong>$624</strong>. (b) Agent earns $624 &minus; $480 = <strong>$144 per unit</strong>. (c) Rep commission = 10% &times; $480 = <strong>$48</strong>, paid by the manufacturer &mdash; does <em>not</em> appear on the client&rsquo;s invoice; client price does not change because of it. Fiduciary scenario: agent charges 4% &times; $200,000 = $8,000 total for the whole package. If there are 200 chairs in the package, that is $40/unit. Client pays $480/unit + $40/unit fee = $520/unit total effective cost. On 200 chairs: cost-plus model total = 200 &times; $624 = $124,800; fiduciary total = 200 &times; $480 + $8,000 = $104,000. Owner is ahead by $20,800 in the fiduciary model. Agent earns $8,000 total vs $28,800 in the cost-plus model. Key insight: the fiduciary model consistently favors the owner on large volumes; the cost-plus model is agent-favorable at the same markup rate.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Cumulative interleave &mdash; connect L6 and L7.</strong> A mid-size hotel receives a PIP mandating replacement of guestroom lounge seating with a specific chair from a single approved supplier. The brand has not approved any alternates. Answer: (a) From L6, what constraint does the approved-supplier list create for the purchasing agent&rsquo;s ability to negotiate price? (b) From L7, how does the rep commission model (Tomás) interact with an approved-supplier situation &mdash; does Tomás have more or less leverage than on a competitively bid spec? (c) If you were the owner reviewing this, which purchasing-agent compensation model (fiduciary vs. cost-plus vs. management fee) would you prefer, and why does the answer depend on the approved-supplier constraint from L6?
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) A single approved supplier eliminates competitive bidding &mdash; the purchasing agent cannot use an alternate quote to drive down price, because the brand standard makes alternates non-compliant. The agent&rsquo;s pricing leverage is essentially zero. (b) Tomás (the approved manufacturer&rsquo;s rep) has <em>more</em> leverage, not less: the spec is locked to his line, competitive substitution is off the table, and the purchasing agent is obligated to buy from his manufacturer. Tomás&rsquo;s commission is secure regardless of whether he negotiated harder than a competitor would have. (c) The fiduciary model becomes most important precisely when pricing leverage is constrained. If the agent cannot negotiate on price (because the supplier is mandated), the owner needs to be certain the agent&rsquo;s income does not depend on volume or spread from that single supplier &mdash; otherwise the agent has no incentive to push back on pricing at all. A fiduciary agent on a fixed disclosed fee has the same incentive regardless of what the chair costs; a cost-plus agent earns more if the chair is more expensive.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Interview a design professional or purchasing agent.</strong> Ask: &ldquo;What pricing model do you use with clients, and have you ever had a client push back on it?&rdquo; Write a short paragraph comparing their answer to the models in this lesson. What did they call things (is &ldquo;trade discount&rdquo; the phrase they use, or something else)? This task requires personal access to a practitioner &mdash; it cannot be answered by pasting the question into a chatbot.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Elaborate on the transparency question.</strong> The BIID research shows 68% of designers do not disclose the trade price to clients. Why might a designer choose not to disclose it, and why might a client care? Lay out both the financial and relational arguments for each side, then explain why the hospitality procurement world has evolved toward the fiduciary/disclosed-fee model while residential design has largely not. What structural difference between the two markets drives that divergence?
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li>
+                Procurist. &ldquo;Trade Discount Programs for Interior Designers.&rdquo; <a href="https://procurist.io/blog/trade-discount-programs-designers">procurist.io/blog/trade-discount-programs-designers</a>.
+                <div class="src-meta">Trade discount ranges (10&ndash;20% retail brands; 30&ndash;50% trade-only; 40&ndash;60% factory-direct); why the discount exists (distribution channel economics); trade-account requirements; project discount (additional 5&ndash;15%) only if you consolidate and ask &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Impact Analytics / Amish Furniture Factory. &ldquo;What Is Keystone Pricing?&rdquo; <a href="https://www.impactanalytics.ai/blog/keystone-pricing">impactanalytics.ai/blog/keystone-pricing</a>; &ldquo;What Is the Markup on Furniture?&rdquo; <a href="https://www.amishfurniturefactory.com/amishblog/what-is-the-markup-on-furniture">amishfurniturefactory.com</a>.
+                <div class="src-meta">Keystone = 2&times; wholesale (100% markup / 50% gross margin); furniture markups 20&ndash;400% in practice; keystone as starting point not rule &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Procurist / Capella Kincheloe / Nubuor Designs / BIID. &ldquo;How Interior Designers Charge for Products&rdquo; and associated pricing guides. <a href="https://procurist.io/blog/procurement-agents-interior-designers">procurist.io/blog/procurement-agents-interior-designers</a>; <a href="https://www.capellakincheloe.com/blog/interior-design-pricing">capellakincheloe.com</a>.
+                <div class="src-meta">Three designer fee models (retail/spread, cost-plus 20&ndash;35%, hybrid); ASID markup 30&ndash;50% above trade; worked cost-plus example ($8,999 retail &rarr; 40% discount &rarr; 35% markup &rarr; $7,289 client price); BIID: ~35% work as principal, 68% do not disclose net &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Hotel Development Guide / Procurist. &ldquo;Hotel FF&amp;E and OS&amp;E Procurement: Fee Models.&rdquo; <a href="https://hoteldevelopmentguide.com/hotel-ffe-ose-procurement">hoteldevelopmentguide.com/hotel-ffe-ose-procurement</a>; procurist (above).
+                <div class="src-meta">Hospitality procurement fee: 3&ndash;6% of FF&amp;E value (worked example: 4% &times; &euro;3M = &euro;120k); fiduciary/disclosed-fee model (Benjamin West); management fee 10&ndash;20% (BIID recommends 15%); principal markup ~35% (range 30&ndash;50%); tiered % structures &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                MANA / Procurist. &ldquo;Understanding Manufacturer&rsquo;s Representatives&rdquo; / &ldquo;Brand Rep Commission in Design.&rdquo; <a href="https://www.manaonline.org/understanding-manufacturers-reps">manaonline.org</a>; procurist (above).
+                <div class="src-meta">Rep model: independent, multi-line, commission-only; commission paid by manufacturer (7&ndash;15% in design contexts; 5% for contract lines); buyer does not pay rep directly; core job is getting specified, not closing &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Enable / Vistaar. &ldquo;Volume Incentive Rebate Examples.&rdquo; <a href="https://www.enable.com/resources/articles/volume-incentive-rebate-examples">enable.com</a>; <a href="https://www.vistaar.com/blog/volume-incentive-rebates">vistaar.com</a>.
+                <div class="src-meta">Volume incentive rebates: 3&ndash;15% savings on purchasing volume; returned as cash/credit; protects list pricing; only earned after threshold &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Inline [N] markers point to the entry with that number above. Marco, Tomás, Sam, and Dana are composite narrative characters, not real people. Benjamin West is a real firm referenced as a publicly documented industry archetype; its fee model and approach are drawn from its published materials and from Procurist&rsquo;s independent description. All prices in examples are illustrative benchmarks. BIID figures are from Procurist&rsquo;s summary of BIID research; the underlying BIID report is the primary source.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 7 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: The budget that quietly grows (Money, Part 2)</p>
+    </div>
+
+</div>
+
+</body>
+</html>

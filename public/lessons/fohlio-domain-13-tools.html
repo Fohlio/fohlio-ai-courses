@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 13</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 13 of 14</div>
+        <h1>Why It Goes Wrong &mdash; and the Tools That Catch It</h1>
+        <div class="subtitle">Chapter 13. The discontinued finish, the tariff surprise, and the spreadsheet that can&rsquo;t keep up</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Two weeks before the handover package goes to Sam, Dana and Marco sit across from each other with a printout of the full project schedule. It is not a celebration. It is a post-mortem. The hotel is opening on time &mdash; barely &mdash; but they want to name every moment where it nearly didn&rsquo;t.</p>
+
+    <p>The list is longer than either of them expected. There was the tariff hit on the bathroom vanities. There was the vendor who sent the wrong finish on sixty chairs &mdash; caught at the model room, but only because Helen printed the approved CFA record and walked in with it. And there was the discontinued headboard fabric that came within three days of sailing through to production undetected, because it was buried in row 847 of a spreadsheet and Marco&rsquo;s search formula was looking at the wrong column.</p>
+
+    <p>Row 847 is the lesson. Not the mistake itself &mdash; that is ordinary. The lesson is that it nearly became a $40,000 mistake, and the only thing that stopped it was a manual check that could just as easily not have happened. This chapter names the pain points that make this industry hard, explains where the incumbent tools break, and maps the categories of software that exist to catch the problem before row 847 ships.</p>
+
+    <!-- QUICK RECAP -->
+    <h3 style="margin-top: 40px;">Quick Recap &mdash; pull from memory before reading on</h3>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L1 &mdash; The $40k Mistake</strong><br>
+            Dana&rsquo;s 60 armchairs in the wrong finish. A discontinued fabric substituted silently. Surfaced at receiving, when the only fixes were expensive ones.
+        </div>
+        <div class="recap-item">
+            <strong>L9 &mdash; Vendors, Sources &amp; Reps</strong><br>
+            Manufacturer-direct vs. dealer vs. rep. MOQ economics. Vendor scorecards: spend, lead time, quality, terms. The contact book as a future supplier network.
+        </div>
+        <div class="recap-item">
+            <strong>L12 &mdash; Sign-offs &amp; Paper Trail</strong><br>
+            Loop A (owner/brand design sign-off) and Loop B (vendor submittal process). Model room before production. Punch list and closeout package. Audit trail resolves disputes.
+        </div>
+        <div class="recap-item" style="border-left-color: var(--orange); background: var(--orange-light);">
+            <strong>L13 &mdash; TODAY</strong><br>
+            The real pain points. The Excel incumbent and where it breaks. The tool landscape and categories. Fohlio vs. Procore. Catching the discontinued finish before the PO ships.
+        </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>Name the <strong>six recurring pain points</strong> the FF&amp;E industry universally complains about</li>
+            <li>Explain where <strong>Excel + email + PDF</strong> breaks &mdash; and why it still wins up to a point</li>
+            <li>Know the <strong>five tool categories</strong> and one honest sentence about each major tool</li>
+            <li>Explain the real distinction between <strong>Fohlio and Procore</strong> &mdash; furniture/finishes track vs. building track</li>
+            <li>Describe how a purpose-built tool catches a discontinued finish <strong>before the PO ships</strong> &mdash; closing the loop from Lesson 1</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. The six things that go wrong &mdash; named and sourced</h2>
+
+    <p>The FF&amp;E industry has a fairly short list of recurring failure modes. The industry complains about the same six problems on every project, in every segment, at every scale. A GTM person who can name them fluently is immediately credible to anyone on the inside [1].</p>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Long and unpredictable lead times</span>
+        <div class="step-desc">Custom casegoods and branded lighting fixtures routinely run 6&ndash;12 months from PO to delivery. The brand-mandated opening date doesn&rsquo;t move. Industry advice in 2026 is to prequalify manufacturers during Design Development &mdash; not after construction drawings are complete &mdash; because &ldquo;waiting for final construction drawings before engaging vendors is no longer practical&rdquo; [1]. This lead-time risk is one reason Dana and Marco start expediting well before the first POs are confirmed, as we saw in Lesson 12&rsquo;s model-room prep.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Discontinued finishes with no quick substitution</span>
+        <div class="step-desc">When a brand specifies a proprietary headboard or a custom lighting fixture, &ldquo;substitutes are rarely approved quickly&rdquo; &mdash; a minor supply hiccup becomes a major delay because the brand standard is rigid [1]. This is precisely what happened to Dana in Lesson 1: a fabric discontinued, a silent substitution, and a $40k rework. The difference between catching it at the submittal stage and catching it at the dock is the entire value of a managed specification process.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Tariff and freight volatility</span>
+        <div class="step-desc">The 2025 U.S. tariff actions hit hospitality furniture hard: a single container of Chinese upholstered furniture can now carry an effective 30&ndash;35%+ duty load (MFN base rate + Section 301 + Section 232) [2]. Owners who signed budgets before the changes &ldquo;are eating costs they never anticipated.&rdquo; Vietnam, the main China+1 alternative, carries a 20% baseline tariff with 40% on suspected transshipments. Ocean freight adds its own volatility on top. The practical effect: a budget fixed at spec stage can be materially wrong at PO stage &mdash; which is why the Spec vs. Budget vs. Actual gap from Lesson 8 is a live risk throughout the project.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Brand-standard consistency across multiple properties</span>
+        <div class="step-desc">A multi-property rollout for a Marriott or Hilton brand requires identical specifications across every site. Linda&rsquo;s brand-standard process from Lesson 6 is not bureaucracy for its own sake: it is the only mechanism that prevents one property from receiving a slightly different laminate shade than every other property in the portfolio. Keeping specs identical across dozens of simultaneous projects while managing approved substitutions and VE changes is a coordination challenge that scales poorly with manual tools [1].</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">5</span>
+        <span class="step-title">Version chaos in Excel across dozens of vendors</span>
+        <div class="step-desc">A single hotel project = thousands of line items from dozens of suppliers, each on a different schedule. When the spec lives in a spreadsheet emailed back and forth, nobody knows which version is current. Formulas break when rows are inserted. Status updates are manual. Vendor updates land in inboxes and get missed. Projects fail &ldquo;because no one oversees full coordination&rdquo; and contractors, designers, and procurement teams work separately [1, 3]. The moment there are three concurrent projects or 150+ items, the spreadsheet is already losing.</div>
+    </div>
+
+    <div class="step-card">
+        <span class="step-number">6</span>
+        <span class="step-title">The cost of a missed opening date</span>
+        <div class="step-desc">A 100-room hotel at a ~$150 average daily rate loses roughly $15,000 every day it cannot open. A 10-day install delay is $150,000 in revenue that never comes back &mdash; before contractor overtime and reputational cost [1]. This is the number that makes the whole industry tense, and it is why every other pain point on this list ultimately converts back into a dollar figure tied to a date.</div>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">Marco is managing a 400-item hotel spec across three concurrent projects. He uses a shared Excel file with three team members. Name <em>two specific moments</em> in his normal workweek when the spreadsheet is likely to give him wrong information without warning him. Be specific about the mechanism &mdash; not just &ldquo;it&rsquo;s hard to manage.&rdquo;</div>
+        <div class="recall-hint">Think about what happens when two people edit at the same time, or when a cell reference shifts after someone inserts a row, or when a vendor responds by email and the status in the sheet never changes.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. The real incumbent &mdash; Excel, email, and PDF</h2>
+
+    <p>Before mapping the purpose-built tools, it is worth being honest about why Excel is still the baseline for most of the industry. Competing against the incumbent requires understanding why it won [3].</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x2714;</div>
+            <div class="card-title" style="color: var(--green);">Why Excel wins</div>
+            <div class="card-desc" style="font-size: 13px;">
+                <strong>Free.</strong> Universal. Everyone already has it. Powerful formulas, flexible structure, no onboarding. For a single user managing a single project under ~100 items, it is genuinely good enough &mdash; and cost-benefit analysis firmly favors it.
+            </div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x274C;</div>
+            <div class="card-title" style="color: var(--red);">Where it breaks</div>
+            <div class="card-desc" style="font-size: 13px;">
+                Version control collapses the moment the file is emailed (&ldquo;which version is current?&rdquo;). No real-time collaboration. Formulas are fragile after row inserts/deletes. Status updates are manual. No vendor integration. <strong>The practical switch point: 3+ concurrent projects, 150+ items, or multiple editors [3].</strong>
+            </div>
+        </div>
+    </div>
+
+    <p>Around the spreadsheet sits <strong>email</strong> &mdash; for vendor back-and-forth, approvals, and sample requests &mdash; and <strong>PDF</strong> &mdash; for final, non-editable spec sheets and spec books. The three-stack (Excel + email + PDF) is the real competitor. When a designer says &ldquo;I don&rsquo;t need a tool,&rdquo; this is what they already have. And they are right that it works &mdash; until it doesn&rsquo;t.</p>
+
+    <div class="pull-quote">
+        &ldquo;Clients don&rsquo;t want to see all my Excel gibberish. They want clear information &mdash; photos, easy-to-read data, and simple approvals.&rdquo;
+    </div>
+
+    <p>That quote &mdash; from a designer, cited by Programa &mdash; captures the first business pain that a purpose-built tool addresses [3]. The second pain is the one Marco hit: a firm working across multiple concurrent projects cannot afford to find row 847 by luck.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4CA;</div>
+        Marco, looking at a shared Excel file that has seventeen sheets: &ldquo;Why is this tab called &lsquo;FINAL_FINAL_USE_THIS_ONE&rsquo;?&rdquo;<br>
+        Colleague: &ldquo;Because the one called &lsquo;FINAL&rsquo; was the wrong one, and the one called &lsquo;FINAL_ACTUAL&rsquo; was from last Tuesday.&rdquo;<br>
+        <em>This is not a joke about bad naming. This is a description of how the industry manages $30M FF&amp;E packages without version control.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The five tool categories &mdash; what they are and who they serve</h2>
+
+    <p>The software landscape is fragmented, and the fragmentation is structural: different parts of the FF&amp;E process have different primary users, different workflows, and different data needs. Understanding the categories is more durable than knowing any single tool [3, 4].</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five tool categories in the FF&amp;E and construction space, from design-firm business management to construction project management">
+            <rect x="0" y="0" width="760" height="370" rx="14" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">The FF&amp;E Tool Landscape</text>
+
+            <!-- Row 1 -->
+            <rect x="20" y="50" width="220" height="100" rx="10" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+            <text x="130" y="74" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#7C3AED">Design-Firm Business Mgmt</text>
+            <text x="130" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Proposals, accounting,</text>
+            <text x="130" y="106" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">invoicing, time-tracking,</text>
+            <text x="130" y="120" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">client portals</text>
+            <text x="130" y="140" text-anchor="middle" font-family="Inter" font-size="10" font-style="italic" fill="#7C3AED">Studio Designer, Design Mgr, Houzz Pro, Mydoma</text>
+
+            <rect x="270" y="50" width="220" height="100" rx="10" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="380" y="74" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#3451B2">FF&amp;E Spec &amp; Procurement</text>
+            <text x="380" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Specification depth, schedules,</text>
+            <text x="380" y="106" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">procurement, budgeting,</text>
+            <text x="380" y="120" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">brand-standard libraries</text>
+            <text x="380" y="140" text-anchor="middle" font-family="Inter" font-size="10" font-style="italic" fill="#3451B2">Fohlio, Programa, Spexx, DesignSpec</text>
+
+            <rect x="520" y="50" width="220" height="100" rx="10" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="1.5"/>
+            <text x="630" y="74" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#1A8F5C">Material Libraries</text>
+            <text x="630" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Discover &amp; reference</text>
+            <text x="630" y="106" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">materials, 9,000+ samples,</text>
+            <text x="630" y="120" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">5,000+ manufacturers</text>
+            <text x="630" y="140" text-anchor="middle" font-family="Inter" font-size="10" font-style="italic" fill="#1A8F5C">materiO&apos;</text>
+
+            <!-- Row 2 -->
+            <rect x="20" y="175" width="340" height="100" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.5"/>
+            <text x="190" y="199" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#DC2626">Construction Project Management</text>
+            <text x="190" y="217" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">RFIs, submittals, drawings, schedules,</text>
+            <text x="190" y="231" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">punch lists, field/office collaboration</text>
+            <text x="190" y="249" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Building track. NOT an FF&amp;E spec tool.</text>
+            <text x="190" y="265" text-anchor="middle" font-family="Inter" font-size="10" font-style="italic" fill="#DC2626">Procore, Autodesk Construction Cloud, Bluebeam</text>
+
+            <rect x="390" y="175" width="350" height="100" rx="10" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="565" y="199" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">Generic Database / Spreadsheet</text>
+            <text x="565" y="217" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Build-your-own. Flexible, no onboarding,</text>
+            <text x="565" y="231" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">good to a point. Breaks at scale.</text>
+            <text x="565" y="249" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Real incumbent: the free starting point everyone uses.</text>
+            <text x="565" y="265" text-anchor="middle" font-family="Inter" font-size="10" font-style="italic" fill="#E8790C">Excel, Google Sheets, Airtable, Notion, Smartsheet</text>
+
+            <!-- Key line -->
+            <line x1="20" y1="300" x2="740" y2="300" stroke="#E5E7EB" stroke-width="1" stroke-dasharray="4,4"/>
+            <text x="380" y="322" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">FF&amp;E Spec &amp; Procurement = furniture/finishes track (designer-owned)</text>
+            <text x="380" y="338" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Construction PM = building track (GC-owned) &mdash; they overlap at submittals and punch lists</text>
+            <text x="380" y="356" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">but serve different actors with different deliverables</text>
+        </svg>
+        <div class="diagram-caption">Five categories. The key boundary is between the FF&amp;E/finishes track (designer-owned) and the construction track (GC-owned). Large projects can run both simultaneously.</div>
+    </div>
+
+    <h3>The tools, honestly</h3>
+
+    <p>What follows are one-line honest positions for each major tool. Note before reading: <strong>all software-comparison sources are competitor-published</strong> &mdash; Programa writes about Fohlio&rsquo;s limitations, Fohlio writes about Programa&rsquo;s. The positions below are cross-checked against multiple sources where possible, but that caveat stands. Treat them as Medium confidence on specific trade-offs and High confidence on category assignment [3, 4].</p>
+
+    <table>
+        <tr>
+            <th>Tool</th>
+            <th>Category</th>
+            <th>Honest one-liner</th>
+        </tr>
+        <tr>
+            <td><strong>Fohlio</strong></td>
+            <td>FF&amp;E Spec &amp; Procurement</td>
+            <td>Enterprise-grade FF&amp;E/OS&amp;E/finishes specification + procurement + budgeting for large commercial and hospitality teams, with brand-standard libraries and Revit sync. Deeper procurement and analytics than peers; steeper learning curve for smaller teams.</td>
+        </tr>
+        <tr>
+            <td><strong>Programa</strong></td>
+            <td>FF&amp;E Spec &amp; Procurement</td>
+            <td>Specification-first, visually clean all-in-one for design studios &mdash; live schedules, product library, Web Clipper, client dashboards, POs linked to schedules. Lighter on procurement depth than Fohlio.</td>
+        </tr>
+        <tr>
+            <td><strong>Spexx</strong></td>
+            <td>FF&amp;E Spec &amp; Procurement</td>
+            <td>One of the oldest FF&amp;E spec platforms (desktop-installed); now reportedly acquired by Design Manager. Technology is dated; best for firms already on it.</td>
+        </tr>
+        <tr>
+            <td><strong>Studio Designer</strong></td>
+            <td>Design-Firm Business Mgmt</td>
+            <td>Accounting-heavy procurement platform for high-end residential firms &mdash; full built-in accounting, vendor management, online payments. Complex, steep learning curve, weak on client visuals.</td>
+        </tr>
+        <tr>
+            <td><strong>Design Manager</strong></td>
+            <td>Design-Firm Business Mgmt</td>
+            <td>30+ year legacy platform with built-in accounting favored by established firms. Feels dated; rigid workflows; pricey bookkeeper support needed.</td>
+        </tr>
+        <tr>
+            <td><strong>Houzz Pro / Ivy</strong></td>
+            <td>Design-Firm Business Mgmt</td>
+            <td>Marketing-and-lead-gen-forward for residential designers. Strong on client-facing visuals; relies on QuickBooks for accounting; integration described as unreliable.</td>
+        </tr>
+        <tr>
+            <td><strong>Procore</strong></td>
+            <td>Construction PM</td>
+            <td>The dominant enterprise construction-management platform &mdash; RFIs, submittals, drawings, schedules, punch lists, daily logs. Not an FF&amp;E spec tool. The GC&rsquo;s system of record, not the designer&rsquo;s.</td>
+        </tr>
+        <tr>
+            <td><strong>Airtable / Notion / Smartsheet</strong></td>
+            <td>Generic</td>
+            <td>Better than flat Excel for larger projects (relational linking). Not purpose-built for FF&amp;E, so teams often revert to spreadsheets when the workflow gets complex.</td>
+        </tr>
+    </table>
+
+    <div class="info-box blue">
+        <p><strong>Reminder on source reliability:</strong> Every tool comparison page above &mdash; the Programa page on how to choose FF&amp;E software, the Fohlio page on alternatives, the Studio Designer blog &mdash; is written by a competitor. They are reliable on category definitions and generally honest about their own limitations (to be credible), but treat any specific capability or pricing claim as one party&rsquo;s framing. The category structure and the broad positioning above are well-corroborated; specific trade-offs are Medium confidence at best [3, 4].</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Fohlio vs. Procore &mdash; the question that comes up in every sales call</h2>
+
+    <p>Prospects and customers routinely ask whether Fohlio does what Procore does, or whether they need both. The answer is structural, not a feature comparison [3, 4].</p>
+
+    <p><strong>Procore manages the building:</strong> the construction trades, the GC&rsquo;s scope, the structural submittals, the RFI log, the construction schedule, the daily logs, the safety records, the punch list for construction defects. The actors are the GC, subcontractors, the architect, the structural engineer. The deliverable is a finished building shell.</p>
+
+    <p><strong>Fohlio (and its peers) manage the furniture and finishes:</strong> the FF&amp;E specification, the procurement schedule, the vendor submittals for product data and samples, the purchasing workflow, the budget tracking, the brand-standard compliance. The actors are the interior designer, the purchasing agent, the vendor, and the brand. The deliverable is a furnished and finished interior.</p>
+
+    <p>They overlap at two points: <strong>submittals</strong> (both processes collect product documentation from vendors) and <strong>punch lists</strong> (both close out deficiencies before handover). But on a large project both can run simultaneously &mdash; Procore tracks the GC&rsquo;s submittal log for structural and mechanical work, while the FF&amp;E spec tool tracks the designer&rsquo;s submittal log for furniture and finishes. The systems talk to different people about different things [3, 4].</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Reconstruct the distinction</div>
+        <div class="recall-question">A prospect says: &ldquo;We already use Procore on all our hotel projects. Why would we need anything else?&rdquo; Without looking up at the table or diagram, give a two-sentence answer that names the specific thing Procore does <em>not</em> do for the designer&rsquo;s workflow &mdash; and what the cost of that gap is.</div>
+        <div class="recall-hint">Think about who uses Procore, what their deliverable is, and whether that person is the same as the interior designer managing the FF&amp;E spec and vendor submittals.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Who uses what &mdash; the practical map</h2>
+
+    <p>The honest answer to &ldquo;which tool should a firm use&rdquo; depends almost entirely on project scale and primary pain point [3].</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F3E0;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Solo / small residential (&le;100 items, 1&ndash;2 people)</div>
+            <div class="layer-desc">Excel or Google Sheets &rarr; Houzz Pro, Mydoma, Programa, or Gather as they grow.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4B0;</div>
+            <div class="layer-name" style="color: var(--purple);">Mid-size / high-end residential (accounting-heavy)</div>
+            <div class="layer-desc">Studio Designer, Design Manager &mdash; full accounting built in; procurement-led workflow.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3E8;</div>
+            <div class="layer-name" style="color: var(--blue);">Large commercial / hospitality (500&ndash;5,000+ items, brand standards, multi-project)</div>
+            <div class="layer-desc">Fohlio, Programa (commercial tier), legacy Spexx. Dedicated FF&amp;E procurement agencies may layer their own logistics tools on top.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F6D7;</div>
+            <div class="layer-name" style="color: var(--red);">General contractors / construction side</div>
+            <div class="layer-desc">Procore, Autodesk Construction Cloud, Bluebeam &mdash; for submittals, RFIs, drawings, punch lists. This is the building track, not the FF&amp;E track.</div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Closing the loop &mdash; catching the discontinued finish before the PO ships</h2>
+
+    <p>Marco&rsquo;s near-miss with row 847 is a useful test case for what a purpose-built tool actually changes. The problem was not that Marco was careless. The problem was that the discontinuation notice from the vendor arrived by email, was logged manually on a different day, and the spec sheet &mdash; a separate Excel file &mdash; was never updated. By the time the PO was ready to issue, the spec showed the old finish and the email showed the new one, and nobody was looking at both at the same time.</p>
+
+    <div class="story-box">
+        <p>Dana is watching Marco work through the vendor-scorecard update she asked for after the project closed. He pulls up the platform&rsquo;s vendor activity log for the custom millwork supplier: last three projects, average lead time 14.3 weeks, one instance of a discontinued finish, one instance of a late CFA delivery. The scorecard captures exactly the pattern they lived through &mdash; the finish discontinuation from Lesson 9&rsquo;s sourcing conversation, the CFA timing issue they caught before the model room.</p>
+        <p>&ldquo;Next time we spec this supplier,&rdquo; Dana says, &ldquo;we add an expediting check at week eight.&rdquo; That note goes into the supplier record. The institutional knowledge that used to live in her head now lives in a place where Marco can find it without asking her.</p>
+    </div>
+
+    <p>The mechanism a purpose-built tool provides is not magic: it is <strong>connection between things that currently live in separate places</strong>. When the spec item and the vendor record and the submittal log and the PO are all connected, a discontinuation notice from the vendor can surface against the specific items it affects &mdash; before the PO is issued, not after delivery. When the vendor scorecard is in the same system as the spec, the institutional knowledge that lives in a senior specifier&rsquo;s head survives the project [5].</p>
+
+    <p>This is the payoff Dana was building toward since the first lesson. The $40k mistake happened because a spec stopped being true and nobody noticed. A system where discontinuation data flows to the items it affects closes that gap structurally, not by luck. It does not prevent every mistake. But it changes the question from &ldquo;did anyone happen to check?&rdquo; to &ldquo;what does the system flag?&rdquo;</p>
+
+    <div class="pull-quote">
+        The spec was right the day she sent it. The question is what happens between that day and the day the goods ship.
+    </div>
+
+    <p>The tools in the FF&amp;E Spec &amp; Procurement category &mdash; Fohlio, Programa, and their peers &mdash; all make different choices about where exactly to intervene in that gap. Some emphasize real-time collaboration. Some emphasize brand-standard libraries. Some emphasize procurement depth. The right choice depends on where the specific firm&rsquo;s biggest gap is. The GTM team&rsquo;s job is to know which gap they are selling against &mdash; and to be able to connect it, clearly, to the six pain points from Part 1 [1, 3].</p>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x26A0;</div>
+            <div class="layer-name" style="color: var(--red);">Six pain points</div>
+            <div class="layer-desc">Lead times, discontinued finishes, tariff/freight volatility, multi-property consistency, version chaos, missed opening dates. The industry complains about all six on every project.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CA;</div>
+            <div class="layer-name" style="color: var(--orange);">The Excel incumbent</div>
+            <div class="layer-desc">Free, universal, genuinely good to ~100 items and 1&ndash;2 users. Breaks at 3+ concurrent projects, 150+ items, or multiple editors. That is the switch point.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F5FA;</div>
+            <div class="layer-name" style="color: var(--blue);">Five categories</div>
+            <div class="layer-desc">Design-firm business mgmt / FF&amp;E Spec &amp; Procurement / Material libraries / Construction PM / Generic. The FF&amp;E track and the building track are distinct. Procore is a construction PM tool, not an FF&amp;E tool.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F517;</div>
+            <div class="layer-name" style="color: var(--green);">The $40k payoff</div>
+            <div class="layer-desc">When the spec item, vendor record, and submittal log are connected in one place, a discontinued finish surfaces before the PO &mdash; not at the dock. That is the structural difference, not a feature list.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 14 &mdash; The Building Opens:</strong> the capstone. We trace one chair through every phase and every actor we&rsquo;ve met across thirteen lessons. Three property types side by side: a luxury flag, a select-service brand rollout, and an independent boutique. The FF&amp;E reserve and the next PIP cycle &mdash; the loop that restarts. And what the GTM team should now be able to say to any prospect, in any segment, on any call.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 45 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Map a pain point to a real tool category.</strong>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);">Pick one of the six pain points from Part 1. For your chosen pain point: (a) explain in 2&ndash;3 sentences exactly how the pain manifests in a real project &mdash; what goes wrong, when, and who discovers it; (b) identify which tool category in Part 3 is best positioned to address it and why; (c) explain why the Excel+email+PDF baseline fails to catch it. Submit your answer in the field under this lesson.</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        <strong>Example: Pain point 2 &mdash; discontinued finishes.</strong><br>
+                        (a) The designer specifies a custom fabric at DD. The PO is issued 6 months later. In the interim, the manufacturer discontinues the fabric and notifies the vendor by email. The vendor&rsquo;s rep forwards the email to a procurement inbox. Nobody flags it in the spec. The PO is issued against the old spec. The wrong material arrives at the warehouse &mdash; or, worse, ships from overseas before anyone notices.<br>
+                        (b) FF&amp;E Spec &amp; Procurement category. A purpose-built tool connects the vendor notification to the spec items it affects. When a discontinuation is logged against a vendor, the system can flag the items in the active spec that reference that product. The designer sees the problem before the PO goes out.<br>
+                        (c) The Excel baseline fails because the vendor email and the spec sheet are separate files. There is no mechanism to connect an email notification to a row in a spreadsheet. The information arrives; it simply never reaches the place where the decision gets made.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>Cumulative check: connect lessons 1, 8, 9, 12, and 13.</strong>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);">Answer each of the following from memory &mdash; no scrolling back through earlier lessons. (a) In Lesson 1, when exactly did Dana&rsquo;s $40k mistake arise, and when did it surface? (b) In Lesson 8, what are the two structural budget leaks that move &ldquo;actual&rdquo; above the approved number? (c) In Lesson 9, what is a vendor scorecard and what four things does it track? (d) In Lesson 12, what is the difference between &ldquo;Approved&rdquo; and &ldquo;Approved as Noted&rdquo; in a submittal? (e) In this lesson, what is the practical switch point where Excel breaks?</p>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Arose during the silent gap between specification and shipment (the fabric was discontinued and silently substituted); surfaced at receiving / install day when the wrong goods arrived and rework was already expensive.<br>
+                        (b) Shipping/duty surprises (the 15&ndash;30% landed cost not captured in the early estimate) and scope creep (untracked add-ons adding 10&ndash;15% to the approved number).<br>
+                        (c) A vendor scorecard is a structured summary of a vendor&rsquo;s performance history. Tracks: spend (total volume placed), lead time (actual vs. quoted), quality (defect rate, damage rate, returns), and terms (payment reliability, MOQ flexibility).<br>
+                        (d) Approved = proceed exactly as submitted, no further action required. Approved as Noted = proceed only after incorporating the specific corrections stated in the review; it is a conditional pass, not a full approval, and the correction is binding.<br>
+                        (e) 3+ concurrent projects, 150+ items, or multiple editors.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>The real sales call (AI-resilient).</strong>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);">Think of a real customer conversation you have had (or imagine one from your role). The prospect says: &ldquo;We manage 12 hotel projects per year across a 4-person FF&amp;E team, and our biggest problem is that nobody ever knows what the current spec actually says.&rdquo; Write the 3&ndash;4 sentences you would say in response &mdash; grounded in what you now know about why that problem exists, where it comes from, and which tool category addresses it. Do not use bullet points. Write as you would actually speak. An AI cannot write this for you because it does not know your voice or your customer.</p>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why the categories are where the boundaries are.</strong>
+                <p style="margin: 8px 0; font-size: 14px; color: var(--gray-700);">The five tool categories are not arbitrary. Each split reflects a genuine difference in who the primary user is, what workflow they run, and what data they own. Pick any two adjacent categories &mdash; for example, &ldquo;FF&amp;E Spec &amp; Procurement&rdquo; and &ldquo;Design-Firm Business Mgmt&rdquo; &mdash; and explain in 3&ndash;4 sentences why they are separate categories rather than one combined tool. What does the person in each category care about that the other does not? Why would combining them make both worse rather than better?</p>
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li>
+                Cleansway / Beyer Brown. &ldquo;Navigating Supply Chain Challenges: Best Practices in Hotel FF&amp;E Procurement for 2026.&rdquo; <a href="https://www.cleansway.com/articles/navigating-supply-chain-challenges-best-practices-in-hotel-ff-e-procurement-for-2026">cleansway.com</a>; Beyer Brown. &ldquo;FF&amp;E Logistics Guide.&rdquo; <a href="https://www.beyerbrown.com/services/ffe-procurement-process">beyerbrown.com</a>; Bailey&rsquo;s Allied. &ldquo;FF&amp;E Logistics Guide.&rdquo; <a href="https://www.baileysallied.com/workplace/resources/ffe-logistics-guide">baileysallied.com</a>
+                <div class="src-meta">Six recurring pain points: lead times (6&ndash;12 mo custom), discontinued finishes with no quick substitution, multi-property brand consistency, coordination chaos / version chaos, $15k/day missed-opening cost &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Home Furnishings Association. &ldquo;Furniture Import Duties and Tariffs: A Guide for Retailers.&rdquo; <a href="https://myhfa.org/blog/furniture-import-duties-and-tariffs-a-guide-for-retailers">myhfa.org</a>; Tax Foundation. &ldquo;Trump Tariffs &amp; Trade War Tracker.&rdquo; <a href="https://taxfoundation.org/research/all/federal/trump-tariffs-trade-war">taxfoundation.org</a>
+                <div class="src-meta">Section 301 (China, 25%) + Section 232 furniture tariffs: effective 30&ndash;35%+ stacked on Chinese upholstered furniture; Vietnam 20% baseline (40% transshipment); tariff volatility as budget risk &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Programa. &ldquo;How to Choose FF&amp;E Specification Software.&rdquo; <a href="https://programa.design/how-to-choose-ffe-specification-software">programa.design</a>; Procurist. &ldquo;FF&amp;E Schedules.&rdquo; <a href="https://procurist.io/resources/ffe-schedules">procurist.io</a>
+                <div class="src-meta">Excel incumbent (free, universal; breaks at 3+ projects / 150+ items / multiple editors); tool categories; version chaos in FF&amp;E; designer quote on &ldquo;Excel gibberish&rdquo; &middot; Confidence note: Programa is a competitor &mdash; treat tool-specific comparisons as Medium confidence &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Fohlio. &ldquo;Best FF&amp;E Specification Software: Fohlio vs. Leading Alternatives.&rdquo; <a href="https://www.fohlio.com/blog/best-ffe-specification-software-fohlio-vs-leading-alternatives-compared">fohlio.com</a>; ProjectManager. &ldquo;Procore Project Management Review.&rdquo; <a href="https://www.projectmanager.com/blog/procore-project-management">projectmanager.com</a>; Gather. &ldquo;Best FF&amp;E Specification Software Comparison 2025.&rdquo; <a href="https://gatherit.co/blog/best-ffe-specification-software-comparison-2025">gatherit.co</a>
+                <div class="src-meta">Tool-by-tool positioning (Fohlio, Programa, Spexx, Studio Designer, Design Manager, Houzz Pro, Procore); Fohlio vs. Procore: furniture/finishes track vs. building track &middot; Confidence: competitor-published; cross-checked against multiple sources; treat limitations claims as Medium confidence &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Fohlio SpecHub internal documentation (2026). Vendor scorecard / contact book / spec-item linking for discontinuation tracking.
+                <div class="src-meta">Fohlio light overlay: vendor activity log, scorecard, institutional knowledge in supplier records, item-level linking between vendor notices and spec items &middot; internal; cited for light product overlay only</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] correspond to numbered entries above. Dana, Marco, and the rest of the cast are composite characters illustrating real industry roles. Real firm and tool names are used to illustrate the competitive landscape as described in public industry sources. All software-comparison claims originate from competitor-published pages and are flagged Medium confidence throughout. Tariff figures are accurate as of mid-2026; re-verify at ustr.gov before quoting in a customer conversation.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 13 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: The building opens &mdash; one chair, every actor</p>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 2 of 14</div>
+        <h1>How Buildings Get Furnished</h1>
+        <div class="subtitle">Chapter 2. Everyone who has to touch the project</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Dana is on the phone before she has finished her coffee. The project &mdash; a 180-room lifestyle hotel in Austin &mdash; has been running for three weeks, and already there are four firms she has never met who need something from her by Friday. She puts down the phone and draws a quick chart on a notepad. By the time she is done there are eleven boxes connected by arrows, and three of them have the same client&rsquo;s name written in different handwriting.</p>
+
+    <p>This is the moment every newcomer to the FF&amp;E industry has. You come in thinking there are two parties &mdash; the person who buys the furniture and the person who sells it &mdash; and then someone explains that the buyer is actually six overlapping entities who each have a different claim on the budget, while the seller is a chain of four or five separate businesses who each earn their margin at a different step. The chart on Dana&rsquo;s notepad is not unusual. It is what a single hotel project actually looks like.</p>
+
+    <p>This chapter is that chart, made legible. Take thirty seconds right now and try to name, from memory, every type of firm that you think is involved before a hotel room is furnished. Then read on.</p>
+
+    <!-- QUICK RECAP -->
+    <h3>Quick recall &mdash; from last lesson</h3>
+    <p style="font-size: 14px; color: var(--gray-500);">Answer each prompt in your head before reading the answer below.</p>
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>Lesson 1 &mdash; Predict</strong><br>
+            You learned the &ldquo;shake the building&rdquo; test. Without looking back: what is the precise difference between FF&amp;E and OS&amp;E, and which one is a capital asset vs. an operating expense?
+        </div>
+        <div class="recap-item">
+            <strong>Lesson 1 &mdash; Explain</strong><br>
+            Dana&rsquo;s $40k mistake arose at one moment and surfaced at a different one. Name both moments and explain in one sentence why no single person owned the gap between them.
+        </div>
+        <div class="recap-item">
+            <strong>Today &mdash; Lesson 2</strong><br>
+            <strong style="color: var(--orange);">Who&rsquo;s actually in the room?</strong> The full cast: owner vs. brand vs. manager; designer vs. purchasing agent; the supply side; the logistics tail. Who pays whom and who is free.
+        </div>
+        <div class="recap-item">
+            <strong>Today &mdash; Predict</strong><br>
+            Before you read Part 1: why do you think the company whose name is on the hotel sign is usually <em>not</em> the company that owns the building? Make a guess now.
+        </div>
+    </div>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>Name and distinguish the <strong>four demand-side entities</strong> that outsiders routinely collapse into one: owner, brand, management company, franchisee</li>
+            <li>Explain the <strong>designer-specifies / purchasing-agent-buys</strong> split &mdash; including the fiduciary model and who pays whom</li>
+            <li>Describe the supply side: manufacturers, manufacturer&rsquo;s reps, dealers, showrooms, trade shows</li>
+            <li>Place the <strong>logistics tail</strong> (3PL, white-glove install) and the <strong>owner&rsquo;s rep</strong> correctly in the chain</li>
+            <li>Read a real FF&amp;E value-chain diagram and map Dana&rsquo;s three client types onto it</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. The demand side &mdash; four entities, one sign</h2>
+
+    <p>The single most reliable source of confusion in a hospitality project is the name above the front door. Walk past a Marriott. The name on the sign implies one company. The reality is usually at least three, and sometimes four, distinct businesses with distinct rights over the budget:</p>
+
+    <div class="story-box">
+        <p>Dana explains it to Priya the way she explains everything: by making her feel the pain first. &ldquo;So you have Linda, the brand standards manager at the flag,&rdquo; she says, pointing to a name on her notepad. &ldquo;Her job is to make sure every Courtyard in the system looks and performs like a Courtyard. She does not own any of them.&rdquo; She draws a second box. &ldquo;The owner is a REIT &mdash; they put up the capital for this building, and they own the FF&amp;E budget. They hired a management company to run the hotel day-to-day. And they signed a franchise agreement to fly the Courtyard flag, which means they have to satisfy Linda.&rdquo; Priya stares at the three boxes. &ldquo;So who does Dana work for?&rdquo; &ldquo;The owner. But we all have to make Linda happy.&rdquo;</p>
+    </div>
+
+    <h3>The four roles</h3>
+
+    <p><strong>Owner / developer / REIT:</strong> puts up the capital. Owns the real estate, owns the FF&amp;E budget, and signs the final check. Typical examples: publicly-traded lodging REITs like Host Hotels &amp; Resorts, private developers, or private-equity firms [1]. The owner is the primary client for the purchasing agent.</p>
+
+    <p><strong>Brand / flag:</strong> Marriott alone operates more than 30 distinct brands across its Luxury, Premium, and Select tiers &mdash; Ritz-Carlton, St. Regis, W, Westin, Sheraton, Courtyard, and many more [1]. The brand mostly franchises or manages, not owns. Its leverage is the <strong>brand standard</strong>: a contractually enforceable specification of what every room must contain, down to the finishes, lighting, and approved furniture vendors. Meet it or lose the flag.</p>
+
+    <p><strong>Management company:</strong> operates the hotel day-to-day under a management contract. Firms like Aimbridge Hospitality, Davidson Hospitality, and Renascent Hospitality run hotels on behalf of owners [2]. They care about operating costs and guest experience; they generally do not drive FF&amp;E specification.</p>
+
+    <p><strong>Franchisee:</strong> an owner who licenses the flag and is contractually bound to meet brand standards. The franchisee is often also the owner; it is a legal and commercial distinction rather than a separate company. The key point is that signing the franchise agreement creates a mandatory FF&amp;E compliance obligation.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Before you scroll: predict</div>
+        <div class="recall-question">Dana works on a new hotel that flies the Courtyard flag. The building is owned by a REIT, operated by Aimbridge, and financed by a private equity firm that also happens to hold the franchise. How many distinct entities have a say in what furniture goes into that building? Name each one and describe what kind of say they have.</div>
+        <div class="recall-hint">There is no single right answer &mdash; the point is to articulate the overlapping claims before the lesson does it for you.</div>
+    </div>
+
+    <p>Dana&rsquo;s three clients in this course represent three very different configurations of this demand side:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3E8;</div>
+            <div class="layer-name" style="color: var(--blue);">Linda (luxury flag)</div>
+            <div class="layer-desc">Brand standards manager at a Marriott-style flag. Her checklist outranks everyone&rsquo;s taste. Every specification must clear her before it clears the owner.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x26EA;</div>
+            <div class="layer-name" style="color: var(--purple);">Brother Andersen (institutional)</div>
+            <div class="layer-desc">An institutional owner with donated funds and a years-long decision horizon. No flag. Budget is strict. Decisions are slow, and there is no backstop when they slip.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F3E1;</div>
+            <div class="layer-name" style="color: var(--orange);">Grace (independent boutique)</div>
+            <div class="layer-desc">Solo boutique-inn owner. Decides fast and on instinct. No purchasing agent, no brand standard, no owner&rsquo;s rep. When a thread drops, nobody picks it up but her.</div>
+        </div>
+    </div>
+
+    <p>The same fundamental work &mdash; specifying and buying furniture for rooms &mdash; looks radically different across these three. The luxury flag project has the most process; the independent boutique has the least; the institutional project has the longest timeline. All three need Dana.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. The critical split: who specifies vs. who buys</h2>
+
+    <p>In Lesson 1, we noted that Dana <em>specified</em> the sixty armchairs and a purchasing team <em>bought</em> them. That split is not a quirk of Dana&rsquo;s studio &mdash; it is the foundational division of labor in the industry, and it has a very clear economic logic.</p>
+
+    <p>A single hotel opening can involve thousands of line items across dozens of vendor categories, with brand-standard compliance and a fixed opening date. No single designer can run the buying process while also running the design process. And no single buyer can make aesthetic and brand-compliance judgments that belong to the designer. The two roles require different skills, different relationships, and different legal accountability [2].</p>
+
+    <h3>Interior design firms: they specify</h3>
+
+    <p>The designer&rsquo;s job is to choose every item &mdash; its model, finish, fabric, dimensions &mdash; and to produce the specification documents that instruct everyone else. Interior Design magazine&rsquo;s <strong>2025 Hospitality Giants</strong> rankings give a sense of the scale at the top of this profession:</p>
+
+    <ul style="margin: 12px 0 16px 24px; color: var(--gray-700);">
+        <li><strong>HBA (Hirsch Bedner Associates)</strong> &mdash; $126.6 million in 2024 design fees; a staggering $8.17 billion in FF&amp;E &ldquo;value of work installed,&rdquo; with 20+ offices worldwide [3].</li>
+        <li><strong>Gensler</strong> ($44.2 million in hospitality fees; world&rsquo;s largest architecture firm), <strong>Rockwell Group</strong> ($40 million), <strong>AvroKO</strong> ($20.7 million) [3].</li>
+        <li>Dozens of mid-size firms below them: ForrestPerkins, Wilson Associates, Yabu Pushelberg, Meyer Davis, The Gettys Group, and many regional studios like Dana&rsquo;s.</li>
+    </ul>
+
+    <p>Designers are paid for their creative and technical judgment. They do not take margin on the furniture they specify. Their compensation is fees &mdash; a fixed design fee or hourly &mdash; not a percentage of the purchase price.</p>
+
+    <h3>FF&amp;E purchasing agents: they buy</h3>
+
+    <p>The purchasing agent &mdash; or procurement firm &mdash; turns the designer&rsquo;s specification into budgets, competitive bids, purchase orders, and delivery. They manage the logistics, QC the goods at receiving, and hand over warranties and closeout documents at the end [2]. Their engagement typically begins <em>before</em> design is finished, precisely so that budgeting and value-engineering happen during the design phase rather than after orders are placed.</p>
+
+    <p>This is Marco&rsquo;s world. In our story he works for a fiduciary purchasing firm in the mode of Benjamin West, one of the real firms that defines the category.</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F9FE;</div>
+        Priya: &ldquo;So Marco goes to all the same trade shows Dana does, but he&rsquo;s buying and she&rsquo;s specifying, and they both have the same chair in front of them?&rdquo;<br>
+        Dana: &ldquo;Same chair. Different spreadsheets. Different anxieties. I&rsquo;m worried about whether it matches the headboard. He&rsquo;s worried about whether the factory can do 240 units in twelve weeks.&rdquo;<br>
+        <em>Same chair. Two entirely different jobs.</em>
+    </div>
+
+    <h3>Real named purchasing firms</h3>
+
+    <p>These are the firms that do Marco&rsquo;s job professionally. Knowing them is useful in any GTM conversation, because owners name them when they explain who they work with:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Firm</th>
+                <th>Founded / scale</th>
+                <th>Model</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Benjamin West</strong></td>
+                <td>1998, Boulder CO; 40 countries, 100+ staff</td>
+                <td>Fiduciary purchasing agent &mdash; disclosed fee only</td>
+            </tr>
+            <tr>
+                <td><strong>R-W Purchasing Partners</strong></td>
+                <td>Since 1986, Denver</td>
+                <td>Claims $6.8B in FF&amp;E/OS&amp;E procured for owners [2]</td>
+            </tr>
+            <tr>
+                <td><strong>The Stroud Group</strong></td>
+                <td>Since 1983; 40+ yrs</td>
+                <td>Luxury hotel-casinos, REITs, boutique &rarr; chains</td>
+            </tr>
+            <tr>
+                <td><strong>Beyer Brown &amp; Associates</strong></td>
+                <td>40+ years (founded ~1977)</td>
+                <td>FF&amp;E + OS&amp;E; clients incl. Davidson Hospitality</td>
+            </tr>
+            <tr>
+                <td><strong>Canoe Hospitality</strong></td>
+                <td>&mdash;</td>
+                <td>Design-driven; engaged before design is finalized</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>How purchasing agents get paid &mdash; the three models</h3>
+
+    <p>This matters for anyone in sales or CS, because a prospect&rsquo;s purchasing model shapes what they are buying from you and how they think about cost:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F91D;</div>
+            <div class="card-title" style="color: var(--green);">Fiduciary / disclosed fee</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">The industry standard in hospitality</div>
+            <div class="card-desc">The agent works for the owner, passes all trade discounts to the client, and is paid only its disclosed fee. The Benjamin West model. No hidden margin on product [2].</div>
+        </div>
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F4CA;</div>
+            <div class="card-title" style="color: var(--blue);">Percentage / tiered fee</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Common in mid-market</div>
+            <div class="card-desc">A management fee of roughly 10&ndash;20% of FF&amp;E trade value, sometimes tiered (higher rate up to a threshold, lower above it). Casino RFQs literally ask agents to quote this rate [2].</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4B0;</div>
+            <div class="card-title" style="color: var(--orange);">Principal / markup</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">More common in residential</div>
+            <div class="card-desc">The firm buys at trade (20&ndash;40% below retail) and resells at a markup &mdash; industry average around 35%. More common in residential design than hospitality procurement [2].</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x26A0;&#xFE0F;</div>
+            <div class="card-title" style="color: var(--purple);">Why it matters</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Incentives shape behavior</div>
+            <div class="card-desc">A fiduciary agent has no incentive to pick pricier product. A markup agent does. Knowing which model a client uses explains a lot about how they evaluate vendor quotes.</div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The supply side &mdash; who makes and sells the furniture</h2>
+
+    <p>Manufacturers do not sell directly to hotel owners. In most cases, they sell through a chain of intermediaries, and understanding that chain is what separates the people who can hold a good GTM conversation from the people who just know product names.</p>
+
+    <h3>Manufacturers: where the furniture actually comes from</h3>
+
+    <p>The U.S. contract-furniture sector has clear leaders. <strong>Kimball Hospitality</strong> (based in Jasper, Indiana; part of Kimball International) supplies Marriott, Hilton, Hyatt, and IHG. <strong>Bernhardt Hospitality</strong> (North Carolina), <strong>Charter Furniture</strong>, and <strong>OFS Brands</strong> are the mid-tier anchors [4]. Below them sits an enormous overseas tier: Chinese manufacturers like CenSo Home and PAKEN, Turkish makers like MOBI and DRF, and Vietnamese factories like Tran Duc &mdash; chosen for cost and full customization at volume.</p>
+
+    <p>Custom millwork shops &mdash; the businesses that fabricate bespoke headboards, vanities, and reception desks &mdash; sit at the other extreme: highly specialized, domestic, and the longest-lead-time items on any project. Custom millwork commonly runs six to twelve months from order to delivery [5].</p>
+
+    <h3>Manufacturer&rsquo;s reps: the commission-only salespeople</h3>
+
+    <p>Most contract furniture reaches designers and purchasing agents through a rep. Tomás, in our story, is a manufacturer&rsquo;s rep &mdash; an independent salesperson who carries several non-competing product lines in a defined geographic territory, paid entirely on commission from the manufacturer [4].</p>
+
+    <p>Rep commissions in furniture run roughly 5&ndash;15% of revenue depending on the product and the relationship [4]. Their core job is not to close the transaction &mdash; it is to get products &ldquo;specified into&rdquo; a designer&rsquo;s drawings, so that when the purchasing agent issues RFQs, their lines are on the list. Relationships with designers and purchasing firms are everything; the rep&rsquo;s income depends on getting chosen before the order is placed.</p>
+
+    <p>This creates a specific dynamic: Tomás will always say yes to a lead time question, because saying &ldquo;we can&rsquo;t do it&rdquo; loses the specification. He then has to check with the factory &mdash; which is a different conversation entirely. Marco knows this about reps, and builds it into his schedule assumptions.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Predict the problem</div>
+        <div class="recall-question">A manufacturer&rsquo;s rep is paid by the manufacturer, not by the owner or the designer. Given that, explain in two sentences: (a) whose interests a rep primarily serves, and (b) why this creates a specific risk when a rep quotes a lead time or a minimum order quantity.</div>
+        <div class="recall-hint">Think about who gets hurt if the rep is wrong &mdash; and who finds out first.</div>
+    </div>
+
+    <h3>Dealers, showrooms, and trade shows</h3>
+
+    <p>Dealers are contracted resellers, especially dominant in the office and corporate furniture segment. <strong>Showrooms</strong> &mdash; permanent brand spaces in design centers like the Chicago Merchandise Mart or the Pacific Design Center &mdash; are where designers experience product in context. <strong>Trade shows</strong> are where the industry concentrates itself for a few days a year:</p>
+
+    <ul style="margin: 12px 0 16px 24px; color: var(--gray-700);">
+        <li><strong>HD Expo (Hospitality Design)</strong> &mdash; Las Vegas; the flagship annual event for hospitality FF&amp;E</li>
+        <li><strong>NeoCon</strong> &mdash; Chicago Merchandise Mart; the largest commercial interiors event in North America</li>
+        <li><strong>BDNY (Boutique Design New York)</strong> &mdash; the boutique and lifestyle hotel market</li>
+    </ul>
+
+    <p>About 75% of hospitality furniture still sells through these direct, showroom, dealer, and consultant channels rather than online procurement [4]. The remaining 25% is growing &mdash; but this is emphatically still a relationship business.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. The logistics tail and the owner&rsquo;s rep</h2>
+
+    <p>Two more roles that often surprise outsiders: the people who actually put the furniture in the room, and the person whose entire job is to watch everyone else.</p>
+
+    <h3>The 3PL / white-glove logistics firms</h3>
+
+    <p>FF&amp;E does not arrive at a hotel in one shipment. It comes from dozens of manufacturers on different schedules, via ocean freight, truck, and air, through customs if imported. Someone has to consolidate it in a regional warehouse, inspect it against the purchase orders within 24 hours, barcode-inventory it, and then deliver each piece to the right room on the right floor in the right order &mdash; because in a hotel you cannot move finished furniture through a crowded corridor after install.</p>
+
+    <p>That is Reggie&rsquo;s job. In the real industry, firms like <strong>American Fargo</strong> (since 1949, an Atlas Van Lines partner), <strong>Corrigan Logistics</strong> (UniGroup/United Van Lines network), and <strong>Bailey&rsquo;s Allied</strong> do this work [5]. They are not movers in the household sense. They are hospitality-installation specialists, and using a general mover instead is one of the most reliable ways to cause an expensive opening-day problem [5].</p>
+
+    <div class="info-box orange">
+        <p><strong>The receiving failure, revisited:</strong> in Lesson 1, Dana&rsquo;s $40k mistake <em>surfaced</em> at receiving &mdash; when sixty chairs arrived in the wrong finish and nobody had caught it earlier. The receiving step is the last moment to catch a problem before it becomes a crisis. Skipping the inspection at the warehouse is cited as the single most common and most expensive logistics failure in the industry [5]. Reggie does not skip it.</p>
+    </div>
+
+    <h3>The owner&rsquo;s rep</h3>
+
+    <p>Sam, the owner&rsquo;s representative in our story, is the one actor in the chain who works for nobody except the owner. A GC builds what is drawn; the owner&rsquo;s rep ensures what is being built makes operational and financial sense. On a large hotel project, the owner&rsquo;s rep coordinates budgets, schedules, contracts, brand compliance, and the running mediation among owner, operator, designer, GC, and brand [2].</p>
+
+    <p>Sam is money-and-schedule realist by temperament and by job description. He is the one who calls Dana when the budget is over and asks what can be value-engineered. He is also the one who signs the final inspection.</p>
+
+    <h3>The general contractor</h3>
+
+    <p>The GC builds the shell and the fixed work. On most hotel projects, the GC and the FF&amp;E team run on parallel tracks that converge at the end, when the building shell is finished enough for furniture installation to begin. The tension point: the GC&rsquo;s schedule and the FF&amp;E delivery schedule have to meet at the same place at the same time, and neither team controls the other&rsquo;s timeline.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. The full chain &mdash; money and arrows</h2>
+
+    <p>Now the whole picture. The diagram below maps who instructs whom and where money flows in a typical flagged hotel project. Read it left to right &mdash; demand to supply &mdash; and note that the purchasing agent sits at the hub, translating design intent into vendor transactions.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FF&amp;E value chain showing the flow of instructions and money from owner to manufacturer and back">
+
+            <!-- Background -->
+            <rect x="0" y="0" width="760" height="420" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+
+            <!-- Title -->
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">The FF&amp;E Value Chain &mdash; Instructions &amp; Money</text>
+
+            <!-- DEMAND SIDE: Owner cluster -->
+            <!-- Owner box -->
+            <rect x="20" y="52" width="130" height="56" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="85" y="75" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#3451B2">Owner / REIT</text>
+            <text x="85" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">owns budget &amp; real estate</text>
+
+            <!-- Brand box -->
+            <rect x="20" y="126" width="130" height="56" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="85" y="149" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#3451B2">Brand / Flag</text>
+            <text x="85" y="166" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">sets standards; no budget</text>
+
+            <!-- Management co -->
+            <rect x="20" y="200" width="130" height="56" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"/>
+            <text x="85" y="223" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#374151">Mgmt Company</text>
+            <text x="85" y="240" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">operates; no buy role</text>
+
+            <!-- Owner's rep -->
+            <rect x="20" y="274" width="130" height="56" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="85" y="297" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">Owner&rsquo;s Rep</text>
+            <text x="85" y="314" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">owner&rsquo;s advocate; watches all</text>
+
+            <!-- DESIGN LAYER -->
+            <rect x="200" y="52" width="130" height="56" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+            <text x="265" y="75" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#7C3AED">Interior Designer</text>
+            <text x="265" y="92" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">specifies; paid by fee</text>
+
+            <rect x="200" y="126" width="130" height="56" rx="8" fill="#EDE9FE" stroke="#7C3AED" stroke-width="1.5"/>
+            <text x="265" y="149" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#7C3AED">Studio Principal</text>
+            <text x="265" y="166" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">owns standards &amp; library</text>
+
+            <!-- GC -->
+            <rect x="200" y="274" width="130" height="56" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"/>
+            <text x="265" y="297" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#374151">Gen. Contractor</text>
+            <text x="265" y="314" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">builds shell; parallel track</text>
+
+            <!-- HUB: Purchasing Agent -->
+            <rect x="382" y="115" width="136" height="76" rx="10" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2.5"/>
+            <text x="450" y="145" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">Purchasing Agent</text>
+            <text x="450" y="163" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">buys; fiduciary or fee</text>
+            <text x="450" y="178" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Marco&rsquo;s world</text>
+
+            <!-- SUPPLY SIDE -->
+            <!-- Manufacturer's rep -->
+            <rect x="566" y="52" width="130" height="56" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="631" y="72" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">Manufacturer&rsquo;s Rep</text>
+            <text x="631" y="89" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">commission-only; multi-line</text>
+            <text x="631" y="103" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Tom&aacute;s&rsquo;s world</text>
+
+            <!-- Manufacturer / factory -->
+            <rect x="566" y="130" width="130" height="56" rx="8" fill="#FEE2E2" stroke="#DC2626" stroke-width="1.5"/>
+            <text x="631" y="153" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#DC2626">Manufacturer</text>
+            <text x="631" y="170" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">makes product; Greta&rsquo;s world</text>
+
+            <!-- Dealer / showroom -->
+            <rect x="566" y="208" width="130" height="56" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"/>
+            <text x="631" y="231" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#374151">Dealer / Showroom</text>
+            <text x="631" y="248" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">HD Expo, NeoCon, BDNY</text>
+
+            <!-- 3PL / Logistics -->
+            <rect x="566" y="286" width="130" height="56" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="631" y="309" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">3PL / Install</text>
+            <text x="631" y="326" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Reggie; white-glove delivery</text>
+
+            <!-- ARROWS: Owner → Designer -->
+            <line x1="150" y1="80" x2="196" y2="80" stroke="#3451B2" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+            <!-- Owner → Purchasing Agent -->
+            <line x1="150" y1="90" x2="370" y2="155" stroke="#1A8F5C" stroke-width="1.5" marker-end="url(#arrowGreen)" stroke-dasharray="4,3"/>
+            <!-- Brand → Designer -->
+            <line x1="150" y1="154" x2="196" y2="154" stroke="#3451B2" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+            <!-- Designer → Purchasing Agent -->
+            <line x1="330" y1="120" x2="378" y2="140" stroke="#7C3AED" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+            <!-- Purchasing Agent → Rep -->
+            <line x1="518" y1="140" x2="562" y2="100" stroke="#E8790C" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+            <!-- Purchasing Agent → Manufacturer -->
+            <line x1="518" y1="155" x2="562" y2="158" stroke="#DC2626" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+            <!-- Rep → Manufacturer -->
+            <line x1="631" y1="108" x2="631" y2="126" stroke="#E8790C" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#arrowOrange)"/>
+            <!-- Manufacturer → 3PL -->
+            <line x1="631" y1="186" x2="631" y2="204" stroke="#374151" stroke-width="1" marker-end="url(#arrowGray)"/>
+            <!-- 3PL → Owner (money back = product delivered) -->
+            <line x1="566" y1="320" x2="155" y2="320" stroke="#1A8F5C" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowGreen)"/>
+
+            <!-- Money label on owner→PA arrow -->
+            <text x="290" y="106" font-family="Inter" font-size="9" fill="#1A8F5C" font-style="italic">budget flows to PA</text>
+            <!-- Delivery label -->
+            <text x="360" y="342" font-family="Inter" font-size="9" fill="#1A8F5C" font-style="italic">product delivered to owner</text>
+
+            <!-- Arrow markers -->
+            <defs>
+                <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#3451B2"/>
+                </marker>
+                <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#1A8F5C"/>
+                </marker>
+                <marker id="arrowPurple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#7C3AED"/>
+                </marker>
+                <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#E8790C"/>
+                </marker>
+                <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#DC2626"/>
+                </marker>
+                <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                    <path d="M0,0 L0,6 L8,3 z" fill="#374151"/>
+                </marker>
+            </defs>
+
+            <!-- Legend -->
+            <rect x="20" y="365" width="720" height="42" rx="6" fill="white" stroke="#E5E7EB"/>
+            <line x1="36" y1="386" x2="68" y2="386" stroke="#1A8F5C" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <text x="74" y="390" font-family="Inter" font-size="10" fill="#6B7280">Budget / product flow</text>
+            <line x1="200" y1="386" x2="232" y2="386" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="238" y="390" font-family="Inter" font-size="10" fill="#6B7280">Instructions / spec</text>
+            <line x1="360" y1="386" x2="392" y2="386" stroke="#DC2626" stroke-width="1.5"/>
+            <text x="398" y="390" font-family="Inter" font-size="10" fill="#6B7280">Purchase order</text>
+            <line x1="510" y1="386" x2="542" y2="386" stroke="#E8790C" stroke-width="1.5" stroke-dasharray="3,2"/>
+            <text x="548" y="390" font-family="Inter" font-size="10" fill="#6B7280">Rep relationship (commission)</text>
+        </svg>
+        <div class="diagram-caption">The FF&amp;E value chain. The purchasing agent (green) is the hub &mdash; translating the designer&rsquo;s spec into vendor transactions. The owner holds the budget and receives the product; everybody else earns a fee or margin in between.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Who pays whom &mdash; and who is free</h2>
+
+    <p>One question clarifies more GTM conversations than almost any other: <em>in this deal, who actually writes the checks?</em></p>
+
+    <p>The answer, compressed to its skeleton: <strong>the owner owns the budget and writes all the checks</strong>. Everyone else earns their compensation in one of four ways:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4B3;</div>
+            <div class="layer-name" style="color: var(--blue);">Designer &rarr; owner</div>
+            <div class="layer-desc">Design fees, paid by the owner. No margin on furniture.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4B3;</div>
+            <div class="layer-name" style="color: var(--green);">Purchasing agent &rarr; owner</div>
+            <div class="layer-desc">Fiduciary fee, percentage of trade value, or markup &mdash; disclosed and paid by the owner. Not by the manufacturer.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4B3;</div>
+            <div class="layer-name" style="color: var(--orange);">Manufacturer&rsquo;s rep &rarr; manufacturer</div>
+            <div class="layer-desc">Commission from the manufacturer, not from the designer or buyer. The rep is free to the buying side.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4B3;</div>
+            <div class="layer-name" style="color: var(--purple);">Brand &rarr; franchisee</div>
+            <div class="layer-desc">The brand earns royalty fees from the franchisee/owner. It does not pay for the furniture; it mandates what furniture must be bought.</div>
+        </div>
+    </div>
+
+    <p>The 3PL logistics firm is paid by the owner (often billed through the purchasing agent). The GC is paid by the owner. The owner&rsquo;s rep is paid by the owner. When you trace the money, all roads go to the owner.</p>
+
+    <div class="info-box blue">
+        <p><strong>A useful frame for sales conversations:</strong> the owner holds the budget; the designer holds the specification; the purchasing agent holds the transaction. When any one of these three says &ldquo;we can&rsquo;t do it,&rdquo; that is the veto that matters. The brand has a veto on what is specified; the owner has a veto on what is paid for. Understanding which veto is live in a given prospect situation is the difference between a productive discovery call and a stuck deal.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 7 / SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>The full cast, compressed:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F3DB;</div>
+            <div class="layer-name" style="color: var(--blue);">Demand side (4 roles)</div>
+            <div class="layer-desc">Owner / REIT owns budget. Brand/flag sets standards. Management company operates. Franchisee holds the license. All four can have a say on any project; none of them is &ldquo;the client.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4D0;</div>
+            <div class="layer-name" style="color: var(--purple);">Designer (specifies)</div>
+            <div class="layer-desc">HBA, Gensler, Rockwell, AvroKO &mdash; and Dana. Paid by fee. Chooses every item. Does not buy.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--green);">Purchasing agent (buys)</div>
+            <div class="layer-desc">Benjamin West, R-W, Stroud, Beyer Brown. Fiduciary or fee. Manages the entire transaction: budget, bid, PO, logistics, QC, closeout.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F3ED;</div>
+            <div class="layer-name" style="color: var(--orange);">Supply side</div>
+            <div class="layer-desc">Manufacturers (Kimball, Bernhardt) &rarr; reps (Tomás; commission from maker) &rarr; dealers/showrooms &rarr; freight &amp; 3PL (Reggie). 75% of product still moves through these offline relationships.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F440;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Owner&rsquo;s rep &amp; GC</div>
+            <div class="layer-desc">Owner&rsquo;s rep (Sam) watches the full chain for the owner. GC builds the shell on a parallel track that converges at install.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 3:</strong> we follow one chair from the blank spec all the way to the hotel room. The real phases of an FF&amp;E project &mdash; programming, schematic design, design development, construction documents, bidding, purchase orders, expediting, manufacturing, freight, receiving, install, punch list, closeout &mdash; and the central insight the whole industry is built around: procurement has to start while the building is still being built, because lead times are longer than most people imagine.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Map a real hotel&rsquo;s ownership chain.</strong> Pick any branded hotel you have stayed in or can look up online (Marriott, Hilton, IHG, Hyatt &mdash; any flag). Using publicly available information (the hotel&rsquo;s website, a quick web search, LinkedIn), try to identify: (a) who operates it (management company or direct brand?), (b) who owns the real estate (REIT, private developer, brand-owned?), and (c) which brand standard applies. Most of this is public information; owner identity is sometimes disclosed in property listings, REIT filings, or news releases. Write 3&ndash;5 sentences describing what you found and what you could not confirm &mdash; and explain why the distinction between owner, brand, and operator matters for how FF&amp;E decisions get made at that property.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Passes if: the student identifies at least two distinct entities (owner is not the brand) for their chosen property; explains that the brand sets standards the owner must fund; explains that the management company runs daily operations but does not drive FF&amp;E specification; and notes that the owner&rsquo;s budget is the ultimate source of all FF&amp;E spend. Full credit if the student finds a specific REIT or PE owner (these are commonly disclosed in property sale news or REIT annual reports). Partial credit if the search is genuine but information is not publicly available for the chosen property.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Draw the chain for Dana&rsquo;s project.</strong> For the Austin lifestyle hotel described at the start of this lesson, sketch a simple diagram (on paper or in any drawing tool) showing: every actor from owner to the person who puts the chair in the room; an arrow from each actor to the one they instruct or pay; a label on each arrow saying what flows (money / spec / product / oversight). Then add: which of Dana&rsquo;s three clients (Linda / Brother Andersen / Grace) most resembles this project&rsquo;s structure, and why. Submit a photo of your sketch or a text description of the arrows.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Passes if: the diagram includes owner, brand, management company (or note that it&rsquo;s a lifestyle/independent and may not have one), owner&rsquo;s rep, designer (Dana), purchasing agent (Marco-type), manufacturer&rsquo;s rep, manufacturer, 3PL/logistics, and GC. Arrows: owner &rarr; designer (spec contract / fee); owner &rarr; purchasing agent (budget / fiduciary fee); purchasing agent &rarr; manufacturer (PO / payment); manufacturer&rsquo;s rep earns from manufacturer (commission); 3PL earns from owner via PA. Most resembles Linda (luxury flag) if the project has a brand-compliance layer, or Grace (independent) if it&rsquo;s a pure lifestyle boutique with no flag.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Interview a rep or designer.</strong> Find one person in the FF&amp;E chain &mdash; a manufacturer&rsquo;s rep, an interior designer, a purchasing agent, or a hotel GM &mdash; via LinkedIn, your own network, or a trade event. Ask them two questions: (1) &ldquo;Who do you see as your actual client in a project?&rdquo; and (2) &ldquo;What&rsquo;s the most common misunderstanding about your role from other parties in the project?&rdquo; Write a 4&ndash;6 sentence summary of what they said, and compare it to what this lesson taught. This task cannot be answered by an AI, because the AI does not know this specific person&rsquo;s current experience.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why does the industry separate specifying from buying?</strong> (Elaborative interrogation.) The designer-specifies / purchasing-agent-buys split is foundational, but it is not obvious. Why does it exist &mdash; why not have one person do both? Answer by working through: (a) what would break if the designer also owned the purchasing, (b) what would break if the purchasing agent also made design decisions, and (c) why the fiduciary model exists and what problem it solves compared to a markup model. Then explain how Grace, as a solo boutique owner with no purchasing agent, is effectively living with the answer to (a) and (b) at once.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-l2-1">
+                Interior Design. &ldquo;2025 Hospitality Giants: Design-Firm Rankings.&rdquo; <a href="https://interiordesign.net/research/interior-design-2025-hospitality-giants">interiordesign.net/research/interior-design-2025-hospitality-giants</a>.
+                <div class="src-meta">HBA $8.17B installed value; Gensler $44.2M fees; Rockwell Group $40M; AvroKO $20.7M; rankings of hospitality design firms by revenue and installed value &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l2-2">
+                Beyer Brown &amp; Associates. &ldquo;FF&amp;E Procurement: A Comprehensive Guide.&rdquo; <a href="https://www.beyerbrown.com/ffe-procurement-comprehensive-guide">beyerbrown.com/ffe-procurement-comprehensive-guide</a>; and Procurist. &ldquo;Procurement Agents vs. Interior Designers.&rdquo; <a href="https://procurist.io/blog/procurement-agents-interior-designers">procurist.io/blog/procurement-agents-interior-designers</a>.
+                <div class="src-meta">Owner is primary client; fiduciary model (disclosed fee only); percentage/tiered and markup models; owner&rsquo;s rep role; R-W $6.8B track record; designer vs purchasing agent division of labor &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l2-3">
+                Interior Design. &ldquo;2025 Top 100 Giants (all verticals).&rdquo; <a href="https://interiordesign.net/research/interior-designs-2025-top-100-giants">interiordesign.net/research/interior-designs-2025-top-100-giants</a>.
+                <div class="src-meta">Full ranking of design firms; HBA dominant; Marriott 30+ brands cited via Marriott 10-K as corroborating source &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l2-4">
+                MANA (Manufacturers&rsquo; Agents National Association). &ldquo;Understanding Manufacturers&rsquo; Reps.&rdquo; <a href="https://www.manaonline.org/understanding-manufacturers-reps">manaonline.org/understanding-manufacturers-reps</a>; and Dataintelo. &ldquo;Hospitality Furniture Market Report.&rdquo; <a href="https://dataintelo.com/report/hospitality-furniture-market">dataintelo.com/report/hospitality-furniture-market</a>.
+                <div class="src-meta">Rep model (commission-only, multi-line, geographic territory); 75% of hospitality furniture via offline channels; Kimball Hospitality and Bernhardt as leading contract-furniture manufacturers &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l2-5">
+                Bailey&rsquo;s Allied. &ldquo;FF&amp;E Logistics Guide.&rdquo; <a href="https://www.baileysallied.com/workplace/resources/ffe-logistics-guide">baileysallied.com/workplace/resources/ffe-logistics-guide</a>; and Flatworld Global Solutions. &ldquo;Hospitality Hotel Logistics Changes.&rdquo; <a href="https://flatworldgs.com/hospitality-hotel-logistics-changes">flatworldgs.com/hospitality-hotel-logistics-changes</a>.
+                <div class="src-meta">3PL firms (American Fargo, Corrigan, Bailey&rsquo;s); white-glove install; receiving inspection as critical failure point; custom millwork 6&ndash;12 month lead times &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Inline references [N] point to the numbered source above. Dana, Priya, Marco, Tomás, Reggie, Sam, Linda, Brother Andersen, and Grace are composite illustrations, not real individuals. Named firms (Benjamin West, R-W, Stroud, Beyer Brown, HBA, Gensler, Kimball, Bernhardt, American Fargo, Corrigan, Bailey&rsquo;s) are real and used as industry archetypes. Track-record figures (R-W $6.8B; HBA $8.17B) are self-reported by those firms. Commission ranges and fee percentages are documented industry practice; specific engagements vary.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 2 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: One chair&rsquo;s journey &mdash; the real phases</p>
+    </div>
+
+</div>
+
+</body>
+</html>

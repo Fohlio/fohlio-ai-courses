@@ -1,9 +1,17 @@
-# Course review — fohlio-domain ("The Fohlio Domain for Engineers", ENGLISH)
+# Course review — fohlio-domain ("How Buildings Get Furnished", 14 lessons, EN, story mode)
 
 **Verdict**: GO with fixes
-**Findings**: 11 total — 0 critical, 2 high, 4 medium, 5 low
+**Findings**: 4 total — 0 critical, 0 high, 1 medium, 3 low
 
-Re-written from Russian to English. Mechanical pre-checks (CSS byte-identical to L1, zero Cyrillic, @media 640, ≥2 recall / 1 joke / viewBox SVG / sources-box per lesson, 0 data-widget, 0 `.lesson-content` prefix, 0 em-dash leaks) re-confirmed — all hold. The English reads as native senior-engineer prose throughout: no translationese, no Skillbox-marketing register, one coherent narrator (omniscient documentarian with hindsight). The story arc holds, the frozen cast is intact, the $40k payoff lands in L8 and closes in L10, and the "Three clients, one concept" beat is present L2–L10. The two High findings are both internal domain-fact contradictions in L10, not language defects.
+This is a strong, ship-ready course. Every structural, pedagogical, sourcing, and de-engineering
+audit passed. The only findings are one Medium (a single de-engineering word leak) and three Low
+cosmetic items. No finding blocks shipping; all four are cheap sweeps the orchestrator can batch.
+
+The course delivers exactly what the brief demanded: the spine is the **real FF&E industry**
+(real firms, real numbers, real process), Dana's project is the through-line, and Fohlio appears
+only as an explicitly-labelled thin overlay. The money lessons (L7/L8) are numerically faithful to
+`.context/real-money.md` line-for-line. The competitive lesson (L13) is genuinely fair — it even
+names Fohlio's own weakness and flags that all comparison sources are competitor-published.
 
 ---
 
@@ -11,183 +19,234 @@ Re-written from Russian to English. Mechanical pre-checks (CSS byte-identical to
 None.
 
 ## High findings
-
-- **[H1] L10, Part 7 — Course-wide self-check, model answer (b): `variance` is DEFINED WRONG, contradicting L6.**
-  File: `public/lessons/fohlio-domain-10-handoff.html`, homework model answer ~line 998.
-  Text: "Planned = sum of issued POs... Actual = sum of paid invoices... **Variance = planned − actual, showing unresolved spend.**"
-  L6 establishes `variance = planned − specTotal` (Part 1 tech-note line ~633 and the waterfall diagram caption line ~684: "variance = planned − specTotal = +$2,500"). The fact base §1 also defines variance against the spec/planned/actual triple, with spec→planned being the at-risk gap. The L10 capstone re-defines variance as `planned − actual`, which is a *different* and incorrect formula in the same course. A capstone self-check that contradicts the foundational definition is wrong-fact + actively mis-teaches the heaviest concept.
-  Owner: course-lesson-writer (re-dispatch L10).
-  Fix: change L10 model answer (b) to "Variance = planned − specTotal: how far the committed cost has drifted from the approved spec intent." Keep specTotal/planned/actual definitions as-is.
-
-- **[H2] L10, Part 6 — "one chair, three clients" table: discontinued finish labeled `updates`, contradicting L8 (the payoff mechanism).**
-  File: `public/lessons/fohlio-domain-10-handoff.html`, Sync (L8) row, Marriott cell ~line 899.
-  Text: "Engine flags: chair finish discontinued. **Sync state = `updates`.** Marco sees it before the PO goes out."
-  L8 is unambiguous: a *discontinued / orphaned* finish is `broken`, not `updates` (L8 Part 2/Part 4, and the L8 model answer line ~955: "broken or orphaned ref... replace, not pull"). The fact base §1 confirms `broken` = orphaned/discontinued. Labeling the discontinued finish `updates` in the synthesis table breaks the exact distinction the whole course was built to teach, and does it inside the capstone that is supposed to consolidate it. Note the Grace cell in the same row correctly calls it "the exact $40k failure scenario" — so the table is internally inconsistent across its own cells.
-  Owner: course-lesson-writer (re-dispatch L10).
-  Fix: change the Marriott sync cell to `broken` (or, if the intent was that Marriott's case is a *non-fatal* catalog price/text update rather than a discontinuation, rewrite the cell text to not say "discontinued" — but the cleanest fix is `broken`, matching L8 and the Grace cell).
+None.
 
 ## Medium findings
 
-- **[M1] L10, Part 5 — citation [6] does not support the claim it is attached to.**
-  File: `public/lessons/fohlio-domain-10-handoff.html`, ~line 832: "Three segments, same data, different representations [6]." Source [6] is `src-fohlio-website-copy` (customer segments & positioning). That source supports *that the segments exist*, not *that deliverables render differently per segment*. The deliverable-generation claim is backed by [2] (spec-sheets) earlier in the same paragraph. The [6] marker is decorative.
-  Owner: course-lesson-writer.
-  Fix: drop the [6] marker, or move it to the sentence that names the three segments. Keep [2]/[4]/[5] where they sit.
-
-- **[M2] L8 — `src-fohlio-ffe-101-schedule` is a registry source used to back a non-schedule claim; weak attribution.**
-  File: `public/lessons/fohlio-domain-8-sync.html`, source list entry 2 (FF&E 101: Build the Ultimate Schedule), cited at [2] for "the catalog changed several times over" / staleness during approval. The "FF&E 101: Schedule" article is about building schedules, not about catalog drift during approval windows. The Programa source (entry 3) already covers "risks of spec staleness during approval" and is the correct anchor. Entry 2 is padding the count.
-  Owner: course-lesson-writer.
-  Fix: either re-point the [2] markers in L8 to source 3 (Programa) where they concern staleness, or replace L8 source entry 2 with a more on-point source. Not a fabrication (URL is real, verified in registry) — a relevance mismatch.
-
-- **[M3] Source-registry over-reuse: Procurist (`src-procurist-schedules`) cited in 5 of 10 lessons — at the dedup threshold for a non-anchor.**
-  Procurist appears in L1, L2, L3, L4, L7 (5 lessons). The dedup rule (fact base §5, sources-policy) flags any non-anchor source in ≥5 lessons. The declared anchors are `src-layer-ffe-process` and the internal repos (`src-spechub-architecture`, `src-baghdad-schema`); Procurist is NOT a declared anchor, yet it recurs as often as Layer. It is carrying a real recurring fact (the 500–5,000+ / 30–100+ / 12–24-month hospitality scale), which is legitimately reused — but at 5 lessons it should either be promoted to an explicit anchor in the registry or dropped from one lesson where a different source already covers the same point (L4 and L7 both have other scale sources available).
-  Owner: orchestrator (registry decision) + course-lesson-writer if a swap is chosen.
-  Fix: promote Procurist to a named anchor in `sourcesRegistry` (cleanest, since the hospitality-scale stat is a genuine course-wide anchor fact), OR remove the Procurist citation from L4 (where Fohlio-101 and SpecHub already cover the Area/qty claim).
-
-- **[M4] L4 header `<h1>` breaks the per-course title convention used by 9 of 10 lessons.**
-  File: `public/lessons/fohlio-domain-4-spec.html`, line ~586: `<h1>A spec is data, not a document</h1>`. Lessons 1, 5, 6, 7, 8, 9, 10 vary their h1 too (L5 "Brand Standards…", L6 "Money…", etc.), so a per-lesson h1 is acceptable as a pattern — BUT L1, L2, L3, L10 use `<h1>The Fohlio Domain for Engineers</h1>` with the chapter title in `.subtitle`, while L4–L9 put the chapter title in the h1. This is an inconsistent header pattern across the course (two competing conventions). Cosmetic-adjacent but visible in the lesson list / nav. Pedagogically it is a Medium because the recap-grid and "Chapter N" subtitle still anchor the learner; the h1 mismatch only affects polish.
-  Owner: course-lesson-writer (low-effort sweep) or orchestrator decision to standardize.
-  Fix: pick one convention. Recommend the L4–L9 style (chapter title in h1) and update L1/L2/L3/L10 to match, OR vice versa — but make all 10 consistent.
+- **[M1] L14: de-engineering word leak — "queryable".** Line 846, in the thin-Fohlio-overlay
+  paragraph: *"A product record that links the original spec... in one place, **queryable** — is."*
+  The literal term `queryable` is on `.course-state.json → rewrite.deEngineerForbidden`
+  ("queryable data is an engineering requirement"). Here it is used loosely to mean "searchable in
+  one place," not as an engineering requirement, so it is a soft leak rather than a spine violation
+  — but it is the one place the de-engineer rule is technically broken.
+  **Fix (course-lesson-writer, L14):** replace "in one place, queryable" with "in one place,
+  searchable years later" (or "findable in one place"). One-word edit.
+  **Owner: orchestrator** (trivial enough to patch directly without re-dispatch).
 
 ## Low / cosmetic
 
-- **[L1] L3 — listed source [4] (Procurist) has no inline anchor; [5] over-used as the catch-all.**
-  File: `public/lessons/fohlio-domain-3-products.html`. Inline markers present: [1], [2], [3], [5] — [4] is never cited in the body. All markers that ARE present resolve correctly (no broken markers), but a listed source with zero inline reference reads as a count-filler. Fix: add a [4] marker at the hospitality/library-pattern claim in Part 3, or drop source 4 and renumber.
+- **[L1] Visible bracket-callback artifacts leaked into prose (7 instances).** Editorial callback
+  notes render literally in the reader's text, breaking the "warm, dry documentarian" voice:
+  - L2:687 `[L1]` — "...a purchasing team *bought* them **[L1]**."
+  - L8:858 `[L3 callback]` and L8:872 `[L7 callback]`
+  - L9:887 `[L2 callback]` and L9:895 `[L6 callback]`
+  - L12:839 `[from Lesson 8]`
+  - L13:896 `[from Lesson 12]`
+  These are distinct from the numeric source markers `[N]` (which all resolve correctly) and from
+  the deliberate `[1, 3]` citations. They read as stage directions that escaped into the script.
+  **Fix (orchestrator, sweep):** delete each bracketed callback tag, or fold it into prose
+  (e.g. "...as we saw in Lesson 3, ..."). The surrounding sentences already name the lesson, so
+  most can simply be deleted.
 
-- **[L2] L6 — recall-box hint contains inline citation `[3]` mid-recall.**
-  File: `public/lessons/fohlio-domain-6-budget.html`, ~line 750. Marker inside a recall prompt is slightly off-pattern (markers belong on claims, not on quiz prompts). Harmless; resolves correctly. Fix: move the [3] to the body sentence the hint refers to, or drop it.
+- **[L2] L1 "shake the building" idiom attributed to Beyer Brown [1] is slightly generous.**
+  WebFetch of `beyerbrown.com/ffe-procurement-comprehensive-guide` confirms the page is real and
+  covers FF&E movability / FF&E-vs-OS&E, but the exact "pick up the building and shake it" phrasing
+  is an industry idiom not verbatim on that page. Not a fabrication — the underlying claim
+  (movability test) is supported — but the idiom itself is folkloric.
+  **Fix (optional, orchestrator):** soften to "people in the trade say it as..." (already close) or
+  add a generic "widely-used industry idiom" note. Low priority; the src-note already disclaims that
+  the case and some phrasings are illustrative.
 
-- **[L3] L10 — "Variance under 2% is an audit requirement" (Part 6 Budget/Church cell) is an invented precise number.**
-  File: `public/lessons/fohlio-domain-10-handoff.html`, ~line 888. The fact base does not specify a Church variance tolerance; the src-note disclaims illustrative numbers, so this is covered, but a hard "2%" reads as a fact. Fix: soften to "a tight variance tolerance is an audit requirement" or keep and rely on the disclaimer (acceptable). Low.
-
-- **[L4] L6 — "8 properties" (Part 3 Marriott value-engineering) vs "eight properties" (Part 6) vs L1's "600-room refresh plus rolling out across dozens of properties."** Internally consistent enough (8 simultaneous properties is a subset of "dozens"), but the number 8 appears without setup. Cosmetic; no fix required unless tightening.
-
-- **[L5] L9 — `received_fully` PO status used (L9 Parts 2/6) but L7's PO-status table lists only `draft → open → approved → received_partially → closed` (no `received_fully`).**
-  Files: `fohlio-domain-7-procurement.html` (status table) vs `fohlio-domain-9-delivery.html` (uses `received_fully`). Fact base §1 lists PO statuses as `draft → open → approved → received_partially → closed` — `received_fully` is not in the canon. L9 introduces it as an intermediate state ("When every line is fully received it moves to `received_fully`... then `closed`"). This is a plausible refinement but it is NOT in the frozen vocabulary and L7 never mentions it, so a learner sees a status in L9 that L7's authoritative table omits. Low (not wrong, but unsourced/uncanonized). Fix: either add `received_fully` to L7's table with a note, or have L9 say "all lines received → PO is ready to close" without naming a new status.
+- **[L3] Plain-language "schema" appears in body prose (2 instances).** L11:790 and L3:875 use
+  "room-numbering schema" meaning a numbering *scheme/plan* — ordinary English, not a database
+  schema. The literal token "schema" sits on the forbidden list, so flagging for completeness, but
+  the usage is correct industry phrasing and not an engineering leak.
+  **Fix (optional, orchestrator):** swap "schema" → "scheme" / "plan" in both lines to keep the
+  forbidden-word grep clean. Cosmetic; no reader would misread it.
 
 ---
 
 ## Cross-lesson audits
 
-### A4 — Callback graph (expected vs. actual)
+### A1 — CSS byte-identicality (PASS)
+All 14 lessons' `<style>` blocks are byte-identical, md5 `8198d7308cff69ab455d6f861382b581`
+(= the declared hash `8198d730`). Zero drift. Confirmed by md5 + diff vs L1.
 
-Expected: L2→L1; L3→L2,L1; L4→L3,L1; L5→L4,L1; L6→L5,L3,L1; L7→L6,L4,L3; L8→L7,L5,L3; L9→L8,L6,L1; L10→L8,L5,L4,L1 (≥4).
+### A2 — Mobile @media (PASS)
+Every lesson contains the `@media (max-width: 640px)` block (plus 768 and 375 breakpoints), with
+`recap-grid`/`concept-grid → 1col`, `.layer-item` flex column, `.container` padding 18px. Identical
+to L1 (follows from A1).
 
-| Lesson | Expected refs | Found in body/recap | Status |
+### A3 — Pedagogy minimums (PASS, all 14)
+| Check | Result |
+|---|---|
+| Parts (h2.part-header) 5–8 | 6–8 every lesson (incl. summary). In range. |
+| Top recall recap-grid (L2+) | 1 per lesson L2–L14; L1 correctly has none. N−1 prior + 1 "today". |
+| Recall-boxes ≥2 (predict/explain, not "what is X") | 2 (L8: 3). All ask predict/guess/reconstruct. |
+| Joke-box / character beat ≥1, names a concept | ≥1 each; jokes land on lesson concepts (e.g. L1 "3,000 chairs, 40 finishes"; L7 "they're paying for it"). |
+| Inline SVG with viewBox, no fixed w/h | ≥1 per lesson, viewBox-only. L5/L8/L10 have 2. |
+| Hook in first 200 words, story-mode scene | All scene-anchored in medias res (see A5). |
+| Homework 2 Required + 2 Advanced, model-answers | 2 `<details class="model-answer">` per lesson; 2 Advanced each. |
+| Coming-up green info-box at end | Present each lesson (L14 closes with "There is no Lesson 15"). |
+| .sources-box ≥4 real items | 4–7 per lesson (L1/7/8/9/14 = 6–7). |
+
+### A4 — Callback graph (PASS) — 1-3-7-21 spacing honoured; L14 synthesis-only
+Resolving both `Lesson N` and `LN`/`[from Lesson N]` shorthand forms:
+
+| Lesson | Expected (outline) | Found | Status |
 |---|---|---|---|
-| L2 | L1 | L1 (recap + hook + "$40k from Lesson 1") | OK |
-| L3 | L2, L1 | L2 (intent→product), L1 (spec=db, three clients) | OK |
-| L4 | L3, L1 | L3 (catalog→slot), L1 (entity tree, image-anchor) | OK |
-| L5 | L4, L1 | L4 (slot/qty/alternatives), L1 (three clients, JTBD) + L2 bonus | OK |
-| L6 | L5, L3, L1 | L5 (standards→price), L3 (Source), L1 ($40k, spec=db) | OK |
-| L7 | L6, L4, L3 | L6 (budget approved), L4 (spec=data), L3 (Source) | OK |
-| L8 | L7, L5, L3 | L7 (yellow flag handoff), L5 (statuses/push-pull), L3 (Family/Item ref) | OK |
-| L9 | L8, L6, L1 | L8 (sync), L6 (actual=invoices), L1 (phase 5) | OK |
-| L10 | L8, L5, L4, L1 (≥4) | L8, L5, L4 (spec=data), L1, +L2,L3,L6,L7,L9 in recap table | OK (9 refs) |
+| L2 | 1 | L1 | OK |
+| L3 | 2,1 | L1,L2 | OK |
+| L4 | 3,1 | L1,L2,L3,L5,L6 | OK |
+| L5 | 4,2,1 | L1,L2,L3,L4 | OK |
+| L6 | 5,3,2 | L1,L2,L3,L5,L7 | OK |
+| L7 | 6,4,2 | L2,L4,L6,L8 | OK |
+| L8 | 7,5,3 | L1,L3,L5,L7,L9 | OK |
+| L9 | 8,2,6 | L2,L6,L8,L10 | OK |
+| L10 | 9,4,6 | L1,L4,L6,L8,L9 | OK |
+| L11 | 10,8,3 | L2,L3,L5,L8,L9,L10 | OK |
+| L12 | 11,10,6,2 | L1,L2,L6,L8,L10,L11 | OK (all 4 present) |
+| L13 | 12,9,1 | L1,L6,L8,L9,L12 | OK |
+| L14 | 13,11,9,7,3,1 | **L1–L13 (every prior lesson)** | OK — synthesis-only, far exceeds ≥4 |
 
-Callback graph fully satisfied. The 1-3-7 spacing is honored (e.g. L8 reaches back to L3; L10 reaches back to L1). L8→L7 handoff is especially clean: L7 ends on the "yellow flag appears Monday" cliffhanger and L8 opens by resolving it.
+L14 confirmed synthesis-only: traces one chair through every actor, three property types side by
+side, FF&E reserve + next PIP cycle (loop restarts), closes the arc ("the doors open... every chair
+in the right finish"), no major new concepts.
 
-### A5 — Story-mode consistency
+### A5 — Story-mode consistency (PASS)
+- **No mode drift.** No competing metaphor world introduced anywhere; story stays case-study
+  narrative throughout. (Repo-wide: only the NestJS "airport" analogy exists; zero "airport"/
+  "kitchen" leakage into this course — confirmed by grep.)
+- **Frozen cast intact.** Dana Reyes, Priya, Marco, Helen, Tomás Vega, Greta, Reggie, Sam, Linda
+  (Marsh), Brother Andersen, Grace appear with consistent roles and voice. No invented historical
+  figures; real firms (HBA, Gensler, Benjamin West, R-W, Marriott, Aimbridge, Kimball, Avendra,
+  Procore, etc.) named accurately to documented business models.
+- **Hooks** (all scene anchors, in medias res, sensory): L1 7:14 a.m. blank spec / cold coffee;
+  L2 Dana on the phone drawing the chain; L3 "the chair is already on a ship before Dana finished
+  the drawings"; L5 Helen pulls the empty nightstand cell; L6 Linda arrives 8:40 a.m. with a
+  clipboard; L7 Tomás slides a price list across the table; L8 Sam the owner's rep reads a budget;
+  L9 Tomás answers on the second ring between showroom and jobsite; L10 three swatches that match in
+  the room but differ in daylight; L11 Marco gets the PO at 4:47 p.m.; L12 Helen stops — headboard
+  4 inches too tall; L14 "the doors open at 3:00 p.m." (mirrors L1's 7:14). No definition-openers,
+  no exposition-dumps.
+- **POV stable**: omniscient documentarian, present tense, warm and dry, throughout.
+- **No anachronism**; timeline advances each chapter (no filler).
 
-- **Arc**: $40k discontinued-finish wound is referenced as an *open* wound in L1–L7 (never "fixed"), the *mechanism* lands in L8 (sync flags `broken` → Dana clicks Replace → PO goes out clean), emotional *closure* in L10 (Cedar & Oak delivered, twelve chairs in the right finish). Arc rule §6 respected — not resolved before L8. ✔
-- **Bookending**: L8 and L10 both reopen the exact L1 scene ("7:14 a.m… cold coffee… cursor blinking in the Project name field") and re-read it with new understanding. Textbook story-mode callback. ✔
-- **Frozen cast**: Dana Reyes, Marco, Priya, Helen, Linda, Brother Andersen, Grace — all present, all in their declared roles, no rename, no quiet promotion (Priya stays the junior who asks the naive questions; Helen stays the gatekeeper; Marco stays procurement). ✔
-- **Clients**: Marriott / The Church of Jesus Christ / Cedar & Oak (Grace) consistent across all lessons. L5 correctly expands to "The Church of Jesus Christ of Latter-day Saints" in the src-note (respectful full name) while keeping the short form in body. ✔
-- **"Three clients, one concept" beat**: present in every lesson L2–L10 (L2 Part 2, L3 Part 5, L4 Part 4 info-box, L5 Part 4, L6 Part 6, L7 Part 5, L8 Part 6, L9 Part 5, L10 Part 6). ✔
-- **Image-anchor** "A spec isn't a document. It's a database that happens to know how to print itself on paper" recurs in L1, L2, L3, L4, L5, L6, L7, L8, L9, L10 — ≥3 required, hit in all 10. ✔
-- **No anachronism, no fabricated real-org dialogue**: all dialogue is between composite characters; Marriott/Church appear only as archetypes; src-notes disclaim correctly in every lesson. ✔
-- **POV stable**: omniscient documentarian with hindsight throughout; no mid-course switch to first person or "we = you." ✔
+### A6 — Voice / register (PASS)
+- Zero marketing/superlative drift (no "seamless / game-changing / cutting-edge / best-in-class /
+  effortless / unlock the power" — grep clean).
+- No academic register ("in conclusion", "it is important to note" — none found).
+- No Skillbox cheerleading ("you've got this", "you will succeed" — none).
+- 7 uses of "simply" are all legitimate adverbs ("it simply never reaches", "cannot simply
+  decide"), none the register-flattening "it's simply easy". "just" usages are legitimate.
+- Read-aloud / narrator-profile / joke-relocation checks (voice-constitution.md was absent from
+  this workspace — no `skills/` dir — so the three calibration checks were applied from their
+  documented definitions): narrator profile matches the first-200-words of each lesson; jokes are
+  concept-bearing and would fail a "could this move to any other lesson?" relocation test (each
+  names a same-lesson concept). PASS.
 
-Mode is held. No drift. No Critical mode finding.
+### A7 — Sanitizer / SVG (PASS)
+All SVGs use `viewBox` with camelCase attributes (`viewBox`, `markerWidth`, `refX`) and no fixed
+`width`/`height` on the SVG element. No `.file-tree` divs used in body (CSS rule unused). Sanitizer
+config not re-audited here (no SVG primitive is stripped — all diagrams render via inline SVG that
+matches L1's golden pattern).
 
-### A6 — Voice in English (the focus audit)
+### A8 — `.lesson-content` double-prefix (PASS)
+0 occurrences across all 14 lessons (CSS is byte-identical to L1, which has none).
 
-- **Read-aloud sameness check** (3 random paragraphs per lesson, mentally): every lesson reads as the same dry, precise, scarred senior practitioner. Sentence rhythm alternates short/long correctly (e.g. L8 hook: "Orange. Dana hovers over it." against long expository sentences). No paragraph slips into marketing-blog or academic register.
-- **Translationese / calque scan**: none found. No literal-from-Russian constructions, no "On the one hand / on the other hand" scaffolding, no comma-splice runs, no misused articles. Idiomatic English throughout ("the chill before the spec", "an Instagram account with nice photos", "a chronograph, not a spreadsheet").
-- **Skillbox-drift scan** ("just/simply/easy/you've got this"): three "simply" hits (L1 L771, L3 L741, L6 L769) — all are natural English intensifiers ("simply not dropping a thread", "simply pulls from it", "can't simply substitute"), NOT reassurance-marketing. Not flaggable.
-- **Narrator-profile vs first-200-words check**: every lesson opens in a scene with a named person inside the first 200 words (L1 Dana 7:14 a.m.; L2 Priya at the moodboard; L3 Priya on the Aeron page; L4 Dana scrolling Marriott; L5 Linda "came with a document"; L6 Dana lays two sheets down; L7 Marco Monday morning; L8 Dana back at the same desk; L9 the truck at 7:40; L10 Dana opens the delivered project). Story-mode L1 scene-anchor rule satisfied; no lesson opens on a bare definition.
-- **Joke-box relocation test**: each joke is locked to its lesson's concept and could NOT be moved without rewriting —
-  - L1 `spec_FINAL_v2.xlsx` → "which version is true right now" (spec-as-database).
-  - L2 "cozy amber oak armchair vintage vibes / Customs doesn't accept tags" (picture ≠ data).
-  - L3 "14 emails, 14 templates" (web-clipper / data-entry problem).
-  - L4 "why is it called a Schedule not a Table… be grateful they didn't call it a Pivot" (Schedule = table schema).
-  - L5 "draft stays draft until there's a phone number" (catalog status gate).
-  - L6 "$400 chair → $631… plus markup 20%" (soft costs/markup).
-  - L7 "why both draft and open" (PO status reversibility cost).
-  - L8 "pull is backwards from Git" (push/pull direction).
-  - L9 "47 identical boxes / scan QR" (GrCode field tracking).
-  - L10 "give everyone Admin… explain it to Helen" (roles/permissions).
-  All concept-specific. ✔
+### A9 — Em-dash hygiene (PASS)
+Body copy uses `&mdash;` throughout. Raw `—` (U+2014) appears only in allowed locations: the one CSS
+comment (`/* Sources box — ... */`, every file), SVG `<text>` labels (L12 "Loop A — Design
+Sign-Off", "Loop B — Submittal Process"), and SVG `aria-label` (L14 property-comparison label).
+Zero raw em-dashes in prose.
 
-Voice is the strongest dimension of this re-write. No High voice finding.
+### A10 — Widgets (PASS)
+`.context/widget-tasks.json` defines 8 tasks (L5,6,7,8,9,11,12,14). All widget ids
+(concept-match, mcq-justify, quiz-explain, flow-order, decision-tree) are registered in
+`src/components/homework/widgets/registry.ts`; none is from the deny-list. Configs are sane and the
+answer keys are pedagogically correct (spot-checked: L7 trade $1,200×0.6×1.3 = $936; L8 landed-cost
+stack ≈ $1,395 ≈ 55% over FOB; L12 decision-tree outcomes correctly model Approved / As-Noted /
+Revise / Rejected liability). Note per brief: these are homework widgets seeded separately and are
+NOT embedded in lesson HTML — confirmed absent from HTML, correctly so.
 
-### A11 — Homework structure
+### A11 — Homework structure (PASS)
+- 2 Required (each with `<details class="model-answer">`) + 2 Advanced per lesson.
+- Honest time estimate printed on every homework block (35–50 min).
+- No repo/git tasks anywhere (no "create a repository / push / lesson-0X.md" — grep clean).
+  All tasks answered in the platform submission field.
+- AI-resilient Advanced tasks present in every lesson (interview a practitioner / investigate a real
+  property / argue-with-an-AI-and-dissect / personal customer-base reasoning). L7 and L14 both have
+  strong AI-resilient Advanced #1 and elaborative-interrogation ("Why is the industry built this
+  way... what would break if you removed it") Advanced #2.
 
-Every lesson: 2 Required + 2 Advanced. ✔
-- Required #1 has an AI-free recall segment in all 10 (explicitly labeled "AI-free segment/recall"). ✔
-- Each Required ships a `<details class="model-answer">` — verified in all 10 (both Required items carry one). ✔
-- ≥1 Advanced is AI-resilient in all 10 (L1 "dissect an LLM answer"; L2 process-critique; L4 EAV design judgment; L5 "find a real public brand standard"; L6 "walk a real colleague through it"; L7 "live supplier catalog page, paste URL"; L8 sync-policy judgment; L9 over-delivery edge-case design; L10 "a real ticket from your backlog"). ✔
-- Advanced #2 uses elaborative-interrogation "Why does X / why this way and not the obvious alternative" framing in all 10. ✔
-- Honest time estimate printed on every homework block (≈30–50 min). ✔
-- No git-repo / lesson-0X.md tasks; L10 explicitly says "No attached files, no repos." ✔
+### A12 — Capstone L14 (PASS)
+Synthesis only; references all 13 prior lessons; capstone homework applies the full framework to a
+real property the learner must investigate (≥4 lessons' work). Closes the arc and the case.
 
-A11 fully clean.
+### A13 — Sources audit (PASS)
+- Every lesson has `.sources-box` before the footer with 4–7 real items (≥ minSourcesPerLesson=4).
+- All inline `[N]` markers resolve: max marker ≤ source count in every lesson (no dangling cites).
+- Citation style is numeric throughout (consistent with policy).
+- **Spot-checks (WebFetch / brief cross-ref):**
+  - `beyerbrown.com/ffe-procurement-comprehensive-guide` — live, on-topic (FF&E procurement). ✓
+  - `procore.com/library/construction-submittals` — live; Approved / Approved-as-Noted /
+    Revise-and-Resubmit / Rejected statuses match L10/L12 exactly. ✓
+  - `myhfa.org/...furniture-import-duties...` — live; Section 301 25% + duty-stacking match L8. ✓
+  - L7 money figures vs `real-money.md`: fiduciary 4% of €3M = €120k, mgmt 10–20%/BIID 15%,
+    principal 20–40%/~35%, tiered 8%→4%, rep 5–15%, rebates 3–15%, cost-plus $8,999−40%×1.35=$7,289,
+    BIID 35%/35%/68% — all exact. ✓
+  - L8 figures vs `real-money.md`: China 30–35% stacked, Vietnam 20%/40%, 15–40% swing, 50% deposit/
+    CBS, 2/10 Net 30 = 36.7%, contingency 5–10%/10–15%, freight 5–10%/15–25%, 60% freight swing,
+    VE 10–20% — all exact. L8 even includes the required tariff-volatility caveat
+    (hts.usitc.gov / ustr.gov). ✓
+- **No fabricated/F-grade sources found.** Lower-authority supporting cites (e.g.
+  `sarahospitalityusa.home.blog`, `softwareplatform.net`) are real URLs with specific paths/dates,
+  used alongside registry anchors (not as sole sources), so not F-grade.
+- **Recurrence / ≥50% rule:** beyerbrown (10), procurist (10), baileysallied (8) each exceed 50% of
+  lessons but are all registry `anchor:true` sources, and the brief explicitly whitelists
+  src-procurist-*, src-baileys-logistics, and src-layer-ffe-process as legitimate recurring anchors.
+  No non-anchor source is over-cited. ✓
+- **No Wikipedia-only lesson** (no Wikipedia sourcing at all). Language pref en-first respected
+  (all sources English). ✓
+- **Dedup**: registry ids are used consistently; same anchors reused, not re-created. ✓
 
-### A12 — Capstone (L10)
+### A13b — Images audit
+Skipped (AI illustrations = false; no `<img>` in any lesson). ✓
 
-- Synthesis-only: no genuinely new concept is introduced — Collaboration/roles/deliverables were all seeded earlier (roles in L1, Collaboration foreshadowed in L8/L9, deliverables implied by spec-as-database). Acceptable for a handover chapter. ✔
-- Capstone task traces ONE chair across all six phases for all three clients, pulling from L2,L3,L4,L5,L6,L7,L8,L9 — well over the ≥4-prior-reference bar. ✔
-- Closes the $40k arc explicitly ("No forty thousand dollars. No month of delay."). ✔
-- **But** the two High findings (H1 variance formula, H2 discontinued=`updates`) both live in L10 and both corrupt the synthesis — the capstone is where consolidation must be airtight, so these are weighted as High rather than Medium.
-
-### A13 — Sources
-
-- Every lesson has a `.sources-box` with ≥3 real items (L1: 5, L2: 5, L3: 5, L4: 4, L5: 4, L6: 5, L7: 6, L8: 4, L9: 4, L10: 6). ✔ No `.src-note` opt-out abuse — every lesson cites real external + internal sources.
-- Inline `[N]` markers resolve to list entries in all lessons (no broken markers). One orphan listed-but-uncited source in L3 ([L1] above).
-- Citation style is numeric `[N]` consistently — no author-year drift. ✔
-- Markers placed at scene boundaries / claim clusters, not mid-dialogue (story-mode rule respected). ✔
-- **Spot-check (verified live this pass):**
-  - `src-layer-ffe-process` (layer.team) — URL live; describes the 6-phase model (Schematic → Specification → Client Approval → Procurement → Delivery & Installation → Handover). Matches L1/L8/L9/L10 usage. ✔
-  - `src-procurist-schedules` (procurist.io) — URL live; states verbatim "Hospitality: 500 to 5,000+ line items, 30 to 100+ vendors, 12 to 24 month procurement cycle." Matches the L1/L2 hard-fact citation exactly. ✔
-  - Fohlio blog URLs and internal repo sources are consistent with the registry §5 (not independently fetchable for internal repos, which is expected).
-  - **No F-grade / fabricated sources found.** No 404s on spot-checked anchors, no mis-attributed quotes, no invented papers.
-- Dedup: anchors `src-layer-ffe-process`, `src-spechub-architecture`, `src-baghdad-schema` recur as permitted. Procurist at 5 lessons trips the threshold → [M3].
-- Language pref en-first respected (all external sources English). ✔
-
-### Domain-fact accuracy (per fact base)
-
-- FF&E definition/scope (movable, excludes shell): correct (L1). ✔
-- 6 phases named correctly and in order across L1/L3-diagram/L10: correct. ✔
-- Entity vocabulary (Workspace/Project/Area/Schedule/ItemColumns/ProjectItemSlot/ProjectItem/CatalogFamily/CatalogItem/Parts/Source): all used correctly and consistently with §1–§2. ✔
-- Catalog statuses `draft / new_from_project / ready_to_use`: correct (L3, L5). ✔
-- Sync states `new / ready / updates / broken`: correctly defined in L8 — but MISLABELED in the L10 synthesis table → [H2]. ✔ at definition, ✗ at synthesis.
-- PO statuses `draft → open → approved → received_partially → closed`: correct in L7; L9 adds non-canon `received_fully` → [L5].
-- Budget triple specTotal/planned/actual: correct in L6 — but variance formula contradicted in L10 → [H1].
-- Optimistic concurrency (version + HTTP 409), soft-deletion, multi-tenant scoping: correct (L4, L8). ✔
-- 3 budget numbers (the L6 worked example: $60k spec / 5% discount / $5,500 soft costs → variance +$2,500): arithmetic checks out; the homework worked examples (L6: $37,920 spec total; L7 landed-cost compare) are arithmetically correct. ✔
+### A14 — De-engineering + Fohlio-thin-overlay (PASS, one Medium leak — see M1)
+- **Spine is the real industry**, not Fohlio's data model. Every lesson teaches the FF&E business;
+  Fohlio is never the teaching backbone.
+- **Body Fohlio mentions** (excluding the footer Slack channel): L1/2/3/7/8/11 = 0; L5 = 4, L9 = 2,
+  L6 = 2, L12 = 3, L14 = 5 (all in designated/overlay-appropriate lessons); L13 = 16 (the tools/
+  competitive lesson — expected). Every overlay is explicitly self-limiting ("The thin Fohlio
+  aside", "the thin Fohlio-style layer worth naming here", "We won't dwell on this").
+- **L13 competitive treatment is fair and honest**: Programa, Spexx, Studio Designer, Design
+  Manager, Houzz/Ivy, Procore, Airtable/Notion all get one-line positions; the lesson flags that
+  every comparison source is competitor-published; it names Fohlio's own downside ("steeper learning
+  curve for smaller teams"); Procore is correctly classed as construction PM, not an FF&E competitor.
+- **Forbidden engineering content**: no `<pre>`, no code blocks, no file-trees, no `<code>` entity
+  tokens in prose (the only `<code>` is the footer Slack channel). No HTTP 409 / optimistic-
+  pessimistic concurrency / SyncStateCache / version-field / isolation-boundary anywhere.
+- The only de-engineer rule technically broken is the single word "queryable" in L14 (M1) and the
+  plain-English "schema" (L3, Low) — both cosmetic, neither teaches a software internal.
 
 ---
 
-## Repair plan (ordered)
+## Repair plan
 
-1. **[H1]** Re-dispatch course-lesson-writer for **L10**: fix variance definition in the Course-wide self-check model answer to `variance = planned − specTotal` (match L6). File `fohlio-domain-10-handoff.html` ~line 998.
-2. **[H2]** Same L10 dispatch: in the "one chair, three clients" table, change the Marriott Sync (L8) cell from `updates` to `broken` for the discontinued finish (match L8 + the Grace cell). ~line 899.
-3. **[M1]** L10: drop the unsupported `[6]` marker on "different representations" (or move to the segment-naming sentence). ~line 832.
-4. **[M2]** L8: re-point the staleness `[2]` markers to source 3 (Programa), or swap source entry 2 for an on-topic source. Source list ~line 996.
-5. **[M3]** Registry decision (orchestrator): promote `src-procurist-schedules` to a named anchor, OR remove its citation from L4 (Fohlio-101 + SpecHub already cover the claim).
-6. **[M4]** Standardize the `<h1>` convention across all 10 lessons (recommend chapter-title-in-h1 per L4–L9; update L1/L2/L3/L10).
-7. **[L1]** L3: add a `[4]` inline marker at the hospitality/library claim in Part 3, or drop+renumber source 4.
-8. **[L2]** L6: move the `[3]` marker out of the recall-box hint onto the body claim.
-9. **[L3]** L10: soften "Variance under 2%" to a non-numeric tolerance (or rely on the illustrative-numbers disclaimer).
-10. **[L4]** L6: optional — set up the "8 properties" number on first use (cosmetic).
-11. **[L5]** Reconcile `received_fully`: add it to L7's PO-status table with a note, or rephrase L9 to not name a non-canon status.
+| # | Sev | Lesson | Owner | Exact fix |
+|---|---|---|---|---|
+| 1 | Medium | L14 (line 846) | orchestrator | Replace "in one place, queryable — is." with "in one place, searchable years later — is." Removes the only forbidden-word leak. |
+| 2 | Low | L2/L8/L9/L12/L13 | orchestrator (sweep) | Delete the 7 visible bracket-callback tags: `[L1]` (L2:687), `[L3 callback]` (L8:858), `[L7 callback]` (L8:872), `[L2 callback]` (L9:887), `[L6 callback]` (L9:895), `[from Lesson 8]` (L12:839), `[from Lesson 12]` (L13:896). Surrounding sentences already name the lesson, so straight deletion works. |
+| 3 | Low | L1 | orchestrator (optional) | Soften the "shake the building" attribution to a generic industry idiom (the underlying movability claim is sourced; only the verbatim phrase is folkloric). |
+| 4 | Low | L3/L11 | orchestrator (optional) | Swap "room-numbering schema" → "room-numbering scheme/plan" (L3:875, L11:790) to keep the forbidden-word grep clean. Cosmetic. |
+
+All four are mechanical text edits; none requires re-dispatching a course-lesson-writer.
 
 ## Re-review checklist (after fixes applied)
-
-- [ ] H1: L10 variance formula reads `planned − specTotal`, matching L6 diagram and tech-note.
-- [ ] H2: L10 sync table Marriott cell reads `broken` (or discontinuation language removed); consistent with L8 and the Grace cell.
-- [ ] M1/M2: no orphan/irrelevant citation markers; all inline [N] back a claim the source actually supports.
-- [ ] M3: Procurist either anchored in registry or dropped from one lesson (≤4 lessons for any non-anchor).
-- [ ] M4: all 10 `<h1>` follow one convention.
-- [ ] L1/L5: L3 source 4 anchored; `received_fully` reconciled between L7 and L9.
-- [ ] CSS still byte-identical to L1; @media 640 unchanged (no structural edits expected from these fixes).
-- [ ] Spot re-verify: arc still unresolved before L8; image-anchor still in all 10; three-clients beat still in L2–L10.
+- [ ] M1: "queryable" removed from L14:846; de-engineer grep returns 0 substantive hits.
+- [ ] L1: all 7 bracket-callback tags gone; no `\[L[0-9]+|from Lesson` artifacts remain in prose.
+- [ ] (optional) L1 idiom softened; L3/L11 "schema" → "scheme".
+- [ ] CSS still byte-identical to L1 (hash 8198d730) — confirm none of the text edits touched a
+      `<style>` block.
+- [ ] Inline `[N]` markers still resolve (no count change expected — edits are prose-only).
