@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 10</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 10 of 14</div>
+        <h1>RFQs, Submittals and Samples</h1>
+        <div class="subtitle">Chapter 10. The paperwork that proves the chair is what you think it is</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Dana spreads three fabric swatches on the conference table. All three came back from vendors claiming they match the spec. All three look roughly the same in the room. Under the window, in actual daylight, they are visibly different shades of walnut. One is brown. One is warm grey. One has a red cast that will fight the carpet the moment anyone turns a lamp on.</p>
+
+    <p>The vendor behind the brown one is convinced they sent the right thing. Dana is convinced they did not. The spec says &ldquo;Walnut, medium tone, matte finish.&rdquo; It does not say which of these three is that. It never occurred to anyone to ask. And because nobody asked before the order went in &mdash; because there was no moment in the process where someone held an actual sample against an actual light source and said &ldquo;this, not that&rdquo; &mdash; the project is now two weeks from a purchase order and three months from an install, and nobody knows which chair they&rsquo;re buying.</p>
+
+    <p>This is what submittals exist to prevent. And this is why the industry invented the sample approval process long before anyone computerized it. Dana learned the hard way in Lesson 1 what happens when a spec stops being true. Today, we&rsquo;re in the weeks just before that purchase order &mdash; the window where the spec gets tested against reality one last time before the money moves.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>The difference between an <strong>RFQ and an RFP</strong> &mdash; when to use each and why it matters</li>
+            <li>What a <strong>submittal</strong> is in construction (AIA A201 language), what form it takes, and what the four review outcomes mean</li>
+            <li>Why a <strong>CFA sample</strong> (cutting-for-approval) is not bureaucracy &mdash; it&rsquo;s a dye-lot guarantee</li>
+            <li>How <strong>RFIs</strong> differ from submittals, and when each tool is the right one</li>
+            <li>The <strong>two approval loops</strong> that run on every project &mdash; and why conflating them is a classic mistake</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3>Quick recap &mdash; where we&rsquo;ve been</h3>
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L1 &mdash; What FF&amp;E is</strong><br>
+            Dana&rsquo;s $40k mistake; spec as living schedule; the $60B market; four segments.
+        </div>
+        <div class="recap-item">
+            <strong>L4 &mdash; From moodboard to spec</strong><br>
+            Design intent → spec sheet; cut sheets; the FF&amp;E schedule vs. the specification.
+        </div>
+        <div class="recap-item">
+            <strong>L6 &mdash; Brand standards &amp; PIPs</strong><br>
+            Linda&rsquo;s brand book; 80&ndash;120 checkpoints; golden samples; contractually enforceable.
+        </div>
+        <div class="recap-item">
+            <strong>L9 &mdash; Vendors, reps &amp; sources</strong><br>
+            Tomás and the rep model; 3&ndash;5 vendors per item; MOQ, lead times, vendor scorecards.
+        </div>
+        <div class="recap-item" style="border-left-color: var(--orange); background: var(--orange-light);">
+            <strong style="color: var(--orange);">L10 &mdash; TODAY</strong><br>
+            RFQ vs. RFP; submittals; four review outcomes; CFA samples; RFIs; the two approval loops.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. Getting a price &mdash; RFQ vs. RFP</h2>
+
+    <p>Before Dana can issue a purchase order, someone has to know what things cost. That sounds obvious. It is less obvious which tool to use to find out.</p>
+
+    <p>The two standard documents for soliciting vendor responses are an <strong>RFQ</strong> and an <strong>RFP</strong>, and the difference is not just vocabulary. It tells a vendor how much homework they&rsquo;re expected to do.</p>
+
+    <p>An <strong>RFQ &mdash; Request for Quotation</strong> &mdash; says: &ldquo;We know exactly what we want. Tell us your price.&rdquo; The spec is already written. The vendor fills in a number. This is the document Dana&rsquo;s firm sends when the specification is finalized and the team just needs competitive pricing across three to five shortlisted vendors [1].</p>
+
+    <p>An <strong>RFP &mdash; Request for Proposal</strong> &mdash; says: &ldquo;We have a need. Propose how you&rsquo;d solve it.&rdquo; It invites the vendor to explain their approach, their product offering, their lead times, their quality standards, their references &mdash; not just their price. RFPs appear when the specification is still open or when the owner wants to evaluate vendors on criteria beyond cost alone. A hotel buying a procurement agent&rsquo;s services (as we saw with the Osage Casino RFQ in Lesson 8) will often run an RFP precisely because price alone doesn&rsquo;t capture whether the firm can handle the complexity [1].</p>
+
+    <div class="info-box blue">
+        <p><strong>The FF&amp;E workflow reality:</strong> for a hotel project, most line items go out as RFQs. The spec is already written (Dana spent three months on it), and what she needs is prices to validate her budget estimates and choose among vendors. But if she&rsquo;s replacing a product category where the spec is deliberately loose &mdash; &ldquo;find us a contemporary lounge chair for the lobby&rdquo; &mdash; she might run an RFP to gather proposals with samples, allowing the selection to happen after she sees what comes back.</p>
+    </div>
+
+    <p>In practice, the purchasing agent runs both processes simultaneously. Tomás &mdash; the manufacturer&rsquo;s rep Dana has worked with since the vendor deep-dive in Lesson 9 &mdash; knows to expect a set of RFQs around week twelve of a design phase. He keeps his quote templates ready. What he cannot do is tell Dana the price without knowing the finish, the quantity, the fabric specification, and whether the project has any brand-standard constraints. An RFQ without a tight spec is just a conversation with extra paperwork.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">You&rsquo;re specifying 200 dining chairs for a hotel restaurant. The brand has already approved the product line. You need prices from four vendors. Are you sending an RFQ or an RFP? Now: the hotel also wants to replace their lobby lounge seating and hasn&rsquo;t decided what kind yet. Which do you send now, and why does the answer change?</div>
+        <div class="recall-hint">Think about what&rsquo;s already decided in each case &mdash; and what the vendor is being asked to contribute.</div>
+    </div>
+
+    <p>Once quotes come back &mdash; usually within one to two weeks for standard items, longer for custom &mdash; the team evaluates on price, lead time, and vendor-qualification criteria. The shortest quote time does not always win. A vendor offering a two-week lead time that turned out to be aspirational cost Marco three weeks of expediting chaos on the last project. He now weights stated lead times against each vendor&rsquo;s track record from prior work [2].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. What a submittal actually is</h2>
+
+    <p>The word &ldquo;submittal&rdquo; has a specific meaning in the construction world, and it is not the same as &ldquo;sending something to someone.&rdquo; Under AIA A201 &mdash; the standard contract that governs the relationship between architects, contractors, and owners on virtually every formal construction project in the US &mdash; a submittal is a document or sample that a contractor or vendor submits to the design team to <em>prove conformance</em> before fabrication or installation happens [3].</p>
+
+    <p>The logic is this: the designer drew something; the contractor is about to build or install it; before they do, they must show the designer that what they propose to use is actually what was specified. A submittal is not the vendor saying &ldquo;trust us.&rdquo; It is the vendor proving it, with documentation.</p>
+
+    <h3>What submittals look like</h3>
+
+    <p>They come in three forms, and each answers a slightly different question:</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--blue);">Product data</div>
+            <div class="layer-desc">Cut sheets, spec sheets, material data. &ldquo;Here is what this product is.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4D0;</div>
+            <div class="layer-name" style="color: var(--purple);">Shop drawings</div>
+            <div class="layer-desc">Detailed fabrication drawings the contractor prepares. &ldquo;Here is exactly how we will build it.&rdquo;</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F9F5;</div>
+            <div class="layer-name" style="color: var(--orange);">Physical samples</div>
+            <div class="layer-desc">Fabric swatches, material boards, paint chips, finish panels. &ldquo;Here is what it will look like in real life.&rdquo;</div>
+        </div>
+    </div>
+
+    <p>Shop drawings in particular are worth pausing on. These are not the designer&rsquo;s drawings. They are drawings prepared by the contractor or the vendor, showing in detail how they plan to fabricate and install something. By submitting them, the contractor is legally certifying &mdash; per AIA A201 &sect;3.12.6 &mdash; that they have checked the field dimensions, verified the conditions, and confirmed the work will fit. The designer&rsquo;s review does not relieve the contractor of that responsibility. It only confirms that the approach is consistent with the design intent [3].</p>
+
+    <p>For FF&amp;E, shop drawings appear most often on custom millwork &mdash; the reception desk, the headboards, the built-in bar cabinetry. These are the items with no off-the-shelf catalog equivalent, where the fabricator is working from the designer&rsquo;s concept drawings and translating them into actual construction dimensions. Reviewing those drawings carefully, before the wood is cut, is how Dana avoids a headboard that&rsquo;s twelve inches too wide for a room with a fire sprinkler in the wrong position.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The four review outcomes &mdash; and why the language is precise</h2>
+
+    <p>When a designer or architect reviews a submittal, they return one of four standard responses. The language is consistent across the industry because it has contractual weight. &ldquo;I liked it&rdquo; is not a response. Neither is &ldquo;looks good.&rdquo; The four actions are [3]:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The four submittal review outcomes and what each means">
+            <rect x="0" y="0" width="740" height="320" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="370" y="32" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">Four Submittal Review Outcomes</text>
+
+            <!-- Approved -->
+            <rect x="20" y="52" width="160" height="130" rx="10" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="2"/>
+            <text x="100" y="80" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#1A8F5C">APPROVED</text>
+            <text x="100" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Conforms. Work</text>
+            <text x="100" y="114" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">may proceed.</text>
+            <text x="100" y="138" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Clean pass.</text>
+            <text x="100" y="152" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Rarest outcome</text>
+            <text x="100" y="166" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">on complex items.</text>
+
+            <!-- Approved as Noted -->
+            <rect x="195" y="52" width="160" height="130" rx="10" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="275" y="80" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#3451B2">APPROVED</text>
+            <text x="275" y="95" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#3451B2">AS NOTED</text>
+            <text x="275" y="115" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Proceed, but</text>
+            <text x="275" y="129" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">comply with notes.</text>
+            <text x="275" y="149" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Minor corrections</text>
+            <text x="275" y="163" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">can happen during</text>
+            <text x="275" y="177" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">fabrication.</text>
+
+            <!-- Revise & Resubmit -->
+            <rect x="370" y="52" width="165" height="130" rx="10" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="452" y="80" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">REVISE &amp;</text>
+            <text x="452" y="95" text-anchor="middle" font-family="Inter" font-weight="700" font-size="12" fill="#E8790C">RESUBMIT</text>
+            <text x="452" y="115" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Does not conform.</text>
+            <text x="452" y="129" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Fix and resubmit</text>
+            <text x="452" y="143" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">before proceeding.</text>
+            <text x="452" y="163" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Work stops.</text>
+            <text x="452" y="177" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Clock resets.</text>
+
+            <!-- Rejected -->
+            <rect x="550" y="52" width="165" height="130" rx="10" fill="#FEE2E2" stroke="#DC2626" stroke-width="2"/>
+            <text x="633" y="80" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#DC2626">REJECTED</text>
+            <text x="633" y="100" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Does not conform</text>
+            <text x="633" y="114" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">and cannot be fixed</text>
+            <text x="633" y="128" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">incrementally.</text>
+            <text x="633" y="148" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Start over with</text>
+            <text x="633" y="162" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">a new submittal.</text>
+            <text x="633" y="176" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Rarest &amp; costliest.</text>
+
+            <!-- Arrow strip -->
+            <text x="20" y="215" font-family="Inter" font-size="12" fill="#6B7280">Work can proceed?</text>
+            <rect x="20" y="225" width="160" height="22" rx="4" fill="#1A8F5C"/>
+            <text x="100" y="240" text-anchor="middle" font-family="Inter" font-size="12" font-weight="600" fill="white">YES</text>
+            <rect x="195" y="225" width="160" height="22" rx="4" fill="#1A8F5C"/>
+            <text x="275" y="240" text-anchor="middle" font-family="Inter" font-size="12" font-weight="600" fill="white">YES (with notes)</text>
+            <rect x="370" y="225" width="165" height="22" rx="4" fill="#E8790C"/>
+            <text x="452" y="240" text-anchor="middle" font-family="Inter" font-size="12" font-weight="600" fill="white">NO &mdash; fix first</text>
+            <rect x="550" y="225" width="165" height="22" rx="4" fill="#DC2626"/>
+            <text x="633" y="240" text-anchor="middle" font-family="Inter" font-size="12" font-weight="600" fill="white">NO &mdash; start over</text>
+
+            <!-- Key note -->
+            <text x="370" y="282" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Review confirms design intent only &mdash; it does not transfer contractor responsibility for field conditions.</text>
+            <text x="370" y="300" text-anchor="middle" font-family="Inter" font-size="12" fill="#6B7280">Source: AIA A201 &sect;3.12, industry practice (Procore, Frantz Ward, Virtual Construction Assistants)</text>
+        </svg>
+        <div class="diagram-caption">The four submittal review actions, per AIA A201. &ldquo;Approved as Noted&rdquo; is the most common outcome on a complex FF&amp;E item.</div>
+    </div>
+
+    <p>A few things worth knowing about this review: it is &ldquo;limited.&rdquo; Specifically, the architect reviews only &ldquo;for conformance with the design concept&rdquo; &mdash; the designer is not certifying the contractor&rsquo;s means, methods, or field dimensions. If the contractor submits a shop drawing that will cause a structural problem the designer cannot see from that drawing, that is still the contractor&rsquo;s liability. What the designer is saying is: this appears to be what I specified [3].</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4AC;</div>
+        Priya, reviewing a submittal: &ldquo;It says &lsquo;Approved as Noted&rsquo; on the stamp. What note?&rdquo;<br>
+        Dana: &ldquo;Flip it over.&rdquo;<br>
+        Priya flips it over. There are seventeen handwritten notes in margins so small she needs to zoom in on the scan.<br>
+        Dana: &ldquo;Welcome to submittal review. &lsquo;Approved&rsquo; means proceed. &lsquo;Approved as Noted&rsquo; means proceed, but read every single note, do every single thing in those notes, and if one is unclear, send an RFI before you do anything else.&rdquo;<br>
+        <em>The industry term for ignoring the notes is &ldquo;change order.&rdquo;</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. The CFA sample &mdash; the dye-lot guarantee</h2>
+
+    <p>Dana has three fabric swatches on the table. She&rsquo;s been here before. Lesson 1&rsquo;s $40k mistake was a fabric that got discontinued and silently substituted after the spec was set. The industry&rsquo;s solution to that specific problem &mdash; the one that creates defensible documentation that &ldquo;we agreed on this color, from this run&rdquo; &mdash; is the <strong>CFA sample</strong>.</p>
+
+    <p>CFA stands for &ldquo;Cutting-for-Approval&rdquo; &mdash; a piece of fabric cut from the actual dye lot, the actual production run, that will be used on the finished goods. Not a sample from the showroom floor. Not a swatch card that represents a colorway in general. The specific fabric, from the specific bolt or batch, that the manufacturer will put on the chairs [4].</p>
+
+    <p>This distinction matters because fabrics are dye-lot sensitive. Two bolts of the same SKU in the same colorway from the same manufacturer, made six months apart, can read as different colors in person. Furniture upholstered from different dye lots in the same project will not match. And if the CFA was approved but the delivered goods used a different dye lot, there is a record. The designer can point to it and say: &ldquo;I approved <em>this</em>. What arrived is not this.&rdquo;</p>
+
+    <p>Without a CFA, both sides are arguing from memory. With one, there is a physical artifact that settles the dispute &mdash; assuming anyone kept it. Which is why Helen, the studio principal, has a drawer full of labeled and dated fabric samples for every project her firm has completed in the last eight years. She calls it &ldquo;the drawer that saves us from lawyers.&rdquo;</p>
+
+    <div class="info-box orange">
+        <p><strong>The CFA process:</strong> vendor sends the CFA swatch, the designer holds it next to the spec reference and the project color palette, signs and dates it, and returns a copy to the vendor. The vendor ships it to the factory with the order. The factory upholsters against the approved CFA. If the finished goods deviate, the factory is responsible &mdash; not the designer, not the owner. The CFA is the moment the accountability shifts.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Test yourself</div>
+        <div class="recall-question">Without scrolling back: explain in two sentences why a CFA sample is different from a standard material sample, and what specific dispute it prevents. Then name the moment in Lesson 1 when a CFA would have caught Dana&rsquo;s $40k mistake &mdash; and explain exactly why.</div>
+        <div class="recall-hint">Think about the gap between specification and shipment &mdash; and what would have to be true for someone to catch the fabric substitution before the chairs shipped.</div>
+    </div>
+
+    <p>CFA samples also apply to materials beyond fabric: paint chips from the specific production batch, veneer panels from the actual wood stock, powder-coat panels from the metal finish line. Anywhere dye-lot or batch variation is a real risk, a physical approval sample is the defense. Brand standards teams at flagged hotels, remembering Linda&rsquo;s rigidity from Lesson 6, are often even more demanding about this than the designers are. Consistency across forty rooms is only possible if everyone is working from the same approved reference.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. RFIs &mdash; when the spec is unclear</h2>
+
+    <p>An RFI is a <strong>Request for Information</strong>. It is not a submittal, and understanding why the two tools exist for different reasons matters more than memorizing their names.</p>
+
+    <p>A submittal says: &ldquo;Here is what we propose to use. Please confirm it conforms to the spec.&rdquo;</p>
+
+    <p>An RFI says: &ldquo;The spec is unclear (or missing, or conflicting). Please tell us what you actually want.&rdquo;</p>
+
+    <p>When a contractor gets a spec that says &ldquo;provide a chair in a warm medium wood finish&rdquo; without a specific product or finish code, they cannot write a submittal because they do not know what to propose. They issue an RFI first: which finish? The designer answers, and now the contractor can produce a submittal against the confirmed specification [3].</p>
+
+    <p>The two processes often run concurrently and interact. A submittal can spawn an RFI if reviewing the shop drawing reveals an ambiguity in the documents. An RFI answer can require a new or revised submittal. In a well-run project, both get logged in the same tracking system so nothing falls through a gap between the two [5].</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Tool</th>
+                <th>Direction</th>
+                <th>The question it answers</th>
+                <th>When it&rsquo;s used</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>RFQ</strong></td>
+                <td>Owner/designer → vendor</td>
+                <td>&ldquo;What&rsquo;s your price for this?&rdquo;</td>
+                <td>Spec is written; need competitive pricing</td>
+            </tr>
+            <tr>
+                <td><strong>RFP</strong></td>
+                <td>Owner/designer → vendor</td>
+                <td>&ldquo;How would you approach this?&rdquo;</td>
+                <td>Spec is open; evaluating approach, not just price</td>
+            </tr>
+            <tr>
+                <td><strong>Submittal</strong></td>
+                <td>Vendor/contractor → designer</td>
+                <td>&ldquo;Does this conform to the spec?&rdquo;</td>
+                <td>Before fabrication; proving the product or drawing is correct</td>
+            </tr>
+            <tr>
+                <td><strong>RFI</strong></td>
+                <td>Vendor/contractor → designer</td>
+                <td>&ldquo;What do you actually want?&rdquo;</td>
+                <td>Spec is ambiguous, missing, or conflicting</td>
+            </tr>
+            <tr>
+                <td><strong>CFA sample</strong></td>
+                <td>Vendor → designer → vendor</td>
+                <td>&ldquo;Is this the exact material, from this exact run?&rdquo;</td>
+                <td>Before mass fabrication; dye-lot or batch-dependent goods</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. The two approval loops</h2>
+
+    <p>Here is where most people who are new to the industry get confused, because two completely separate approval conversations are happening at the same time, and they involve different people, move through different documents, and have different stakes if they stall.</p>
+
+    <p>The first is <strong>Loop A: designer and owner</strong>. This is the conversation where the designer presents selected products to the client &mdash; the owner, the hotel brand representative, the operator &mdash; for sign-off on the design intent. Did we pick the right chair? Is the lobby color palette approved? Does this match the brand? Each design phase has a gate: sign-off on the concept before moving to development, sign-off on development before issuing specifications. On flagged hotels, the brand (Linda&rsquo;s world) also sits in this loop, comparing every selection against the brand standard from Lesson 6 [2].</p>
+
+    <p>The second is <strong>Loop B: designer or contractor and vendor</strong>. This is the submittal conversation. Has the vendor proven that what they&rsquo;re proposing or producing matches what was specified? This loop is about technical conformance, not aesthetic choice. A chair can be aesthetically approved by the owner in Loop A and still fail Loop B if the vendor&rsquo;s shop drawing shows the wrong dimensions.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The two approval loops: Loop A between designer and owner, Loop B between designer/contractor and vendor">
+            <rect x="0" y="0" width="720" height="260" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="360" y="30" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">The Two Approval Loops</text>
+
+            <!-- Loop A -->
+            <rect x="20" y="50" width="320" height="170" rx="12" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="180" y="80" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#3451B2">Loop A &mdash; Design Sign-off</text>
+
+            <rect x="40" y="95" width="90" height="40" rx="8" fill="#3451B2"/>
+            <text x="85" y="112" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="white">Designer</text>
+            <text x="85" y="126" text-anchor="middle" font-family="Inter" font-size="11" fill="white">(Dana)</text>
+
+            <text x="180" y="120" text-anchor="middle" font-family="Inter" font-size="20" fill="#3451B2">&#x21C6;</text>
+
+            <rect x="215" y="95" width="105" height="40" rx="8" fill="#3451B2"/>
+            <text x="267" y="112" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="white">Owner &amp; Brand</text>
+            <text x="267" y="126" text-anchor="middle" font-family="Inter" font-size="11" fill="white">(Sam &amp; Linda)</text>
+
+            <text x="180" y="160" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Aesthetic &amp; design approval</text>
+            <text x="180" y="174" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Did we pick the right product?</text>
+            <text x="180" y="188" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Does it meet brand standards?</text>
+            <text x="180" y="205" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Tools: presentations, schedules, tear sheets, brand reviews</text>
+
+            <!-- Loop B -->
+            <rect x="380" y="50" width="320" height="170" rx="12" fill="#FFF3E5" stroke="#E8790C" stroke-width="2"/>
+            <text x="540" y="80" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#E8790C">Loop B &mdash; Submittal Review</text>
+
+            <rect x="398" y="95" width="110" height="40" rx="8" fill="#E8790C"/>
+            <text x="453" y="112" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="white">Designer / GC</text>
+            <text x="453" y="126" text-anchor="middle" font-family="Inter" font-size="11" fill="white">(Dana / Contractor)</text>
+
+            <text x="540" y="120" text-anchor="middle" font-family="Inter" font-size="20" fill="#E8790C">&#x21C6;</text>
+
+            <rect x="565" y="95" width="115" height="40" rx="8" fill="#E8790C"/>
+            <text x="622" y="112" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="white">Vendor /</text>
+            <text x="622" y="126" text-anchor="middle" font-family="Inter" font-size="11" fill="white">Manufacturer</text>
+
+            <text x="540" y="160" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Technical conformance</text>
+            <text x="540" y="174" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Does it match the spec?</text>
+            <text x="540" y="188" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">Shop drawings, product data, CFAs</text>
+            <text x="540" y="205" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">Outcomes: Approved / As Noted / Revise / Rejected</text>
+
+            <!-- Warning note -->
+            <text x="360" y="240" text-anchor="middle" font-family="Inter" font-size="12" fill="#DC2626" font-weight="600">Both loops must close before a purchase order is issued. They are independent &mdash; do not conflate them.</text>
+        </svg>
+        <div class="diagram-caption">Loop A is about &ldquo;did we choose the right thing?&rdquo; Loop B is about &ldquo;are we getting the thing we chose?&rdquo; A product can pass one and fail the other.</div>
+    </div>
+
+    <p>The practical consequence of conflating these loops is a project in which the owner approved the design package but nobody confirmed that the vendor&rsquo;s product data and shop drawings matched the spec. Or conversely, where the contractor submitted and the designer approved the submission, but nobody showed the owner what was actually being ordered until it arrived. Neither mistake is hypothetical. Both are named failure modes in how the industry works.</p>
+
+    <p>We will do a full treatment of both loops in Lesson 12 &mdash; including the model room sign-off, the punch list, and why the audit trail matters when someone says &ldquo;I never approved that.&rdquo; For now, hold the distinction: <strong>design loop = was this the right choice?; submittal loop = is this the thing we chose?</strong></p>
+
+    <div class="info-box purple">
+        <p><strong>A brief Fohlio aside:</strong> platforms that manage FF&amp;E specifications try to serve both loops in one workspace &mdash; designers share tear sheets and schedules with owners for design approval, and vendors are invited into a scoped view to provide their cut sheets, product data, and sample confirmations back. The value is keeping both conversations in one traceable record rather than scattered across email threads, where it becomes impossible to answer &ldquo;who approved what, and when?&rdquo; This is the direction the industry is moving, though in 2026 a majority of firms still manage it by email and shared drives.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4C4;</div>
+            <div class="layer-name" style="color: var(--blue);">RFQ vs. RFP</div>
+            <div class="layer-desc">RFQ = price on a defined spec. RFP = fuller proposal when spec is open. Most FF&amp;E line items go out as RFQs to 3&ndash;5 vendors.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4CB;</div>
+            <div class="layer-name" style="color: var(--orange);">Submittals</div>
+            <div class="layer-desc">Product data, shop drawings, physical samples. Vendor proves conformance before fabrication. Four outcomes: Approved / As Noted / Revise &amp; Resubmit / Rejected.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F9F5;</div>
+            <div class="layer-name" style="color: var(--purple);">CFA samples</div>
+            <div class="layer-desc">Cut from the actual production dye lot. Signed and dated. The physical evidence that settles &ldquo;I never approved that color&rdquo; disputes before they happen.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x2753;</div>
+            <div class="layer-name" style="color: var(--green);">RFI vs. submittal</div>
+            <div class="layer-desc">RFI resolves spec ambiguity (&ldquo;what do you want?&rdquo;). Submittal confirms conformance (&ldquo;here&rsquo;s what we&rsquo;re providing&rdquo;). Both can run concurrently.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F501;</div>
+            <div class="layer-name" style="color: var(--red);">Two approval loops</div>
+            <div class="layer-desc">Loop A: designer &harr; owner (was this the right choice?). Loop B: designer/GC &harr; vendor (is this the thing we chose?). Both must close before the PO goes out.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 11:</strong> the purchase order goes out. Now comes the long, silent wait &mdash; and the active work of making sure nothing goes wrong during it. We follow Marco and Reggie through expediting, freight, and the single step that is the most commonly skipped and most expensive to skip: the receiving inspection. Plus the model room, the punch list preview, and how real sourcing data finds its way back into the library for next time.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Sort these situations.</strong> For each of the five scenarios below, say which document belongs: RFQ, RFP, submittal, RFI, or CFA sample. Write one sentence of explanation for each.
+                <ul style="margin: 10px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Dana has a fully written spec for 150 identical side chairs. She wants prices from four vendors.</li>
+                    <li>The GC wants to know whether &ldquo;light stone finish&rdquo; in the corridor means limestone or concrete-look tile.</li>
+                    <li>A millwork fabricator sends detailed fabrication drawings for the reception desk before cutting any wood.</li>
+                    <li>A fabric vendor cuts a 4-inch swatch from the production roll that will be used to upholster the lounge chairs.</li>
+                    <li>The hotel owner wants to understand how three different purchasing agents would handle a 200-room PIP rollout &mdash; their approach, their team, their track record, and their fee structure.</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (1) <strong>RFQ</strong> &mdash; spec is defined, need competitive pricing. (2) <strong>RFI</strong> &mdash; the spec is ambiguous (&ldquo;light stone&rdquo; could mean multiple things); the answer from the designer will clarify before the contractor submits anything. (3) <strong>Submittal</strong> (shop drawings specifically) &mdash; the fabricator is proving how they plan to build it, before any wood is cut. (4) <strong>CFA sample</strong> &mdash; cut from the actual production dye lot, for sign-off before mass upholstery starts. (5) <strong>RFP</strong> &mdash; the owner is evaluating approach and capability, not just price; the answer requires a fuller proposal.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Explain the two loops to a new colleague.</strong> Imagine someone joining the sales team who has never worked in FF&amp;E. They ask: &ldquo;Why do we need two different approval processes? Isn&rsquo;t one approval enough?&rdquo; Without using jargon, write 3&ndash;4 sentences explaining why Loop A (design sign-off) and Loop B (submittal review) are separate, what each one catches that the other can&rsquo;t, and give a one-line example of a project failure that would happen if either loop were skipped.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        A strong answer covers: Loop A asks &ldquo;did we choose the right thing?&rdquo; &mdash; it&rsquo;s a creative and contractual conversation between the designer and the owner/brand; Loop B asks &ldquo;are we actually getting the thing we chose?&rdquo; &mdash; it&rsquo;s a technical check between the designer and the vendor. Skipping Loop A: an owner discovers the lobby chairs were never shown to them, and they dislike the choice after delivery &mdash; reorder at full cost. Skipping Loop B: a vendor produces chairs to an outdated drawing and the dimensions don&rsquo;t fit the space; nobody checked before fabrication began.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>The approval gap (AI-resilient):</strong> Think of a real purchase you were personally involved in &mdash; buying something meaningful enough that you cared about the details. Describe the moment, if any, when someone confirmed &ldquo;is this exactly what you approved?&rdquo; against a reference. If that moment didn&rsquo;t happen, describe what went wrong (or could have). Then map your experience onto the FF&amp;E submittal process: what was the equivalent of the CFA? Who played the role of the designer? Who played the vendor? If there was no equivalent, explain why that matters at hotel scale.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why are there four outcomes, not two?</strong> The submittal review returns four possible outcomes, not a simple yes/no. Using elaborative thinking: why would &ldquo;Approved as Noted&rdquo; need to exist as a separate category from both &ldquo;Approved&rdquo; and &ldquo;Revise and Resubmit&rdquo;? What problems would arise if the industry collapsed to only two options? And why is &ldquo;Rejected&rdquo; a separate category from &ldquo;Revise and Resubmit&rdquo; rather than just a stronger version of it? Think through the schedule and cost implications for each collapsing.
+            </li>
+        </ol>
+    </div>
+
+    <!-- SOURCES -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-programa-rfq">
+                Programa. &ldquo;FF&amp;E Procurement Guide.&rdquo; <a href="https://programa.design/blog/ff-e-procurement">programa.design/blog/ff-e-procurement</a>.
+                <div class="src-meta">RFQ vs. RFP in FF&amp;E; 3&ndash;5 vendors per item; vendor evaluation criteria &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-layer-ffe-process">
+                Layer. &ldquo;The FF&amp;E Process Explained / 6 Phases.&rdquo; <a href="https://layer.team/blog/the-ff-e-process-explained">layer.team/blog/the-ff-e-process-explained</a>.
+                <div class="src-meta">Phase 6 (bidding/RFQ); Loop A design sign-off gates by phase; owner approval before purchasing &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-procore-submittals">
+                Procore. &ldquo;Construction Submittals: A Complete Guide.&rdquo; <a href="https://www.procore.com/library/construction-submittals">procore.com/library/construction-submittals</a>.
+                <div class="src-meta">AIA A201 submittal mechanics; four review outcomes; RFI vs. submittal distinction; concurrent RFI &amp; submittal processes &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-designer-charrette-cfa">
+                Designer Charrette. &ldquo;The Sample Approval Process.&rdquo; <a href="https://designercharrette.com/sample-approval-process">designercharrette.com/sample-approval-process</a>.
+                <div class="src-meta">CFA (Cutting-for-Approval) mechanics; dye-lot variation; signed sample as accountability record; preventing &ldquo;I never approved that&rdquo; disputes &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-bluebeam-rfi">
+                Bluebeam. &ldquo;RFIs and Submittals in Construction.&rdquo; <a href="https://www.bluebeam.com/workflows/rfis-and-submittals">bluebeam.com/workflows/rfis-and-submittals</a>.
+                <div class="src-meta">RFI = resolves ambiguity; submittal = confirms conformance; how the two processes interleave &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] point to the numbered entry above. Dana, Priya, Marco, Tomás, Helen, Sam, Linda, and the rest are composite illustrations, not real people. The three-swatch scene is fictional but built on documented dye-lot variation in fabric procurement. AIA A201 language cited is the current document; always verify against the edition in your project contract.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 10 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: From a Quote to Goods on the Dock</p>
+    </div>
+
+</div>
+
+</body>
+</html>

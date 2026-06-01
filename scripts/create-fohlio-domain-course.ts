@@ -42,49 +42,49 @@ const LESSONS: LessonSeed[] = [
     id: "fohlio-domain-lesson-1",
     slug: "kickoff",
     order: 1,
-    title: "An Empty Project and a $40k Mistake",
-    subtitle: "What FF&E is, the six phases, three clients, and why a spec is a database",
+    title: "What FF&E Actually Is — and the $60 Billion Behind It",
+    subtitle: "What FF&E and OS&E are, the four segments, the money, and why a spec is a living schedule",
     description:
-      "Meet the domain Fohlio builds for: who the customers are, how they work, and their jobs-to-be-done. FF&E at real scale, the six-phase lifecycle, the three client segments (Marriott / the Church of Jesus Christ / an SMB inn), and the core mental model — a spec is a database, not a document.",
+      "The real FF&E industry, from the ground up. What Furniture, Fixtures & Equipment is (vs OS&E vs the building shell — the 'shake the building' test), the four segments, the size of the market (~$60B hotel / $172B all-vertical), FF&E's 8-15% share of a hotel build, the per-room cost ladder, the renovation/PIP engine that makes the work recurring, the ~$15k/day cost of a late opening, and the core idea that a spec is a living schedule that has to stay true from moodboard to loading dock.",
     learningGoals: [
-      "Explain what FF&E is and why it is a class of problems, not just furniture",
-      "Name the six phases of a project lifecycle from intent to handover",
-      "Tell the three customer types apart and understand why they think differently",
-      "See the entities behind the UI (Workspace, Project, roles)",
-      "Pin down which phase the $40k mistake happened in",
+      "Say what FF&E is and how it differs from OS&E and from the building shell",
+      "Name the four segments of what goes into a finished building",
+      "Put real numbers on it: market size, FF&E's share of a hotel budget, cost per room",
+      "Explain the renovation and brand-standard engine that keeps the work recurring",
+      "See why a spec is a living schedule, not a document — and which moment the $40k mistake happened in",
     ],
     contentFile: "fohlio-domain-1-kickoff.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-1-1",
-        title: "Walk one line item through the six phases",
+        title: "Sort a real room into the four segments",
         description:
-          "Take any object near you (a chair, a lamp, a mug) and run it through the six phases as if it were a line item in Grace's Cedar & Oak project. Describe each phase in one line, mark the phase with the highest risk for an SMB, and include a 60-second from-memory explanation of 'spec as a database vs document'. Submit the phase list plus the risk note.",
+          "Picture a hotel guest room. List 10-12 things in it and sort each into FF&E / OS&E / Finishes / Architectural. Mark which the hotel replaces most often (OS&E) and which are long-lead and expensive (FF&E). Pick one item and place it on the per-room cost ladder for a luxury vs economy property. From memory (AI-free), spend 60 seconds explaining the FF&E vs OS&E difference and why it matters to a hotel's accounting.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "Passes if all six phases are named in order (intent → spec → budget → procurement → delivery → handover) and tied to the object, with budget and procurement not swapped; the highest-risk phase for an SMB is procurement/delivery (no buyer to catch a discontinuation); and the database explanation states that a database answers 'what is true now' (current price/lead time/status) while a document records the past.",
+          "Sorted sensibly: bed/desk/lounge chair/lamp/TV -> FF&E; towels/sheets/glassware/toiletries -> OS&E; flooring/paint/wall tile -> Finishes; door/window/built-in closet -> Architectural. The replaced-often items are OS&E (consumable, operating expense); the long-lead expensive ones are FF&E (capital asset, depreciated). The from-memory point: FF&E is durable and capitalized, OS&E is consumable, expensed, and has vastly more SKUs.",
         estimatedMinutes: 20,
       },
       {
         id: "fd-task-1-2",
-        title: "Self-check on the chapter",
+        title: "Self-check on this chapter",
         description:
-          "Without scrolling back: (a) what is and isn't FF&E — two examples each; (b) list the six phases in order; (c) state each of the three clients' JTBD in one sentence.",
+          "Without scrolling back: (a) state the 'shake the building' test and give two things that are FF&E and two that are not; (b) give the three money anchors (market size, FF&E share of a hotel build, the rough per-room range); (c) name the moment the $40k error arose and the moment it surfaced.",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "(a) Is FF&E: furniture, lighting, rugs, mirrors. Isn't: walls, slabs, ductwork. (b) Intent → specification → budget → procurement → delivery → handover. (c) Marriott — one standard across all properties, no drift; the Church — replicate a standard design, careful with budget; Grace — finish the project solo without going over budget or losing threads.",
+          "(a) Shake the building — what falls out is FF&E. Is: a lounge chair, a table lamp. Isn't: a wall, the HVAC ducting. (b) ~$60B hotel FF&E market; 8-15% of total hotel development cost; ~$3k-$8k per room economy up to $35k-$58k+ luxury. (c) Arose in the gap between specification and shipment (the finish was discontinued and silently substituted); surfaced at receiving/install, when it was expensive to fix.",
         estimatedMinutes: 8,
       },
       {
         id: "fd-task-1-3",
         title: "Argue with an AI",
         description:
-          "Ask any LLM 'Why would an interior designer need special software if they have Excel?' Dissect the answer the way Dana would: what does it miss about scale (thousands of line items) and the time gap (a product going stale between phases)? Add 2-3 sentences on what the AI left out.",
+          "Ask any chatbot: 'Why would a hotel need special software to buy its furniture — isn't that just shopping?' Dissect the answer: what does it miss about scale (thousands of items, dozens of suppliers), the time gap (a finish going stale over months), and the stakes (a fixed opening date)? Write 3-4 sentences on what it left out.",
         category: "advanced",
         submissionType: "text",
         order: 4,
@@ -94,7 +94,7 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-1-4",
         title: "Why it's built this way",
         description:
-          "Why does Fohlio make Workspace the isolation boundary rather than Project? And why is Dana's mistake a procurement-phase failure rather than 'a designer being careless'? Explain why the obvious alternatives (project-level isolation; 'just be more careful') don't solve the problem.",
+          "Why does the industry separate the designer who specifies from the agent who buys, instead of having one person do both? And why does a hotel keep an FF&E reserve (2-5% of revenue/year) rather than paying for renovations when they happen? Explain why 'one person, pay as you go' breaks at hotel scale.",
         category: "advanced",
         submissionType: "text",
         order: 5,
@@ -104,125 +104,125 @@ const LESSONS: LessonSeed[] = [
   },
   {
     id: "fohlio-domain-lesson-2",
-    slug: "design-intent",
+    slug: "cast",
     order: 2,
-    title: "Where the Intent Comes From",
-    subtitle: "Moodboards, Pinterest/Revit, and how 'I want it cozy' becomes a spec line",
+    title: "Who's Actually in the Room",
+    subtitle: "The full FF&E value chain — and who actually pays whom",
     description:
-      "Phase 1, design intent: how a specifier turns a client's moodboard into the first real product in the spec, why a Pinterest pin is not data, and how the three clients differ in the kind of input they bring to this phase.",
+      "A full map of the FF&E value chain: the four demand-side entities (owner/REIT, brand/flag, management company, franchisee) that outsiders collapse into one; the foundational designer-specifies / purchasing-agent-buys split; real named firms on both sides (HBA, Gensler, Rockwell; Benjamin West, R-W, Stroud, Beyer Brown); manufacturer's reps and the commission model; dealers, showrooms, trade shows; 3PL logistics and the owner's rep. Who pays whom, whose veto is live, and where Dana's three client types fit.",
     learningGoals: [
-      "Understand what design intent is and how it differs from a spec line",
-      "Know the three sources of a moodboard and which client uses each",
-      "Explain why a picture cannot be a spec line (no SKU, finish, supplier)",
-      "Walk the steps from moodboard to the first CatalogItem in a slot",
-      "See how different input types change the length of the intent phase per client",
+      "Name and distinguish the four demand-side entities: owner/REIT, brand/flag, management company, franchisee",
+      "Explain the designer-specifies / purchasing-agent-buys split and the three purchasing fee models",
+      "Identify real named purchasing firms and design firms in hospitality",
+      "Describe manufacturer's reps: commission-only, multi-line, whose interests they serve",
+      "Place the 3PL logistics firms and the owner's rep correctly in the value chain",
     ],
-    contentFile: "fohlio-domain-2-design-intent.html",
+    contentFile: "fohlio-domain-2-cast.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-2-1",
-        title: "Turn a moodboard into data",
+        title: "Map a real hotel's ownership chain",
         description:
-          "For three imagined Pinterest pins, list at least four fields missing before each product could enter a spec. Include a 60-second from-memory explanation of the design-intent vs spec-line distinction.",
+          "Pick any branded hotel. Research who operates it, who owns the real estate, and which brand standard applies. Write 3-5 sentences on what you found and why the owner/brand/operator distinction matters for FF&E decisions.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "Strong answers name fields like exact model/SKU, finish/colorway code, dimensions, supplier/source, unit price, lead time, quantity. The distinction: design intent is a desired look/feeling; a spec line is a buyable, attributed record.",
-        estimatedMinutes: 18,
+          "A strong answer separates three roles: the owner/REIT (owns the building and the FF&E budget), the brand/flag (Marriott/Hilton — franchises or manages, dictates standards, earns fees), and the management company (runs the hotel day-to-day). The distinction matters because the brand says what 'done right' means, but the owner funds and approves the FF&E, and the operator lives with it.",
+        estimatedMinutes: 16,
       },
       {
         id: "fd-task-2-2",
-        title: "Self-check on the chapter",
+        title: "Draw the chain for Dana's project",
         description:
-          "Without looking: (a) three sources of a moodboard plus the client that arrives with the least raw intent; (b) why the Church still verifies its past standard album; (c) at which step intent officially becomes data.",
+          "Sketch every actor from owner to installer with labeled arrows showing what flows (money, instructions, goods). Then identify which of Dana's three client types most resembles the project's structure and why.",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "(a) Pinterest board, PDF brand book, Revit/CAD; the Church arrives with a finished standard album. (b) Products in the album may have changed or been discontinued since it was built. (c) When a CatalogItem (a specific buyable variant) is linked to a project slot.",
-        estimatedMinutes: 8,
+          "Chain: owner/developer -> (owner's rep/PM) -> designer (specifies) + purchasing agent (buys) -> manufacturers/vendors via reps/dealers -> freight/warehouse/install -> back to owner at handover. Money flows from the owner; reps are paid by the manufacturer; the agent is paid a fiduciary fee or a markup. The three client types: luxury flag (Linda — consistency), institutional owner (Brother Andersen — budget/replication), independent boutique (Grace — solo, speed).",
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-2-3",
-        title: "Dissect an AI answer",
+        title: "Interview a rep or designer",
         description:
-          "Ask an LLM how a designer works with a client moodboard. Find the step where it fails to explain why a moodboard isn't data yet, and write 2-3 sentences on the gap from a Fohlio-domain perspective.",
+          "Find one real person in the FF&E chain (LinkedIn, your network, a trade event). Ask: who do you see as your actual client, and what's the most common misunderstanding about your role? Summarize and compare to the lesson.",
         category: "advanced",
         submissionType: "text",
         order: 4,
-        estimatedMinutes: 12,
+        estimatedMinutes: 20,
       },
       {
         id: "fd-task-2-4",
-        title: "Why it's built this way",
+        title: "Why separate specifying from buying?",
         description:
-          "Why is the moodboard stored as its own project artifact rather than an attachment on the first spec line? What is lost if pictures just get dropped into Slack?",
+          "Elaborative interrogation: what would break if the designer also owned purchasing, and vice versa? Why does the fiduciary model exist versus markup? How does Grace live with both problems at once, solo?",
         category: "advanced",
         submissionType: "text",
         order: 5,
-        estimatedMinutes: 10,
+        estimatedMinutes: 12,
       },
     ],
   },
   {
     id: "fohlio-domain-lesson-3",
-    slug: "products",
+    slug: "phases",
     order: 3,
-    title: "Product and Catalog",
-    subtitle: "Web clipper, families vs variants, the firm's shared library, and BOM",
+    title: "One Chair's Journey: The Real Phases",
+    subtitle: "The real project phases, AIA vocabulary, and why procurement runs parallel to construction",
     description:
-      "Phase 2, capture: how the web clipper structures supplier data, how CatalogFamily/CatalogItem separate the parent model from a specific variant, why the catalog is a Workspace-level shared library, and how Parts/BOM handle composite products.",
+      "The real lifecycle of an FF&E project using the vocabulary the industry actually uses (the AIA phases and FF&E contracts B152/B153/B252): programming through specification, budgeting, bidding, purchase orders, expediting, manufacturing, freight, receiving, install, punch list, closeout, and OS&E. The central insight: FF&E is a parallel track to construction, and procurement starts while the building is still being built because lead times are so long. Locates the $40k mistake precisely: it arose during expediting and surfaced at receiving.",
     learningGoals: [
-      "Explain what the web clipper does and why it beats copying from supplier emails",
-      "Distinguish CatalogFamily (model) from CatalogItem (SKU variant)",
-      "Understand catalog statuses (draft / new_from_project / ready_to_use)",
-      "Know what Parts/BOM are and when they are needed",
-      "Compare how Marriott, Grace, and the Church populate the catalog",
+      "Name and sequence the phases of a real FF&E project using AIA vocabulary",
+      "Explain why FF&E procurement is a parallel track to construction, not sequential",
+      "State the lead-time ranges (domestic 6-10 wk, overseas 18-24 wk, custom 6-12 mo) and their consequences",
+      "Locate the $40k mistake in the phase map: arose in expediting, surfaced at receiving",
+      "Distinguish what the FF&E schedule tracks from what the specification describes",
     ],
-    contentFile: "fohlio-domain-3-products.html",
+    contentFile: "fohlio-domain-3-phases.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-3-1",
-        title: "Break a product into catalog levels",
+        title: "Phase map a real project",
         description:
-          "Pick a real piece of furniture (IKEA or Herman Miller). Map it to a CatalogFamily, at least 3 CatalogItem variants, and assess whether Parts apply. Include a 60-second from-memory explanation of the Family vs Item distinction.",
+          "Walk a building renovation or hotel opening you know through the phases: which you can see from outside, which are invisible, and where the parallel-track challenge was most painful for that specific project. 4-6 sentences.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "Family = the model (e.g. 'Eames Lounge Chair'); Items = specific variants (walnut/black leather, santos palisander/white, etc.); Parts apply when the product is assembled from separately-sourced components (a bed = frame + headboard + slats). The spec links to an Item, not a Family.",
-        estimatedMinutes: 18,
+          "A good answer names the real phases in order (programming -> SD -> DD -> spec/CD -> budget/VE -> bidding/RFQ -> PO -> expediting -> manufacturing -> freight -> receiving -> delivery/install -> punch list -> closeout -> OS&E), and identifies that the visible phases are install/punch while spec, expediting and receiving are invisible. The parallel-track pain is that long lead times force ordering before construction is finished.",
+        estimatedMinutes: 16,
       },
       {
         id: "fd-task-3-2",
-        title: "Self-check on the chapter",
+        title: "Cumulative self-check (L1 + L2 + L3)",
         description:
-          "Without scrolling: (a) what the web clipper does vs copy-from-email; (b) which catalog status means 'approved for new projects'; (c) why a ProjectItemSlot stores a reference instead of copying the data.",
+          "Closed-book recall: (a) the four segments + which is an operating expense; (b) two actors at trade shows and what each does there; (c) three lead-time ranges and why overseas forces parallel-track POs; (d) where the $40k mistake arose and surfaced in the phases.",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "(a) The clipper pulls structured fields (name, dimensions, finish, price, image) from a supplier page into one consistent shape, instead of re-keying from 14 different email formats. (b) ready_to_use. (c) A reference keeps the spec in sync with the catalog — if the product changes, the link can surface it (the basis of Lesson 8).",
-        estimatedMinutes: 8,
+          "(a) FF&E / OS&E / Finishes / Architectural; OS&E is the operating expense. (b) Manufacturer's reps (get product specified) and designers (discover product); dealers/manufacturers also exhibit. (c) Domestic 6-10 wk, overseas 18-24 wk, custom 6-12 mo; overseas lead times are longer than the remaining construction time, so POs must go out in parallel. (d) Arose during expediting (finish discontinued, silently substituted); surfaced at receiving.",
+        estimatedMinutes: 10,
       },
       {
         id: "fd-task-3-3",
-        title: "Find the gap in an AI's answer",
+        title: "The expediting gap",
         description:
-          "Ask an LLM how a product catalog is structured in FF&E software. Find where it conflates family-level and item-level data, or mixes catalog data with spec data. Quote it and explain why the distinction matters for procurement and sync.",
+          "Find a real purchasing firm's website and look at how they describe expediting. What do they track between PO and shipment? Compare to the expediting phase in this lesson. Requires live browsing.",
         category: "advanced",
         submissionType: "text",
         order: 4,
-        estimatedMinutes: 14,
+        estimatedMinutes: 18,
       },
       {
         id: "fd-task-3-4",
-        title: "Why it's built this way",
+        title: "Why does lead time force parallel tracks?",
         description:
-          "Why is the catalog scoped to the Workspace rather than to each project? What problems does that solve, and what new problems does it create (e.g. competing brand standards inside one firm)?",
+          "Elaborative interrogation: (a) if domestic lead time were 2 weeks, would parallel tracks still be needed? (b) what happens when a project mixes items on three different lead-time clocks? (c) why does Grace, with 40 chairs, still face a version of the same problem?",
         category: "advanced",
         submissionType: "text",
         order: 5,
@@ -232,82 +232,61 @@ const LESSONS: LessonSeed[] = [
   },
   {
     id: "fohlio-domain-lesson-4",
-    slug: "spec",
+    slug: "intent",
     order: 4,
-    title: "A Spec Is Data, Not a Document",
-    subtitle: "Areas, Schedules, columns, and why a spec row answers questions",
+    title: "From a Moodboard to a Spec",
+    subtitle: "A Pinterest image has no model number, no finish, no lead time — and a hotel opens in eight months",
     description:
-      "Phase 2, the spec build, for engineers: Area as the unit of place and repetition, Schedule as a category with typed columns, the ProjectItemSlot/ProjectItem pair, and why 'queryable data' is an engineering requirement, not a metaphor.",
+      "How design intent moves from a client moodboard through the design phases into a real, buyable specification. The five data fields a moodboard image lacks; the difference between a spec sheet, cut sheet, and tear sheet; the FF&E schedule (project-wide tracker) versus the spec (one-product record); the finish schedule; the spec book; and why brand standards must enter early rather than as a final checklist.",
     learningGoals: [
-      "Understand Area and why a line item is attached to a zone",
-      "Know what a Schedule is — a category with typed ItemColumns, not a calendar",
-      "Distinguish ProjectItemSlot (the place) from ProjectItem (the chosen product)",
-      "Explain qty, totalQty, finish (a code), and columnsAttributes",
-      "Articulate why a queryable structure beats text in a cell",
+      "Explain why a moodboard image is not a spec line and name the five fields it is missing",
+      "Describe what changes at each design phase and when specific products first get selected",
+      "Distinguish a tear sheet, cut sheet, and spec sheet by depth and purpose",
+      "Explain the difference between the FF&E schedule and the spec, and where the finish schedule fits",
+      "Explain why brand standards enter during design, not at the end",
     ],
-    contentFile: "fohlio-domain-4-spec.html",
+    contentFile: "fohlio-domain-4-intent.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-4-1",
-        title: "Sort line items into Schedules",
+        title: "Diagnose a moodboard",
         description:
-          "For six Cedar & Oak FF&E items, decide the Schedule each belongs to and list 3-4 concrete ItemColumns for it. Include a from-memory explanation of why a finish should be a code, not free text.",
+          "Find a hospitality moodboard online. Pick three items; for each, list which of the five required spec fields you can determine from the image alone, and which are missing. Explain in 2-3 sentences why the missing fields are the purchasing agent's problem.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "Lounge chair → Seating (columns: finish code, upholstery, dimensions, COM yardage). Pendant → Lighting (lumens, color temp, dimmable, mounting). Area rug → Soft goods (material, pile, size, edge). A finish must be a code because free text ('greige', 'warm grey') can't be filtered, rolled up, or matched against a supplier SKU.",
+          "From an image you can usually guess style, rough type, and maybe a color family. You cannot know the exact model/SKU, finish code, dimensions, supplier/source, unit price, or lead time. Those missing fields are the agent's problem because nothing can be bid, ordered, or scheduled until each one is pinned down.",
         estimatedMinutes: 18,
       },
       {
         id: "fd-task-4-2",
-        title: "Interleaved self-check (L1-L4)",
+        title: "Distinguish the documents",
         description:
-          "Without looking: (a) L1 — which phase a finish goes stale in; (b) L3 — CatalogFamily vs CatalogItem; (c) L4 — why finish must be a code; (d) L4 — qty vs totalQty when an Area repeats 40 times.",
+          "Without looking back, write one sentence defining each of: tear sheet, cut sheet, spec sheet, FF&E schedule, finish schedule, spec book. Then: if Marco just received the spec book for a 150-room hotel, what would he do with it in the next two weeks?",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "(a) Between specification and procurement (surfaces at delivery). (b) Family = model, Item = variant/SKU. (c) So it can be filtered, totaled, and matched to a supplier SKU. (d) qty is per-Area (e.g. 2 nightstands per room); totalQty = qty × repeatCount = 2 × 40 = 80.",
-        estimatedMinutes: 10,
-      },
-      {
-        id: "fd-task-4-recall",
-        title: "Recall: which Schedule does each item belong to?",
-        description:
-          "Match each FF&E line item to its Schedule. Auto-checked — retry until correct.",
-        category: "required",
-        submissionType: "widget",
-        order: 3,
-        widgetId: "concept-match",
-        widgetConfig: {
-          pairs: [
-            { id: "p1", term: "Lounge chair in the lobby", definition: "Seating schedule" },
-            { id: "p2", term: "Pendant lamp over reception", definition: "Lighting schedule" },
-            { id: "p3", term: "Wool area rug in suite 4", definition: "Soft goods schedule" },
-            { id: "p4", term: "Walnut console table", definition: "Casegoods schedule" },
-            { id: "p5", term: "Blackout drapery in guest rooms", definition: "Window treatments schedule" },
-            { id: "p6", term: "Framed mirror above the vanity", definition: "Accessories schedule" },
-          ],
-        },
-        estimatedMinutes: 4,
+          "Tear sheet = a one-page product summary for presentation; cut sheet = detailed dimensions/materials/install, often for custom items; spec sheet = everything about one product (model, finish, price, warranties); FF&E schedule = the project-wide tracker (vendor, qty, cost, lead time, status); finish schedule = hard finishes by room; spec book = all spec sheets compiled. Marco would build budgets and a bid package from the schedule and start sourcing/RFQs against the long-lead items.",
+        estimatedMinutes: 12,
       },
       {
         id: "fd-task-4-3",
-        title: "Model a real hotel's Areas and Schedules",
+        title: "AI as a vendor",
         description:
-          "Sketch the Areas and Schedules for a realistic 50-room hotel with 4 room types. Explain what changes when a nightstand's qty drops from 2 to 1 per room — and where that change propagates.",
+          "Ask a chatbot to write a spec sheet for 'a contract-grade cognac leather lounge chair for a 200-room upscale hotel.' Audit the result against the five required spec fields: how many does it actually provide vs approximate vs fabricate? 3-4 sentences on the difference between describing a product and specifying one.",
         category: "advanced",
         submissionType: "text",
         order: 4,
-        estimatedMinutes: 16,
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-4-4",
-        title: "Why the Slot holds what it holds",
+        title: "Why phases exist",
         description:
-          "What does a ProjectItemSlot hold that neither the Item nor the Area does? Why would a model that puts the Item directly in the Area break once you add alternatives? Give the concrete failure.",
+          "Elaborative interrogation: why does the industry separate Programming, SD, and DD into sequential phases rather than selecting specific products at the very start? Identify at least two problems that starting with specific products would create, and how the phase structure prevents each.",
         category: "advanced",
         submissionType: "text",
         order: 5,
@@ -317,86 +296,84 @@ const LESSONS: LessonSeed[] = [
   },
   {
     id: "fohlio-domain-lesson-5",
-    slug: "standards",
+    slug: "library",
     order: 5,
-    title: "Brand Standards and the Obsession with Consistency",
-    subtitle: "Approved catalogs, statuses, push/pull — how firms enforce sameness",
+    title: "The Library and the Takeoff",
+    subtitle: "Why firms that start from scratch every project are paying a tax on their own memory",
     description:
-      "The segment lesson: Brand Standards as approved sub-catalogs that enforce consistency at scale, the three catalog statuses, push/pull between spec and catalog, and how Marriott, the Church, and Grace each relate to an approved list.",
+      "The real-industry problem of product knowledge scattered in spreadsheets, PDFs, and people's heads, and how a structured product library solves it. The family/variant structure of a library record, materials tracking, bills of materials for multi-component items, the quantity takeoff (counting items per room type and rolling up to building totals), packing and overage percentages, and why OS&E has vastly more SKUs and never truly ends.",
     learningGoals: [
-      "Define Brand Standard and distinguish it from a plain catalog",
-      "Trace the three catalog statuses and what gates each transition",
-      "Explain push and pull as two directions of the catalog reference",
-      "Connect alternatives to a Brand Standard and why it matters on discontinuation",
-      "Explain why Grace's lack of a standard is a calculated risk",
+      "Explain why firms maintain a product library and what goes wrong without one",
+      "Distinguish a product family from a variant/option within it",
+      "Describe a bill of materials and why it matters for a custom bed package",
+      "Walk through a quantity takeoff: room-type counts to building total to overage to packing units",
+      "Explain why OS&E has vastly more SKUs and never truly ends",
     ],
-    contentFile: "fohlio-domain-5-standards.html",
+    contentFile: "fohlio-domain-5-library.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-5-1",
-        title: "Find the brand-standard violation and explain it",
+        title: "Build a mini-takeoff",
         description:
-          "Given four Marriott spec items and a Brand Standard (approved finishes and suppliers), identify which items violate it and why, then decide whether one borderline item should be a warning or a hard block.",
+          "90-room hotel, two room types (Standard King: 60 rooms with 1 desk + 1 lounge chair + 2 nightstands; Standard Double: 30 rooms with 1 desk + 0 lounge chairs + 2 nightstands). Calculate building totals, apply 5% overage (round up), then calculate cases for nightstands (4 per case). Explain in one sentence why overage matters on a fixed opening date.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "A violation is any item whose finish code or supplier is not on the approved list. Hard block when the deviation defeats the standard's purpose (off-brand finish on a guest-facing item); warning when it's a non-visible or interchangeable component. The judgment call is the point.",
-        estimatedMinutes: 16,
+          "Desks 90, lounge chairs 60, nightstands 180. With 5% overage rounded up: desks 95, lounge chairs 63, nightstands 189. Nightstands in cases of 4 -> ceil(189/4) = 48 cases (192 units). Overage matters because a damaged or short item discovered near a fixed opening date can't be reordered in time, so a small buffer protects the schedule.",
+        estimatedMinutes: 18,
       },
       {
         id: "fd-task-5-2",
-        title: "Mixed self-check (L1 + L4 + L5)",
+        title: "Cumulative self-check (L1-L5)",
         description:
-          "Without looking: (a) Brother Andersen's JTBD and why a Brand Standard matters more to him than to Grace; (b) does adding an alternative to a Slot change totalQty; (c) pull vs push in one sentence each, and who pulls most often.",
+          "Without referring back: (a) the shake-the-building test + one FF&E and one OS&E example; (b) why the purchasing agent must place orders before construction is complete; (c) name three of the five spec-line fields a moodboard lacks; (d) explain why a product library compounds in value over time.",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "(a) Replicate a fixed design across many sites within budget — a standard guarantees sameness and cost control; Grace builds one bespoke project. (b) No — alternatives are options on the same Slot; totalQty is driven by qty × repeatCount. (c) Pull = accept catalog updates into the spec; Push = save spec edits back to the catalog. Designers pull most often; curators push.",
+          "(a) Shake the building — what falls out is FF&E (lounge chair); OS&E is consumable (towels). (b) Lead times are longer than the remaining build time, so orders run parallel to construction. (c) Any three of: model/SKU, finish code, dimensions, supplier/source, unit price, lead time. (d) Each project adds vetted records; the next project starts from real data instead of a blank sheet, so the library compounds.",
         estimatedMinutes: 10,
       },
       {
         id: "fd-task-5-recall",
-        title: "Recall: is this spec item brand-compliant?",
+        title: "Recall: match the example to the library concept",
         description:
-          "Pick the item that violates the brand standard and justify it. Auto-checked — retry until correct.",
+          "Match each real-world item to the library concept it best illustrates. Auto-checked — retry until correct.",
         category: "required",
         submissionType: "widget",
         order: 3,
-        widgetId: "mcq-justify",
+        widgetId: "concept-match",
         widgetConfig: {
-          question:
-            "Marriott's brand standard approves only finish code OAK-07 from supplier Vanguard for guest-room desk chairs. Which spec line violates the standard?",
-          options: [
-            { id: "opt-a", label: "Desk chair, finish OAK-07, supplier Vanguard, qty 600" },
-            { id: "opt-b", label: "Desk chair, finish OAK-07, supplier 'BetterPrice Furniture', qty 600" },
-            { id: "opt-c", label: "Desk chair, finish OAK-07, supplier Vanguard, qty 580 (2 rooms still in design)" },
-            { id: "opt-d", label: "Desk chair, finish OAK-07, supplier Vanguard, marked as primary item" },
+          pairs: [
+            { id: "p1", term: "Herman Miller Aeron Chair", definition: "Product line / family" },
+            { id: "p2", term: "Aeron, Size B, Graphite finish", definition: "A specific variant / option" },
+            { id: "p3", term: "Wool fabric used on a lounge chair frame", definition: "A material the product is made of" },
+            { id: "p4", term: "Custom bed = frame + mattress + topper + headboard", definition: "Bill of materials / parts list" },
+            { id: "p5", term: "Standard King guest room (60 rooms)", definition: "A room type used in the takeoff" },
+            { id: "p6", term: "120 nightstands across 60 rooms", definition: "A takeoff / quantity rollup" },
           ],
-          correctOptionId: "opt-b",
-          minJustificationWords: 15,
-          rubric:
-            "Option B swaps the approved supplier Vanguard for an unapproved one — the finish code matches but the source does not, so it breaks the standard. A and D are compliant; C is just an incomplete quantity, not a standard violation.",
         },
+        modelAnswer:
+          "Family = the product line (Aeron Chair); variant = a specific option (Size B, Graphite); material = what it's made of (wool fabric); bill of materials = the parts that make a custom bed; room type = the unit the takeoff counts against; takeoff/rollup = the total quantity across rooms.",
         estimatedMinutes: 4,
       },
       {
         id: "fd-task-5-3",
-        title: "A real approved list in the wild",
+        title: "The knowledge-in-people's-heads problem",
         description:
-          "Find a real, public brand standard or approved-vendor list. Describe its structure and map it onto the Fohlio model (BrandStandard + CatalogFamily/Item). What fits cleanly, what would need custom handling?",
+          "Talk to someone in your company who has been there at least three years. Ask what key knowledge only they have that would be hard to reconstruct if they left. Compare to the FF&E library problem: what is the same, what is different? 3-4 sentences.",
         category: "advanced",
         submissionType: "text",
         order: 4,
-        estimatedMinutes: 18,
+        estimatedMinutes: 16,
       },
       {
         id: "fd-task-5-4",
-        title: "Why exactly three statuses",
+        title: "Why two tracks, not one?",
         description:
-          "Why aren't two statuses enough? What does new_from_project cover that neither draft nor ready_to_use does? How would adding a fourth status (deprecated) change the model's behavior?",
+          "Elaborative interrogation: a hotel runs FF&E and OS&E procurement as two separate tracks. Identify at least three reasons (lead-time cadence, vendor types, budget classification, the never-ends nature of OS&E) and explain why collapsing them into one process would create more problems than it solves.",
         category: "advanced",
         submissionType: "text",
         order: 5,
@@ -406,51 +383,142 @@ const LESSONS: LessonSeed[] = [
   },
   {
     id: "fohlio-domain-lesson-6",
-    slug: "budget",
+    slug: "standards",
     order: 6,
-    title: "Money: Spec ≠ Budget ≠ Actual",
-    subtitle: "Three numbers about the same chairs: markup, soft costs, variance",
+    title: "Brand Standards and the PIP Machine",
+    subtitle: "Linda's brand book meets a real renovation budget — and the flag is on the line",
     description:
-      "Phase 3, budget — the heaviest concept. Spec total vs planned vs actual, where the gap comes from (markup, soft costs, duties), value engineering via alternatives, and how byArea/bySchedule give different clients different lenses on one budget.",
+      "What brand standards actually are (contractually enforceable franchise clauses, not style guides), how PIPs are triggered and structured ($50k-$500k+, 12-18 month deadlines, penalty fees, flag-loss risk), the golden-sample/first-article validation mechanism for multi-property consistency, and the structural difference between flagged and independent properties.",
     learningGoals: [
-      "Explain what spec total, planned, and actual each answer and why they differ",
-      "List the components of soft costs and why a flat percentage is unreliable",
-      "Describe value engineering using the alternatives mechanism",
-      "Understand how currency, duties, freight, and tax layer onto a catalog price",
-      "Read byArea vs bySchedule budget slices and who benefits from each",
+      "Explain why a brand standard is contractually enforceable, not advisory",
+      "Name the PIP triggers and describe the penalty escalation for non-compliance",
+      "Define a golden sample and the problem it solves across a multi-property rollout",
+      "Contrast the FF&E experience for flagged vs independent properties",
+      "Describe how brand standards interact with the spec library and lead-time constraints",
     ],
-    contentFile: "fohlio-domain-6-budget.html",
+    contentFile: "fohlio-domain-6-standards.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-6-1",
-        title: "Work the numbers",
+        title: "Map PIP triggers to a real property",
         description:
-          "Compute spec total, planned (with markup and soft costs), and variance for four Cedar & Oak items; reason about actual after a partial payment; pick the right budget slice for Grace. Start with a 60-second from-memory recall of the four definitions.",
+          "Find a real hotel PIP article or franchise disclosure. Identify the trigger, cost range, and deadline. Write two sentences on why the supply-chain lead-time constraints make the deadline structurally difficult.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "spec total = sum of unit price × qty. planned = spec total × (1 + markup) + soft costs. variance = planned - spec total (positive = over the approved spec). actual = sum of paid invoices, which is below planned until everything is paid. Grace cares about byArea ('what does one room cost?').",
-        estimatedMinutes: 20,
+          "Common triggers: franchise renewal, change of ownership, conversion/rebrand, or low audit/guest-satisfaction scores. Costs run $50k-$150k for soft goods up to $500k+ for a major PIP, with 12-18 month deadlines. The deadline is hard because custom FF&E lead times (often 6-12 months) eat most of the window, leaving little margin if anything slips.",
+        estimatedMinutes: 16,
       },
       {
         id: "fd-task-6-2",
-        title: "Cross-lesson question (L3 + L5 + L6)",
+        title: "Self-check on PIP mechanics",
         description:
-          "Dana finds a cheaper alternative chair from a different supplier (a new Source, L3). It needs no new brand standard (Grace, L5), but the supplier sells only in batches: minimum order quantity (MOQ) is 30 and only 24 are needed. Predict the effect on variance, on Marco's workflow without a quote, and whether value engineering can create a new budget problem.",
+          "Without scrolling: state the PIP triggers; define a golden sample; name the two-step consequence of a missed deadline.",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "Swapping lowers spec total, reducing variance all else equal. But a new Source needs a new RFQ before planned can be recomputed (no price yet). MOQ 30 at qty 24 means ordering 30 — planned grows by 6 × unit cost + markup. Value engineering saved on the unit but MOQ takes part of it back unless a no-MOQ supplier is found.",
-        estimatedMinutes: 12,
+          "Triggers: renewal, sale/change of ownership, conversion, low scores. A golden sample (first-article) is an approved physical reference that all production must match, so consistency holds across many rooms and properties. Missed-deadline consequence: an added penalty franchise fee (≈1-3%) during the PIP period, escalating to loss of the flag.",
+        estimatedMinutes: 8,
       },
       {
         id: "fd-task-6-recall",
-        title: "Recall: which number is which?",
+        title: "Recall: spot the brand-standard violation",
         description:
-          "Pick the right number for each budget question and explain. Auto-checked — retry until correct.",
+          "A Marriott select-service flag is completing a PIP. Pick the spec that violates the brand standard and justify it. Auto-checked — retry until correct.",
+        category: "required",
+        submissionType: "widget",
+        order: 3,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "The brand standard specifies the guestroom lounge chair as Model LX-220, supplier Kimball Hospitality, finish 'Pewter Linen'. The PIP requires all 120 rooms compliant. Which option violates the standard?",
+          options: [
+            { id: "opt-a", label: "Model LX-220, Kimball Hospitality, 'Pewter Linen' — 120 units at $480 trade" },
+            { id: "opt-b", label: "Model LX-220, Kimball Hospitality, 'Pewter Linen' — 120 units at $510 trade (regional dealer premium)" },
+            { id: "opt-c", label: "Model LX-220, Charter Furniture (alternate supplier, similar quality, 15% lower price), 'Pewter Linen' — 120 units" },
+            { id: "opt-d", label: "Model LX-220, Kimball Hospitality, 'Pewter Linen' — 80 now + 40 in Phase 2 (same spec, split delivery)" },
+          ],
+          correctOptionId: "opt-c",
+          minJustificationWords: 15,
+          rubric:
+            "C is the violation: it substitutes an unapproved supplier (Charter) for the brand-approved Kimball Hospitality. Brand standards specify approved suppliers by name, not by quality tier — 'comparable' is not 'approved'. A is fully compliant; B's regional price premium does not affect compliance (model, supplier, finish all correct); D's split delivery doesn't change the spec.",
+        },
+        modelAnswer:
+          "Option C swaps the brand-approved supplier (Kimball) for an unapproved one (Charter). Equal quality and a lower price are irrelevant: brand standards name the approved supplier, and using another requires explicit brand pre-approval.",
+        estimatedMinutes: 5,
+      },
+      {
+        id: "fd-task-6-3",
+        title: "Interview a real user",
+        description:
+          "Ask a designer, hotel ops manager, or PIP veteran what was hardest about satisfying brand standards during a renovation. Compare their answer to this lesson's mechanisms.",
+        category: "advanced",
+        submissionType: "text",
+        order: 4,
+        estimatedMinutes: 18,
+      },
+      {
+        id: "fd-task-6-4",
+        title: "Flagged vs independent",
+        description:
+          "Elaborative interrogation: why do brand standards create structurally higher demand for FF&E tracking than independent properties, despite the constraint burden? What does relaxing a brand standard do to brand value? Explain the tension in 'consistency without rigidity'.",
+        category: "advanced",
+        submissionType: "text",
+        order: 5,
+        estimatedMinutes: 12,
+      },
+    ],
+  },
+  {
+    id: "fohlio-domain-lesson-7",
+    slug: "pricing",
+    order: 7,
+    title: "Three Prices for the Same Chair (Money, Part 1)",
+    subtitle: "How retail, trade, and fee actually stack up — and who keeps what",
+    description:
+      "The retail/trade pricing structure (trade 20-60% off list), keystone markup, the three designer fee models, the fiduciary disclosed-fee purchasing-agent model (3-6% of FF&E value; discounts pass to the owner), the manufacturer's rep commission paid invisibly by the maker (5-15%), volume rebates, and a full margin-capture map from manufacturer to owner.",
+    learningGoals: [
+      "Distinguish retail (list) from trade (net) price and explain why the gap exists",
+      "Define keystone markup and explain its limits",
+      "Name the three designer/purchasing-agent fee models and when each is used",
+      "Explain the fiduciary/disclosed-fee model and why it is the hospitality standard",
+      "Describe how a manufacturer's rep earns without the buyer paying them",
+    ],
+    contentFile: "fohlio-domain-7-pricing.html",
+    isPublished: true,
+    homework: [
+      {
+        id: "fd-task-7-1",
+        title: "Trace the money through a worked example",
+        description:
+          "Calculate the client price, the agent's earnings, and the rep commission for a cost-plus scenario; then rerun the same package as a fiduciary model and compare who ends up ahead.",
+        category: "required",
+        submissionType: "text",
+        order: 1,
+        modelAnswer:
+          "In cost-plus the firm buys at trade (say 40% off list) and adds a markup (say 30%): client price = trade x 1.30, and the firm keeps the markup spread. The rep earns a commission (5-15%) from the manufacturer, invisible to the buyer. In the fiduciary model all trade discounts pass to the owner and the agent earns only a disclosed fee (3-6% of FF&E value). The owner usually pays less under fiduciary on large packages; the firm earns transparently rather than on the spread.",
+        estimatedMinutes: 18,
+      },
+      {
+        id: "fd-task-7-2",
+        title: "Cumulative interleave — connect L6 and L7",
+        description:
+          "Explain how a brand's approved-supplier list (L6) eliminates competitive bidding, and why that makes the fiduciary model more, not less, important for the owner (L7).",
+        category: "required",
+        submissionType: "text",
+        order: 2,
+        modelAnswer:
+          "When the brand mandates an approved supplier, there is no competitive bid to discipline price, so the owner can't rely on the market to keep the agent honest. A fiduciary agent passes all discounts through and earns only a disclosed fee, removing the incentive to inflate product price — exactly the protection the owner loses when bidding is off the table.",
+        estimatedMinutes: 12,
+      },
+      {
+        id: "fd-task-7-recall",
+        title: "Recall: who earns what?",
+        description:
+          "Pick the right pricing model and the right trade-price math, and explain each. Auto-checked — retry until correct.",
         category: "required",
         submissionType: "widget",
         order: 3,
@@ -459,133 +527,44 @@ const LESSONS: LessonSeed[] = [
           minExplanationWords: 10,
           questions: [
             {
-              id: "q-spec",
+              id: "q-fee",
               prompt:
-                "The spec lists 12 chairs at $400 each, nothing ordered yet. Which number is $4,800?",
+                "A purchasing agent on a 180-room hotel passes all trade discounts to the owner and bills a disclosed 4% of the $2,500,000 FF&E value. What model is this, and the fee?",
               options: [
-                { id: "a", label: "spec total" },
-                { id: "b", label: "planned" },
-                { id: "c", label: "actual" },
-                { id: "d", label: "variance" },
-              ],
-              correctOptionId: "a",
-              rubric:
-                "spec total is the sum of what was specified (unit price x qty), before markup, soft costs, or any PO. Nothing is ordered, so planned and actual don't apply yet.",
-            },
-            {
-              id: "q-variance",
-              prompt:
-                "spec total is $37,920 and planned (with markup + freight) is $49,608. What is the variance?",
-              options: [
-                { id: "a", label: "$49,608 (it equals planned)" },
-                { id: "b", label: "+$11,688 (planned minus spec total)" },
-                { id: "c", label: "$37,920 (it equals spec total)" },
-                { id: "d", label: "$0 until invoices are paid" },
+                { id: "a", label: "Principal/markup — agent earns ~$875,000" },
+                { id: "b", label: "Fiduciary/disclosed-fee — agent earns $100,000" },
+                { id: "c", label: "Management fee — 15% of trade value ($375,000)" },
+                { id: "d", label: "Cost-plus — 35% markup on each item" },
               ],
               correctOptionId: "b",
               rubric:
-                "variance = planned - spec total = 49,608 - 37,920 = +$11,688. Positive means committed spend is over the approved spec; markup and soft costs are the usual cause.",
+                "Fiduciary/disclosed-fee: all discounts pass to the client and the sole compensation is the disclosed fee. 4% x $2.5M = $100,000.",
+            },
+            {
+              id: "q-trade",
+              prompt:
+                "A lounge chair lists at $1,200. A firm buys at 40% off list (trade), then adds a 30% cost-plus markup. What does the client pay?",
+              options: [
+                { id: "a", label: "$840 — trade only, no markup" },
+                { id: "b", label: "$936 — trade price plus 30% markup" },
+                { id: "c", label: "$1,092 — 30% markup on list" },
+                { id: "d", label: "$1,200 — client pays list" },
+              ],
+              correctOptionId: "b",
+              rubric:
+                "Trade = $1,200 x 0.60 = $720; client = $720 x 1.30 = $936. The markup applies to the trade (net) price, not the list price.",
             },
           ],
         },
+        modelAnswer:
+          "Fiduciary = discounts pass to the client, agent earns the disclosed fee (4% x $2.5M = $100k). Trade math: $1,200 less 40% = $720, plus 30% markup = $936.",
         estimatedMinutes: 5,
       },
       {
-        id: "fd-task-6-3",
-        title: "Budget walkthrough with a colleague",
-        description:
-          "Reproduce the three-numbers explanation with a real teammate. Record three questions you couldn't answer immediately, then submit those questions plus the answers you found.",
-        category: "advanced",
-        submissionType: "text",
-        order: 4,
-        estimatedMinutes: 25,
-      },
-      {
-        id: "fd-task-6-4",
-        title: "Why three separate fields?",
-        description:
-          "Describe one specific decision that would break for each of the three clients if any two of spec total / planned / actual were collapsed into one field.",
-        category: "advanced",
-        submissionType: "text",
-        order: 5,
-        estimatedMinutes: 14,
-      },
-    ],
-  },
-  {
-    id: "fohlio-domain-lesson-7",
-    slug: "procurement",
-    order: 7,
-    title: "Procurement: RFQ → Quote → PO",
-    subtitle: "Sources, purchase orders, lead time, and MOQ",
-    description:
-      "Phase 4, procurement, from Marco's seat: Source/Supplier as a structured record, the RFQ to quote to PO pipeline, the PurchaseOrder status machine, lead time and MOQ, and how procurement leverage differs across the three segments.",
-    learningGoals: [
-      "Explain what a Source is and how family vs item sources differ",
-      "Describe the RFQ to quote to PO cycle and each transition condition",
-      "Name the PO statuses and what each transition allows",
-      "Understand lead time and MOQ as the factors that decide the order date",
-      "Explain the difference in procurement leverage between enterprise and SMB",
-    ],
-    contentFile: "fohlio-domain-7-procurement.html",
-    isPublished: true,
-    homework: [
-      {
-        id: "fd-task-7-1",
-        title: "Order the pipeline and explain the transitions",
-        description:
-          "List the procurement steps in order and write one transition condition per step. Start with a 90-second from-memory recall of the list.",
-        category: "required",
-        submissionType: "text",
-        order: 1,
-        modelAnswer:
-          "RFQ → quotes compared → PO draft → open → approved → shipment → received_partially → received_fully → closed. Key transitions: a quote is selected to build a PO; 'approved' is the legally binding point where the lead-time clock starts; 'closed' requires all items received and all invoices reconciled.",
-        estimatedMinutes: 16,
-      },
-      {
-        id: "fd-task-7-2",
-        title: "Cross-lesson analysis (L3 + L4 + L6 + L7)",
-        description:
-          "Grace specs 10 chairs. The current Source has MOQ 1 and a 4-week lead time. An alternative Source is $40 cheaper but has MOQ 15 and an 8-week lead time; Cedar & Oak opens in 10 weeks. Answer: how the switch affects spec total and planned; whether a new RFQ is needed; whether the 8-week lead time fits; whether ordering 15 for a need of 10 is worth it.",
-        category: "required",
-        submissionType: "text",
-        order: 2,
-        modelAnswer:
-          "Cheaper unit price lowers spec total; planned can't be recomputed until the new Source returns a quote (new RFQ required). 8 weeks fits inside 10 with little buffer — risky but workable. MOQ 15 for a need of 10 means paying for 5 extra; worth it only if the per-unit saving on 15 beats the current Source's total for 10, or the spares have value.",
-        estimatedMinutes: 14,
-      },
-      {
-        id: "fd-task-7-recall",
-        title: "Recall: order the procurement steps",
-        description:
-          "Put the procurement pipeline in the right order. Auto-checked — retry until correct.",
-        category: "required",
-        submissionType: "widget",
-        order: 3,
-        widgetId: "flow-order",
-        widgetConfig: {
-          prompt: "Order the steps Marco follows to turn a spec into received goods.",
-          steps: [
-            { id: "s1", label: "Send RFQ to the Sources on the spec", detail: "Grouped by supplier" },
-            { id: "s2", label: "Compare returned quotes on landed cost", detail: "Unit price + freight + duties" },
-            { id: "s3", label: "Create the PO (draft)", detail: "Selected quote becomes an order" },
-            { id: "s4", label: "Open the PO", detail: "Enters planned; changes require negotiation" },
-            { id: "s5", label: "Approve the PO", detail: "Legally binding; lead-time clock starts" },
-            { id: "s6", label: "Receive shipments (partial then full)", detail: "qtyReceived rises toward qtyOrdered" },
-            { id: "s7", label: "Close the PO", detail: "All items received, all invoices reconciled" },
-          ],
-          lockFirst: false,
-          lockLast: false,
-        },
-        modelAnswer:
-          "RFQ → compare quotes → PO draft → open → approved → receive → close. The approved step is the irreversible one: it starts the lead-time clock and makes the order binding.",
-        estimatedMinutes: 4,
-      },
-      {
         id: "fd-task-7-3",
-        title: "Play Marco",
+        title: "Interview a design professional",
         description:
-          "Find a real custom item with a stated MOQ or lead time on a public B2B furniture site. Describe how the RFQ-to-PO process would differ for Marriott (600 rooms, many properties) vs Grace (12-room inn). Paste the product URL.",
+          "Ask a designer or purchasing agent about their pricing model and the client pushback they get. Compare their language and framing to this lesson's categories.",
         category: "advanced",
         submissionType: "text",
         order: 4,
@@ -593,9 +572,9 @@ const LESSONS: LessonSeed[] = [
       },
       {
         id: "fd-task-7-4",
-        title: "Why it's built this way",
+        title: "The transparency gap",
         description:
-          "Why is received_partially a distinct status rather than a flag? What breaks in invoice/actual accounting without it? Give a concrete scenario for each of the three clients.",
+          "Elaborative interrogation: why have many designers historically not disclosed trade prices, and why has hospitality procurement evolved toward full transparency? Explain the structural market difference that drives the divergence.",
         category: "advanced",
         submissionType: "text",
         order: 5,
@@ -605,132 +584,97 @@ const LESSONS: LessonSeed[] = [
   },
   {
     id: "fohlio-domain-lesson-8",
-    slug: "sync",
+    slug: "budget",
     order: 8,
-    title: "Why a Spec Rots: The Sync Engine",
-    subtitle: "Sync states, push/pull/replace, and catching the discontinued finish",
+    title: "The Budget That Quietly Grows (Money, Part 2)",
+    subtitle: "Three numbers about the same chairs: spec, quoted, approved, actual — and the landed cost in between",
     description:
-      "The payoff: the sync engine catches a discontinued finish before the PO ships — the exact $40k failure from Lesson 1. Sync states (new/ready/updates/broken), the SyncStateCache, push/pull/replace, orphaned references, and optimistic concurrency.",
+      "How an FF&E budget is built from the per-key anchor through hard and soft costs; the full landed-cost stack adding 15-35%+ over bare product price; the four states every budget line lives in (spec, quoted, approved, actual) and the two structural reasons actual drifts up; contingency, value engineering, deposit mechanics, payment terms, and tariff/freight as live budget risks (flagged as dated and volatile).",
     learningGoals: [
-      "Explain why a spec goes stale with no user action and where the cost peaks",
-      "Name the four sync states and what each requires from the user",
-      "Distinguish pull, push, and replace — and why pull fails on a broken item",
-      "Define an orphaned reference and why it is more dangerous than 'updates'",
-      "Explain optimistic concurrency: version field, HTTP 409, why not pessimistic locking",
+      "Build an FF&E budget from the per-key number and split hard vs soft costs",
+      "Describe the landed-cost stack and estimate a rough total from FOB",
+      "Name the four budget states and explain why actual ends up above approved",
+      "Apply contingency and value engineering at the correct phase",
+      "Treat tariff and freight figures as volatile and know where to re-verify",
     ],
-    contentFile: "fohlio-domain-8-sync.html",
+    contentFile: "fohlio-domain-8-budget.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-8-1",
-        title: "Reconstruct Dana's $40k failure technically",
+        title: "Build a landed-cost estimate",
         description:
-          "Describe the sync state of the problem item at PO time, why the old process didn't catch it, and which state-machine transition fixes it. 3-5 sentences, from memory first.",
+          "90-unit Vietnam-sourced lounge chair at $620 FOB. Apply the rough landed-cost layers from the lesson (freight, tariff, brokerage, warehousing, install). Compare the landed total to the bare product total. Then double the tariff rate and recalculate. From memory, explain the landed-cost concept.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "The item's catalog reference became broken (orphaned) when the supplier discontinued the finish — the item it pointed to no longer exists. The old (Excel) process had no link back to the catalog, so nothing flagged it. The fix is replace (pick a current variant), not pull — pull is useless when the target is gone.",
-        estimatedMinutes: 14,
+          "Apply the stack on top of $620 FOB: freight, ~20% Vietnam tariff, brokerage, warehousing, delivery/install — roughly +40-55%, landing each chair near $870-$960. Across 90 units the landed total runs well above 90 x $620. Doubling the tariff adds another ~20% of FOB per unit. The concept: the bare (FOB) price always understates true cost by at least 15-35%, and tariffs make it worse.",
+        estimatedMinutes: 20,
       },
       {
         id: "fd-task-8-2",
-        title: "Self-check: sync states + prior concepts",
+        title: "Cross-lesson budget scenario (L1 + L3 + L5 + L8)",
         description:
-          "Without looking: (a) updates vs broken and when pull is useless; (b) the three catalog statuses from L5 and how they relate to sync; (c) why an item references a catalog family instead of copying its data, and the trade-off.",
+          "A 60-room midscale hotel; the contractor quotes $600k furniture-only. (a) Is the number plausible vs per-key benchmarks? (b) what real total should the owner's rep anticipate after soft costs? (c) is value engineering still feasible and what is the correct timing? (d) what does $600k imply for total development cost using the 8-15% FF&E share?",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "(a) updates = the catalog changed and can be merged (pull works); broken = the reference is gone (pull is useless, replace instead). (b) draft/new_from_project/ready_to_use govern what can be linked; only ready_to_use should be pulled into live specs. (c) A reference keeps the spec current and lets the engine detect drift; the trade-off is that catalog changes can orphan references, which is exactly what sync states surface.",
-        estimatedMinutes: 10,
+          "(a) $600k / 60 rooms = $10k/key — plausible for midscale. (b) After soft costs (freight, taxes, install, PM, contingency) the loaded number is meaningfully higher, often +20-35%. (c) VE is feasible only if done during design; doing it at purchase blows the schedule. (d) If FF&E is ~8-15% of total dev cost, $600k implies roughly $4M-$7.5M total development.",
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-8-recall",
-        title: "Recall: the catalog changed — what do you do?",
+        title: "Recall: which number is which?",
         description:
-          "Walk the decision: pull, push, or replace, depending on the situation. Auto-checked — retry until correct.",
+          "Identify the four budget states and a landed-cost result, and explain. Auto-checked — retry until correct.",
         category: "required",
         submissionType: "widget",
         order: 3,
-        widgetId: "decision-tree",
+        widgetId: "quiz-explain",
         widgetConfig: {
-          rootId: "n1",
-          nodes: {
-            n1: {
-              id: "n1",
-              question:
-                "The catalog item your spec line points to was deleted — the supplier discontinued it. Sync state is 'broken'. What do you do?",
+          minExplanationWords: 10,
+          questions: [
+            {
+              id: "q-states",
+              prompt:
+                "Dana specs a chair at $480. The RFQ comes back $540. The owner approves $540. The paid invoice is $580 (the quote had expired). Which mapping is right?",
               options: [
-                {
-                  label: "Pull the latest catalog version into the item",
-                  outcome: {
-                    kind: "wrong",
-                    explanation:
-                      "Pull merges updates from a target that still exists. The target is gone (orphaned), so there is nothing to pull. You must point the line at a different product.",
-                  },
-                },
-                { label: "Replace the item with a current catalog variant", nextNodeId: "n2" },
-                {
-                  label: "Push your spec values back to the catalog",
-                  outcome: {
-                    kind: "wrong",
-                    explanation:
-                      "Push writes your edits into the shared catalog. It neither restores the deleted item nor fixes the broken reference, and it risks polluting the catalog.",
-                  },
-                },
+                { id: "a", label: "$480 Spec / $540 Quoted / $540 Approved / $580 Actual" },
+                { id: "b", label: "$480 Quoted / $540 Spec / $540 Approved / $580 Actual" },
+                { id: "c", label: "$480 Actual / $540 Approved / $540 Quoted / $580 Spec" },
+                { id: "d", label: "$480 Approved / $540 Actual / $540 Spec / $580 Quoted" },
               ],
+              correctOptionId: "a",
+              rubric:
+                "Spec = Dana's pre-market estimate ($480); Quoted = the real RFQ price ($540); Approved = the owner sign-off ($540); Actual = the paid invoice ($580, drifted up because the quote expired).",
             },
-            n2: {
-              id: "n2",
-              question:
-                "Different case: the catalog item still exists but its price rose 8%. Sync state is 'updates'. The project is mid-budget-review. What is the right move?",
+            {
+              id: "q-landed",
+              prompt:
+                "A dresser is $900 FOB (Vietnam). Add freight ~12%, tariff ~20%, brokerage ~4%, inland ~4%, warehousing ~5%, delivery/install ~10%. Roughly the landed cost and % over FOB?",
               options: [
-                { label: "Pull the update so planned reflects the real price", nextNodeId: "n3" },
-                {
-                  label: "Ignore it — the spec already has a number",
-                  outcome: {
-                    kind: "suboptimal",
-                    explanation:
-                      "Ignoring keeps a stale price in the budget; the gap shows up later at PO time. Pulling now keeps planned honest during the review.",
-                  },
-                },
+                { id: "a", label: "~$900 — 0% over FOB" },
+                { id: "b", label: "~$1,035 — ~15% over FOB" },
+                { id: "c", label: "~$900 — landed equals FOB" },
+                { id: "d", label: "~$1,395 — ~55% over FOB" },
               ],
+              correctOptionId: "d",
+              rubric:
+                "The layers sum to roughly +55%: 900 + 108 + 180 + 36 + 36 + 45 + 90 ≈ $1,395. The bare FOB price always understates true landed cost — here by about 55%.",
             },
-            n3: {
-              id: "n3",
-              question:
-                "You made a small project-specific tweak (a custom finish note) that the team wants in the shared catalog. Which operation publishes it?",
-              options: [
-                {
-                  label: "Push — write the item changes back to the catalog",
-                  outcome: {
-                    kind: "correct",
-                    explanation:
-                      "Push is spec → catalog. A curator typically reviews before it becomes ready_to_use for everyone. Pull is catalog → spec; replace swaps the linked product.",
-                  },
-                },
-                {
-                  label: "Pull — it syncs everything anyway",
-                  outcome: {
-                    kind: "wrong",
-                    explanation:
-                      "Pull is the opposite direction (catalog → spec). It would not publish your local change to the shared catalog.",
-                  },
-                },
-              ],
-            },
-          },
+          ],
         },
         modelAnswer:
-          "broken → replace (the target is gone). updates → pull (merge the change). Publishing a local change to the shared catalog → push. Pull and push are opposite directions; replace is for a dead reference.",
+          "States: spec=$480 (estimate), quoted=$540 (RFQ), approved=$540 (sign-off), actual=$580 (paid, drifted up). Landed: ~$1,395, about 55% over the $900 FOB once the full stack is applied.",
         estimatedMinutes: 5,
       },
       {
         id: "fd-task-8-3",
-        title: "The scenario where bulk pull makes things worse",
+        title: "Real-tariff drill",
         description:
-          "A Marriott project is in final client review; budget is approved. 40 items show 'updates' from description-only catalog edits. Argue whether to bulk-pull now — what you gain, what you risk, and what sync policy fits late-stage vs early-stage projects.",
+          "Go to ustr.gov or hts.usitc.gov and find the current tariff for a specific furniture HTS code (Chapter 94 upholstered wooden seats). Report the HTS code, MFN base duty, any Section 301/232 additions for China-origin goods, and the effective stacked rate. (Rates change; this is why AI can't answer it.)",
         category: "advanced",
         submissionType: "text",
         order: 4,
@@ -738,9 +682,9 @@ const LESSONS: LessonSeed[] = [
       },
       {
         id: "fd-task-8-4",
-        title: "Why optimistic, not pessimistic concurrency",
+        title: "Why is contingency structured this way?",
         description:
-          "Why does pessimistic locking break in SaaS? What scenario does optimistic concurrency still miss (two concurrent pulls on the same item, both at version 14)? Hypothesize a guard.",
+          "Elaborative interrogation: name three structural differences (not just 'hotels are bigger') that justify a higher hospitality contingency vs residential. Explain why a contingency reserve is not poor planning, and why removing it to hit a headline number makes things worse.",
         category: "advanced",
         submissionType: "text",
         order: 5,
@@ -750,61 +694,84 @@ const LESSONS: LessonSeed[] = [
   },
   {
     id: "fohlio-domain-lesson-9",
-    slug: "delivery",
+    slug: "vendors",
     order: 9,
-    title: "The Physical Tail: Shipment → Receiving → Install",
-    subtitle: "Partial receiving, invoices, field tracking, and closeout",
+    title: "Vendors, Manufacturers, Reps and Sources",
+    subtitle: "Marco calls Tomás, and Tomás calls Greta — how the supply side actually works",
     description:
-      "Phase 5, delivery: how an approved PO spawns shipments, why partial receiving is first-class, how warehouse and install are separate events, how invoices feed actual, what field tracking solves, and what closeout means for reporting.",
+      "The supply side in depth: named contract furniture manufacturers and overseas factories; custom millwork as the longest-lead highest-risk category; the manufacturer's rep model (independent, multi-line, commission-only, free to the buyer); dealers, showrooms, distributors, and the major trade shows; the domestic vs import sourcing calculus under MOQ, lead time, and tariffs; vendor scorecards as compound intelligence; and GPOs vs project FF&E.",
     learningGoals: [
-      "Explain the PO to Shipment to ShipmentItem hierarchy and why one PO yields many shipments",
-      "Describe partial receiving and the PO status progression",
-      "Distinguish warehouse staging from install as separate stages",
-      "Trace how supplier and client invoices drive actual",
-      "Explain field tracking (GrCode) and why closeout is explicit",
+      "Name the major contract furniture manufacturers and what distinguishes them from overseas sources",
+      "Explain the manufacturer's rep model: independent, multi-line, commission-only, free to the buyer",
+      "Describe the roles of dealers, showrooms, and distributors",
+      "Apply the domestic vs import sourcing decision (cost, MOQ, lead time, tariff exposure)",
+      "Distinguish a GPO from project FF&E procurement and where each fits",
     ],
-    contentFile: "fohlio-domain-9-delivery.html",
+    contentFile: "fohlio-domain-9-vendors.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-9-1",
-        title: "Walk one item through Phase 5",
+        title: "Map the supply chain for a real product",
         description:
-          "Trace the chair from Lesson 1 through PO → shipment → receiving → warehouse → install → invoice → closeout. One line per step: what happens and what the system records. From memory first.",
+          "Visit a real manufacturer's site (Kimball Hospitality, Bernhardt Contract, OFS, or KI). Find a guestroom product; describe their channel model (rep/dealer/direct); note whether lead time or MOQ is shown publicly; identify which channel type fits. From memory, define what a manufacturer's rep is.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "PO (qtyOrdered=1, approved) → Shipment (dispatch date recorded) → Receiving (qtyReceived=1; PO becomes received_partially/received_fully) → Warehouse (staged, GrCode label) → Install (placed in the room, install date) → Invoice (supplier invoice updates actual) → Closeout (PO explicitly closed once settled).",
+          "Most contract manufacturers sell through independent reps and contracted dealers rather than direct; many publish 'find a rep' pages and rarely post MOQ/lead time publicly. A manufacturer's rep is an independent, commission-only salesperson who carries multiple non-competing lines in a territory and whose core job is getting products specified into designers' drawings — paid by the maker, free to the buyer.",
         estimatedMinutes: 16,
       },
       {
         id: "fd-task-9-2",
-        title: "Self-check: delivery + prior concepts",
+        title: "Cross-lesson sourcing analysis (L2 + L6 + L8 + L9)",
         description:
-          "Without scrolling: (a) received_partially vs received_fully vs closed; (b) planned vs actual and why actual only appears in Phase 5; (c) which phase receiving belongs to and why install is separate.",
+          "150-room upper-upscale hotel. Option A: Vietnam $1,100 FOB, MOQ 50, 21-week total lead. Option B: US $1,480, MOQ 24, 12-week lead. (a) landed cost comparison; (b) schedule buffer and risk; (c) Marriott brand-standard impact on A vs B; (d) how Marco frames the decision for the owner's rep as the client's advocate.",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "(a) received_partially = at least one line short; received_fully = all lines arrived; closed = explicitly closed after invoice reconciliation. (b) planned = committed in POs; actual = paid invoices — and invoices only exist against physical deliveries, which start in Phase 5. (c) Receiving is Phase 5; install is separate because weeks can pass between 'goods accepted at warehouse' and 'goods standing in the room', with different dates and owners.",
-        estimatedMinutes: 10,
-      },
-      {
-        id: "fd-task-9-3",
-        title: "The over-delivery edge case",
-        description:
-          "A PO is for 8 chairs; 10 arrive and Marco accepts all 10. Design how the system models it: qtyReceived, the effect on actual, and what happens to the 2 surplus units. Propose concrete fields and statuses.",
-        category: "advanced",
-        submissionType: "text",
-        order: 4,
+          "(a) Option A's $1,100 FOB grows ~40-55% landed (tariff + freight + stack), narrowing or erasing the gap with US $1,480. (b) 21 weeks leaves less buffer against a fixed opening; 12 weeks is safer. (c) If the brand standard names an approved supplier, A may be off the table unless pre-approved. (d) Marco frames it as landed cost + schedule risk + compliance, not just unit price — certainty of delivery often beats marginal savings.",
         estimatedMinutes: 16,
       },
       {
-        id: "fd-task-9-4",
-        title: "Why warehouse and install are separate entities",
+        id: "fd-task-9-recall",
+        title: "Recall: who does what on the supply side?",
         description:
-          "What queries does separating warehouse from install enable that a single flag would not? How does it affect budget reporting and closeout? Which Marriott-scale scenario would be hard without it?",
+          "Match each supply-side actor to what they actually do. Auto-checked — retry until correct.",
+        category: "required",
+        submissionType: "widget",
+        order: 3,
+        widgetId: "concept-match",
+        widgetConfig: {
+          pairs: [
+            { id: "v1", term: "Manufacturer's rep", definition: "Independent, commission-only; carries many non-competing lines; gets product specified" },
+            { id: "v2", term: "Contract furniture manufacturer", definition: "Makes the product at scale; sets list price; sells to trade; enforces MOQ" },
+            { id: "v3", term: "Dealer", definition: "Contracted reseller (esp. office/contract); local quoting, service, install" },
+            { id: "v4", term: "Distributor", definition: "Carries stock for faster fulfillment of standard items" },
+            { id: "v5", term: "GPO (Avendra)", definition: "Aggregates recurring OS&E spend across many properties for volume discounts" },
+            { id: "v6", term: "3PL / FF&E logistics firm", definition: "Receives, warehouses, delivers room-by-room and installs white-glove" },
+          ],
+        },
+        modelAnswer:
+          "Rep = commission-only multi-line salesperson who gets product specified; manufacturer = makes it and sets list/MOQ; dealer = contracted reseller; distributor = stock for speed; GPO = aggregates operational spend; 3PL = receives/warehouses/installs.",
+        estimatedMinutes: 4,
+      },
+      {
+        id: "fd-task-9-3",
+        title: "Find a real rep",
+        description:
+          "Go to manaonline.org or a manufacturer's 'find a rep' page and locate a real manufacturer's rep covering your region in hospitality or contract furniture. Report the lines they carry, territory, and specialization.",
+        category: "advanced",
+        submissionType: "text",
+        order: 4,
+        estimatedMinutes: 18,
+      },
+      {
+        id: "fd-task-9-4",
+        title: "Why does the rep model persist?",
+        description:
+          "Elaborative interrogation: name three structural reasons the rep model creates value a digital catalog or direct-to-manufacturer platform cannot replicate. What would have to change for the model to become less necessary, and do those conditions exist today?",
         category: "advanced",
         submissionType: "text",
         order: 5,
@@ -814,82 +781,486 @@ const LESSONS: LessonSeed[] = [
   },
   {
     id: "fohlio-domain-lesson-10",
-    slug: "handoff",
+    slug: "submittals",
     order: 10,
-    title: "Project Handover: Collaboration, Roles, and the Close",
-    subtitle: "Approval chains, roles/permissions, deliverables — the capstone",
+    title: "RFQs, Submittals and Samples",
+    subtitle: "The paperwork that proves the chair is what you think it is",
     description:
-      "The synthesis capstone — no new concepts. Phase 6 handover: Collaboration (share / approval_request), external collaborators via tokens, roles and permissions by segment, and spec-generated deliverables. Traces one chair through all six phases for all three clients, and closes the $40k arc.",
+      "Before a purchase order goes out, vendors have to prove their product matches the spec. The two bid documents (RFQ for a defined spec, RFP for an open one), the formal submittal process (product data, shop drawings, physical samples, returning Approved / Approved as Noted / Revise & Resubmit / Rejected), the CFA cutting-for-approval sample that creates a defensible dye-lot record, the distinct role of RFIs, and the two approval loops that run in parallel on every project.",
     learningGoals: [
-      "Explain Collaboration: share vs approval_request, tokenized links, comments",
-      "Name system and custom roles and what each prevents",
-      "Describe the three clients' approval chains and the engineering implications",
-      "List Phase 6 deliverables and why they are generated from spec data",
-      "Trace one line item through all six phases for all three clients",
+      "Distinguish an RFQ (price on a defined spec) from an RFP (fuller proposal when spec is open)",
+      "Explain what a construction submittal is and what the four review outcomes mean",
+      "Describe what a CFA sample is and what dispute it prevents",
+      "Distinguish an RFI (resolves ambiguity) from a submittal (confirms conformance)",
+      "Name the two approval loops and why conflating them is a failure mode",
     ],
-    contentFile: "fohlio-domain-10-handoff.html",
+    contentFile: "fohlio-domain-10-submittals.html",
     isPublished: true,
     homework: [
       {
         id: "fd-task-10-1",
-        title: "Trace the chair through six phases for three clients",
+        title: "Sort these situations",
         description:
-          "For each client (Marriott, the Church, Cedar & Oak), write one sentence per phase describing what happens to the chair. Identify the phase where the three journeys diverge most and explain why. Include a 90-second from-memory recall of the handover-phase differences.",
+          "Five scenarios; assign the correct document (RFQ, RFP, submittal, RFI, or CFA sample) to each, and explain in one sentence why.",
         category: "required",
         submissionType: "text",
         order: 1,
         modelAnswer:
-          "Divergence is sharpest at handover/approval: Marriott runs a multi-stakeholder brand approval, the Church a long institutional budget chain, Grace a one-tap chain of herself plus the client. Earlier phases differ in scale and standard strictness but follow the same six-phase spine.",
-        estimatedMinutes: 22,
+          "RFQ = price on an already-defined spec; RFP = fuller proposal when the approach is open; submittal = the vendor proving a product conforms before fabrication; RFI = a question to resolve an ambiguous or conflicting spec; CFA sample = a swatch cut from the actual production run, approved to prevent dye-lot disputes at delivery.",
+        estimatedMinutes: 16,
       },
       {
         id: "fd-task-10-2",
-        title: "Course-wide self-check",
+        title: "Explain the two loops to a new colleague",
         description:
-          "Without looking: (a) what SyncStateCache is and why it's transient; (b) spec total vs planned vs actual vs variance; (c) why a Collaborator can't see other Workspace projects; (d) two scenarios where sync state becomes broken.",
+          "Write 3-4 sentences explaining Loop A (designer/owner) and Loop B (designer-or-GC/vendor) to someone new, including what each catches and one example of a failure if either is skipped.",
         category: "required",
         submissionType: "text",
         order: 2,
         modelAnswer:
-          "(a) The computed link state between a spec item and its catalog source; transient because the catalog changes and a stored value would go stale. (b) spec = specified; planned = ordered (POs); actual = paid (invoices); variance = planned - spec total. (c) A Collaborator enters via a token scoped to a project/area/slot, not an authenticated workspace account. (d) Orphaned reference (item deleted) and componentsDiverged (BOM changed beyond auto-merge).",
+          "Loop A is design sign-off: the designer presents selections to the owner (and brand, on flagged hotels) for approval, phase by phase — it catches 'the owner didn't want this.' Loop B is conformance: the vendor provides product data, shop drawings, and CFA samples to prove the item matches the spec — it catches 'the product isn't what we specified.' Skip Loop A and you build the wrong design; skip Loop B and the wrong product ships.",
         estimatedMinutes: 12,
       },
       {
-        id: "fd-task-10-recall",
-        title: "Recall: match the stakeholder to their job",
+        id: "fd-task-10-3",
+        title: "The approval gap",
         description:
-          "Match each role/stakeholder to what they actually do on the platform. Auto-checked — retry until correct.",
+          "Recall a personal purchase experience (custom furniture, a renovation, a big online order). Map it to the FF&E submittal process: identify the equivalent of the CFA and the designer/vendor roles, and explain what the absence of a formal approval step costs at hotel scale.",
+        category: "advanced",
+        submissionType: "text",
+        order: 4,
+        estimatedMinutes: 14,
+      },
+      {
+        id: "fd-task-10-4",
+        title: "Why four outcomes, not two?",
+        description:
+          "Elaborative interrogation: why must 'Approved as Noted' exist as a separate category? What would collapsing to two options break? Why does 'Rejected' differ from 'Revise and Resubmit'?",
+        category: "advanced",
+        submissionType: "text",
+        order: 5,
+        estimatedMinutes: 12,
+      },
+    ],
+  },
+  {
+    id: "fohlio-domain-lesson-11",
+    slug: "procurement",
+    order: 11,
+    title: "From a Quote to Goods on the Dock",
+    subtitle: "The long wait, the active chase, and the one inspection nobody skips twice",
+    description:
+      "The full post-PO pipeline: the binding deposit and why submittal approval precedes it; expediting as active factory-chasing; lead times that set the project clock; the freight, customs, and landed-cost stack; the receiving inspection as the single most commonly skipped and most expensive logistics failure; room-by-room white-glove installation with the model room first; and how actual sourcing data from a closed project feeds back into the library.",
+    learningGoals: [
+      "Explain what a purchase order commits to and why the deposit follows submittal approval",
+      "Describe expediting and what happens when nobody does it",
+      "Name the components of the landed-cost stack and how they add to FOB",
+      "Explain why the receiving inspection is the most critical logistics failure point",
+      "Describe the model-room-first install sequence and why it exists",
+    ],
+    contentFile: "fohlio-domain-11-procurement.html",
+    isPublished: true,
+    homework: [
+      {
+        id: "fd-task-11-1",
+        title: "Map the failure modes",
+        description:
+          "Three scenarios (a COM fabric tracking gap / a partial receiving inspection / no project debrief). For each, identify the phase, the discipline that would catch it, and the schedule or cost consequence if it goes uncaught until install.",
+        category: "required",
+        submissionType: "text",
+        order: 1,
+        modelAnswer:
+          "COM gap: caught during expediting (the fabric must reach the factory on time) — if missed, the frame waits and the lead time slips. Partial receiving inspection: caught at receiving — if skipped, damage surfaces on install day with no time to reorder. No debrief: caught at closeout — if skipped, the next project re-learns the same lessons and the library doesn't compound.",
+        estimatedMinutes: 16,
+      },
+      {
+        id: "fd-task-11-2",
+        title: "The cumulative picture (L3 + L8 + L10 + L11)",
+        description:
+          "Trace 120 custom lounge chairs at $850 FOB from Vietnam: the deposit amount, the lead-time range, two landed-cost additions (with % impact), what the receiving report contains, and the Lesson 10 step that must precede the wire.",
+        category: "required",
+        submissionType: "text",
+        order: 2,
+        modelAnswer:
+          "Deposit ≈ 50% of the order on PO. Lead time: production 30-90 days + ~3-5 weeks ocean transit (overseas total often 18-24 weeks). Landed additions: ~20% Vietnam tariff and ~12% freight, plus brokerage/warehousing/install — landing each chair ~40-55% over $850. The receiving report records quantity, condition, and finish vs the approved CFA. The step that must precede the wire/PO: submittal + CFA approval (Lesson 10).",
+        estimatedMinutes: 16,
+      },
+      {
+        id: "fd-task-11-recall",
+        title: "Recall: order the procurement pipeline",
+        description:
+          "Put the steps from approved quote to installed furniture in the right order. Auto-checked — retry until correct.",
+        category: "required",
+        submissionType: "widget",
+        order: 3,
+        widgetId: "flow-order",
+        widgetConfig: {
+          prompt: "Order the steps Marco and Reggie follow to turn an approved spec into installed, signed-off furniture.",
+          steps: [
+            { id: "s1", label: "Issue RFQ to shortlisted vendors", detail: "Send the defined spec to 3-5 vendors for pricing" },
+            { id: "s2", label: "Compare quotes and select the vendor", detail: "Price, lead time, track record — the shortest quote doesn't always win" },
+            { id: "s3", label: "Issue the PO — deposit paid", detail: "Binding; the deposit funds materials; submittal/CFA approval must precede it" },
+            { id: "s4", label: "Expedite — track factory production", detail: "Catch discontinued items and slippage before they become crises" },
+            { id: "s5", label: "Freight and customs clearance", detail: "A forwarder handles transit, brokerage and duty; adds 6-25%" },
+            { id: "s6", label: "Receive and inspect at the warehouse", detail: "Check qty/condition/finish vs the approved CFA; the #1 costliest skip" },
+            { id: "s7", label: "Model room — owner & brand sign-off", detail: "One room first; changes here are cheap" },
+            { id: "s8", label: "White-glove install, room by room", detail: "Pre-barcoded to room; specialist crew" },
+            { id: "s9", label: "Punch list and closeout", detail: "Resolve defects; hand over warranties, FR certs, asset records" },
+          ],
+          lockFirst: true,
+          lockLast: false,
+        },
+        modelAnswer:
+          "RFQ -> compare & select -> PO (deposit) -> expedite -> freight & customs -> receive & inspect -> model room sign-off -> white-glove install -> punch list & closeout. The model room comes BEFORE full install, and expediting is an active phase, not a passive wait.",
+        estimatedMinutes: 5,
+      },
+      {
+        id: "fd-task-11-3",
+        title: "The expediting problem",
+        description:
+          "Recall a personal waiting experience (a delayed order, a contractor, a custom build). Map it to expediting (no-news-is-good-news vs active follow-up). Quantify the cost of finding out late vs early in that situation, and explain why AI can't reconstruct your answer.",
+        category: "advanced",
+        submissionType: "text",
+        order: 4,
+        estimatedMinutes: 16,
+      },
+      {
+        id: "fd-task-11-4",
+        title: "Why does the model room exist as a separate step?",
+        description:
+          "Elaborative interrogation: if both approval loops from Lesson 10 closed cleanly, why is the model room still necessary? What specific failure does it prevent? If it reveals a lighting/finish conflict, who bears the cost and why?",
+        category: "advanced",
+        submissionType: "text",
+        order: 5,
+        estimatedMinutes: 14,
+      },
+    ],
+  },
+  {
+    id: "fohlio-domain-lesson-12",
+    slug: "approvals",
+    order: 12,
+    title: "Sign-offs and the Paper Trail",
+    subtitle: "Three people in a model room, and why nothing ships without a signature",
+    description:
+      "The two approval loops in full: design sign-off (designer to owner, plus the brand on flagged hotels, with a model/mock-up room before full production) and the submittal process (product data, shop drawings, CFA samples returning Approved / Approved as Noted / Revise & Resubmit / Rejected). The punch list and deficiency log, the closeout/handover package, and why the audit trail matters when disputes arise. Roles and accountability across owner, brand, designer, GC, and vendor.",
+    learningGoals: [
+      "Distinguish the design-approval loop from the submittal loop and why confusing them is expensive",
+      "Explain what a model room is for and why flagged hotels require one before mass production",
+      "Name the four submittal review actions and what happens after each",
+      "Describe a punch list, who owns each item, and who signs off last",
+      "List what goes into a closeout/handover package and why the asset records matter",
+    ],
+    contentFile: "fohlio-domain-12-approvals.html",
+    isPublished: true,
+    homework: [
+      {
+        id: "fd-task-12-1",
+        title: "Decision walk: submittal actions and what follows",
+        description:
+          "Work through the decision-tree: a vendor returns a submittal; choose an action and follow it to its outcome. Then take the second branch — the owner wants a change after sign-off — and reason about the cost of post-sign-off changes (production restarts, fees, schedule).",
+        category: "required",
+        submissionType: "widget",
+        order: 1,
+        widgetId: "decision-tree",
+        widgetConfig: {
+          rootId: "root",
+          nodes: {
+            root: {
+              id: "root",
+              question:
+                "A vendor returns a submittal for a custom headboard. You review the product data and shop drawings. What is your action?",
+              options: [
+                { label: "Approved", nextNodeId: "approved" },
+                { label: "Approved as Noted", nextNodeId: "asnoted" },
+                { label: "Revise and Resubmit", nextNodeId: "revise" },
+                { label: "Rejected", nextNodeId: "rejected" },
+              ],
+            },
+            approved: {
+              id: "approved",
+              question:
+                "Correct — it conforms; production begins. Three days later the owner wants the height changed 4 inches; production has started. What now?",
+              options: [
+                {
+                  label: "Tell the owner it's too late",
+                  outcome: {
+                    kind: "wrong",
+                    explanation:
+                      "The owner funds the project and can request a change. Your job is to quantify what it costs now (cancellation/re-tooling/schedule), not to refuse.",
+                  },
+                },
+                {
+                  label: "Quantify the cost, then let the owner decide",
+                  outcome: {
+                    kind: "correct",
+                    explanation:
+                      "Right. Surface cancellation fees, re-tooling, restart lead time and schedule impact; the timestamped sign-off sets the baseline, and the owner decides with real numbers.",
+                  },
+                },
+                {
+                  label: "Stop production immediately and wait",
+                  outcome: {
+                    kind: "suboptimal",
+                    explanation:
+                      "Right impulse, premature. Get the stop/restart cost first, then advise the owner — some factories charge restart fees on day one.",
+                  },
+                },
+              ],
+            },
+            asnoted: {
+              id: "asnoted",
+              question:
+                "A conditional pass — the vendor must incorporate the stated correction before proceeding. The vendor ships at the original (uncorrected) height. Who holds the risk?",
+              options: [
+                {
+                  label: "The designer",
+                  outcome: {
+                    kind: "wrong",
+                    explanation:
+                      "No — the correction was binding and recorded with a timestamp. The vendor fabricated out of conformance, so it is the vendor's liability.",
+                  },
+                },
+                {
+                  label: "The vendor",
+                  outcome: {
+                    kind: "correct",
+                    explanation:
+                      "Correct. 'Approved as Noted' is conditional; the record shows the annotation, time and author. The vendor proceeded without the correction and remedies it at their cost.",
+                  },
+                },
+              ],
+            },
+            revise: {
+              id: "revise",
+              question:
+                "A material deficiency — halt until a corrected submittal is reviewed. The vendor asks to start the frame while the finish detail is corrected. You say?",
+              options: [
+                {
+                  label: "Yes, the frame is independent",
+                  outcome: {
+                    kind: "suboptimal",
+                    explanation:
+                      "Risky. Revise-and-Resubmit flags the whole submittal; a partial start creates a grey zone if the resubmission changes something affecting the frame. Only with explicit written independence.",
+                  },
+                },
+                {
+                  label: "No work proceeds until a new action issues",
+                  outcome: {
+                    kind: "correct",
+                    explanation:
+                      "Correct. Hold the line; the cost of waiting is smaller than the cost of redoing fabricated work.",
+                  },
+                },
+              ],
+            },
+            rejected: {
+              id: "rejected",
+              question:
+                "Fundamentally non-conforming — the vendor needs a different approach, not a patch. Next step?",
+              options: [
+                {
+                  label: "Issue a new RFQ / new approach",
+                  outcome: {
+                    kind: "correct",
+                    explanation:
+                      "Yes. Rejected is not Revise — update the procurement schedule for the restart and re-bid if needed.",
+                  },
+                },
+                {
+                  label: "Wait for the vendor to fix it",
+                  outcome: {
+                    kind: "wrong",
+                    explanation:
+                      "Without a clear brief on what 'fixed' means, you'll get another non-conforming submittal. Clarify the requirement; new RFQ if needed.",
+                  },
+                },
+              ],
+            },
+          },
+        },
+        modelAnswer:
+          "Approved -> proceed as submitted. Approved as Noted -> proceed only after the binding correction (vendor holds the risk if they skip it). Revise & Resubmit -> halt, no partial starts, fresh review. Rejected -> non-conforming, new approach/RFQ. A post-sign-off owner change is allowed, but you must quantify cancellation/re-tooling/schedule cost from the timestamped record first.",
+        estimatedMinutes: 6,
+      },
+      {
+        id: "fd-task-12-2",
+        title: "Map a dispute to the paper trail",
+        description:
+          "Pick one dispute scenario (a price changed after approval, a dye-lot mismatch, an item the owner says they never approved). Explain which document resolves it, what it must contain, and who bears the cost depending on what the record shows.",
+        category: "required",
+        submissionType: "text",
+        order: 2,
+        modelAnswer:
+          "A dye-lot mismatch is resolved by the CFA approval record (the cut from the production run that was signed off); if delivered goods differ from the approved CFA, the vendor bears it. 'I never approved that' is resolved by the timestamped sign-off / history log. A price change after approval is resolved by the approved quote vs the invoice. In each case the record with a timestamp and author decides who pays.",
+        estimatedMinutes: 12,
+      },
+      {
+        id: "fd-task-12-3",
+        title: "Interview the paper trail",
+        description:
+          "Recall a real situation in your own work where something agreed verbally or by email was later disputed. Write what record existed and what a structured paper trail would have contained to settle it without an argument.",
+        category: "advanced",
+        submissionType: "text",
+        order: 4,
+        estimatedMinutes: 14,
+      },
+      {
+        id: "fd-task-12-4",
+        title: "Why are the two loops separate by design?",
+        description:
+          "Elaborative interrogation: why aren't the two loops combined into one process? What would go wrong if owners signed off before vendor submittals were reviewed, or if submittals went straight to the owner? What is each loop actually checking, and why does each need different expertise?",
+        category: "advanced",
+        submissionType: "text",
+        order: 5,
+        estimatedMinutes: 12,
+      },
+    ],
+  },
+  {
+    id: "fohlio-domain-lesson-13",
+    slug: "tools",
+    order: 13,
+    title: "Why It Goes Wrong — and the Tools That Catch It",
+    subtitle: "The discontinued finish, the tariff surprise, and the spreadsheet that can't keep up",
+    description:
+      "The six recurring FF&E pain points (lead times, discontinued finishes, tariff/freight volatility, multi-property consistency, version chaos in Excel, the cost of a missed opening). The Excel+email+PDF incumbent and where it breaks (~100 items / 3+ projects). The five tool categories and honest one-line positioning for the major tools (Fohlio, Programa, Studio Designer, Design Manager, Procore and others). The real Fohlio-vs-Procore distinction. And how connected data catches a discontinued finish before the PO ships — closing the $40k gap from Lesson 1.",
+    learningGoals: [
+      "Name and explain the six recurring FF&E pain points",
+      "State the practical switch point where Excel breaks and why",
+      "Know the five tool categories and one honest positioning sentence for each major tool",
+      "Explain why Fohlio and Procore serve different tracks on the same project",
+      "Describe how connected spec data catches a discontinued finish before the PO ships",
+    ],
+    contentFile: "fohlio-domain-13-tools.html",
+    isPublished: true,
+    homework: [
+      {
+        id: "fd-task-13-1",
+        title: "Map a pain point to a real tool category",
+        description:
+          "Pick one of the six pain points. Explain: (a) exactly how it manifests in a real project; (b) which tool category addresses it and why; (c) why Excel+email+PDF fails to catch it.",
+        category: "required",
+        submissionType: "text",
+        order: 1,
+        modelAnswer:
+          "Example — discontinued finish: it manifests when a supplier drops a fabric mid-order and substitutes a near-match; an FF&E spec/procurement tool that links the spec line to the live vendor record can flag the change before the PO ships; Excel+email+PDF fails because the spreadsheet has no live connection to the vendor and the change lives in an inbox nobody re-reads.",
+        estimatedMinutes: 16,
+      },
+      {
+        id: "fd-task-13-2",
+        title: "Cumulative check (L1 + L8 + L9 + L12 + L13)",
+        description:
+          "From memory: (a) when did the $40k mistake arise vs surface? (b) the two structural budget leaks from L8; (c) what a vendor scorecard tracks; (d) the difference between 'Approved' and 'Approved as Noted'; (e) the practical Excel switch point.",
+        category: "required",
+        submissionType: "text",
+        order: 2,
+        modelAnswer:
+          "(a) Arose during expediting (silent substitution), surfaced at receiving. (b) Landed-cost surprises and scope creep. (c) Spend/PO amount, lead time, quality, payment terms — vendor reliability over time. (d) 'Approved' = proceed as submitted; 'Approved as Noted' = proceed only after a binding correction. (e) Excel breaks past ~100 items, 3+ projects, or multiple editors.",
+        estimatedMinutes: 12,
+      },
+      {
+        id: "fd-task-13-3",
+        title: "The real sales call",
+        description:
+          "Write the 3-4 sentences you would actually say to a prospect who reports version-chaos on a 12-project, 4-person FF&E team. In your own voice, no bullet points.",
+        category: "advanced",
+        submissionType: "text",
+        order: 4,
+        estimatedMinutes: 14,
+      },
+      {
+        id: "fd-task-13-4",
+        title: "Why the categories are where they are",
+        description:
+          "Elaborative interrogation: pick two adjacent tool categories. Explain why they are separate rather than combined, what each category's user cares about that the other does not, and why combining them would make both worse.",
+        category: "advanced",
+        submissionType: "text",
+        order: 5,
+        estimatedMinutes: 12,
+      },
+    ],
+  },
+  {
+    id: "fohlio-domain-lesson-14",
+    slug: "capstone",
+    order: 14,
+    title: "The Building Opens: One Chair, Every Actor",
+    subtitle: "One chair through every phase and every actor — and the loop that starts again",
+    description:
+      "The synthesis capstone. Traces a single chair through every phase and every actor from the whole course; puts three property types side by side (luxury flag, select-service brand rollout, independent boutique) to show how scale, standard strictness, and buyer structure change the same journey; closes with the FF&E reserve and the next PIP cycle restarting the loop, institutional knowledge compounding, and what a GTM person can now say to any prospect.",
+    learningGoals: [
+      "Trace a single piece of furniture through every phase and every actor in the course",
+      "Compare how the FF&E journey differs across luxury flag, brand rollout, and independent property types",
+      "Explain why the project doesn't end at opening: the FF&E reserve, the next PIP, OS&E replenishment",
+      "Articulate the compounding value of institutional knowledge across projects",
+      "Know what a GTM person can now say to any prospect in a discovery conversation",
+    ],
+    contentFile: "fohlio-domain-14-capstone.html",
+    isPublished: true,
+    homework: [
+      {
+        id: "fd-task-14-1",
+        title: "Trace a different chair through the full chain",
+        description:
+          "Pick a real hotel and one piece of furniture in it. Write a 12-15 step trace through the full FF&E process from budget decision to punch list, naming the actor at each step. Mark two steps where a real mistake would most likely happen and why.",
+        category: "required",
+        submissionType: "text",
+        order: 1,
+        modelAnswer:
+          "A strong trace names the actor at each step: owner/brand set scope and standard -> designer specifies -> library/takeoff -> budget -> RFQ to vendor via rep -> submittal + CFA -> PO + deposit -> expediting -> manufacturing -> freight/customs -> receiving inspection -> model room sign-off -> install -> punch list -> closeout. The two highest-risk steps are usually the spec-to-shipment gap (silent substitution) and receiving (skipped inspection).",
+        estimatedMinutes: 22,
+      },
+      {
+        id: "fd-task-14-2",
+        title: "Self-check: the three property types",
+        description:
+          "Without referring back: describe how a Four Seasons, a Courtyard by Marriott, and an independent boutique differ on (a) who does the buying; (b) how brand-standard approval works; (c) the nature of PIP risk.",
+        category: "required",
+        submissionType: "text",
+        order: 2,
+        modelAnswer:
+          "(a) Luxury flag and brand rollout typically use a dedicated purchasing agent; the independent boutique owner often buys solo. (b) The flag and the rollout run brand approval against a strict standard (model rooms, golden samples); the independent has no brand to satisfy. (c) PIP risk is high for the flagged properties (audits, deadlines, flag loss) and essentially absent for the independent — its risk is budget and dropped threads.",
+        estimatedMinutes: 12,
+      },
+      {
+        id: "fd-task-14-recall",
+        title: "Recall: match each actor to their core job",
+        description:
+          "Match each FF&E value-chain actor to what they actually do. Auto-checked — retry until correct.",
         category: "required",
         submissionType: "widget",
         order: 3,
         widgetId: "concept-match",
         widgetConfig: {
           pairs: [
-            { id: "r1", term: "Specifier (Dana)", definition: "Builds and edits the spec; links items to the catalog" },
-            { id: "r2", term: "Procurement (Marco)", definition: "Turns the spec into RFQs and purchase orders" },
-            { id: "r3", term: "Collaborator (a vendor)", definition: "Token-scoped external access to specific items only" },
-            { id: "r4", term: "Owner / Admin", definition: "Manages the workspace, members, and roles" },
-            { id: "r5", term: "Brand manager (Linda)", definition: "Approves items against the brand standard" },
-            { id: "r6", term: "SMB owner (Grace)", definition: "Plays every role herself on one small project" },
+            { id: "c1", term: "Interior designer / specifier", definition: "Chooses every item, finish & dimension; specifies, doesn't buy" },
+            { id: "c2", term: "FF&E purchasing agent", definition: "Budgets, bids, issues POs, expedites, owns logistics" },
+            { id: "c3", term: "Brand / flag", definition: "Dictates the standard; audits; issues PIPs" },
+            { id: "c4", term: "Owner / developer", definition: "Owns the building and the FF&E budget; approves & pays" },
+            { id: "c5", term: "Manufacturer's rep", definition: "Commission-only; gets product specified across many lines" },
+            { id: "c6", term: "3PL / installer", definition: "Receives, warehouses, delivers & installs white-glove" },
           ],
         },
+        modelAnswer:
+          "Designer specifies (doesn't buy); purchasing agent budgets/bids/buys/expedites; brand dictates and audits the standard; owner owns the budget and pays; rep gets product specified for commission; 3PL receives/warehouses/installs.",
         estimatedMinutes: 4,
       },
       {
-        id: "fd-task-10-3",
-        title: "A real feature from your backlog, across three clients",
+        id: "fd-task-14-3",
+        title: "The prospect call you weren't ready for before this course",
         description:
-          "Take a real task from your backlog or last sprint. Describe how it behaves for Marriott, the Church, and Grace. Identify a requirement that conflicts between segments.",
+          "Find a real hotel in your city. Determine if it's flagged or independent. Estimate FF&E budget per key, describe the PIP process for that brand if applicable, identify the most likely procurement pain point, and write the first four discovery-call questions.",
         category: "advanced",
         submissionType: "text",
         order: 4,
         estimatedMinutes: 20,
       },
       {
-        id: "fd-task-10-4",
-        title: "Why the domain is built this way",
+        id: "fd-task-14-4",
+        title: "Why is this industry built this way?",
         description:
-          "Three questions in obvious-answer → why-incomplete → real-answer form: (1) why Collaboration is a separate entity with tokens, not a restricted Member; (2) why sync state has four values, not two; (3) why budget stores three numbers, not one running total.",
+          "Elaborative interrogation: explain why the specifier/buyer split, parallel procurement, and FF&E reserves are rational structural choices, not inefficiencies, and what breaks if you remove each. Apply it to your own knowledge of your customer base.",
         category: "advanced",
         submissionType: "text",
         order: 5,
@@ -910,30 +1281,39 @@ async function main() {
     process.exit(1);
   }
 
+  const COURSE_TITLE = "How Buildings Get Furnished";
+  const COURSE_SUBTITLE = "The real FF&E business — who buys, who builds, who sells, and where the money goes";
+  const COURSE_DESCRIPTION =
+    "A 14-lesson course on the real FF&E (Furniture, Fixtures & Equipment) and hospitality-furnishing industry the platform serves. Built on real-world research — real firms, real money, real process — and follows one specifier and the whole value chain through a hospitality project, from a $40k mistake to a hotel that opens on time. The industry is the spine; the software is a thin overlay.";
+
   await prisma.$transaction(
     async (tx) => {
       await tx.course.upsert({
         where: { id: COURSE_ID },
         update: {
           slug: COURSE_SLUG,
-          title: "The Fohlio Domain for Engineers",
-          subtitle: "Who our customers are, how they work, and their jobs-to-be-done",
-          description:
-            "A 10-lesson course for Fohlio engineers on the FF&E business domain we build for. Follows one specifier across three client segments (Marriott, the Church of Jesus Christ, and a small boutique inn) through the full project lifecycle — intent, spec, budget, procurement, sync, delivery, and handover.",
+          title: COURSE_TITLE,
+          subtitle: COURSE_SUBTITLE,
+          description: COURSE_DESCRIPTION,
           status: "published",
           ownerId: admin.id,
         },
         create: {
           id: COURSE_ID,
           slug: COURSE_SLUG,
-          title: "The Fohlio Domain for Engineers",
-          subtitle: "Who our customers are, how they work, and their jobs-to-be-done",
-          description:
-            "A 10-lesson course for Fohlio engineers on the FF&E business domain we build for. Follows one specifier across three client segments (Marriott, the Church of Jesus Christ, and a small boutique inn) through the full project lifecycle — intent, spec, budget, procurement, sync, delivery, and handover.",
+          title: COURSE_TITLE,
+          subtitle: COURSE_SUBTITLE,
+          description: COURSE_DESCRIPTION,
           status: "published",
           ownerId: admin.id,
         },
       });
+
+      // Full reset: remove every existing lesson for this course (homework cascades via
+      // onDelete: Cascade). Lesson ids are deterministic and re-created below; the rewrite
+      // changed which slug sits at which position, so a clean wipe avoids id/slug collisions.
+      // TaskSubmission rows are not FK-linked to lessons/tasks, so they are unaffected.
+      await tx.lesson.deleteMany({ where: { courseId: COURSE_ID } });
 
       for (const lesson of LESSONS) {
         const contentHtml = await readFile(

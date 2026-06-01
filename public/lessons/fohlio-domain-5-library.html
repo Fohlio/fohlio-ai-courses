@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 5</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 5 of 14</div>
+        <h1>The Library and the Takeoff</h1>
+        <div class="subtitle">Chapter 5. Why firms that start from scratch every project are paying a tax on their own memory</div>
+    </div>
+
+    <!-- HOOK: scene anchor in first 200 words -->
+    <p>Helen pulls up the FF&amp;E schedule for the studio&rsquo;s newest project &mdash; a 180-room select-service hotel, brand-new client &mdash; and clicks to the guestroom nightstand row. The cell is empty. She opens the shared drive. Eight folders in, she finds a spec sheet from a project two years ago. Same manufacturer, same finish, probably the same item. Maybe. The contact name on the file is someone who left the firm.</p>
+
+    <p>She sends the file to Priya with a sticky note: &ldquo;Use this as a starting point. Verify the lead time with the rep &mdash; it may have changed.&rdquo;</p>
+
+    <p>Priya stares at the email. Verify the lead time. With which rep? The spec sheet lists no rep. It lists a manufacturer and a model number and a finish code. The price is from 2022.</p>
+
+    <p>This is the moment that costs firms time, money, and accuracy on every single project. Not because the information doesn&rsquo;t exist &mdash; it does, somewhere &mdash; but because it lives in spreadsheets, email threads, shared drives, and people&rsquo;s heads, and half of those people have left the firm. The library is the attempt to solve this problem. The takeoff is the other half of the job: once you know <em>what</em> to specify, you still have to count exactly <em>how many</em> go into the building.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>Why firms maintain a <strong>product library</strong> &mdash; and what goes wrong when they don&rsquo;t</li>
+            <li>The difference between a <strong>product line / family</strong> and a specific <strong>variant or option</strong> within it</li>
+            <li>What a <strong>bill of materials (BOM)</strong> is and why it matters for a custom bed package</li>
+            <li>How the <strong>quantity takeoff</strong> works: counting items per room type and rolling quantities up across a full building</li>
+            <li>Why tiles are bought by the <strong>box</strong>, not by the piece &mdash; and what <strong>overage / wastage %</strong> adds to an order</li>
+            <li>Why <strong>OS&amp;E</strong> has &ldquo;vastly more SKUs, never ends,&rdquo; and what that phrase means in practice</li>
+        </ul>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- RECAP GRID -->
+    <!-- ============================================ -->
+
+    <h3>Quick recall &mdash; before we continue</h3>
+    <p>Three prompts. Answer from memory before reading further.</p>
+
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L1 &mdash; OS&amp;E vs. FF&amp;E</strong><br>
+            What makes OS&amp;E &ldquo;operating supplies&rdquo; rather than FF&amp;E? Give one example of each. Which one has vastly more individual items?
+        </div>
+        <div class="recap-item">
+            <strong>L2 &mdash; The purchasing agent&rsquo;s job</strong><br>
+            Name two things Marco does that Dana does not &mdash; specifically related to quantities and ordering, not design choices.
+        </div>
+        <div class="recap-item">
+            <strong>L3 &mdash; Why procurement runs parallel</strong><br>
+            Why can&rsquo;t the purchasing agent wait for construction to finish before placing orders? What is the specific timing constraint?
+        </div>
+        <div class="recap-item">
+            <strong>L4 &mdash; The five spec fields</strong><br>
+            Without looking back: name four of the five fields a moodboard image lacks that a spec line must have.
+        </div>
+        <div class="recap-item" style="background: var(--blue-light); border-left-color: var(--blue);">
+            <strong style="color: var(--blue);">Today &mdash; L5</strong><br>
+            A 200-room hotel has 12 room types. Each type needs 6 items. How many individual spec lines does the takeoff produce? (Rough math &mdash; say it before reading on.)
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. The problem with starting from scratch</h2>
+
+    <p>Helen has been running her studio for fourteen years. In that time, the studio has specified roughly the same set of guestroom nightstand families on twelve projects. Bernhardt, Kimball, one custom millwork shop in North Carolina. Each time, someone has built a spec sheet from scratch &mdash; called the rep, confirmed dimensions, updated the price, typed the lead time into a cell. Each project, four or five hours of work for an item the studio knows well.</p>
+
+    <p>Twelve projects. Fourteen years. The studio has rebuilt the same nightstand spec from scratch twelve times.</p>
+
+    <p>This is not an unusual studio. This is standard practice at most firms. The industry is aware of it, and it is one of the most commonly cited sources of wasted time in the FF&amp;E business [1]:</p>
+
+    <div class="info-box orange">
+        <p><strong>The root problem:</strong> product knowledge lives in scattered spreadsheets, PDFs, email threads, and people&rsquo;s heads. When someone leaves, a piece of the library leaves with them. When a vendor changes a lead time, nobody knows how many open specs are now wrong. Each new project starts from the same blank page, burning hours on work that was done &mdash; and then discarded &mdash; on the last project.</p>
+    </div>
+
+    <p>The solution the industry has developed &mdash; informally for decades, and now in dedicated tools &mdash; is a <strong>product library</strong>: a firm&rsquo;s private, maintained collection of product knowledge that grows from real project work and can be reused on the next one. The nightstand spec you built on the Tucson hotel becomes the starting point for the Denver hotel. Updated once, it stays accurate for everyone.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before you continue</div>
+        <div class="recall-question">Imagine you are building a product library for a design studio. You want to store everything relevant about a lounge chair your studio specifies often. What categories of information would you need to capture? List as many as you can think of before reading Part 2. (Hint: think back to the five spec-line fields from Lesson 4, then think broader.)</div>
+        <div class="recall-hint">Go beyond the five fields. What else would a purchasing agent want to know? What would a new designer need to find in a record without calling the old rep?</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. What a product library actually contains</h2>
+
+    <p>A product library is not a folder of PDFs. It is a structured collection of records, and the structure matters because unstructured knowledge &mdash; the kind in folders and email threads &mdash; is the problem the library is meant to solve.</p>
+
+    <p>The basic building block is a <strong>product line</strong> (sometimes called a &ldquo;family&rdquo;): a product as a designer thinks of it. Not every possible option &mdash; just the core concept. &ldquo;Bernhardt Stratum Lounge Chair&rdquo; is a family. Within that family sit specific <strong>variants or options</strong>: the Stratum in Grade 2 fabric (Slate), the Stratum in Grade 3 leather (Cognac), the Stratum in COM. Each is a distinct purchasable item with its own finish, lead time, and price.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Product library hierarchy: family at top, variants beneath, materials and sources attached">
+            <rect x="0" y="0" width="760" height="260" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="34" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">How a library record is structured</text>
+
+            <!-- Family -->
+            <rect x="240" y="52" width="280" height="44" rx="10" fill="#E8EDFF" stroke="#3451B2" stroke-width="2"/>
+            <text x="380" y="70" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">FAMILY (product line)</text>
+            <text x="380" y="87" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">e.g. &ldquo;Bernhardt Stratum Lounge Chair&rdquo;</text>
+
+            <!-- Down arrows -->
+            <line x1="300" y1="96" x2="170" y2="130" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="380" y1="96" x2="380" y2="130" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr)"/>
+            <line x1="460" y1="96" x2="590" y2="130" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr)"/>
+
+            <!-- Variants -->
+            <rect x="68" y="130" width="202" height="46" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="169" y="149" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">VARIANT / OPTION</text>
+            <text x="169" y="167" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#6B7280">Size A, Grade 2 fabric, Slate</text>
+
+            <rect x="278" y="130" width="202" height="46" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="379" y="149" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">VARIANT / OPTION</text>
+            <text x="379" y="167" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#6B7280">Size B, Grade 3 leather, Cognac</text>
+
+            <rect x="488" y="130" width="202" height="46" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="589" y="149" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">VARIANT / OPTION</text>
+            <text x="589" y="167" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#6B7280">COM (designer&rsquo;s own fabric)</text>
+
+            <!-- Below boxes -->
+            <line x1="169" y1="176" x2="169" y2="210" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="4"/>
+            <line x1="379" y1="176" x2="379" y2="210" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="4"/>
+            <line x1="589" y1="176" x2="589" y2="210" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="4"/>
+
+            <text x="169" y="224" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#9CA3AF">sources, SKUs, prices</text>
+            <text x="379" y="224" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#9CA3AF">lead times, fire ratings</text>
+            <text x="589" y="224" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#9CA3AF">materials used, BOM parts</text>
+
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M0,0 L0,8 L8,4 z" fill="#9CA3AF"/>
+                </marker>
+            </defs>
+        </svg>
+        <div class="diagram-caption">Family = the product concept. Variants = the specific purchasable options. Each variant carries its own pricing, lead times, and material links.</div>
+    </div>
+
+    <h3>Materials: the components a product is made of</h3>
+
+    <p>A library record also tracks the <strong>materials</strong> a product uses. This matters for two reasons.</p>
+
+    <p>First, materials change. If a leather grade is discontinued, a designer who has used it on three projects in the past two years needs to know which chairs, in which rooms, on which active projects, are affected &mdash; not just the one they are currently specifying. A library that links materials to the products using them makes that question answerable in minutes. Without it, someone has to search every old spec sheet by hand.</p>
+
+    <p>Second, <strong>COM (Customer&rsquo;s Own Material)</strong> configurations &mdash; where the designer specifies the manufacturer&rsquo;s frame but supplies a separate fabric or leather &mdash; require coordination between two supply chains simultaneously. The library holds both the frame spec and the material spec so neither side gets lost in a separate folder [2].</p>
+
+    <h3>Parts and BOM: what a product is made of</h3>
+
+    <p>Some FF&amp;E items are not a single object. A <strong>custom bed package</strong> &mdash; standard in hospitality &mdash; consists of a frame, a mattress, a mattress topper, and a headboard. Four separate items, each with its own vendor, lead time, and fire-rating certificate. They arrive separately and are assembled on site. The <strong>bill of materials (BOM)</strong> lists these components and their quantities so the purchasing agent knows to track four POs, not one, and so the receiving team knows what should arrive from four different trucks before that bed can be checked off [3].</p>
+
+    <div class="info-box blue">
+        <p><strong>Why the BOM matters in practice:</strong> if the mattress topper arrives damaged and no one tracks it as a separate line, the receiving team may sign off on &ldquo;the bed&rdquo; as received &mdash; and find out on install day that the topper is missing. In a hotel with 200 beds, that is 200 separate receiving checks, not 200 &ldquo;beds.&rdquo; The BOM is what creates that granularity.</p>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6CF;</div>
+        Helen, reviewing a spec for a custom bed package with Priya: &ldquo;Where is the mattress topper on this receiving checklist?&rdquo;<br>
+        Priya: &ldquo;It&rsquo;s part of the bed.&rdquo;<br>
+        Helen: &ldquo;Is it on a separate truck from a separate factory?&rdquo;<br>
+        Priya: &ldquo;Yes.&rdquo;<br>
+        Helen: &ldquo;Then it&rsquo;s not &lsquo;part of the bed.&rsquo; It&rsquo;s a line item.&rdquo;<br>
+        <em>A bed that arrives in four pieces from four vendors requires four lines in the receiving report, or one of them gets lost in the gap &mdash; and the whole package fails inspection. The BOM is not bureaucracy. It is the map.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The takeoff &mdash; counting the building</h2>
+
+    <p>The library tells you <em>what</em> to specify. The takeoff tells you <em>how many</em>.</p>
+
+    <p>A <strong>quantity takeoff</strong> (in FF&amp;E, often just called the &ldquo;takeoff&rdquo;) is the systematic process of counting how many of each item type go in each room type across the whole building, and rolling those counts up to a total order quantity [3]. It is the work that separates &ldquo;we need lounge chairs&rdquo; from &ldquo;we need 180 lounge chairs, in three different finish variants, distributed across six room types, to arrive in two phases.&rdquo;</p>
+
+    <p>In Lesson 3 we followed one chair through all phases of a project. The takeoff is the moment when that one chair becomes a specific number, tied to a specific room, with a specific total that Marco will turn into purchase orders [2].</p>
+
+    <h3>How the math works: room types roll up</h3>
+
+    <p>A real hotel does not have 200 identical rooms. It has room <em>types</em>: Standard King, Standard Queen, Studio Suite, Corner Suite, and so on. Each type has its own furniture plan. The takeoff starts at the room-type level and multiplies up to the building total.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quantity takeoff: room types multiply up to building total">
+            <rect x="0" y="0" width="760" height="280" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="32" text-anchor="middle" font-family="Inter" font-weight="700" font-size="15" fill="#374151">Takeoff: quantities roll up the building</text>
+
+            <!-- Room type boxes -->
+            <rect x="20" y="52" width="200" height="90" rx="8" fill="#E6F9F0" stroke="#1A8F5C" stroke-width="1.5"/>
+            <text x="120" y="76" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#1A8F5C">Standard King Room</text>
+            <text x="120" y="96" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">120 rooms &times; 1 nightstand = 120</text>
+            <text x="120" y="114" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">120 rooms &times; 2 lounge chairs = 240</text>
+            <text x="120" y="132" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">120 rooms &times; 1 desk = 120</text>
+
+            <rect x="280" y="52" width="200" height="90" rx="8" fill="#E8EDFF" stroke="#3451B2" stroke-width="1.5"/>
+            <text x="380" y="76" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#3451B2">Standard Queen Room</text>
+            <text x="380" y="96" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">50 rooms &times; 2 nightstands = 100</text>
+            <text x="380" y="114" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">50 rooms &times; 1 lounge chair = 50</text>
+            <text x="380" y="132" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">50 rooms &times; 1 desk = 50</text>
+
+            <rect x="540" y="52" width="200" height="90" rx="8" fill="#FFF3E5" stroke="#E8790C" stroke-width="1.5"/>
+            <text x="640" y="76" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#E8790C">Corner Suite</text>
+            <text x="640" y="96" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">30 rooms &times; 2 nightstands = 60</text>
+            <text x="640" y="114" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">30 rooms &times; 4 lounge chairs = 120</text>
+            <text x="640" y="132" text-anchor="middle" font-family="Inter" font-size="11" fill="#374151">30 rooms &times; 2 desks = 60</text>
+
+            <!-- Arrow lines down -->
+            <line x1="120" y1="142" x2="280" y2="188" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="380" y1="142" x2="380" y2="188" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr2)"/>
+            <line x1="640" y1="142" x2="480" y2="188" stroke="#9CA3AF" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+            <!-- Total box -->
+            <rect x="228" y="188" width="304" height="68" rx="10" fill="#3451B2"/>
+            <text x="380" y="212" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="white">BUILDING TOTAL (FF&amp;E Schedule)</text>
+            <text x="380" y="232" text-anchor="middle" font-family="Inter" font-size="11.5" fill="#C5D0F6">Nightstands: 280 &nbsp;|&nbsp; Lounge chairs: 410 &nbsp;|&nbsp; Desks: 230</text>
+            <text x="380" y="249" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#8FA8EF">(+ overage % added before ordering)</text>
+
+            <!-- Arrow marker -->
+            <defs>
+                <marker id="arr2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M0,0 L0,8 L8,4 z" fill="#9CA3AF"/>
+                </marker>
+            </defs>
+        </svg>
+        <div class="diagram-caption">Each room type has a furniture plan; multiplying by room count gives the type subtotal; all subtotals sum to the building order quantity.</div>
+    </div>
+
+    <h3>Packing and overage: the math the spec sheet doesn&rsquo;t cover</h3>
+
+    <p>Once you have a raw quantity, two adjustments always happen before the order is placed.</p>
+
+    <p>First, <strong>packing</strong>. Some items are sold by the unit. Others are sold by the box, case, or pallet. A tile specification will list a coverage per box (say, 10 square feet per box). If a project needs 3,400 square feet, the order is not &ldquo;3,400 tiles&rdquo; &mdash; it is &ldquo;340 boxes.&rdquo; And because you cannot order a fraction of a box, you round up. Every purchasing agent deals with this daily [3].</p>
+
+    <p>Second, <strong>overage (also called wastage or attrition percentage)</strong>. For any material that gets cut, trimmed, or installed (tile, carpet, wallcovering), a buffer is added &mdash; typically 10&ndash;25% &mdash; to account for cuts at edges, damaged pieces, and pattern matching. On a 3,400-square-foot tile order with 15% overage, the order becomes 3,910 square feet &mdash; rounded up to 392 boxes [3].</p>
+
+    <p>For upholstered items, the attrition logic is different: it is not wastage in installation, but rather a small buffer of extra units held in reserve for damage on delivery or punch-list replacements. A project ordering 180 lounge chairs might add 3&ndash;5 extra to account for pieces damaged in transit that need replacing before the opening date.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Calculate before continuing</div>
+        <div class="recall-question">A guest bathroom needs 420 square feet of wall tile. The tile comes in boxes of 12 square feet each. The project carries a 20% overage. (a) What is the adjusted square footage after overage? (b) How many boxes must you order? (c) If the purchasing agent orders exactly the raw quantity (35 boxes, no overage), what risk does the hotel take?</div>
+        <div class="recall-hint">(a) 420 &times; 1.20 = 504 sq ft; (b) 504 &divide; 12 = 42 boxes; (c) if a tile batch is damaged or miscut, there is no buffer &mdash; a second order from the same dye lot may be impossible, forcing a substitute finish.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. The library grows from real work</h2>
+
+    <p>The elegant part of how product libraries work in practice is that they compound. A library that starts empty gets richer with every project that uses it.</p>
+
+    <p>When Priya builds a new nightstand spec &mdash; researching the vendor, confirming dimensions, getting the current trade price and lead time &mdash; that work does not have to vanish into a project folder when the hotel opens. It can be promoted back into the studio&rsquo;s library as a verified, ready-to-use record. The next project that needs a similar nightstand starts not from a blank row but from a pre-filled record with a known vendor, known lead time, and a price that just needs a current-year check.</p>
+
+    <p>Helen has been thinking about this for years. The studio&rsquo;s institutional knowledge &mdash; the vendors who deliver reliably, the manufacturers whose lead times are accurate, the finish grades that hold up in high-traffic environments &mdash; used to leave the door when people left the firm. A structured library is the attempt to make that knowledge durable.</p>
+
+    <div class="pull-quote">
+        A library that grows from real project work is worth more than any amount of product research done on a blank slate. The question is whether you have a place to put it.
+    </div>
+
+    <p>In practice, most firms today still rely on shared drives and email chains &mdash; the &ldquo;scattered spreadsheets, PDFs, and people&rsquo;s heads&rdquo; that the industry acknowledges as the incumbent approach [1]. The practical switch point, as the industry has benchmarked it, is around 100 items or three concurrent projects: below that, a shared folder works; above it, the version-control and search problems start costing real time [1]. Tools that manage reusable spec libraries &mdash; whether Fohlio, Programa, Studio Designer, or a well-structured Airtable &mdash; are all trying to solve the same organizational pain.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. OS&amp;E &mdash; vastly more SKUs, never ends</h2>
+
+    <p>Everything we have discussed about the takeoff and the library applies to FF&amp;E &mdash; the durable furnishings. But there is a second track running alongside it that is larger in item count, faster in cadence, and never truly complete: <strong>OS&amp;E</strong>.</p>
+
+    <p>Recall from Lesson 1: OS&amp;E (Operating Supplies &amp; Equipment) is the consumable, operational layer &mdash; towels, linens, glassware, tableware, guest amenities, uniforms, cleaning supplies. It is an operating expense, not a capital asset. And the phrase &ldquo;vastly more SKUs, never ends&rdquo; is worth unpacking, because both parts are literally true [4].</p>
+
+    <p><strong>Vastly more SKUs:</strong> a 200-room hotel&rsquo;s FF&amp;E specification might run 2,000 line items. Its OS&amp;E opening order might run 8,000&ndash;15,000 SKUs. The bathroom alone has a dozen consumable categories: toilet tissue (multiple ply grades), facial tissue, soap bars, shampoo, conditioner, body lotion, shower caps, sewing kits, shoe mitts, dental kits, bath salts, cotton rounds. Each has a primary product, a backup SKU, a par level, and a reorder quantity. Multiply by 200 rooms, two restaurants, a fitness center, and a spa.</p>
+
+    <p><strong>Never ends:</strong> FF&amp;E refreshes every 7&ndash;10 years. OS&amp;E replenishes continuously. The towels wear out. The glassware breaks. Guest amenities are restocked weekly. A hotel&rsquo;s OS&amp;E program is not a project with a finish date; it is a permanent operations process with its own budget line, its own vendor relationships, and its own buyer. On large projects, the same purchasing agent who procures the FF&amp;E also handles the opening OS&amp;E order &mdash; which means the takeoff Helen is managing for furniture is running simultaneously with an even larger inventory exercise for supplies [4].</p>
+
+    <div class="info-box orange">
+        <p><strong>Why this matters for the GTM team:</strong> when a prospect says &ldquo;we handle OS&amp;E in-house,&rdquo; they are describing a permanent, ongoing procurement operation that never closes. The sales conversation about OS&amp;E is a different conversation than the one about an FF&amp;E renovation project &mdash; and the volume of data involved is an order of magnitude larger.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Reusable knowledge in practice</h2>
+
+    <p>Helen finishes the takeoff for the nightstand. 280 units total across three room types. Two finish variants: walnut veneer for Standard Kings and Queens, lacquered white for Corner Suites. Both variants are from Kimball Hospitality. Lead time confirmed: 12 weeks for the walnut, 14 for the lacquer (the lacquer curing process takes longer).</p>
+
+    <p>She saves the updated record to the studio&rsquo;s library: the family, both variants, the two sources (Kimball direct and the regional dealer), the current trade price, the lead times, and a note that the lacquer variant requires a 14-week buffer. The next designer who opens a hotel project and searches for a nightstand will find this record, verified in 2026, with a contact name that still works at Kimball.</p>
+
+    <p>The library is not a product catalog. It is the studio&rsquo;s accumulated judgment about which products have been specced, what they cost, how long they take, and who to call. It is a form of institutional memory that, if maintained, compounds in value every year the firm is in business.</p>
+
+    <p>This is the principle behind dedicated spec library tools &mdash; whether a studio uses Fohlio, Programa, Studio Designer, or a carefully maintained Airtable. The tool does not create the knowledge; the projects do. The tool&rsquo;s job is to make sure the knowledge does not disappear when the project ends [5].</p>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DA;</div>
+            <div class="layer-name" style="color: var(--blue);">The library solves memory</div>
+            <div class="layer-desc">Product knowledge that lives in PDFs and email threads disappears when people leave. A structured library makes it durable and reusable.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4C2;</div>
+            <div class="layer-name" style="color: var(--orange);">Family &rarr; variant &rarr; details</div>
+            <div class="layer-desc">A product family is the concept; a variant is the specific purchasable option. Materials, BOM parts, sources, and lead times attach to the variant.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F522;</div>
+            <div class="layer-name" style="color: var(--green);">Takeoff = counting the building</div>
+            <div class="layer-desc">Room type &times; count per type = type subtotal. Sum all subtotals = building total. Add overage %. Round up to packing unit. Now you can order.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F9FE;</div>
+            <div class="layer-name" style="color: var(--purple);">BOM: a product in parts</div>
+            <div class="layer-desc">A custom bed = frame + mattress + topper + headboard. Four receiving checks, four POs, four lead times. The BOM is the map.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x267E;</div>
+            <div class="layer-name" style="color: var(--red);">OS&amp;E never ends</div>
+            <div class="layer-desc">8,000&ndash;15,000+ SKUs at opening; continuous replenishment forever. Not a project &mdash; a permanent operation with its own buyers and budgets.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 6:</strong> Helen&rsquo;s library has one complication she can&rsquo;t design around: Linda. When a hotel operates under a brand flag like Marriott or Hilton, the brand&rsquo;s standards don&rsquo;t just suggest finishes &mdash; they mandate them, audit them on 80&ndash;120 checkpoints, and issue a Property Improvement Plan when they&rsquo;re not met. Next chapter: how brand standards work, what a PIP actually is, and why multi-property consistency is both the hardest and most expensive problem in hospitality FF&amp;E.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 45 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Build a mini-takeoff.</strong> You are the purchasing agent for a 90-room select-service hotel with two room types: Standard King (60 rooms, 1 desk + 1 lounge chair + 2 nightstands each) and Standard Double (30 rooms, 1 desk + 0 lounge chairs + 2 nightstands each). (a) Do the room-type math and arrive at the building totals for desks, lounge chairs, and nightstands. (b) Apply a 5% overage buffer to all items (round up to the nearest whole unit). (c) Nightstands come in cases of 4. How many cases must you order? (d) In one sentence, explain why overage matters on a hotel with a fixed opening date.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Desks: 60+30=90; Lounge chairs: 60&times;1+30&times;0=60; Nightstands: 60&times;2+30&times;2=180. (b) With 5% overage: Desks: 90&times;1.05=94.5&rarr;95; Lounge chairs: 60&times;1.05=63; Nightstands: 180&times;1.05=189. (c) 189 nightstands &divide; 4 per case = 47.25 &rarr; 48 cases (always round up; partial cases are not available). (d) If a piece is damaged on delivery or punch-listed as defective, there is no time to place a new order and wait for lead time &mdash; the buffer units allow the hotel to open on schedule while the replacement is processed.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Cumulative self-check: trace the journey.</strong> Without referring back to any lesson, answer these four questions as a chain: (a) From Lesson 1 &mdash; give the &ldquo;shake the building&rdquo; test in one sentence and name one thing FF&amp;E and one thing OS&amp;E. (b) From Lesson 3 &mdash; why does the purchasing agent have to place orders before construction is complete? (c) From Lesson 4 &mdash; name three of the five fields a moodboard image lacks that a spec line must have. (d) From this lesson &mdash; explain in your own words why a product library compounds in value over time.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Shake the building and turn it upside down: everything that falls out is FF&amp;E. Example FF&amp;E: a lounge chair (durable, movable, capital asset). Example OS&amp;E: a bath towel (consumable, operating expense). (b) Lead times for custom furniture run 18&ndash;26+ weeks (some items 6&ndash;12 months), while a construction project is still ongoing. If you wait for the building to be complete before ordering, the furniture will not arrive until months after the planned opening date. (c) Any three of: manufacturer/model number; exact finish code/grade; confirmed dimensions and ADA clearances; trade price and approved source; lead time from PO to delivery. (d) The library compounds because every project that uses it produces verified, current product records that can be reused on the next project. The more projects pass through it, the more records it contains, the faster future projects can start, and the more institutional knowledge is preserved when staff turn over.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>The knowledge-in-people-heads problem (AI-resilient).</strong> Talk to someone in your company &mdash; in any department &mdash; who has been there at least three years. Ask them: &ldquo;What key knowledge does only <em>you</em> have, that would be hard to reconstruct if you left?&rdquo; Take notes. Then compare their answer to what this lesson says about product knowledge leaving the firm with people. In what ways is your company&rsquo;s &ldquo;institutional memory problem&rdquo; the same as the FF&amp;E library problem? In what ways is it different? Write 3&ndash;4 sentences.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why two tracks, not one?</strong> A hotel project runs FF&amp;E and OS&amp;E procurement in parallel, managed by separate buyers, with separate schedules, despite both ending up in the same building at the same time. Why does the industry run these as two separate tracks rather than one unified procurement process? Think through at least three reasons &mdash; consider lead time cadences, vendor types, budget classification, and the &ldquo;never ends&rdquo; nature of OS&amp;E. Explain why the obvious simplification (one list, one buyer) would actually create more problems than it solves.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li>
+                Programa. &ldquo;How to Choose FF&amp;E Specification Software.&rdquo; <a href="https://programa.design/how-to-choose-ffe-specification-software">programa.design/how-to-choose-ffe-specification-software</a>. &nbsp;|&nbsp; Procurist. &ldquo;FF&amp;E Schedules: The Complete Guide.&rdquo; <a href="https://procurist.io/resources/ffe-schedules">procurist.io/resources/ffe-schedules</a>.
+                <div class="src-meta">Knowledge-in-spreadsheets problem; practical switch point (&sim;100 items / 3+ concurrent projects); Excel version-control failure modes; client-facing quote on &ldquo;Excel gibberish&rdquo; &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                DataDrivenAEC. &ldquo;FF&amp;E Specification for Hospitality Projects.&rdquo; <a href="https://datadrivenaec.com/insights/ffe-specification-hospitality-projects">datadrivenaec.com</a>.
+                <div class="src-meta">COM (Customer&rsquo;s Own Material) coordination; library records growing from project work; procurement running parallel to construction &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                ConstructConnect. &ldquo;What is a Material Takeoff?&rdquo; <a href="https://www.constructconnect.com/blog/material-takeoff">constructconnect.com/blog/material-takeoff</a>. &nbsp;|&nbsp; Beyer Brown. &ldquo;FF&amp;E Procurement Comprehensive Guide.&rdquo; <a href="https://www.beyerbrown.com/ffe-procurement-comprehensive-guide">beyerbrown.com/ffe-procurement-comprehensive-guide</a>.
+                <div class="src-meta">Takeoff definition (systematically counting quantities from drawings/specs); BOM (bill of materials) as the takeoff output; packing/buy-by-the-box logic; overage/wastage %; receiving verification against BOM &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Beyer Brown. &ldquo;FF&amp;E vs OS&amp;E.&rdquo; <a href="https://www.beyerbrown.com/ffe-procurement-comprehensive-guide">beyerbrown.com</a>. &nbsp;|&nbsp; Occa Design. &ldquo;FF&amp;E and OS&amp;E Explained.&rdquo; <a href="https://occa-design.com/blog/ffe-and-ose-explained">occa-design.com/blog/ffe-and-ose-explained</a>.
+                <div class="src-meta">OS&amp;E = consumable/operational; &ldquo;vastly more SKUs&rdquo; than FF&amp;E; continuous replenishment (never ends); OS&amp;E starts 3&ndash;6 months before opening; same purchasing agent often handles both tracks &middot; accessed 2026-06</div>
+            </li>
+            <li>
+                Fohlio SpecHub. Platform Glossary &amp; Catalog System overview (internal reference for the thin Fohlio overlay, Lesson 5 only).
+                <div class="src-meta">Reusable product library concept: family/variant structure, materials tab, BOM/parts links, sources with lead times &mdash; used as the basis for the &ldquo;one aside&rdquo; framing in Part 6 only; not cited for industry facts &middot; 2026</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] point to the entry with that number above. Helen, Priya, Marco, Dana and the rest are composite illustrations, not real people; Kimball Hospitality, Bernhardt Contract, and other named firms are real and used as industry archetypes. All quantity-takeoff examples are illustrative; real project quantities vary. The &ldquo;library tools&rdquo; aside names Fohlio, Programa, and Studio Designer as examples of a tool category &mdash; not a product endorsement.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 5 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Brand Standards and the PIP Machine</p>
+    </div>
+
+</div>
+
+</body>
+</html>

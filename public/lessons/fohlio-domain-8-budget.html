@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 8</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 8 of 14</div>
+        <h1>The Budget That Quietly Grows</h1>
+        <div class="subtitle">Chapter 8. The owner's rep sees a number she doesn't recognize</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Sam is the owner's representative on this project &mdash; she is the person the investor hired to make sure nothing goes sideways without someone accountable catching it. She has been in this role for eleven years. She can read a budget the way a doctor reads an X-ray: at a glance, something is wrong.</p>
+
+    <p>The wrong thing is this: the FF&amp;E budget on slide four shows $1,240,000. The number Marco brought to the kickoff meeting three months ago was $980,000. No scope was added. No decisions changed. Nothing new was specified. And yet the budget grew by $260,000 while everyone was looking at other things.</p>
+
+    <p>Sam calls Marco. Marco does not panic. He has seen this before, in every project he has ever worked on. &ldquo;The number on slide one was always the bare product price,&rdquo; he says. &ldquo;This is what it actually costs to get the furniture into the building.&rdquo;</p>
+
+    <p>That gap &mdash; between what a product costs on a price sheet and what it costs standing in a room &mdash; is what this chapter is about.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>How an FF&amp;E budget is built from the <strong>per-key number</strong> and what the categories are</li>
+            <li>The difference between <strong>hard costs</strong> and <strong>soft costs</strong> &mdash; and why soft costs are never actually soft</li>
+            <li>The full <strong>landed-cost stack</strong> and why it adds 15&ndash;35% on top of the bare product price</li>
+            <li>The four states a budget line lives in &mdash; <strong>spec, quoted, approved, actual</strong> &mdash; and why actual almost always ends up above spec</li>
+            <li>How <strong>contingency</strong>, <strong>value engineering</strong>, <strong>deposits</strong>, and <strong>payment terms</strong> work in practice</li>
+            <li>Why <strong>tariffs and freight</strong> are live budget risks and where to re-verify the current numbers</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3 style="color: var(--gray-500); font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0;">Where we are</h3>
+    <div class="recap-grid">
+        <div class="recap-item"><strong>Lesson 1:</strong> FF&amp;E vs OS&amp;E; &ldquo;shake the building&rdquo;; $60B market; the spec as a living schedule &mdash; not a document.</div>
+        <div class="recap-item"><strong>Lesson 3:</strong> One chair&rsquo;s journey through all six phases; procurement runs <em>parallel</em> to construction; 16&ndash;26+ week timeline.</div>
+        <div class="recap-item"><strong>Lesson 5:</strong> The takeoff: counting items per room type across the full building to get a real quantity before pricing anything.</div>
+        <div class="recap-item"><strong>Lesson 7:</strong> Retail vs trade price (20&ndash;60% below retail); how designers and purchasing firms earn; the rep&rsquo;s 5&ndash;15% commission from the maker. Three prices for the same chair.</div>
+        <div class="recap-item" style="background: var(--blue-light); border-left: 3px solid var(--blue);"><strong>Lesson 8 (today):</strong> Where that number goes from &ldquo;three prices for a chair&rdquo; to a full budget &mdash; and why it keeps growing.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. How a budget starts: the per-key number</h2>
+
+    <p>Before a single item is specified, before Dana has drawn a moodboard, before anyone has called a vendor, the owner needs a number. The whole industry converges on one primary metric to produce it: <strong>FF&amp;E cost per key</strong> &mdash; cost per guest room [1].</p>
+
+    <p>The per-key number gives the owner a sanity check against comparable projects and lets the design team know whether they are working on a $12,000-per-room budget or a $45,000-per-room budget before they fall in love with any particular chair. It is built from historical benchmarks &mdash; what similar properties have actually spent &mdash; not from a wish list.</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="FF&amp;E cost per room by hotel tier, economy to luxury">
+            <rect x="0" y="0" width="760" height="220" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">FF&amp;E cost per key (guest room) by hotel tier</text>
+
+            <!-- Economy bar -->
+            <rect x="40" y="50" width="80" height="120" rx="6" fill="#E8EDFF" stroke="#C5D0F6" stroke-width="1.5"/>
+            <text x="80" y="45" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="#3451B2">Economy</text>
+            <text x="80" y="190" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">$4k&ndash;$8k</text>
+
+            <!-- Midscale bar -->
+            <rect x="152" y="30" width="80" height="140" rx="6" fill="#FFF3E5" stroke="#FBBF77" stroke-width="1.5"/>
+            <text x="192" y="25" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="#E8790C">Midscale</text>
+            <text x="192" y="190" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">$12k&ndash;$25k</text>
+
+            <!-- Upscale bar -->
+            <rect x="264" y="18" width="80" height="152" rx="6" fill="#EDE9FE" stroke="#C4B5FD" stroke-width="1.5"/>
+            <text x="304" y="13" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="#7C3AED">Upscale</text>
+            <text x="304" y="190" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">$25k&ndash;$45k</text>
+
+            <!-- Luxury bar -->
+            <rect x="376" y="8" width="80" height="162" rx="6" fill="#E6F9F0" stroke="#8AD9B4" stroke-width="1.5"/>
+            <text x="416" y="3" text-anchor="middle" font-family="Inter" font-size="11" font-weight="600" fill="#1A8F5C">Luxury</text>
+            <text x="416" y="190" text-anchor="middle" font-family="Inter" font-size="10" fill="#6B7280">$45k&ndash;$100k+</text>
+
+            <!-- Budget note box -->
+            <rect x="490" y="40" width="250" height="130" rx="10" fill="#FFFBEB" stroke="#FCD34D" stroke-width="1.5"/>
+            <text x="615" y="62" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="#D97706">Per-key covers guestrooms.</text>
+            <text x="615" y="82" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Public areas (lobby, F&amp;B,</text>
+            <text x="615" y="98" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">fitness, meeting rooms)</text>
+            <text x="615" y="114" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">add $5k&ndash;$15k+ per key</text>
+            <text x="615" y="130" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">on top of the guestroom</text>
+            <text x="615" y="148" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">number.</text>
+
+            <text x="380" y="210" text-anchor="middle" font-family="Inter" font-size="11" fill="#9CA3AF">Sources: HVS / DataDrivenAEC / Stroud Group. Numbers are benchmarks &mdash; actual projects vary by geography, brand standard, and customization level.</text>
+        </svg>
+        <div class="diagram-caption">The per-key ladder scales steeply. An extra &ldquo;one tier up&rdquo; decision can double the FF&amp;E budget of a 100-room hotel.</div>
+    </div>
+
+    <p>Once the per-key number is settled, the budget splits into categories: guestroom casegoods and soft goods, public-area seating and lighting, window treatments, artwork and mirrors, technology (TVs, minibars), and a separate bucket for OS&amp;E (the consumables from Lesson 1 &mdash; towels, glassware, amenities). Each category gets an allocation. The total is the project budget &mdash; and it is this number that Sam watches on every project call [2].</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">A 120-room upscale hotel. Using the per-key range from the diagram, what is the <strong>total FF&amp;E budget range</strong> for the guestrooms alone? Then add public areas at the midpoint of the public-area range. Write down two numbers before scrolling.</div>
+        <div class="recall-hint">Guestroom per-key: $25k&ndash;$45k &times; 120 keys. Public-area add: $10k/key equivalent &times; 120.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. Hard costs vs soft costs &mdash; and why the soft ones bite hardest</h2>
+
+    <p>An FF&amp;E budget has two layers. People often act as if only one of them is real.</p>
+
+    <p><strong>Hard costs</strong> are the items themselves: the furniture, the lighting fixtures, the casegoods, and the labor to install them. These are the rows on Dana&rsquo;s spec sheet &mdash; the things you can point to in a room. They are also the numbers that tend to appear on the early estimate, because they are the easiest to visualize [3].</p>
+
+    <p><strong>Soft costs</strong> are everything else required to get those items into the building: freight charges, import duties, warehousing, receiving, the design firm&rsquo;s fee, the purchasing agent&rsquo;s fee, permit costs, project management, and &mdash; critically &mdash; the contingency buffer. The word &ldquo;soft&rdquo; is misleading. These costs are not optional, they are not estimates, and they do not stay politely in the background. They are frequently the difference between a budget that holds and one that blows [3].</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--blue-light);">
+            <div class="card-icon">&#x1F6CB;</div>
+            <div class="card-title" style="color: var(--blue);">Hard costs</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">The items + install labor</div>
+            <div class="card-desc">Furniture, lighting, casegoods, artwork, window treatments, TVs, minibars; and the labor to physically install them in the building. These are the capital assets that will sit in the depreciation schedule for seven years.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F4C4;</div>
+            <div class="card-title" style="color: var(--orange);">Soft costs</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Everything that moves the items</div>
+            <div class="card-desc">Freight and shipping; import duties and customs brokerage; warehousing and receiving; the design firm&rsquo;s fee; the purchasing agent&rsquo;s fee; permits; project management; taxes; contingency. None of these appear on a spec sheet. All of them appear on the final invoice.</div>
+        </div>
+    </div>
+
+    <p>On a typical hospitality FF&amp;E project, soft costs account for <strong>20&ndash;30% of the total budget</strong> &mdash; sometimes more, depending on how far the goods travel and how custom the specifications are [3]. The ratio that Sam watches: logistics and installation alone run <strong>6&ndash;25% of FF&amp;E product spend</strong>, with hospitality and healthcare at the higher end because multi-floor staging and hard opening dates drive complexity up [4].</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F69A;</div>
+        Marco&rsquo;s internal rule: &ldquo;Never show an owner a bare product price without the soft costs in the same line of sight. If you do, the soft costs will be news at the worst possible moment &mdash; which is always right after the PO is signed.&rdquo;<br><br>
+        <em>Sam once received a &ldquo;final&rdquo; budget that listed furniture at $840,000. The actual invoice &mdash; with freight, warehousing, receiving, and install &mdash; came to $1,230,000. The gap was not a mistake. Nobody had ever put the soft costs in the deck.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. The landed-cost stack: from price sheet to the room</h2>
+
+    <p>The single most important number in FF&amp;E budgeting is not the price the manufacturer quotes. It is what the industry calls <strong>landed cost</strong>: everything required to get the product from the factory floor to the guest room. The difference between the two can be 15&ndash;35% on a domestic order and significantly more on an international one [3].</p>
+
+    <p>Marco walks Sam through the stack for a set of upholstered lounge chairs sourced from Vietnam:</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 760 390" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Landed-cost stack showing how each layer adds to the bare product price">
+            <rect x="0" y="0" width="760" height="390" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="380" y="26" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">The landed-cost stack (illustrative, Vietnam-sourced upholstered chair)</text>
+
+            <!-- Product (FOB) -->
+            <rect x="30" y="44" width="340" height="36" rx="6" fill="#3451B2"/>
+            <text x="208" y="67" text-anchor="middle" font-family="Inter" font-weight="700" font-size="13" fill="white">Product price (FOB factory)</text>
+            <text x="700" y="67" text-anchor="end" font-family="Inter" font-weight="700" font-size="13" fill="#3451B2">$100</text>
+
+            <!-- International freight -->
+            <rect x="30" y="88" width="360" height="36" rx="6" fill="#4F6BC8"/>
+            <text x="218" y="111" text-anchor="middle" font-family="Inter" font-size="12" fill="white">+ International ocean freight</text>
+            <text x="700" y="111" text-anchor="end" font-family="Inter" font-size="12" fill="#4F6BC8">+$8</text>
+
+            <!-- Insurance -->
+            <rect x="30" y="132" width="370" height="34" rx="6" fill="#6782D8"/>
+            <text x="223" y="154" text-anchor="middle" font-family="Inter" font-size="12" fill="white">+ Cargo insurance</text>
+            <text x="700" y="154" text-anchor="end" font-family="Inter" font-size="12" fill="#6782D8">+$1</text>
+
+            <!-- Import duties -->
+            <rect x="30" y="174" width="390" height="36" rx="6" fill="#DC2626"/>
+            <text x="238" y="197" text-anchor="middle" font-family="Inter" font-weight="600" font-size="12" fill="white">+ Import duties / tariffs (Vietnam baseline ~20%)</text>
+            <text x="700" y="197" text-anchor="end" font-family="Inter" font-weight="600" font-size="12" fill="#DC2626">+$20</text>
+
+            <!-- Customs brokerage -->
+            <rect x="30" y="218" width="400" height="34" rx="6" fill="#9B7FE8"/>
+            <text x="248" y="240" text-anchor="middle" font-family="Inter" font-size="12" fill="white">+ Customs brokerage + port fees</text>
+            <text x="700" y="240" text-anchor="end" font-family="Inter" font-size="12" fill="#9B7FE8">+$4</text>
+
+            <!-- Inland trucking -->
+            <rect x="30" y="260" width="410" height="34" rx="6" fill="#E8790C"/>
+            <text x="253" y="282" text-anchor="middle" font-family="Inter" font-size="12" fill="white">+ Inland trucking to warehouse</text>
+            <text x="700" y="282" text-anchor="end" font-family="Inter" font-size="12" fill="#E8790C">+$4</text>
+
+            <!-- Warehousing + receiving -->
+            <rect x="30" y="302" width="420" height="34" rx="6" fill="#1A8F5C"/>
+            <text x="258" y="324" text-anchor="middle" font-family="Inter" font-size="12" fill="white">+ Receiving inspection + warehousing</text>
+            <text x="700" y="324" text-anchor="end" font-family="Inter" font-size="12" fill="#1A8F5C">+$5</text>
+
+            <!-- Delivery + install -->
+            <rect x="30" y="344" width="430" height="34" rx="6" fill="#7C3AED"/>
+            <text x="263" y="366" text-anchor="middle" font-family="Inter" font-size="12" fill="white">+ White-glove delivery + installation</text>
+            <text x="700" y="366" text-anchor="end" font-family="Inter" font-weight="700" font-size="12" fill="#7C3AED">+$10</text>
+
+            <!-- Total callout -->
+            <text x="700" y="385" text-anchor="end" font-family="Inter" font-weight="800" font-size="14" fill="#374151">= $152 landed</text>
+
+            <text x="460" y="385" text-anchor="middle" font-family="Inter" font-size="11" fill="#DC2626" font-weight="600">+52% above FOB in this illustrative example</text>
+        </svg>
+        <div class="diagram-caption">Illustrative only &mdash; actual percentages vary by origin country, carrier rates, and current tariff rates. The tariff figure for Vietnam is especially volatile: re-verify at <a href="https://hts.usitc.gov" style="color: var(--blue);">hts.usitc.gov</a> and <a href="https://ustr.gov" style="color: var(--blue);">ustr.gov</a> before quoting.</div>
+    </div>
+
+    <p>The illustration is intentionally round-numbered. In practice, the exact percentages move with freight markets, duty classifications, and current tariff policy. The principle does not move: <strong>using the bare product price in an FF&amp;E budget without the landed-cost layers understates real project cost by 15&ndash;35% or more</strong> [3]. Early budgets built on price-sheet numbers alone set the owner up for a very unpleasant conversation with Sam.</p>
+
+    <div class="info-box red">
+        <p><strong>Tariff alert &mdash; these numbers are dated and volatile.</strong> As of mid-2026: Vietnam-origin furniture carries a baseline reciprocal tariff of ~20% (with transshipments reaching 40%); China-origin upholstered furniture faces stacked duties of ~30&ndash;35%+ (MFN base + Section 301 + potential Section 232 layers). Both figures can change by proclamation with little notice. <strong>Always re-verify at <a href="https://ustr.gov" style="color: var(--red);">ustr.gov</a> and <a href="https://hts.usitc.gov" style="color: var(--red);">hts.usitc.gov</a> before quoting or budgeting any imported goods.</strong> [5]</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. The four states of a budget line &mdash; why actual drifts above spec</h2>
+
+    <p>Every line item in an FF&amp;E budget moves through four states before the project closes. Understanding these four states is how Sam reads a budget the way a doctor reads an X-ray &mdash; and it is exactly where the $260,000 gap on her slide four came from [3].</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x1F4DD;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Spec (projected)</div>
+            <div class="layer-desc">Dana&rsquo;s educated estimate at specification stage &mdash; often based on prior project experience or catalog reference prices. Not a real quote.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E8;</div>
+            <div class="layer-name" style="color: var(--orange);">Quoted</div>
+            <div class="layer-desc">The price a vendor actually provided in response to an RFQ. May be higher or lower than the spec number. Now it is a real market data point.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x2705;</div>
+            <div class="layer-name" style="color: var(--blue);">Approved</div>
+            <div class="layer-desc">The price the owner and designer signed off on. The formal budget commitment. This is the number Sam watches.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4B3;</div>
+            <div class="layer-name" style="color: var(--red);">Actual</div>
+            <div class="layer-desc">What was actually paid on the purchase order. Often differs from approved because quotes expire, scope creeps in, and landed-cost surprises materialize.</div>
+        </div>
+    </div>
+
+    <p>The gap between approved and actual comes from two structural sources. First, <strong>quotes expire</strong>: a vendor quote is valid for 30&ndash;90 days. If the PO takes longer to issue &mdash; owner approvals slow, construction schedule shifts &mdash; the quote lapses and the new price is higher. Nobody changed the approved number in the budget. It simply became stale. Second, <strong>scope creep</strong>: the owner adds a console table here, upgrades a fabric there, approves a last-minute accessory package. Each individual ask seems small. Across a project, untracked scope additions typically add <strong>10&ndash;15% above the approved budget</strong> [3].</p>
+
+    <div class="story-box">
+        <p>Sam pulls up the budget comparison on her laptop. The spec line for the lobby lounge chairs says $48,000. The quoted line says $56,500. The approved line says $56,500 &mdash; she had approved it when the quote came in. The actual line says $61,200.</p>
+        <p>The extra $4,700 is not a mystery. Two chairs were added to the lobby layout after the PO was issued &mdash; a last-minute request from the interior designer to fill a corner. Those two chairs triggered a revised order at a slightly higher unit price because the original MOQ had already been hit at the lower quantity. The approval for those two extra chairs happened in an email thread that nobody logged against the budget line.</p>
+        <p>Sam makes a note: <em>scope approval process broken, not the budget tool.</em></p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Trace it without looking back</div>
+        <div class="recall-question">From memory: name the four states a budget line lives in, in order. Then explain, in one sentence each, why <em>quoted</em> might be higher than <em>spec</em> and why <em>actual</em> might be higher than <em>approved</em>. Say it out loud before reading on.</div>
+        <div class="recall-hint">Think about what happened between &ldquo;Dana estimated&rdquo; and &ldquo;the vendor responded&rdquo; &mdash; and between &ldquo;the owner signed off&rdquo; and &ldquo;the final invoice arrived.&rdquo;</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Contingency, value engineering, and the moments they work</h2>
+
+    <p>Two tools exist specifically to manage the drift between approved and actual. Both are frequently misused by being applied too late.</p>
+
+    <h3>Contingency: plan for what you can&rsquo;t predict</h3>
+
+    <p>A contingency buffer is not padding and it is not a sign of poor planning. It is a deliberate financial reserve for the risks that are real but not yet quantifiable: freight market swings, a finish that arrives damaged and must be reordered, a vendor who misses a production milestone and forces an air-freight upgrade [3]. Standard contingency runs <strong>5&ndash;10% of total FF&amp;E budget for residential projects and 10&ndash;15% for commercial and hospitality</strong> [3]. Sam insists on 12% on every project Marco works. She has never had a project come in under contingency. She has had several that needed every cent of it.</p>
+
+    <h3>Value engineering: the timing matters as much as the decision</h3>
+
+    <p>Value engineering &mdash; VE &mdash; means finding cost-equivalent or lower-cost alternatives that deliver the same functional result: a different fabric supplier, a simpler finish detail, a standard-stock item substituted for a custom one. It is a legitimate and necessary part of the process. It is also almost entirely worthless if it happens after the purchase orders are issued [3].</p>
+
+    <p>Late VE requires the purchasing team to go back to vendors, renegotiate or cancel existing orders (sometimes paying restocking fees), restart the sample-approval process, and push out the delivery schedule. That is not cost savings &mdash; it is cost generation with extra steps. VE done during the design phase, before Dana finalizes the spec, can shave 10&ndash;20% off the hard-cost number without touching the schedule [3].</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Spot the error in this scenario</div>
+        <div class="recall-question">A project is two weeks from issuing purchase orders. The owner calls and says the FF&amp;E budget is $80,000 over target. The procurement team suggests value-engineering the lobby furniture package. A colleague says: &ldquo;Great, that&rsquo;s exactly what VE is for.&rdquo; Why is the colleague wrong? What should have happened instead &mdash; and when?</div>
+        <div class="recall-hint">Think about what &ldquo;two weeks from PO&rdquo; means for sample approvals, vendor lead times, and the delivery schedule.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. Deposits, payment terms, and the procurement firm as a bank</h2>
+
+    <p>In Lesson 3 we traced one chair&rsquo;s journey through the phases &mdash; and the financial mechanics behind that journey are straightforward in principle and surprisingly painful in practice.</p>
+
+    <p>The standard B2B manufacturing payment pattern is <strong>50% deposit on purchase order acceptance, balance due before shipment</strong> &mdash; sometimes written &ldquo;CBS&rdquo; (collect before shipment) [3]. The deposit starts the production clock. The balance clears customs. The furniture moves. This means the procurement firm is holding substantial cash for weeks or months before the goods arrive and before the owner reimburses them. On a $1M FF&amp;E package, that is $500,000 out the door before a single chair leaves the factory.</p>
+
+    <p>Payment terms between firms add another layer. Standard trade terms are <strong>Net 30 or Net 60</strong> &mdash; the invoice is due 30 or 60 days after receipt. A common variant is <strong>2/10 Net 30</strong>: take a 2% discount if you pay within 10 days, otherwise pay the full amount in 30 days. That 2% discount sounds modest until you do the math: annualized, it represents an effective rate of approximately <strong>36.7%</strong> &mdash; a compelling reason to pay early if you have the liquidity [3].</p>
+
+    <p>The practical implication for the procurement firm: it frequently &ldquo;plays bank&rdquo; &mdash; it pays the vendor on Net 30 terms from its own cash while the owner&rsquo;s reimbursement may not arrive for weeks after that. This cash-flow exposure is one of the structural reasons why large, well-capitalized purchasing firms like Benjamin West or Stroud Group have a competitive advantage over smaller operations: they can carry the float [2].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 7 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7. Tariffs and freight &mdash; the budget risks that arrive without warning</h2>
+
+    <p>In Lesson 7 we saw the three prices for the same chair depending on <em>who</em> is buying. In this chapter, the question is about <em>where</em> the chair is made &mdash; because country of origin now carries a budget risk that did not exist in this form five years ago.</p>
+
+    <p>Two live risks sit on every imported FF&amp;E line item. Neither is under the control of the designer, the purchasing firm, or the owner:</p>
+
+    <h3>Tariffs: a cost that can change between specification and PO</h3>
+
+    <p>US furniture import tariffs in 2025&ndash;2026 reached levels the industry had not seen in decades. As of mid-2026 the stacked effective rate on China-origin upholstered furniture &mdash; combining the MFN base duty, the Section 301 duty (still in force since 2018 at 25% on List 3), and any Section 232 application &mdash; runs roughly <strong>30&ndash;35%+ on a single SKU</strong> [5]. Vietnam, the main China-alternative for furniture manufacturing, carries a baseline reciprocal tariff of approximately <strong>20%</strong>, with transshipments potentially reaching 40% [5].</p>
+
+    <p>The practical impact: a project specified in Q1 with a China-sourced furniture package may face a materially different duty bill by the time the purchase order is issued in Q3, if the tariff situation shifts in the interval. A single misclassification or country-of-origin error can swing landed cost by 15&ndash;40% [5]. This is why experienced procurement teams now build a tariff-volatility buffer into the contingency, diversify sourcing countries even at modest unit-cost premiums, and re-verify rates immediately before issuing any PO for imported goods.</p>
+
+    <div class="info-box orange">
+        <p><strong>Numbers are dated and volatile.</strong> The tariff landscape described here reflects public information as of mid-2026. Rates change by presidential proclamation with minimal notice. Before budgeting any import line: check the current Harmonized Tariff Schedule at <strong><a href="https://hts.usitc.gov">hts.usitc.gov</a></strong> and current USTR trade actions at <strong><a href="https://ustr.gov">ustr.gov</a></strong>. Do not rely on any figure in this lesson for a live pricing decision.</p>
+    </div>
+
+    <h3>Freight: the rate that can move 60% in a quarter</h3>
+
+    <p>Trans-Pacific ocean freight rates are genuinely volatile &mdash; not in the &ldquo;prices go up a bit&rdquo; sense but in the sense that West Coast container rates have moved by 60% or more within a single year depending on lane capacity, geopolitical events (the 2024 Red Sea disruption added weeks of transit via the Cape of Good Hope), and fleet dynamics [6]. Budgeting domestic freight at 5&ndash;10% of product cost and European or Asian imports at 15&ndash;25% is a reasonable starting range for early estimates &mdash; but any quote more than 60 days old should be treated as stale [3].</p>
+
+    <p>The counterintuitive reality: lower freight rates do not automatically save money on tariff-heavy imports. On a container of China-sourced furniture carrying a 30%+ duty load, a $1,500 improvement in freight cost is arithmetically negligible against a duty bill that runs tens of thousands of dollars on the same container. Certainty of delivery &mdash; a domestic manufacturer whose lead time is predictable and whose goods face no import duty &mdash; often beats the marginal savings of a cheaper overseas source, especially under a tight opening-date schedule [5].</p>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F6A2;</div>
+        Sam, on a project call, after the freight broker updated the quote for the third time in six weeks: &ldquo;Why does every furniture budget I see have a freight line that says &lsquo;TBD&rsquo; until two months before delivery?&rdquo;<br>
+        Marco: &ldquo;Because anyone who gives you a firm freight number six months out is either lying or doesn&rsquo;t understand ocean freight.&rdquo;<br>
+        <em>Sam added a 15% freight-volatility line to the contingency that afternoon. It was the first time in five years she had not needed it. The year after that, she needed every cent of it.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <p>Sam&rsquo;s $260,000 gap was not a mistake. It was what happens when a budget starts with bare product prices and the landed-cost stack, soft costs, scope creep, and tariff exposure are treated as someone else&rsquo;s problem. This chapter named every layer of that problem.</p>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F511;</div>
+            <div class="layer-name" style="color: var(--blue);">Per-key anchor</div>
+            <div class="layer-desc">Budget starts with a cost per guestroom (economy $4k&ndash;$8k; luxury $45k&ndash;$100k+) plus public-area add. Set before the spec begins.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--orange);">Hard + soft costs</div>
+            <div class="layer-desc">Hard = the items and install. Soft = freight, duty, warehousing, fees, permits, contingency. Soft costs are 20&ndash;30% of total. Never optional.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4B0;</div>
+            <div class="layer-name" style="color: var(--purple);">Landed-cost stack</div>
+            <div class="layer-desc">FOB price + freight + duty + brokerage + warehousing + receiving + delivery + install + tax = 15&ndash;35%+ over the bare product number.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F4C8;</div>
+            <div class="layer-name" style="color: var(--red);">Four states: spec &rarr; actual</div>
+            <div class="layer-desc">Spec (estimate) &rarr; quoted (real price) &rarr; approved (signed off) &rarr; actual (paid). Actual drifts above approved via expired quotes and scope creep.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F6E1;</div>
+            <div class="layer-name" style="color: var(--green);">Contingency + VE timing</div>
+            <div class="layer-desc">10&ndash;15% contingency in hospitality. Value engineering is only real savings if done during design, not after POs are issued.</div>
+        </div>
+        <div class="layer-item" style="background: var(--gray-100);">
+            <div class="layer-icon">&#x26A0;</div>
+            <div class="layer-name" style="color: var(--gray-700);">Tariff + freight risk</div>
+            <div class="layer-desc">China ~30&ndash;35%+ stacked; Vietnam ~20% baseline (as of mid-2026, volatile). Re-verify at ustr.gov / hts.usitc.gov before any PO.</div>
+        </div>
+    </div>
+
+    <div class="pull-quote">
+        The budget that shows only furniture prices is the budget that blows. Every cost between the factory and the room is real &mdash; it just does not appear until someone asks where the money went.
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 9:</strong> now that we know how a budget is built and what it actually costs to get things into a building &mdash; where do those things actually come from? Lesson 9 is the supply side in depth: manufacturers (Kimball, Bernhardt, overseas factories), the rep model (independent, commission-only, why they exist), dealers, showrooms, trade shows (HD Expo, NeoCon, BDNY), and how a procurement team makes sourcing decisions under the pressure of MOQs, lead times, and a tariff environment that changes monthly.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 40 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Build a landed-cost estimate.</strong> A 90-room upscale hotel is budgeting its guestroom lounge chairs. The spec price is $620 per unit. There are 90 units. The chairs will be sourced from a Vietnam manufacturer.
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>Using the rough ranges in this lesson (ocean freight ~15% of FOB for Asian imports, Vietnam tariff ~20%, brokerage + port ~4%, inland trucking ~4%, warehousing + receiving ~5%, delivery + install ~10%), calculate a total landed cost per unit and a total landed cost for the full order.</li>
+                    <li>Compare the landed total to the &ldquo;bare product total&rdquo; (90 &times; $620). What is the percentage gap?</li>
+                    <li>Now assume the Vietnam tariff doubles overnight. How does that change the total? (Round to the nearest hundred.)</li>
+                    <li><strong>AI-free segment:</strong> close the lesson, look away, and state out loud what &ldquo;landed cost&rdquo; means and why it is always higher than the FOB price. The self-check grades your conceptual recall, not your arithmetic.</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        Bare product: $620/unit &times; 90 = $55,800. Landed-cost layers (applied to $620 FOB): freight 15% = +$93; tariff 20% = +$124; brokerage + port 4% = +$25; inland 4% = +$25; warehousing + receiving 5% = +$31; delivery + install 10% = +$62 &rarr; total add = $360/unit. Landed per unit: ~$980. Landed total: $980 &times; 90 = $88,200 (approx.). Gap vs. bare product: +$32,400, roughly +58% over FOB in this example (note: the diagram&rsquo;s illustrative stack may yield different exact totals depending on which layers are applied cumulatively or additively &mdash; any reasoned approach that shows 40&ndash;65% over FOB passes). If Vietnam tariff doubles to ~40%: duty component becomes +$248/unit instead of $124; total add rises by $124/unit &times; 90 = ~+$11,200 additional. A pass requires showing the mechanics, the concept explanation (landed cost = all costs from factory to installed in room), and acknowledging tariff volatility.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Cross-lesson budget scenario (L1 + L3 + L5 + L8).</strong> A 60-room midscale hotel is in the spec phase. The owner&rsquo;s rep has been told the FF&amp;E budget is $600,000. Answer these four questions without looking things up until you&rsquo;ve made a first attempt:
+                <ul style="margin: 8px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li>(a) Is $600,000 plausible for 60 rooms at midscale? Use the per-key benchmarks from Part 1 and Part 3 of the diagram.</li>
+                    <li>(b) A contractor quotes $600,000 for the furniture only &mdash; no freight, no install, no fees. The owner says &ldquo;great, that&rsquo;s the budget.&rdquo; What is wrong with this picture, and what real total cost should the owner&rsquo;s rep anticipate?</li>
+                    <li>(c) The spec phase is still ongoing. The owner asks whether value engineering is possible if costs come in over target. What is the correct answer about timing?</li>
+                    <li>(d) From Lesson 1: FF&amp;E is 8&ndash;15% of total hotel development cost. If $600,000 is the furniture-only number, what range of total development cost does that imply?</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) Midscale per-key range: $12k&ndash;$25k/room. 60 rooms &times; $12k = $720k low end; 60 &times; $25k = $1.5M high end. $600k is below the low end of the midscale range &mdash; it is suspicious as a full FF&amp;E number; it may be the guestroom-only number with public areas excluded, or a bare-product number without soft costs. (b) The contractor&rsquo;s quote is bare product. Add landed-cost layers (freight, duty, brokerage, warehousing, receiving, install): 15&ndash;35% on top brings the real cost to roughly $690k&ndash;$810k. The owner&rsquo;s rep should also account for soft costs (design fee, PM fee, permits, contingency), which could push the total to $750k&ndash;$900k+. (c) Yes, VE is absolutely possible &mdash; but only during the design/spec phase, not after POs are issued. Late VE creates restocking fees, schedule delays, and often more cost than it saves. The correct answer: &ldquo;Yes, and the time is now, before the spec is finalized.&rdquo; (d) If furniture-only = $600k is 8&ndash;15% of total development cost: total implied = $600k / 0.15 (low end) to $600k / 0.08 (high end) = $4M&ndash;$7.5M total development cost for a 60-room midscale property. A pass requires addressing all four parts with the correct directional reasoning.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>Real-tariff drill (AI-resistant).</strong> Go to the USTR website (<a href="https://ustr.gov/issue-areas/enforcement/section-301-investigations" style="color: var(--blue);">ustr.gov</a>) or the HTS lookup at <a href="https://hts.usitc.gov" style="color: var(--blue);">hts.usitc.gov</a> and find the current tariff rate for a specific furniture HTS code you choose (upholstered wooden seats are often in Chapter 94 of the HTS). Report: (1) the HTS code you chose and what it covers; (2) the MFN base duty; (3) whether any additional Section 301 or Section 232 rates apply to that code for China-origin goods; (4) the effective stacked rate for a China-origin product. This task is AI-resistant because live tariff schedules change and no model reliably knows today&rsquo;s rate &mdash; you have to look with your own eyes on the official database.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why is contingency structured this way?</strong> Hotels and commercial FF&amp;E projects use 10&ndash;15% contingency; residential projects use 5&ndash;10%. Why does the same industry, sourcing from the same suppliers, need a different contingency level depending on whether the client is a hotel or a homeowner? Name at least three structural differences (not just &ldquo;hotels are bigger&rdquo;) that justify a higher hospitality reserve. Then explain why a contingency reserve is not the same thing as poor planning &mdash; and why an owner who insists on removing the contingency to hit a headline budget number is making things worse, not better.
+            </li>
+        </ol>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SOURCES -->
+    <!-- ============================================ -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-l8-1">
+                DataDrivenAEC (2025). &ldquo;FF&amp;E Specification for Hospitality Projects.&rdquo; <a href="https://datadrivenaec.com/insights/ffe-specification-hospitality-projects">datadrivenaec.com/insights/ffe-specification-hospitality-projects</a>.
+                <div class="src-meta">Per-key cost benchmarks by tier (economy $3k&ndash;$5k through luxury $35k&ndash;$58k+); public-area add; procurement cycle length &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l8-2">
+                Stroud Group (2025). &ldquo;Hotel FF&amp;E Budgeting: Expert Tips on How Much Money to Allocate.&rdquo; <a href="https://www.stroudgroup.com/hotel-ffe-budgeting-expert-tips-on-how-much-money-to-allocate">stroudgroup.com/hotel-ffe-budgeting-expert-tips-on-how-much-money-to-allocate</a>.
+                <div class="src-meta">Per-key benchmarks cross-check; FF&amp;E reserve (2&ndash;5% of revenue); procurement firm cash-flow mechanics &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l8-3">
+                Procurist (2024). &ldquo;How to Track FF&amp;E Budgets: The Four-State Model (Spec / Quoted / Approved / Actual).&rdquo; <a href="https://procurist.io/blog/track-ffe-budgets">procurist.io/blog/track-ffe-budgets</a>.
+                <div class="src-meta">Four budget states; scope creep +10&ndash;15%; landed-cost gaps; logistics as 6&ndash;25% of product spend; VE timing; contingency ranges; 2/10 Net 30 annualized rate; 50% deposit mechanic &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l8-4">
+                Bailey&rsquo;s Allied (2025). &ldquo;FF&amp;E Logistics Guide: Receiving, Warehousing, Install.&rdquo; <a href="https://www.baileysallied.com/workplace/resources/ffe-logistics-guide">baileysallied.com/workplace/resources/ffe-logistics-guide</a>.
+                <div class="src-meta">Logistics + install as 6&ndash;25% of FF&amp;E product spend; hospitality at the higher end; receiving as the most common failure mode &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l8-5">
+                Home Furnishings Association (2026). &ldquo;Furniture Import Duties and Tariffs: A Guide for Retailers.&rdquo; <a href="https://myhfa.org/blog/furniture-import-duties-and-tariffs-a-guide-for-retailers">myhfa.org/blog/furniture-import-duties-and-tariffs-a-guide-for-retailers</a>; supplemented by Tax Foundation tariff tracker, <a href="https://taxfoundation.org/research/all/federal/trump-tariffs-trade-war">taxfoundation.org</a>.
+                <div class="src-meta">Section 301 (China 25% List 3) + Section 232 stacking; Vietnam 20% baseline / 40% transshipment; effective China upholstered-furniture rate ~30&ndash;35%+; landed-cost swing 15&ndash;40% from misclassification. <strong>Rates are dated and volatile &mdash; re-verify at ustr.gov / hts.usitc.gov.</strong> &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-l8-6">
+                Freightos (2025&ndash;2026). &ldquo;Freight Rates and Market Outlook.&rdquo; <a href="https://www.freightos.com/freight-blog/freight-rates-and-quotes/shipping-delays-and-cost-increases">freightos.com</a>; iContainers (2026). &ldquo;Freight Market Outlook 2026.&rdquo; <a href="https://www.icontainers.com/freight-market-outlook-2026">icontainers.com</a>.
+                <div class="src-meta">Trans-Pacific rate volatility (60%+ swings year-over-year); Red Sea / Cape of Good Hope reroute impact; budgeting ranges (domestic 5&ndash;10%, EU/Asia imports 15&ndash;25% of product cost) &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] reference the numbered entry above. Dana, Marco, Sam, and other characters are composite illustrations, not real individuals. Named firms (Benjamin West, Stroud Group, Marriott, etc.) appear as real industry archetypes. All tariff and freight figures are benchmarks as of mid-2026 and subject to change &mdash; re-verify at official government sources before any pricing decision.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 8 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Vendors, manufacturers, reps and sources</p>
+    </div>
+
+</div>
+
+</body>
+</html>

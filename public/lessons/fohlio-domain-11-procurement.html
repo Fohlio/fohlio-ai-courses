@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Buildings Get Furnished &mdash; Lesson 11</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --blue: #3451B2;
+            --blue-light: #E8EDFF;
+            --blue-mid: #C5D0F6;
+            --green: #1A8F5C;
+            --green-light: #E6F9F0;
+            --orange: #E8790C;
+            --orange-light: #FFF3E5;
+            --red: #DC2626;
+            --red-light: #FEE2E2;
+            --purple: #7C3AED;
+            --purple-light: #EDE9FE;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-500: #6B7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--gray-900);
+            line-height: 1.7;
+            background: #fff;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 80px 0 60px;
+        }
+        .header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--blue);
+            letter-spacing: -1px;
+        }
+        .header .subtitle {
+            font-size: 20px;
+            color: var(--gray-500);
+            margin-top: 8px;
+            font-weight: 400;
+        }
+        .header .lesson-badge {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Goals box */
+        .goals-box {
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 0 12px 12px 0;
+            padding: 28px 32px;
+            margin: 40px 0;
+        }
+        .goals-box h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--blue);
+            margin-bottom: 16px;
+        }
+        .goals-box ul { list-style: none; }
+        .goals-box li {
+            padding: 6px 0;
+            padding-left: 24px;
+            position: relative;
+            color: var(--gray-700);
+        }
+        .goals-box li::before {
+            content: "\2022";
+            color: var(--blue);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        /* Section headers */
+        .part-header {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue);
+            margin-top: 64px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--blue-light);
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: 36px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-top: 28px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--gray-700);
+        }
+
+        /* Code blocks */
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--gray-100);
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--gray-900);
+        }
+
+        pre {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+            font-size: inherit;
+        }
+        .comment { color: #6B7280; }
+        .keyword { color: #C084FC; }
+        .string { color: #86EFAC; }
+        .function { color: #93C5FD; }
+        .decorator { color: #F9A8D4; }
+        .type { color: #FCD34D; }
+
+        /* Info boxes */
+        .info-box {
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 20px 0;
+        }
+        .info-box p { margin-bottom: 0; }
+        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
+        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
+        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
+        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
+
+        /* Joke box */
+        .joke-box {
+            background: var(--gray-50);
+            border: 1px dashed var(--gray-300);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.8;
+        }
+        .joke-box .joke-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        /* Story box */
+        .story-box {
+            background: var(--purple-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--purple);
+        }
+        .story-box p { color: var(--gray-700); }
+        .story-box .tech-note {
+            font-style: normal;
+            font-size: 13px;
+            color: var(--gray-500);
+            background: white;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin-top: 12px;
+            border: 1px solid var(--gray-200);
+        }
+        .story-box .tech-note code {
+            font-size: 12px;
+        }
+
+        /* Concept cards */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .concept-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .concept-card .card-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+        .concept-card .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+        .concept-card .card-subtitle {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .concept-card .card-desc {
+            font-size: 12px;
+            color: var(--gray-500);
+            text-align: left;
+        }
+
+        /* Comparison table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--blue);
+            color: white;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            color: var(--gray-700);
+            vertical-align: top;
+        }
+        tr:nth-child(even) { background: var(--gray-50); }
+
+        /* Diagram */
+        .diagram {
+            margin: 24px 0;
+        }
+        .diagram svg {
+            width: 100%;
+            height: auto;
+        }
+        .diagram-caption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* AI illustrations (only used when config.images = true) */
+        .lesson-hero {
+            margin: 0 0 32px;
+        }
+        .lesson-hero img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 14px;
+        }
+        .lesson-figure {
+            margin: 24px auto;
+            max-width: 760px;
+        }
+        .lesson-figure img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+        .lesson-figure figcaption {
+            text-align: center;
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-top: 8px;
+        }
+
+        /* Step cards */
+        .step-card {
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 12px 0;
+        }
+        .step-card .step-number {
+            display: inline-block;
+            background: var(--blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 28px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+        .step-card .step-title {
+            font-weight: 600;
+            font-size: 15px;
+            display: inline;
+        }
+        .step-card .step-desc {
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--gray-500);
+        }
+
+        /* Layer visualization */
+        .layer-stack {
+            margin: 24px 0;
+        }
+        .layer-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            margin: 6px 0;
+            transition: transform 0.2s;
+        }
+        .layer-item:hover {
+            transform: translateX(4px);
+        }
+        .layer-item .layer-icon {
+            font-size: 24px;
+            margin-right: 16px;
+            width: 36px;
+            text-align: center;
+        }
+        .layer-item .layer-name {
+            font-weight: 600;
+            font-size: 15px;
+            min-width: 160px;
+        }
+        .layer-item .layer-desc {
+            font-size: 13px;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        /* Homework section */
+        .homework {
+            background: var(--blue-light);
+            border: 2px solid var(--blue-mid);
+            border-radius: 16px;
+            padding: 36px;
+            margin: 48px 0;
+        }
+        .homework h2 {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Recall box */
+        .recall-box {
+            background: #FFFBEB;
+            border: 2px solid #FCD34D;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 28px 0;
+        }
+        .recall-box .recall-title {
+            font-weight: 700;
+            font-size: 15px;
+            color: #D97706;
+            margin-bottom: 10px;
+        }
+        .recall-box .recall-question {
+            font-size: 15px;
+            color: var(--gray-700);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .recall-box .recall-hint {
+            font-size: 13px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: var(--gray-900);
+            color: #E5E7EB;
+            padding: 20px 24px;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 2;
+            margin: 16px 0;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .file-tree .dir { color: #93C5FD; }
+        .file-tree .file { color: #E5E7EB; }
+        .file-tree .comment { color: #6B7280; }
+        .file-tree .highlight { color: #86EFAC; }
+
+        /* Recap grid (used in lessons 2+) */
+        .recap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .recap-grid .recap-item {
+            background: var(--gray-50);
+            border-left: 3px solid var(--blue);
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        .recap-grid .recap-item strong { color: var(--blue); }
+
+        /* Pull quote */
+        .pull-quote {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-900);
+            line-height: 1.5;
+            margin: 32px 0;
+            padding: 8px 24px;
+            border-left: 4px solid var(--blue);
+        }
+
+        /* Sources box — appears at the end of every lesson before the footer. */
+        .sources-box {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: 12px;
+            padding: 24px 28px;
+            margin: 48px 0 24px;
+            font-size: 14px;
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        .sources-box h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sources-box ol { margin: 0 0 0 22px; padding: 0; }
+        .sources-box li { margin-bottom: 10px; }
+        .sources-box .src-meta {
+            font-size: 12px;
+            color: var(--gray-500);
+            margin-top: 2px;
+        }
+        .sources-box a { color: var(--blue); text-decoration: underline; word-break: break-word; }
+        .sources-box .src-note {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { max-width: 100%; padding: 32px 24px; }
+        }
+
+        @media (max-width: 640px) {
+            .container { padding: 24px 18px; }
+            .header { padding: 32px 0 24px; }
+            .header h1 { font-size: 32px; }
+            .header .subtitle { font-size: 17px; }
+            h2.part-header { font-size: 22px; margin: 40px 0 16px; }
+            h3 { font-size: 18px; }
+            p, li { font-size: 15px; }
+            code { font-size: 13px; }
+
+            /* Grid collapses */
+            .recap-grid, .concept-grid { grid-template-columns: 1fr; }
+
+            /* Layer-stack stays flex but reduces padding */
+            .layer-item {
+                display: flex;
+                gap: 14px;
+                align-items: flex-start;
+                padding: 14px 16px;
+            }
+            .layer-item .layer-desc { margin-left: 0; }
+            .layer-item .layer-name { min-width: 0; }
+
+            /* Boxes scale padding */
+            .info-box, .recall-box, .joke-box, .story-box, .goals-box, .homework, .sources-box {
+                padding: 16px 18px;
+                margin: 20px 0;
+            }
+
+            /* Pull quote */
+            .pull-quote { font-size: 20px; padding: 16px; }
+
+            /* Code blocks scroll horizontally inside their container */
+            pre {
+                overflow-x: auto;
+                font-size: 12px;
+                padding: 14px;
+            }
+
+            /* File tree must scroll inside its container, not on page */
+            .file-tree {
+                white-space: pre;
+                overflow-x: auto;
+                font-size: 12px;
+            }
+
+            /* Tables get horizontal scroll wrapper */
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Step cards stack tightly */
+            .step-card { padding: 14px 16px; margin: 10px 0; }
+
+            /* AI illustrations scale down */
+            .lesson-hero { margin-bottom: 24px; }
+            .lesson-hero img { border-radius: 10px; }
+            .lesson-figure { margin: 20px auto; }
+        }
+
+        @media (max-width: 375px) {
+            .header h1 { font-size: 28px; }
+            .container { padding: 20px 14px; }
+            p, li { font-size: 14.5px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="lesson-badge">Lesson 11 of 14</div>
+        <h1>From a Quote to Goods on the Dock</h1>
+        <div class="subtitle">Chapter 11. The long wait, the active chase, and the one inspection nobody skips twice</div>
+    </div>
+
+    <!-- HOOK -->
+    <p>Marco gets the signed purchase order at 4:47 p.m. on a Thursday. He sends it to fourteen vendors before dinner. For most of them, this is the moment he stops worrying &mdash; the order is placed, the deposit is wired, the chair is &ldquo;in the system.&rdquo; For Marco, it is the moment the real work starts.</p>
+
+    <p>Three weeks later, he gets an email from Greta at the factory. One of the lounge chair models &mdash; 42 units, three room types, anchor piece in the lobby design &mdash; has been discontinued. The factory stopped making it six months ago. Someone forgot to update the catalog. The model was still showing as &ldquo;available&rdquo; in the rep&rsquo;s quote, and now it is Week 3 of an 18-week window, and there is no longer a chair.</p>
+
+    <p>This is not an unusual story. It is a common one. The gap between a purchase order and a delivery is not passive time &mdash; it is the most failure-prone stretch of any FF&amp;E project, and the people who manage it well are not the ones who trust the silence. They are the ones who actively do not.</p>
+
+    <!-- GOALS -->
+    <div class="goals-box">
+        <h3>What you&rsquo;ll understand by the end of this lesson</h3>
+        <ul>
+            <li>What a <strong>purchase order</strong> actually commits to &mdash; and why the 50% deposit matters</li>
+            <li>What <strong>expediting</strong> is, why it exists, and what happens when nobody does it</li>
+            <li>How <strong>lead times</strong> drive the entire project schedule &mdash; with real numbers</li>
+            <li>What happens at <strong>freight and customs</strong>, and why a specialist matters</li>
+            <li>Why <strong>skipping the receiving inspection</strong> is described as the single most common and most expensive logistics failure</li>
+            <li>How a <strong>phased, room-by-room install</strong> works &mdash; and why the model room goes first</li>
+            <li>How real <strong>sourcing data feeds back</strong> into the library when the project closes</li>
+        </ul>
+    </div>
+
+    <!-- RECAP GRID -->
+    <h3>Quick recap &mdash; where we&rsquo;ve been</h3>
+    <div class="recap-grid">
+        <div class="recap-item">
+            <strong>L3 &mdash; One chair&rsquo;s journey</strong><br>
+            The AIA phases; procurement runs parallel to construction; 12&ndash;24 month cycle.
+        </div>
+        <div class="recap-item">
+            <strong>L8 &mdash; The budget that grows</strong><br>
+            Landed-cost stack (+15&ndash;35%); 50% deposit on PO; spec/quoted/approved/actual; tariff risk.
+        </div>
+        <div class="recap-item">
+            <strong>L9 &mdash; Vendors &amp; sources</strong><br>
+            Greta (factory); Tomás (rep); MOQ 20&ndash;200 units; domestic vs. overseas lead times.
+        </div>
+        <div class="recap-item">
+            <strong>L10 &mdash; RFQs, submittals &amp; samples</strong><br>
+            CFA approval; four review outcomes; RFI vs. submittal; the two approval loops.
+        </div>
+        <div class="recap-item" style="border-left-color: var(--orange); background: var(--orange-light);">
+            <strong style="color: var(--orange);">L11 &mdash; TODAY</strong><br>
+            PO issuance; expediting; manufacturing lead times; freight &amp; customs; receiving; install; the model room; punch list preview; data feeds back into the library.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 1 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 1. The purchase order &mdash; what just became binding</h2>
+
+    <p>A purchase order is the binding document that transforms a vendor selection into a legal commitment. Before the PO, the project has been making choices. After the PO, it has made them. Both sides are now obligated: the vendor to deliver what is specified, at the agreed price and timeframe; the buyer to pay the agreed amount, starting with the deposit [1].</p>
+
+    <p>The deposit is typically <strong>50% of the order value, paid on PO acceptance</strong>. This is not a negotiating point on most hospitality FF&amp;E &mdash; it is standard industry practice, because manufacturers do not carry enough working capital to fund production for a 300-unit custom order out of their own pocket. The deposit pays for raw materials. The remaining 50% is usually due before shipment, or sometimes Net 30 after delivery depending on the vendor relationship and terms [2].</p>
+
+    <p>Marco has a simple rule about deposits: never wire until the submittal package is approved. The Lesson 10 process &mdash; product data, shop drawings, CFA samples &mdash; exists to confirm that what the vendor is about to make is what was specified. Paying a 50% deposit before that confirmation is paying to build the wrong thing. This sounds obvious until the first time a project is running three weeks behind and the owner is asking why the PO hasn&rsquo;t gone out yet.</p>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x1F914; Predict before reading on</div>
+        <div class="recall-question">A vendor quotes a custom headboard at $1,200 per unit. You need 150 units. The PO total is $180,000. You pay the 50% deposit. Now: what is your financial exposure if the design team discovers &mdash; after the deposit is wired &mdash; that the shop drawing had an error and the headboard won&rsquo;t fit the wall? What options do you have, and how do any of them end well?</div>
+        <div class="recall-hint">Think about leverage before and after the deposit, and what the submittal process from Lesson 10 is actually protecting.</div>
+    </div>
+
+    <p>A PO is also a snapshot of the schedule. It states the agreed delivery date, which anchors the whole sequence from manufacturing to delivery to installation to opening. That date is the fixed star the rest of the project navigates by &mdash; and as we will see, it starts sliding the moment the factory falls behind and nobody is watching.</p>
+
+    <!-- ============================================ -->
+    <!-- PART 2 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 2. Expediting &mdash; the active chase</h2>
+
+    <p>Expediting is the professional practice of not assuming the order is going fine because nobody has called to say otherwise. It is Marco&rsquo;s job during the long quiet months between the PO and the delivery. Specifically: reaching out to each vendor on a set cadence, confirming production status, asking whether there are any problems with materials, finishes, quantities, or lead times, and surfacing discontinuation risks before they become crises [1].</p>
+
+    <p>The Greta scenario in this chapter&rsquo;s opening is what expediting prevents. She found out the lounge chair was discontinued six months earlier. The order went in three weeks ago. Marco has been trusting the silence. Six months and three weeks is the gap between &ldquo;easily fixable&rdquo; and &ldquo;emergency alternative search during active production, with a hard opening date approaching.&rdquo;</p>
+
+    <p>Professional purchasing firms list &ldquo;freight, expediting, and warehousing&rdquo; as a distinct managed scope because the work is real and it takes real time. Beyer Brown, one of the major hospitality purchasing firms from Lesson 2, describes this explicitly as part of their service model [1].</p>
+
+    <h3>What expediting actually involves</h3>
+
+    <div class="step-card">
+        <span class="step-number">1</span>
+        <span class="step-title">Production status calls</span>
+        <div class="step-desc">Reaching each vendor on a schedule (weekly or bi-weekly depending on lead time and risk). &ldquo;Are you on track? Is there anything we need to know?&rdquo;</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">2</span>
+        <span class="step-title">Discontinuation / substitution management</span>
+        <div class="step-desc">The moment a vendor says &ldquo;that finish has been discontinued,&rdquo; Marco needs a decision: accept the proposed substitute, find another vendor, or substitute a different product entirely. Each option has schedule and budget implications.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">3</span>
+        <span class="step-title">Schedule alignment</span>
+        <div class="step-desc">Comparing each vendor&rsquo;s production status against the install sequence. If Vendor A (lobby furniture) is running two weeks late but Vendor B (guest rooms) is on time, the delivery schedule has to be resequenced before both arrive at the dock at the same time and there&rsquo;s no warehouse space.</div>
+    </div>
+    <div class="step-card">
+        <span class="step-number">4</span>
+        <span class="step-title">Pre-shipment quality control</span>
+        <div class="step-desc">On larger orders, some purchasing agents or their representatives do a pre-shipment QC visit at the factory &mdash; especially for custom millwork and overseas manufacturers. Catching a defect at the factory is a fraction of the cost of catching it at the dock 8,000 miles later.</div>
+    </div>
+
+    <div class="joke-box">
+        <div class="joke-icon">&#x1F4DE;</div>
+        Marco, on the phone: &ldquo;Hey, just checking in on the Order 7714 side chairs &mdash; we&rsquo;re week nine, I wanted to confirm production start.&rdquo;<br>
+        Factory rep: &ldquo;Let me check&hellip; yes, those are in the queue.&rdquo;<br>
+        Marco: &ldquo;In the queue for starting, or in the queue for finishing?&rdquo;<br>
+        Long pause.<br>
+        Factory rep: &ldquo;Starting.&rdquo;<br>
+        <em>Marco marks the cell in his tracking sheet red. He schedules a follow-up for Thursday. This is what &ldquo;actively managing&rdquo; looks like from the outside. What it looks like on the inside is a lot of calls where the answer is technically &ldquo;fine&rdquo; until it isn&rsquo;t.</em>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 3 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 3. Manufacturing lead times &mdash; the numbers that drive everything</h2>
+
+    <p>Lead time is the elapsed time from purchase order to delivery at the warehouse. It is the single most important scheduling variable in the entire FF&amp;E process, and the one most consistently underestimated by people who are new to the industry.</p>
+
+    <p>The rule-of-thumb ranges, corroborated by multiple sources [3] [4]:</p>
+
+    <div class="concept-grid">
+        <div class="concept-card" style="background: var(--green-light);">
+            <div class="card-icon">&#x1F3ED;</div>
+            <div class="card-title" style="color: var(--green);">Domestic: 6&ndash;10 weeks</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">US-made standard items</div>
+            <div class="card-desc">American manufacturers like Kimball Hospitality or Bernhardt (from Lesson 9). Shorter because no customs, no ocean freight, more predictable. But &ldquo;domestic&rdquo; does not mean &ldquo;fast&rdquo; &mdash; custom runs take longer.</div>
+        </div>
+        <div class="concept-card" style="background: var(--orange-light);">
+            <div class="card-icon">&#x1F6A2;</div>
+            <div class="card-title" style="color: var(--orange);">Overseas: 18&ndash;24 weeks</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">China, Vietnam, Turkey, Indonesia</div>
+            <div class="card-desc">Adds ocean transit (20&ndash;35 days West Coast / East Coast respectively), customs clearance, port handling, and inland trucking. A 22-week lead time means the PO must go out 22 weeks before install day.</div>
+        </div>
+        <div class="concept-card" style="background: var(--red-light);">
+            <div class="card-icon">&#x1F528;</div>
+            <div class="card-title" style="color: var(--red);">Custom millwork: 6&ndash;12 months</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">Reception desks, headboards, built-in bar</div>
+            <div class="card-desc">The longest-lead items on any hotel project. Shop drawings must be approved, materials sourced, fabrication completed, and shipping arranged. These items set the procurement start date for the whole project.</div>
+        </div>
+        <div class="concept-card" style="background: var(--purple-light);">
+            <div class="card-icon">&#x26A1;</div>
+            <div class="card-title" style="color: var(--purple);">Rush premium: +15&ndash;25%</div>
+            <div class="card-subtitle" style="color: var(--gray-700);">When expedited production is requested</div>
+            <div class="card-desc">Rushing production costs money. Some factories won&rsquo;t rush at all. And rushing production doesn&rsquo;t rush the ship &mdash; if the factory delivers three weeks early and the vessel doesn&rsquo;t sail for two more, the timeline improvement is partial.</div>
+        </div>
+    </div>
+
+    <p>This is why, as we first saw in Lesson 3, procurement has to start <em>while the building is still under construction</em>. A hotel with a scheduled opening twelve months from now and a 24-week lead time on overseas custom furniture is already behind schedule if nobody has signed a PO yet [3].</p>
+
+    <div class="pull-quote">
+        The lead time is not the vendor&rsquo;s problem. It is the project&rsquo;s problem, and the only way to solve it is to start earlier than feels necessary.
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 4 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 4. Freight, import, and customs &mdash; why a specialist earns their fee</h2>
+
+    <p>When the goods leave the factory, they enter a logistics chain that most people in the design and procurement world do not fully understand &mdash; and for good reason. It is a separate industry with its own specialists, its own risks, and its own pricing dynamics.</p>
+
+    <p>For imported goods, the chain looks roughly like this: factory packs and containerizes; an ocean freight carrier picks up the container; the container sails 20&ndash;35 days to a US port; a customs broker handles the entry documentation, duty payment, and release; port handling firms manage unloading; drayage truckers move the container from the port; and eventually an inland carrier delivers it to the warehouse.</p>
+
+    <p>Each step has a specialist. For FF&amp;E projects, the whole chain is usually managed by a <strong>freight forwarder</strong> &mdash; a firm that coordinates ocean or air freight, handles customs brokerage, and can arrange warehousing. Firms like Approved Forwarders, Freight Right, and worldwide specialists in hospitality logistics bundle all of this [5]. They exist because an interior designer or procurement firm should not be negotiating container rates with shipping lines or deciphering customs tariff codes during an active project.</p>
+
+    <h3>The landed cost reminder</h3>
+
+    <p>This is the moment the Lesson 8 landed-cost stack becomes concrete. Logistics typically adds <strong>6&ndash;25% to the product cost</strong> on hospitality projects [5]. The full loaded number includes freight, insurance, customs duty (remember: China upholstered furniture can run 30&ndash;35%+ stacked tariffs from Lesson 8), port fees, inland trucking, and warehousing. Budgets that only carry the FOB product price &mdash; the &ldquo;free on board&rdquo; factory cost &mdash; underestimate true landed cost by 15&ndash;35% [2].</p>
+
+    <div class="info-box orange">
+        <p><strong>A real tariff consequence:</strong> in 2025&ndash;2026, the stack of Section 301 and Section 232 furniture tariffs made certain Chinese-made items significantly more expensive than alternatives from Vietnam or domestic factories. But Vietnam carries its own baseline tariffs. Some purchasing agents responded by splitting orders &mdash; running domestic for shorter-lead items where US factories could compete, and overseas for the high-volume standard items where MOQ economics still favored it. None of this shows up in the product quote. It shows up in the final landed cost, and only if someone runs the math before the PO goes out.</p>
+    </div>
+
+    <div class="recall-box">
+        <div class="recall-title">&#x270B; Pull from earlier lessons</div>
+        <div class="recall-question">Without looking back: (a) From Lesson 8, what is the standard deposit structure on a manufacturer purchase order? (b) From Lesson 3, why does procurement start before the building is finished? (c) From Lesson 10, what must be completed before the deposit is wired? Give one-sentence answers to each.</div>
+        <div class="recall-hint">Three lessons, three facts &mdash; this is cumulative. If any of these are fuzzy, now is the moment to lock them in.</div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- PART 5 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 5. Receiving &mdash; the inspection nobody skips twice</h2>
+
+    <p>Goods from dozens of vendors converge at a regional warehouse. Each shipment arrives on a different day, from a different factory, on a different truck. The warehouse receives it, checks it in, and inventories it. This is the <strong>receiving step</strong>, and it is where the project&rsquo;s entire downstream quality hinges.</p>
+
+    <p>The receiving inspection is simple in principle: every item that arrives is checked against the purchase order. Right product? Right finish? Right quantity? Any damage? Any deviations from the CFA sample that was approved in Lesson 10? Each item is logged, photographed, and documented in a <strong>receiving report</strong> [5].</p>
+
+    <p>Skipping or rushing this step is described in the logistics literature as <strong>the single most common and most expensive FF&amp;E logistics failure</strong> [5]. Here is why: a damaged item discovered at the receiving dock means a replacement order. An item discovered at the dock costs two to four weeks for a domestic reorder. An item discovered at install &mdash; on the day installers are putting furniture in rooms, one week before opening &mdash; costs a missed opening date. At $15,000 per day of revenue for a 100-room hotel, the math closes fast. Skipping the receiving inspection is a way to convert a small logistics problem into a very large financial one.</p>
+
+    <div class="story-box">
+        <p>Reggie &mdash; the 3PL logistics lead who has been coordinating warehouse operations for three hotel openings this year &mdash; runs the receiving operation with a rule he calls &ldquo;photograph everything, flag everything, fix nothing without a sign-off.&rdquo; On one project, his team flagged fourteen chairs with a finish deviation against the CFA sample. The vendor wanted to argue. Reggie had the photos, timestamped and filed by item number, compared against the signed CFA on record. The vendor shipped replacements and absorbed the cost. Without the receiving inspection, those chairs would have gone into rooms, and the dispute would have happened during installation, with lawyers and a delayed opening in play.</p>
+    </div>
+
+    <h3>What the receiving report tracks</h3>
+
+    <p>A good receiving report records, for each line item: the PO number; the quantity ordered vs. quantity received; the condition on arrival (intact / damaged / partial); any finish or spec deviation observed; photographs; and the date and name of the person who inspected it. This document is the chain of custody for the physical goods and the primary evidence in any dispute about what arrived and when [5].</p>
+
+    <p>Third-party logistics firms (&ldquo;3PLs&rdquo;) that specialize in FF&amp;E &mdash; firms like Bailey&rsquo;s Allied, American Fargo, and Corrigan Logistics from Lesson 2 &mdash; know the hotel room-numbering scheme before goods arrive. That is the other half of the receiving discipline: goods don&rsquo;t just get inventoried in generic categories. They get barcoded and matched to the rooms they will eventually install in, so the delivery-to-site sequence is pre-organized at the warehouse, not improvised on install day [5].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 6 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 6. White-glove install &mdash; room by room, model room first</h2>
+
+    <p>Delivery to site is not &ldquo;drop the boxes on the loading dock.&rdquo; It is a choreographed operation that follows the hotel&rsquo;s construction sequencing, the elevator schedule, and the room-by-room turnover from the general contractor.</p>
+
+    <p>The industry term for this is <strong>white-glove installation</strong>: professional hospitality installers (not general movers) bring items in through the correct entrance, carry them to the correct floor and room, unpack, assemble, place, and remove all debris. The distinction matters because a hospitality installation crew knows how to move a casegood up a narrow hotel corridor without damaging the freshly painted walls, how to set a bed at the right height for the brand standard, and how to read a room elevation drawing. General movers emphatically do not. The industry advice is consistent: &ldquo;clients who use general movers deeply regret it&rdquo; [5].</p>
+
+    <div class="diagram">
+        <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="White-glove installation flow: model room, phased by floor, room by room">
+            <rect x="0" y="0" width="700" height="200" rx="16" fill="#F9FAFB" stroke="#E5E7EB"/>
+            <text x="350" y="28" text-anchor="middle" font-family="Inter" font-weight="700" font-size="14" fill="#374151">Hotel Install Sequence &mdash; Why Model Room Goes First</text>
+
+            <!-- Step 1: Model Room -->
+            <rect x="20" y="45" width="120" height="100" rx="8" fill="#E8790C"/>
+            <text x="80" y="72" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="white">MODEL ROOM</text>
+            <text x="80" y="88" text-anchor="middle" font-family="Inter" font-size="10" fill="white">Owner + brand</text>
+            <text x="80" y="101" text-anchor="middle" font-family="Inter" font-size="10" fill="white">walk through.</text>
+            <text x="80" y="114" text-anchor="middle" font-family="Inter" font-size="10" fill="white">Approve before</text>
+            <text x="80" y="127" text-anchor="middle" font-family="Inter" font-size="10" fill="white">full production.</text>
+            <text x="80" y="145" text-anchor="middle" font-family="Inter" font-size="9" fill="#FFD9B0">Changes here = cheap</text>
+
+            <!-- Arrow -->
+            <polygon points="152,95 168,88 168,102" fill="#374151"/>
+            <line x1="140" y1="95" x2="167" y2="95" stroke="#374151" stroke-width="2"/>
+
+            <!-- Step 2: Phased delivery -->
+            <rect x="170" y="45" width="130" height="100" rx="8" fill="#3451B2"/>
+            <text x="235" y="72" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="white">PHASED</text>
+            <text x="235" y="86" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="white">DELIVERY</text>
+            <text x="235" y="103" text-anchor="middle" font-family="Inter" font-size="10" fill="white">Goods arrive as</text>
+            <text x="235" y="116" text-anchor="middle" font-family="Inter" font-size="10" fill="white">floors are released</text>
+            <text x="235" y="129" text-anchor="middle" font-family="Inter" font-size="10" fill="white">by the GC. Not all</text>
+            <text x="235" y="142" text-anchor="middle" font-family="Inter" font-size="10" fill="white">at once.</text>
+
+            <!-- Arrow -->
+            <polygon points="312,95 328,88 328,102" fill="#374151"/>
+            <line x1="300" y1="95" x2="327" y2="95" stroke="#374151" stroke-width="2"/>
+
+            <!-- Step 3: Room by room -->
+            <rect x="330" y="45" width="130" height="100" rx="8" fill="#1A8F5C"/>
+            <text x="395" y="72" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="white">ROOM-BY-</text>
+            <text x="395" y="86" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="white">ROOM INSTALL</text>
+            <text x="395" y="103" text-anchor="middle" font-family="Inter" font-size="10" fill="white">Pre-barcoded to</text>
+            <text x="395" y="116" text-anchor="middle" font-family="Inter" font-size="10" fill="white">room number.</text>
+            <text x="395" y="129" text-anchor="middle" font-family="Inter" font-size="10" fill="white">White-glove crew,</text>
+            <text x="395" y="142" text-anchor="middle" font-family="Inter" font-size="10" fill="white">debris removed.</text>
+
+            <!-- Arrow -->
+            <polygon points="472,95 488,88 488,102" fill="#374151"/>
+            <line x1="460" y1="95" x2="487" y2="95" stroke="#374151" stroke-width="2"/>
+
+            <!-- Step 4: Punch list -->
+            <rect x="490" y="45" width="190" height="100" rx="8" fill="#7C3AED"/>
+            <text x="585" y="72" text-anchor="middle" font-family="Inter" font-size="11" font-weight="700" fill="white">PUNCH LIST</text>
+            <text x="585" y="89" text-anchor="middle" font-family="Inter" font-size="10" fill="white">Walkthrough &mdash; every</text>
+            <text x="585" y="102" text-anchor="middle" font-family="Inter" font-size="10" fill="white">defect logged. Items</text>
+            <text x="585" y="115" text-anchor="middle" font-family="Inter" font-size="10" fill="white">replaced / resolved</text>
+            <text x="585" y="128" text-anchor="middle" font-family="Inter" font-size="10" fill="white">before opening sign-off.</text>
+            <text x="585" y="145" text-anchor="middle" font-family="Inter" font-size="9" fill="#D8B4FE">Full treatment: Lesson 12</text>
+
+            <text x="350" y="185" text-anchor="middle" font-family="Inter" font-size="11" fill="#6B7280">Model room changes are cheap. Changes after full install are not. This is why the sequence is non-negotiable.</text>
+        </svg>
+        <div class="diagram-caption">The install sequence: model room sign-off first, then phased delivery floor by floor, room by room &mdash; then the punch list. Not all at once.</div>
+    </div>
+
+    <p>The <strong>model room</strong> &mdash; sometimes called the mock-up room or sample room &mdash; deserves specific attention. Before the full installation begins, one complete room is assembled: furniture placed, soft goods installed, artwork hung, every FF&amp;E item in its final position. The owner and the brand walk through it. They see the actual chair against the actual wall color under the actual lighting conditions in the actual room. This is the last design checkpoint before scale.</p>
+
+    <p>Changes after the model room are expensive. Changes discovered during full installation are very expensive. Changes discovered after all 300 rooms are installed are recoverable only with a large check or significant schedule impact. The model room converts design risk into design certainty while the cost of change is still reasonable [5].</p>
+
+    <!-- ============================================ -->
+    <!-- PART 7 -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Part 7. Closing the loop &mdash; real data back into the library</h2>
+
+    <p>When the project closes, something valuable exists that did not exist at the start: verified real-world sourcing data. Actual lead times (not quoted lead times &mdash; the ones that actually happened). Actual landed costs (not FOB estimates). Actual quality performance by vendor. What substitutions were made and how the alternatives performed. Which vendors expedited well and which went silent for six weeks.</p>
+
+    <p>This data is the raw material of the institutional knowledge that makes a firm better at the next project. In Lesson 5, when Helen talked about the value of the spec library &mdash; a reusable catalog of products and firms the studio has worked with &mdash; the asset she was describing gets richer when every closed project feeds actual outcomes back into it [4].</p>
+
+    <p>In practice, most firms capture some of this and lose the rest. The expediting notes live in Marco&rsquo;s inbox. The lead-time actuals exist in a cell in a spreadsheet that nobody will find next year. The vendor quality story gets told at a debrief meeting and then forgotten. The gap between what was learned on this project and what influences the next one is usually large enough to drive a truck through &mdash; which is why some projects make the same sourcing mistake twice with the same vendor, because nobody documented the first time.</p>
+
+    <p>The feedback loop from a closed project back into the reusable library is not automatic. It requires someone to make it happen, usually at closeout. What gets captured &mdash; actual lead times, actual prices, vendor reliability notes &mdash; is exactly the data that turns a rough budget estimate in the next project&rsquo;s Phase 1 into something defensible.</p>
+
+    <div class="info-box blue">
+        <p><strong>How this connects to the wider process:</strong> in Lesson 9 we saw vendor scorecards &mdash; the idea that a firm&rsquo;s history with each supplier (lead times, quality, responsiveness, pricing) is a genuine business asset. The receiving report, the expediting log, and the post-project debrief are the raw materials of that scorecard. Without them, the scorecard is opinion. With them, it is evidence.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SUMMARY -->
+    <!-- ============================================ -->
+
+    <h2 class="part-header">Chapter summary</h2>
+
+    <div class="layer-stack">
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4C4;</div>
+            <div class="layer-name" style="color: var(--blue);">The PO is binding</div>
+            <div class="layer-desc">50% deposit on acceptance. Submittal approval must precede the wire. PO date anchors the entire delivery schedule.</div>
+        </div>
+        <div class="layer-item" style="background: var(--orange-light);">
+            <div class="layer-icon">&#x1F4DE;</div>
+            <div class="layer-name" style="color: var(--orange);">Expediting is active, not passive</div>
+            <div class="layer-desc">Chasing the factory, catching discontinued items, aligning schedules. The silence is the danger, not the noise.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x23F1;</div>
+            <div class="layer-name" style="color: var(--red);">Lead times drive everything</div>
+            <div class="layer-desc">Domestic 6&ndash;10 wks; overseas 18&ndash;24 wks; custom millwork 6&ndash;12 months. Start earlier than feels necessary.</div>
+        </div>
+        <div class="layer-item" style="background: var(--purple-light);">
+            <div class="layer-icon">&#x1F4E6;</div>
+            <div class="layer-name" style="color: var(--purple);">Freight &amp; customs add real cost</div>
+            <div class="layer-desc">6&ndash;25% added on hospitality projects. FOB price alone understates true cost by 15&ndash;35%. A specialist earns their fee.</div>
+        </div>
+        <div class="layer-item" style="background: var(--red-light);">
+            <div class="layer-icon">&#x1F50D;</div>
+            <div class="layer-name" style="color: var(--red);">Never skip the receiving inspection</div>
+            <div class="layer-desc">The receiving report is the chain of custody. Damage found at the dock costs two weeks. Damage found at install costs an opening date.</div>
+        </div>
+        <div class="layer-item" style="background: var(--green-light);">
+            <div class="layer-icon">&#x1F3E8;</div>
+            <div class="layer-name" style="color: var(--green);">Model room first, then scale</div>
+            <div class="layer-desc">Owner and brand sign off on one complete room before full install. The model room converts design risk into design certainty.</div>
+        </div>
+        <div class="layer-item" style="background: var(--blue-light);">
+            <div class="layer-icon">&#x1F4DA;</div>
+            <div class="layer-name" style="color: var(--blue);">Close the feedback loop</div>
+            <div class="layer-desc">Actual lead times, landed costs, and vendor performance data from this project feed the library for the next one. Without it, mistakes recur.</div>
+        </div>
+    </div>
+
+    <div class="info-box green">
+        <p><strong>Coming up in Lesson 12:</strong> the full paper trail. The two approval loops from Lesson 10 get their complete treatment: the model room sign-off, the punch list and deficiency log in depth, the closeout package (warranties, FR certificates, asset records), and why an airtight audit trail matters when someone &mdash; owner, brand, or vendor &mdash; says &ldquo;I never approved that.&rdquo;</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HOMEWORK -->
+    <!-- ============================================ -->
+
+    <div class="homework">
+        <h2>Homework <span style="font-size: 14px; font-weight: 400; color: var(--gray-500);">&mdash; &asymp; 45 min</span></h2>
+
+        <h3>Required (for everyone):</h3>
+        <ol>
+            <li>
+                <strong>Map the failure modes.</strong> Three scenarios are listed below. For each: (a) identify which phase of the procurement pipeline the failure occurs in, (b) say which of the concepts from this lesson would catch it, and (c) estimate the schedule and cost consequence if it goes uncaught until install.
+                <ul style="margin: 10px 0 0 20px; font-size: 14px; color: var(--gray-700);">
+                    <li><strong>Scenario A:</strong> A vendor quotes a 12-week lead time. Nobody follows up. At week 14, Marco calls to ask about delivery. The vendor says production hasn&rsquo;t started yet because a fabric used in the COM spec wasn&rsquo;t shipped to the factory on time.</li>
+                    <li><strong>Scenario B:</strong> 90 chairs arrive at the warehouse from an overseas manufacturer. The receiving team is backlogged and decides to check a sample of ten, not all 90. Twenty-two of the unchecked chairs have a finish defect discovered three days before installation begins.</li>
+                    <li><strong>Scenario C:</strong> Dana&rsquo;s studio finishes the project, the hotel opens on time, and everyone celebrates. Nobody runs a project debrief or captures the actual lead times. Six months later, the same studio wins a nearly identical hotel project and quotes the same overseas manufacturer 18-week lead time in the budget &mdash; not knowing the actual lead time on the prior project was 26 weeks.</li>
+                </ul>
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        <strong>Scenario A:</strong> Expediting phase. The failure is no proactive production check; a COM fabric tracking gap (the fabric had to be sent to the factory and wasn&rsquo;t). If caught in week 2&ndash;3 via expediting: a two-week delay, manageable with schedule buffer. Caught at week 14: minimum 6-week delay to production, likely impacts opening. <strong>Scenario B:</strong> Receiving phase. A partial inspection is not a receiving inspection. Catching 22 defective chairs at the dock (day 1 of receiving): reorder immediately, 4&ndash;8 weeks for replacements, probably absorbed in the install window. Catching at install (day minus 3): emergency air freight at 4&ndash;6x cost, or missed opening, or rooms held back. <strong>Scenario C:</strong> Closeout/library feedback phase. No debrief = no captured lead-time actuals. The consequence is a budget built on an optimistic premise that replicates the same schedule risk on the next project. Discovering the error when the order is placed 8 weeks too late: overtime and rush premiums, possible scope cuts, possible delayed opening.
+                    </div>
+                </details>
+            </li>
+            <li style="margin-top: 20px;">
+                <strong>The cumulative picture.</strong> This task draws on Lessons 3, 8, 10, and 11. Trace a single line item &mdash; say, 120 custom lounge chairs at $850 per unit FOB from a factory in Vietnam &mdash; from PO through receiving. In your answer: (a) calculate the 50% deposit amount; (b) estimate the realistic lead time range; (c) name at least two landed-cost additions that will change the final unit cost (with a rough % impact); (d) describe what a receiving report needs to capture when they arrive; and (e) name the one step from Lesson 10 that should have been completed before the deposit was wired.
+                <details class="model-answer" style="margin-top: 10px; font-size: 14px;">
+                    <summary style="cursor: pointer; color: var(--blue); font-weight: 600;">&#x270B; Model answer &mdash; open after your own attempt</summary>
+                    <div style="margin-top: 8px; color: var(--gray-700);">
+                        (a) 120 × $850 = $102,000 total; 50% deposit = $51,000. (b) Vietnam overseas lead time: 18&ndash;24 weeks is the standard range for a standard item; custom with COM fabric could run 22&ndash;28 weeks. (c) Key landed-cost additions: (i) Vietnam baseline tariff (20% per Lesson 8) adds ~$170/unit at the $850 FOB base; (ii) Ocean freight (18&ndash;24 days transit to US East, roughly 5&ndash;10% of product cost estimated); (iii) customs brokerage, port handling, inland trucking add additional percentage. Total landed cost easily 30&ndash;40% above FOB. (d) Receiving report: PO number, quantity ordered vs. received, condition of each unit (intact/damaged/partial), finish observed vs. CFA approved, photographs, date and inspector name. (e) Submittal approval (specifically the CFA sample sign-off and product data review) must be complete before the deposit wire.
+                    </div>
+                </details>
+            </li>
+        </ol>
+
+        <h3 style="margin-top: 28px;">Advanced (optional):</h3>
+        <ol>
+            <li>
+                <strong>The expediting problem (AI-resilient):</strong> Think about a time when you were waiting for something important &mdash; a decision, a delivery, a result &mdash; and either you checked on it proactively or you assumed no news was good news. What happened in each case? Map your experience to the expediting concept: what was the equivalent of &ldquo;no news is good news&rdquo; thinking, what would Marco-style active follow-up have looked like, and what did it cost (in time, money, stress) to find out late vs. early? The AI cannot reconstruct your personal experience. That&rsquo;s the point.
+            </li>
+            <li style="margin-top: 16px;">
+                <strong>Why does the model room exist as a separate step?</strong> Using elaborative interrogation: if the owner already approved the FF&amp;E selections in design review (Loop A from Lesson 10), and submittals have been approved for all items (Loop B), why is the model room still necessary? What specific failure does it prevent that neither prior step catches? And if the model room reveals a problem &mdash; say, the lighting makes the approved wood finish look orange, not walnut &mdash; who is responsible for the cost of the change, and why? Work through this systematically before checking any external source.
+            </li>
+        </ol>
+
+        <div style="margin-top: 24px; padding: 16px 20px; background: var(--green-light); border-left: 4px solid var(--green); border-radius: 8px;">
+            <p style="margin: 0; font-size: 14px; color: var(--gray-700);"><strong>Homework widget for this lesson:</strong> use the <em>flow-order</em> widget to sequence the real procurement-to-delivery pipeline. You&rsquo;ll see the steps scrambled and place them in the correct order. The activity is in the platform under this lesson.</p>
+        </div>
+    </div>
+
+    <!-- SOURCES -->
+    <div class="sources-box">
+        <h3>Sources</h3>
+        <ol>
+            <li id="src-beyer-brown-process">
+                Beyer Brown &amp; Associates. &ldquo;FF&amp;E Procurement Process&rdquo; and &ldquo;Comprehensive FF&amp;E &amp; OS&amp;E Procurement Guide.&rdquo; <a href="https://www.beyerbrown.com/services/ffe-procurement-process">beyerbrown.com/services/ffe-procurement-process</a>.
+                <div class="src-meta">Expediting as discrete managed scope; pre-shipment QC; close-out and handover documentation &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-layer-ffe-process">
+                Layer. &ldquo;FF&amp;E Procurement Explained / The FF&amp;E Process: 6 Phases.&rdquo; <a href="https://layer.team/blog/ff-e-procurement-explained">layer.team/blog/ff-e-procurement-explained</a>.
+                <div class="src-meta">PO issuance after design approval and construction budget set; procurement parallel to construction; 16&ndash;26+ wk total timeline &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-datadrivenaec">
+                DataDrivenAEC. &ldquo;FF&amp;E Specification for Hospitality Projects.&rdquo; <a href="https://datadrivenaec.com/insights/ffe-specification-hospitality-projects">datadrivenaec.com/insights/ffe-specification-hospitality-projects</a>.
+                <div class="src-meta">Lead time ranges (domestic 6&ndash;10 wks, overseas 18&ndash;24 wks, custom 6+ months); why procurement starts during construction &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-baileys-logistics">
+                Bailey&rsquo;s Allied. &ldquo;FF&amp;E Logistics Guide.&rdquo; <a href="https://www.baileysallied.com/workplace/resources/ffe-logistics-guide">baileysallied.com/workplace/resources/ffe-logistics-guide</a>.
+                <div class="src-meta">Receiving inspection as the #1 costliest failure point; receiving report mechanics; room-number pre-coding; phased delivery; model room; professional install crew vs. general movers; $15k/day missed-opening cost; logistics = 6&ndash;25% of FF&amp;E spend &middot; accessed 2026-06</div>
+            </li>
+            <li id="src-procurist-budgets">
+                Procurist. &ldquo;How to Track FF&amp;E Budgets.&rdquo; <a href="https://procurist.io/blog/track-ffe-budgets">procurist.io/blog/track-ffe-budgets</a>.
+                <div class="src-meta">50% deposit on PO; spec/quoted/approved/actual four states; landed-cost understates FOB by 15&ndash;35%; scope creep 10&ndash;15% &middot; accessed 2026-06</div>
+            </li>
+        </ol>
+        <div class="src-note">
+            Footnotes [N] point to the numbered entry above. Marco, Reggie, Greta, Dana, and the rest are composite illustrations, not real people. The lounge-chair discontinuation scenario is fictional but built on documented expediting failures in FF&amp;E procurement. Tariff rates cited refer to the 2025&ndash;2026 US tariff environment and are subject to change; always verify against current USTR guidance before a budget decision.
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">
+        <p>How Buildings Get Furnished &mdash; Lesson 11 of 14</p>
+        <p>Questions? Ask in the <code>#fohlio-domain-course</code> Slack channel</p>
+        <p style="margin-top: 16px; font-size: 11px; color: var(--gray-300);">Next lesson: Sign-offs and the Paper Trail</p>
+    </div>
+
+</div>
+
+</body>
+</html>
