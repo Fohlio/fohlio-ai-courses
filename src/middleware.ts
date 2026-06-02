@@ -32,6 +32,15 @@ async function getTokenPayload(
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // The root landing page is public for everyone. It is auth-aware (shows
+  // "Sign in" for anonymous visitors and "Go to your courses" once signed in),
+  // so let both states through without redirecting. Exact match only — every
+  // deeper route stays default-deny below.
+  if (pathname === "/") {
+    return NextResponse.next();
+  }
+
   const user = await getTokenPayload(request);
 
   const isPublic = PUBLIC_PREFIXES.some((p) => pathname.startsWith(p));
