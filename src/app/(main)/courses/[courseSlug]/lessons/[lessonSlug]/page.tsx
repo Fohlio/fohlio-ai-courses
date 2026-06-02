@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlugOrId } from "@/lib/courseQueries";
+import { cssBaseForCourse } from "@/lib/lessonCss";
 import { LessonContent } from "@/components/lesson/LessonContent";
 import { LessonGoals } from "@/components/lesson/LessonGoals";
 import { LessonHeader } from "@/components/lesson/LessonHeader";
@@ -50,7 +51,7 @@ export default async function CourseLessonPage({
       <LessonHeader lesson={lesson} />
       <LessonGoals goals={lesson.learningGoals} />
       <VideoPlayer videoUrl={lesson.videoUrl} />
-      <LessonContent lesson={lesson} />
+      <LessonContent lesson={lesson} cssBundle={cssBaseForCourse(course.slug)} />
 
       {hasTasks && (
         <div className="flex justify-center">

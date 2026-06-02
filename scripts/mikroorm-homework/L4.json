@@ -137,11 +137,36 @@
   {
     "id": "mikroorm-task-4-3",
     "title": "Why must exactly one side own an M:M relation?",
-    "description": "Why does MikroORM require an explicit owning side in M:M relations, and what would happen at the schema and runtime level if both sides declared themselves as the owner? Reference: which side generates the pivot table INSERT/DELETE, and what SQL conflict or duplication would occur if both sides tried. Answer in 4-6 sentences.",
+    "description": "Pick the single most accurate description of what breaks if BOTH sides of an M:M relation declared themselves as the owner, then justify it in at least 25 words — naming which side emits the pivot INSERT/DELETE and what the mappedBy declaration actually signals.",
     "category": "advanced",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 3,
-    "modelAnswer": "Owning side = the one that emits INSERT/DELETE against the pivot table. If both sides claimed ownership, MikroORM would generate two pivot tables (book_tags AND tag_books) at schema time — and at runtime an attach would fire INSERTs into both, then on detach one side wouldn't know about the row in the other. The mappedBy declaration is what tells MikroORM 'I am the mirror, not the source of truth.' The pivot table is unambiguously owned: book.tags.add(tag) writes to book_tags only; tag.books reads from the same table via the mappedBy hint.",
+    "widgetId": "mcq-justify",
+    "widgetConfig": {
+      "question": "M:M needs exactly one owning side. What goes wrong if both Book.tags and Tag.books declared themselves owners (neither used mappedBy)?",
+      "options": [
+        {
+          "id": "two-pivots",
+          "label": "MikroORM generates two separate pivot tables (book_tags AND tag_books); writes fan out to both and detaches leave orphan rows the other side never sees."
+        },
+        {
+          "id": "slower",
+          "label": "The relation still works but every M:M query becomes about twice as slow."
+        },
+        {
+          "id": "runtime-only",
+          "label": "The schema is fine; only a runtime exception is thrown on the first add()."
+        },
+        {
+          "id": "no-pivot",
+          "label": "No pivot table is created at all, so the relation silently stores nothing."
+        }
+      ],
+      "correctOptionId": "two-pivots",
+      "minJustificationWords": 25,
+      "rubric": "Strong answers state that the owning side is the one that emits INSERT/DELETE against the pivot, that two owners means two pivot tables at schema time, and that mappedBy is the declaration 'I am the mirror, not the source of truth' — so book.tags.add(tag) must write to exactly one table that tag.books reads back."
+    },
+    "modelAnswer": "Correct pick: two-pivots. Owning side = the one that emits INSERT/DELETE against the pivot table. If both sides claimed ownership, MikroORM would generate two pivot tables (book_tags AND tag_books) at schema time — and at runtime an attach would fire INSERTs into both, then a detach on one side would leave a stale row in the other. The mappedBy declaration is what tells MikroORM 'I am the mirror, not the source of truth.' The pivot is then unambiguously owned: book.tags.add(tag) writes to book_tags only, and tag.books reads from that same table via the mappedBy hint.",
     "estimatedMinutes": 15
   }
 ]

@@ -13,6 +13,7 @@ import type { AnyHomeworkWidget } from "./types";
 // Unknown ids render an inline error so missing seeds are obvious.
 
 import { ArchDiagram } from "./arch-diagram/ArchDiagram";
+import { Categorize } from "./categorize/Categorize";
 import { CodeFill } from "./code-fill/CodeFill";
 import { CodeOrder } from "./code-order/CodeOrder";
 import { ConceptMatch } from "./concept-match/ConceptMatch";
@@ -23,10 +24,12 @@ import { McqJustify } from "./mcq-justify/McqJustify";
 import { ModelBuilder } from "./model-builder/ModelBuilder";
 import { QueryBuilder } from "./query-builder/QueryBuilder";
 import { QuizExplain } from "./quiz-explain/QuizExplain";
+import { RankOrder } from "./rank-order/RankOrder";
 import { TerminalTrace } from "./terminal-trace/TerminalTrace";
 
 export const homeworkWidgetRegistry = {
   "arch-diagram": ArchDiagram,
+  categorize: Categorize,
   "code-fill": CodeFill,
   "code-order": CodeOrder,
   "concept-match": ConceptMatch,
@@ -37,6 +40,7 @@ export const homeworkWidgetRegistry = {
   "model-builder": ModelBuilder,
   "query-builder": QueryBuilder,
   "quiz-explain": QuizExplain,
+  "rank-order": RankOrder,
   "terminal-trace": TerminalTrace,
 } satisfies Record<string, AnyHomeworkWidget>;
 

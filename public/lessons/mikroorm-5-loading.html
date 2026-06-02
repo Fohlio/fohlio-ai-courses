@@ -4,419 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MikroORM Course - Lesson 5</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-        :root {
-            --blue: #3451B2;
-            --blue-light: #E8EDFF;
-            --blue-mid: #C5D0F6;
-            --green: #1A8F5C;
-            --green-light: #E6F9F0;
-            --orange: #E8790C;
-            --orange-light: #FFF3E5;
-            --red: #DC2626;
-            --red-light: #FEE2E2;
-            --purple: #7C3AED;
-            --purple-light: #EDE9FE;
-            --gray-50: #F9FAFB;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-500: #6B7280;
-            --gray-700: #374151;
-            --gray-900: #111827;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--gray-900);
-            line-height: 1.7;
-            background: #fff;
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 32px;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 80px 0 60px;
-        }
-        .header h1 {
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--blue);
-            letter-spacing: -1px;
-        }
-        .header .subtitle {
-            font-size: 20px;
-            color: var(--gray-500);
-            margin-top: 8px;
-            font-weight: 400;
-        }
-        .header .lesson-badge {
-            display: inline-block;
-            background: var(--blue-light);
-            color: var(--blue);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        /* Goals box */
-        .goals-box {
-            background: var(--blue-light);
-            border-left: 4px solid var(--blue);
-            border-radius: 0 12px 12px 0;
-            padding: 28px 32px;
-            margin: 40px 0;
-        }
-        .goals-box h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--blue);
-            margin-bottom: 16px;
-        }
-        .goals-box ul { list-style: none; }
-        .goals-box li {
-            padding: 6px 0;
-            padding-left: 24px;
-            position: relative;
-            color: var(--gray-700);
-        }
-        .goals-box li::before {
-            content: "\2022";
-            color: var(--blue);
-            font-weight: bold;
-            position: absolute;
-            left: 8px;
-        }
-
-        /* Section headers */
-        .part-header {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--blue);
-            margin-top: 64px;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--blue-light);
-        }
-
-        h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-top: 36px;
-            margin-bottom: 12px;
-        }
-
-        h4 {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-top: 28px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--gray-700);
-        }
-
-        /* Code blocks */
-        code {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--gray-100);
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--gray-900);
-        }
-
-        pre {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-            margin: 16px 0;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-            font-size: inherit;
-        }
-        .comment { color: #6B7280; }
-        .keyword { color: #C084FC; }
-        .string { color: #86EFAC; }
-        .function { color: #93C5FD; }
-        .decorator { color: #F9A8D4; }
-        .type { color: #FCD34D; }
-
-        /* Info boxes */
-        .info-box {
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 20px 0;
-        }
-        .info-box p { margin-bottom: 0; }
-        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
-        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
-        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
-        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
-        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
-
-        /* Joke box */
-        .joke-box {
-            background: var(--gray-50);
-            border: 1px dashed var(--gray-300);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 24px 0;
-            font-size: 14px;
-            color: var(--gray-700);
-            line-height: 1.8;
-        }
-        .joke-box .joke-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        /* Story box */
-        .story-box {
-            background: var(--purple-light);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px 0;
-            border-left: 4px solid var(--purple);
-        }
-        .story-box p { color: var(--gray-700); }
-        .story-box .tech-note {
-            font-style: normal;
-            font-size: 13px;
-            color: var(--gray-500);
-            background: white;
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-top: 12px;
-            border: 1px solid var(--gray-200);
-        }
-        .story-box .tech-note code {
-            font-size: 12px;
-        }
-
-        /* Concept cards */
-        .concept-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin: 24px 0;
-        }
-        .concept-card {
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .concept-card .card-icon {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-        .concept-card .card-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-        .concept-card .card-subtitle {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .concept-card .card-desc {
-            font-size: 12px;
-            color: var(--gray-500);
-            text-align: left;
-        }
-
-        /* Comparison table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        th {
-            background: var(--blue);
-            color: white;
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-        }
-        td {
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--gray-200);
-            color: var(--gray-700);
-        }
-        tr:nth-child(even) { background: var(--gray-50); }
-
-        /* Diagram */
-        .diagram {
-            margin: 24px 0;
-        }
-        .diagram svg {
-            width: 100%;
-            height: auto;
-        }
-        .diagram-caption {
-            text-align: center;
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-top: 8px;
-        }
-
-        /* Step cards */
-        .step-card {
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 12px 0;
-        }
-        .step-card .step-number {
-            display: inline-block;
-            background: var(--blue);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 28px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-right: 12px;
-        }
-        .step-card .step-title {
-            font-weight: 600;
-            font-size: 15px;
-            display: inline;
-        }
-        .step-card .step-desc {
-            margin-top: 8px;
-            font-size: 14px;
-            color: var(--gray-500);
-        }
-
-        /* Layer visualization */
-        .layer-stack {
-            margin: 24px 0;
-        }
-        .layer-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 20px;
-            border-radius: 10px;
-            margin: 6px 0;
-            transition: transform 0.2s;
-        }
-        .layer-item:hover {
-            transform: translateX(4px);
-        }
-        .layer-item .layer-icon {
-            font-size: 24px;
-            margin-right: 16px;
-            width: 36px;
-            text-align: center;
-        }
-        .layer-item .layer-name {
-            font-weight: 600;
-            font-size: 15px;
-            min-width: 160px;
-        }
-        .layer-item .layer-desc {
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-left: auto;
-        }
-
-        /* Homework section */
-        .homework {
-            background: var(--blue-light);
-            border: 2px solid var(--blue-mid);
-            border-radius: 16px;
-            padding: 36px;
-            margin: 48px 0;
-        }
-        .homework h2 {
-            color: var(--blue);
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        /* Recall box */
-        .recall-box {
-            background: #FFFBEB;
-            border: 2px solid #FCD34D;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 28px 0;
-        }
-        .recall-box .recall-title {
-            font-weight: 700;
-            font-size: 15px;
-            color: #D97706;
-            margin-bottom: 10px;
-        }
-        .recall-box .recall-question {
-            font-size: 15px;
-            color: var(--gray-700);
-            margin-bottom: 12px;
-            line-height: 1.7;
-        }
-        .recall-box .recall-hint {
-            font-size: 13px;
-            color: var(--gray-500);
-            font-style: italic;
-        }
-
-        /* File tree */
-        .file-tree {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 2;
-            margin: 16px 0;
-            white-space: pre;
-            overflow-x: auto;
-        }
-        .file-tree .dir { color: #93C5FD; }
-        .file-tree .file { color: #E5E7EB; }
-        .file-tree .comment { color: #6B7280; }
-        .file-tree .highlight { color: #86EFAC; }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .concept-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -426,7 +14,6 @@
 <figure class="lesson-hero" style="margin:0 0 32px 0;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.06);">
 <img src="/lessons/images/mikroorm/lesson-5-hero.webp" alt="Editorial illustration for MikroORM Lesson 5 (library-themed)" width="1600" height="900" loading="eager" decoding="async" style="display:block;width:100%;height:auto;">
 </figure>
-
 
     <!-- HEADER -->
     <div class="header">
@@ -485,7 +72,6 @@
         </ul>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 1: THE N+1 PROBLEM -->
     <!-- ============================================ -->
@@ -514,7 +100,6 @@
     </div>
 
     <div data-widget="quiz-explain" data-config='{"minExplanationWords":12,"questions":[{"id":"q1","prompt":"You SELECT 100 authors, then iterate and read author.books for each. Query log shows 101 SELECTs. What just happened?","options":[{"id":"a","label":"The Identity Map is broken &mdash; file a bug."},{"id":"b","label":"Classic N+1: every access to an uninitialised collection triggers a per-row SELECT. Add populate: [&#39;books&#39;] to the original find."},{"id":"c","label":"Postgres needs to warm its query cache, so the first 100 are slow but the next 100 will be one query."},{"id":"d","label":"em.flush() was never called, so each read goes to disk."}],"correctOptionId":"b","rubric":"The fix is declaring intent at query time (populate: [&#39;books&#39;]), not after-the-fact caching. The librarian needs the request slip before they walk to the stacks."},{"id":"q2","prompt":"After fixing with populate, you see 2 queries total: one for authors, one SELECT ... WHERE author_id IN (?, ?, ...). Which strategy is in play?","options":[{"id":"a","label":"JOINED &mdash; everything joined into one big SQL."},{"id":"b","label":"SELECT_IN &mdash; one parent query, one batched child query keyed by parent IDs."},{"id":"c","label":"BALANCED with joined-only mode."},{"id":"d","label":"Dataloader bypassing the populate layer."}],"correctOptionId":"b","rubric":"SELECT_IN is the default for to-many. It avoids cartesian row-multiplication and keeps the wire payload tight even with high fan-out."}]}'></div>
-
 
     <!-- ============================================ -->
     <!-- PART 2: POPULATE -->
@@ -577,7 +162,6 @@
 });</code></pre>
 
     <p>Both behaviors are useful in different situations. Knowing the default is &ldquo;all&rdquo; saves you from a class of confusing bugs when you assume populated collections respect your outer filter.</p>
-
 
     <!-- ============================================ -->
     <!-- PART 3: THE THREE STRATEGIES -->
@@ -773,7 +357,6 @@ books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany<
         <em>Strategy is about the shape of data on the wire, not the count of round trips.</em>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 4: PARTIAL LOADING -->
     <!-- ============================================ -->
@@ -831,7 +414,6 @@ books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany<
 
     <p>If you forget to populate, <code>author.books.$</code> is a TypeScript compile error. We'll lean on this in the project work in later lessons; for now, just know it exists.</p>
 
-
     <!-- ============================================ -->
     <!-- PART 5: DATALOADERS -->
     <!-- ============================================ -->
@@ -865,7 +447,6 @@ books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany<
     <div class="info-box purple">
         <p><strong>Trade-off:</strong> dataloaders add one extra microtask of latency per batch (negligible) in exchange for collapsing N queries into 1 (huge). They shine in GraphQL where the query shape isn't known statically. Outside GraphQL, prefer <code>populate</code> &mdash; it's clearer and uses the same machinery without the indirection.</p>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 6: HANDS-ON -->
@@ -959,7 +540,6 @@ books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany<
 
     <p>Pull a sample of each log into your homework write-up. The point of the exercise is calibration: you want the visceral feel of &ldquo;this many queries for this many entities, with this strategy, equals this latency.&rdquo;</p>
 
-
     <!-- ============================================ -->
     <!-- RECALL & SUMMARY -->
     <!-- ============================================ -->
@@ -975,7 +555,6 @@ books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany<
         4. The default strategy is <code>BALANCED</code>. What does it actually do?</div>
         <div class="recall-hint">4/4: ready for Lesson 6 (QueryBuilder + Repositories). 2-3/4: re-read Parts 3 and 4. 0-1/4: re-read Part 3, then run the four experiments from Part 6 and watch the query logs side by side &mdash; nothing teaches loading strategies like watching them in your terminal.</div>
     </div>
-
 
     <h2 class="part-header">Summary</h2>
 
@@ -1011,49 +590,9 @@ books: () <span class="keyword">=&gt;</span> p.<span class="function">oneToMany<
         <p><strong>Coming up in Lesson 6:</strong> Repositories and the QueryBuilder. When the FilterQuery object isn't expressive enough &mdash; window functions, recursive CTEs, complex aggregations &mdash; you drop down to <code>em.createQueryBuilder()</code> and write SQL through a typed fluent API. Plus custom repositories for encapsulating common queries per entity.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- HOMEWORK -->
     <!-- ============================================ -->
-
-    <div class="homework">
-        <h2>Homework</h2>
-
-        <h3>Required (for everyone)</h3>
-        <ol>
-            <li>
-                <strong>Run all four loading experiments and capture N+1 vs SELECT_IN</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Seed at least 10 articles each with 2&ndash;5 tags. Write a script with four blocks: (1) N+1 naive loop &mdash; load articles, then access .tags on each inside the loop; (2) populate after load; (3) JOINED strategy; (4) SELECT_IN strategy. Run with debug logging. Submit a screenshot showing the query counts from experiments 1 and 4 side-by-side. The N+1 count must be visibly higher than SELECT_IN. This lesson is the heaviest of the course &mdash; budget extra time.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Expected query counts: N+1 = 1 SELECT for articles + 1 per article for tags = 11 for 10 articles. SELECT_IN = 1 SELECT for articles + 1 WHERE article_id IN (...) = 2 total. If you see the same count for both: check that experiment 1 actually accesses article.tags inside the loop &mdash; just loading articles does not trigger N+1 unless you iterate the collection.</p>
-                </details>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Loading strategy audit + L3/L4 callback</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (L5): Fetch articles with their author using JOINED, then SELECT_IN. Compare the actual SQL for each. Which produces more rows on the wire for 10 articles each with 1 author, and why? Part B (L3&ndash;L4 callback): After the JOINED query, call <code>em.findOne(Article, articles[0].id)</code> without populate. Does MikroORM fire another SELECT? Why or why not? (Think: is the article already in the Identity Map from the JOINED query?) Submit both parts as a single text response.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: For a 1:1 Article&rarr;Author relation, JOINED and SELECT_IN produce the same row count &mdash; the JOINED disadvantage only appears with to-many relations (e.g., tags), where each article row is duplicated once per tag. Part B: No SELECT fires. The JOINED query already registered all articles in the Identity Map by PK. em.findOne returns the managed instance directly &mdash; the Identity Map (L1/L3) and loading strategy cooperate.</p>
-                </details>
-            </li>
-        </ol>
-
-        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
-        <ol>
-            <li>
-                <strong>Break partial loading on purpose &mdash; plan, observe, fix</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Before writing code, write a 2-sentence prediction: if you use <code>fields: ['title', 'author.name']</code> on Article without including the FK column (authorId), what will <code>article.author</code> be &mdash; a proxy, undefined, or a fully-loaded Author? Implement it, observe the result. Fix it by adding the FK. Capture both the broken and fixed query logs. Revision note: was your prediction right? When would this failure be silent (no runtime error) but produce wrong data?</p>
-                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What is the most important thing to remember from this exercise that an AI answer about partial loading would not warn you about?</em></p>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Why is JOINED a poor default for to-many relations?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Why is <code>LoadStrategy.JOINED</code> a poor default when populating to-many relations, even though it produces a single database round-trip? Address three things: cartesian product expansion of result rows, bytes on the wire, and what MikroORM must do to de-duplicate rows during hydration. Then name one situation where JOINED is the right choice despite the row explosion. Answer in 5&ndash;7 sentences.</p>
-            </li>
-        </ol>
-    </div>
-
 
     <!-- FOOTER -->
     <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">

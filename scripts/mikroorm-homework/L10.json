@@ -166,11 +166,64 @@
   },
   {
     "id": "mikroorm-task-10-3",
-    "title": "MikroORM vs Prisma at Fohlio — structured comparison with personal stakes (AI-resilient)",
-    "description": "You encountered Prisma in the NestJS course (nestjs-4-data-layer). Now compare its mental model to MikroORM's across four dimensions: (1) Unit of Work vs Prisma's per-operation approach, (2) relation loading, (3) migration tooling, (4) NestJS integration. For each dimension: state which tool wins and under what conditions, and name a concrete Fohlio service shape where that dimension would tip the decision.\n\nAI-resilient constraint: at the end, paste your comparison into ChatGPT and ask it to summarize the winner. Then write 3 sentences explaining what the AI summary missed — specifically about your own experience with both tools across this course and the NestJS course. What nuance is invisible to an AI that has not run both tools against the same schema?\n\nMetacognitive memo: Looking back at all 10 lessons, which homework task changed your mental model the most, and why?",
+    "title": "MikroORM vs Prisma at Fohlio — which tool wins each scenario (AI-resilient)",
+    "description": "You met Prisma in the NestJS course (nestjs-4-data-layer). For each scenario below, decide which tool's mental model wins — MikroORM or Prisma — and drop it into the matching bucket. The scenarios span four dimensions: Unit of Work vs per-operation, relation loading, migration tooling, and NestJS integration. Judge by the condition described, not by overall popularity.",
     "category": "advanced",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 3,
+    "widgetId": "categorize",
+    "widgetConfig": {
+      "prompt": "Sort each scenario into the tool whose mental model wins under that specific condition. Judge by the condition, not by which tool is more popular.",
+      "categories": [
+        {
+          "id": "mikroorm",
+          "label": "MikroORM wins",
+          "hint": "Unit of Work, Identity Map, snapshot migrations, native request context"
+        },
+        {
+          "id": "prisma",
+          "label": "Prisma wins",
+          "hint": "Per-operation simplicity, discoverable include, diff-against-DB, client singleton"
+        }
+      ],
+      "items": [
+        {
+          "id": "uow-outbox",
+          "label": "A multi-entity transactional flow like the L9 outbox, where Book + OutboxEvent must commit or roll back together as one unit.",
+          "correctCategoryId": "mikroorm"
+        },
+        {
+          "id": "crud-simple",
+          "label": "A small CRUD endpoint where the per-operation model is less to learn and there is no multi-entity invariant.",
+          "correctCategoryId": "prisma"
+        },
+        {
+          "id": "load-readheavy",
+          "label": "Read-heavy domain logic that re-touches the same loaded entities repeatedly and benefits from the Identity Map plus populate.",
+          "correctCategoryId": "mikroorm"
+        },
+        {
+          "id": "load-oneoff",
+          "label": "A one-off query where a discoverable, explicit `include` is the easiest thing to read and hand to a new teammate.",
+          "correctCategoryId": "prisma"
+        },
+        {
+          "id": "mig-team",
+          "label": "A 4-developer team on diverging branches that needs deterministic, conflict-resistant migration generation.",
+          "correctCategoryId": "mikroorm"
+        },
+        {
+          "id": "mig-day1",
+          "label": "Day-one prototyping where diff-against-the-live-DB migrations are the simplest way to move fast.",
+          "correctCategoryId": "prisma"
+        },
+        {
+          "id": "nest-context",
+          "label": "A NestJS service that wants request-scoped EM, @Transactional decorators, and @CreateRequestContext for cron/queue handlers to feel native.",
+          "correctCategoryId": "mikroorm"
+        }
+      ]
+    },
     "modelAnswer": "Rubric: A passing answer names a specific Fohlio service per dimension and avoids 'it depends' as a verdict. Unit of Work: MikroORM wins when you have multi-entity transactional flows (the outbox pattern from L9); Prisma wins for simple CRUD where the per-operation model is less to learn. Loading: MikroORM populate + Identity Map wins on read-heavy domain logic; Prisma's `include` is more discoverable for one-off queries. Migrations: Prisma's diff-against-DB is simpler day-1; MikroORM's snapshot wins on a 4-developer team where branches diverge. NestJS integration: MikroORM's RequestContext + @Transactional decorators feel more native than Prisma's client-singleton pattern. AI summary usually defaults to 'Prisma is more popular, MikroORM is more powerful' — invisible to it: the lived experience of debugging an N+1 against the same schema in both tools.",
     "estimatedMinutes": 40
   }

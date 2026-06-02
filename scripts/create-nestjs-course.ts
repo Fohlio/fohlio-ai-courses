@@ -136,13 +136,13 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-1-3",
         title: "Scaffold airport-api and add GET /hello/:name",
         description:
-          "Install the Nest CLI (npm i -g @nestjs/cli), create the project (nest new airport-api), add the GET /hello/:name endpoint from Part 5, and start the server (npm run start:dev). Submit a screenshot showing the endpoint responding in your browser or Postman — the URL and the response body must both be visible. This is the one task you have to actually run code for — the airport doesn't exist until you scaffold it.",
+          "Install the Nest CLI (npm i -g @nestjs/cli), create the project (nest new airport-api), add the GET /hello/:name endpoint from Part 5, and start the server (npm run start:dev). Commit airport-api to a repo (e.g. airport-api on GitHub). Push your branch and submit the PR/branch link — the GET /hello/:name controller and the bootstrap in main.ts must be visible in the diff. This is the one task you have to actually run code for — the airport doesn't exist until you scaffold it.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 20,
         modelAnswer:
-          "Your screenshot should show: the URL bar containing /hello/<some-name>, and the response body returning a string that includes the name. The terminal should show no compile errors. If you see 'Cannot GET /hello/name', the route decorator or parameter decorator is missing — check @Get('hello/:name') and @Param('name'). This scaffolded airport-api is the project you will extend for the next 11 lessons.",
+          "Your PR diff should show: the GET /hello/:name route returning a string that includes the name, and the project compiling with no errors. If you saw 'Cannot GET /hello/name', the route decorator or parameter decorator is missing — check @Get('hello/:name') and @Param('name'). This scaffolded airport-api is the project you will extend for the next 11 lessons.",
       },
     ],
   },
@@ -235,9 +235,9 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-2-3",
         title: "Generate UsersModule + SharedModule with working CRUD",
         description:
-          "Run nest g module users, nest g controller users, nest g service users. Build GET /users, POST /users, GET /users/:id, DELETE /users/:id using an in-memory array. Then create a SharedModule that exports a UtilsService.generateId(), import it into both UsersModule and FlightsModule, and have both POST handlers call generateId() for ids. Submit a screenshot showing POST /users and POST /flights both returning objects whose ids came from the shared utility — proof that DI is actually wiring across modules.",
+          "Run nest g module users, nest g controller users, nest g service users. Build GET /users, POST /users, GET /users/:id, DELETE /users/:id using an in-memory array. Then create a SharedModule that exports a UtilsService.generateId(), import it into both UsersModule and FlightsModule, and have both POST handlers call generateId() for ids. Push your branch and submit the PR/branch link — the diff must show UsersModule/Controller/Service, the SharedModule exporting UtilsService, and both POST handlers calling generateId() (proof that DI is wiring across modules).",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 35,
         modelAnswer:
@@ -393,9 +393,9 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-3-3",
         title: "Build LoggerMiddleware + ApiKeyGuard + TimingInterceptor for real",
         description:
-          "Wire all three layers into airport-api. LoggerMiddleware logs 'METHOD /url - Xms' for every request. ApiKeyGuard reads X-Api-Key and returns 403 if wrong. TimingInterceptor logs 'Handler took Xms' after the handler. Apply guard and interceptor to GET /flights. Submit a screenshot showing: (1) terminal logs from middleware on 3+ endpoints, (2) a 403 from the guard with no key, (3) the interceptor's timing log for a successful authenticated request.",
+          "Wire all three layers into airport-api. LoggerMiddleware logs 'METHOD /url - Xms' for every request. ApiKeyGuard reads X-Api-Key and returns 403 if wrong. TimingInterceptor logs 'Handler took Xms' after the handler. Apply guard and interceptor to GET /flights. Push your branch and submit the PR/branch link — the diff must show all three classes (LoggerMiddleware, ApiKeyGuard, TimingInterceptor) plus where the middleware is registered and the guard/interceptor are applied to GET /flights.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 35,
         modelAnswer:
@@ -587,9 +587,9 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-4-3",
         title: "Wire PrismaService and persist flights across restart",
         description:
-          "Run npx prisma init, define the Flight model you designed above, run prisma migrate dev --name init. Generate PrismaModule + PrismaService (with onModuleInit calling $connect()). Inject PrismaService into FlightsService and rewrite CRUD to use Prisma. Prove persistence: POST a flight, stop the server, restart, GET /flights — the flight is still there. Submit screenshots of the migration.sql AND the GET /flights response after restart.",
+          "Run npx prisma init, define the Flight model you designed above, run prisma migrate dev --name init. Generate PrismaModule + PrismaService (with onModuleInit calling $connect()). Inject PrismaService into FlightsService and rewrite CRUD to use Prisma. Prove persistence locally: POST a flight, stop the server, restart, GET /flights — the flight is still there. Push your branch and submit the PR/branch link — the diff must include schema.prisma with the Flight model, the committed migration.sql, PrismaService, and the FlightsService CRUD rewritten onto Prisma.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 40,
         modelAnswer:
@@ -748,9 +748,9 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-5-3",
         title: "Wire register → login → protected GET /flights end-to-end",
         description:
-          "Add a User model (id, email, passwordHash, role) and migrate. Build AuthModule with POST /auth/register (bcrypt-hash the password, store), POST /auth/login (verify + sign JWT). Protect FlightsController with AuthGuard('jwt'). Submit a screenshot showing all three requests in sequence: register 201, login returning the JWT, GET /flights with Authorization: Bearer <token> returning 200.",
+          "Add a User model (id, email, passwordHash, role) and migrate. Build AuthModule with POST /auth/register (bcrypt-hash the password, store), POST /auth/login (verify + sign JWT). Protect FlightsController with AuthGuard('jwt'). Verify the full sequence locally (register 201, login returning the JWT, GET /flights with Authorization: Bearer <token> returning 200). Push your branch and submit the PR/branch link — the diff must show the User model + migration, AuthModule with register/login, the JWT strategy, and AuthGuard('jwt') applied to FlightsController.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 45,
         modelAnswer:
@@ -856,9 +856,9 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-6-3",
         title: "Build UpdateFlightDto + @Exclude on User passwordHash",
         description:
-          "Create UpdateFlightDto extends PartialType(CreateFlightDto) and wire it into PATCH /flights/:id. Add @Exclude() to the passwordHash field on a User response class. Wire ClassSerializerInterceptor globally. Submit a screenshot showing: (1) PATCH /flights/1 with a partial body returning the updated flight (proving PartialType works), (2) GET /me returning a user object with NO passwordHash key.",
+          "Create UpdateFlightDto extends PartialType(CreateFlightDto) and wire it into PATCH /flights/:id. Add @Exclude() to the passwordHash field on a User response class. Wire ClassSerializerInterceptor globally. Verify locally that PATCH /flights/1 with a partial body returns the updated flight and GET /me returns a user with NO passwordHash key. Push your branch and submit the PR/branch link — the diff must show UpdateFlightDto using PartialType, the PATCH handler, the User response class with @Exclude() on passwordHash, and ClassSerializerInterceptor registered globally.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 35,
         modelAnswer:
@@ -965,13 +965,60 @@ const LESSONS: LessonSeed[] = [
       },
       {
         id: "nestjs-task-7-3",
-        title: "Design the API surface for a new Bookings feature",
+        title: "Rank the new Bookings endpoints by how strict their protection must be",
         description:
-          "The airport-api needs a /bookings resource. Before writing any code, design the API surface: list the endpoints (method + path + brief description), identify which ones need JWT auth, which need role protection, and write the Swagger @ApiOperation description for each. Then: (1) decide whether bookings should be REST-only or also exposed via GraphQL, and defend your choice in 2–3 sentences. (2) Write 2 sentences you would add to the Swagger doc to warn a frontend developer about rate limits on the booking creation endpoint. Submit your design as structured text.",
+          "The airport-api is getting a /bookings resource. Before writing a line of code, you have to decide which endpoints need the heaviest guarding. Rank these five endpoints from most-restricted to least-restricted, mark the single endpoint that needs the strictest protection, and justify it. The wrong call here either over-blocks legitimate passengers or hands an attacker a write path you forgot to lock.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 3,
-        estimatedMinutes: 30,
+        widgetId: "rank-order",
+        widgetConfig: {
+          prompt:
+            "Design the access-control story for /bookings. Rank these five endpoints by how strict their auth + role protection must be — top = the route you guard the hardest.",
+          criterion: "how strict the access control must be",
+          topLabel: "Strictest protection",
+          bottomLabel: "Most open",
+          items: [
+            {
+              id: "delete",
+              label: "DELETE /bookings/:id — cancel any booking",
+              detail:
+                "Destructive and irreversible. A wrong caller wipes a paying passenger's seat. Needs JWT + admin role (or strict ownership check).",
+            },
+            {
+              id: "patch-paid",
+              label: "PATCH /bookings/:id — update a booking (incl. status)",
+              detail:
+                "A write path that can flip booking state. Must be JWT-protected and ownership/role-checked so a client cannot mutate someone else's booking.",
+            },
+            {
+              id: "post",
+              label: "POST /bookings — create a booking",
+              detail:
+                "A write path any authenticated passenger may call, but it must be rate-limited and never trust client-set fields like isPaid.",
+            },
+            {
+              id: "get-one",
+              label: "GET /bookings/:id — read one booking",
+              detail:
+                "Read of private data: must be JWT-protected and scoped so a passenger only reads their own booking.",
+            },
+            {
+              id: "get-availability",
+              label: "GET /flights/:id/availability — public seat counts",
+              detail:
+                "No personal data, useful for marketing pages. Can stay public (no JWT), just cached and rate-limited.",
+            },
+          ],
+          correctOrder: ["delete", "patch-paid", "post", "get-one", "get-availability"],
+          topPickId: "delete",
+          minJustificationWords: 20,
+          explanation:
+            "Destructive, irreversible writes (DELETE) demand the strictest guard — JWT plus admin/ownership. State-changing writes (PATCH) come next, then create (POST, authenticated + rate-limited + no trusted client fields), then reading a private record (GET /:id, JWT + ownership-scoped). Public, non-personal reads like seat availability can stay open behind a cache and rate limit. The pattern: protection scales with how much damage a malicious caller can do, not with how often the route is hit.",
+        },
+        modelAnswer:
+          "Order: DELETE > PATCH > POST > GET /:id > GET availability. DELETE tops the list because it is destructive and irreversible — a single wrong caller cancels a paying passenger's seat, so it needs JWT plus an admin role or a hard ownership check. PATCH can flip booking state, POST is an authenticated-but-rate-limited write that must never trust a client-supplied isPaid, GET /:id reads private data so it must be ownership-scoped, and public seat availability carries no personal data so it can stay open behind a cache. The rule: protection scales with blast radius, not request volume. (For Swagger, you would still add an @ApiOperation per endpoint and a note on the POST about the rate limit.)",
+        estimatedMinutes: 18,
       },
     ],
   },
@@ -1130,13 +1177,13 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-8-3",
         title: "Wire BullMQ notifications + a CleanupService cron job",
         description:
-          "Install @nestjs/bullmq and run Redis. Register a 'notifications' queue. When POST /flights succeeds (JWT-protected from Lesson 5), enqueue a 'flight-created' job; build a processor that logs 'Notification sent for flight <id>'. Add @nestjs/schedule and a CleanupService with @Cron('*/2 * * * *') logging '[CRON] Checking at <ISO timestamp>'. Run for 6+ minutes. Screenshot must show the BullMQ processor log triggered by POST /flights AND at least 3 cron lines at 2-minute intervals.",
+          "Install @nestjs/bullmq and run Redis. Register a 'notifications' queue. When POST /flights succeeds (JWT-protected from Lesson 5), enqueue a 'flight-created' job; build a processor that logs 'Notification sent for flight <id>'. Add @nestjs/schedule and a CleanupService with @Cron('*/2 * * * *') logging '[CRON] Checking at <ISO timestamp>'. Verify locally (run for 6+ minutes — the processor fires on POST /flights and the cron logs at 2-minute intervals). Push your branch and submit the PR/branch link — the diff must show the queue registration, the enqueue on POST /flights, the processor, and the CleanupService with the @Cron decorator.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 45,
         modelAnswer:
-          "Common failures: Redis not running (ECONNREFUSED 127.0.0.1:6379); @Processor('notifications') name does not match the queue name; ScheduleModule.forRoot() not imported (cron fires silently). The screenshot proves the airport's back-of-house work loop is running.",
+          "Common failures: Redis not running (ECONNREFUSED 127.0.0.1:6379); @Processor('notifications') name does not match the queue name; ScheduleModule.forRoot() not imported (cron fires silently). The PR proves the airport's back-of-house work loop is running.",
       },
     ],
   },
@@ -1254,9 +1301,9 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-9-3",
         title: "Build the TCP notifications microservice + WebSocket gateway",
         description:
-          "Scaffold a sibling notifications-service as a TCP microservice on port 4000 with @EventPattern('flight.created') logging the flight id. From airport-api, emit 'flight.created' after a successful POST /flights. Add a FlightsGateway with @WebSocketGateway() that broadcasts 'flight_updated' on every PATCH. Submit a screenshot of both terminals AND a WebSocket client (browser console or Postman WS) receiving the event after a PATCH.",
+          "Scaffold a sibling notifications-service as a TCP microservice on port 4000 with @EventPattern('flight.created') logging the flight id. From airport-api, emit 'flight.created' after a successful POST /flights. Add a FlightsGateway with @WebSocketGateway() that broadcasts 'flight_updated' on every PATCH. Verify locally that both services talk and a WS client receives the event after a PATCH. Push your branch(es) and submit the PR/branch link — the diff must show the notifications-service with the @EventPattern handler, the client emit on POST /flights, and the FlightsGateway broadcasting on PATCH.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 50,
         modelAnswer:
@@ -1376,9 +1423,9 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-10-3",
         title: "Ship airport-api: 5 unit + 2 e2e tests, /health endpoint, live deploy",
         description:
-          "Write at least 5 unit tests (Jest, mocked PrismaService) for FlightsService. Write 2 e2e tests (Supertest) for FlightsController — happy path and 401. Add @nestjs/terminus with /health checking DB connectivity. Deploy to Vercel/Railway/Fly.io/Docker. Submit a screenshot showing: (1) Jest output with 5+ passing tests, (2) e2e output with 2+ passing, (3) GET <live-url>/health returning 200 with status: 'ok'.",
+          "Write at least 5 unit tests (Jest, mocked PrismaService) for FlightsService. Write 2 e2e tests (Supertest) for FlightsController — happy path and 401. Add @nestjs/terminus with /health checking DB connectivity. Deploy to Vercel/Railway/Fly.io/Docker. Push your branch and submit the PR/branch link — the diff must show the 5+ unit tests, the 2 e2e tests, and the /health terminus setup. Include the live deployment URL (its /health should return 200 with status: 'ok') in the PR description.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 60,
         modelAnswer:
@@ -1512,13 +1559,40 @@ const LESSONS: LessonSeed[] = [
       },
       {
         id: "nestjs-task-11-3",
-        title: "Audit a Fohlio module against the Module Convention",
+        title: "Sort a Fohlio module's files into the Module Convention slots",
         description:
-          "Open the asuncion repo. Pick any module other than users (try bookings, workspaces, or invitations). Take a screenshot of its folder structure. Then write a short analysis: (1) Which files map to which Module Convention slot (entities/, dto/, repositories/, service.ts, controller.ts, module.ts)? (2) Is there anything that violates the 'no util files' rule — a *.util.ts, a *.helper.ts, or a plain function doing side-effectful work? (3) If you found a violation, describe what it should be refactored into.",
+          "Here are the files from a real Fohlio feature module, jumbled. Drop each one into the Module Convention slot it belongs to — and put any file that violates the 'no util files' rule into the Convention Violation bucket. Get this right and you can read any module in the asuncion repo at a glance; miss the violation and you have just merged an unmockable, untraceable dependency.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "widget",
         order: 3,
-        estimatedMinutes: 30,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt:
+            "Sort each file into its Module Convention slot. The slots come straight from architecture.md > Module Convention. One file does NOT belong in any legitimate slot — that is the 'no util files' violation; drop it into the violation bucket.",
+          categories: [
+            { id: "entities", label: "entities/", hint: "MikroORM entities (extends BaseEntity)" },
+            { id: "dto", label: "dto/", hint: "request/response DTOs with class-validator" },
+            { id: "repositories", label: "repositories/", hint: "all DB query construction lives here" },
+            { id: "service", label: "<feature>.service.ts", hint: "exactly one primary service — thin orchestration" },
+            { id: "controller", label: "<feature>.controller.ts", hint: "exactly one primary controller" },
+            { id: "module", label: "<feature>.module.ts", hint: "wires it all together" },
+            { id: "violation", label: "Convention Violation", hint: "breaks the 'no util files' rule" },
+          ],
+          items: [
+            { id: "i-entity", label: "booking.entity.ts", correctCategoryId: "entities" },
+            { id: "i-create-dto", label: "create-booking.dto.ts", correctCategoryId: "dto" },
+            { id: "i-update-dto", label: "update-booking.dto.ts", correctCategoryId: "dto" },
+            { id: "i-repo", label: "repositories/booking.repository.ts", correctCategoryId: "repositories" },
+            { id: "i-repo-spec", label: "repositories/booking.repository.spec.ts", correctCategoryId: "repositories" },
+            { id: "i-service", label: "bookings.service.ts", correctCategoryId: "service" },
+            { id: "i-controller", label: "bookings.controller.ts", correctCategoryId: "controller" },
+            { id: "i-module", label: "bookings.module.ts", correctCategoryId: "module" },
+            { id: "i-util", label: "verify-booking-workspace.util.ts (imported + called inside the service)", correctCategoryId: "violation" },
+          ],
+        },
+        modelAnswer:
+          "The canonical layout: entities/ holds booking.entity.ts; dto/ holds the create/update DTOs; repositories/ holds the repository AND its .spec.ts (the spec sits next to the file it tests and hits a real Postgres); then exactly one bookings.service.ts, one bookings.controller.ts, one bookings.module.ts at the module root. The odd one out is verify-booking-workspace.util.ts: a .util.ts that is imported and called inside the service is an implicit dependency — invisible to the constructor, unmockable in tests, unseen by static analysis. The fix is to promote it to an @Injectable() class and inject it through the constructor. The rule has zero exceptions: every dependency a service needs arrives through its constructor.",
+        estimatedMinutes: 18,
       },
     ],
   },
@@ -1681,9 +1755,9 @@ const LESSONS: LessonSeed[] = [
         id: "nestjs-task-12-3",
         title: "Wire @CurrentUser() decorator + workspaceId isolation on /flights",
         description:
-          "Add workspaceId: string to Flight, migrate. Update FlightsRepository so every query (findAll, findById, update, remove) filters by workspaceId. Build a @CurrentUser() param decorator that reads X-Workspace-Id from request headers. Add GET /me returning the decoded value. Submit a screenshot showing: (1) GET /me with X-Workspace-Id: ws-001 returning { workspaceId: 'ws-001' }, (2) GET /flights with two workspaceIds in the DB returning only the ws-001 ones.",
+          "Add workspaceId: string to Flight, migrate. Update FlightsRepository so every query (findAll, findById, update, remove) filters by workspaceId. Build a @CurrentUser() param decorator that reads X-Workspace-Id from request headers. Add GET /me returning the decoded value. Verify locally that GET /me echoes the header and GET /flights only returns the rows for the current workspaceId. Push your branch and submit the PR/branch link — the diff must show the workspaceId field + migration, every FlightsRepository query filtered by workspaceId, the @CurrentUser() decorator, and the GET /me handler.",
         category: "advanced",
-        submissionType: "screenshot",
+        submissionType: "pr_link",
         order: 3,
         estimatedMinutes: 45,
         modelAnswer:

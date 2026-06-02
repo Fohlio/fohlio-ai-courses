@@ -4,419 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MikroORM Course - Lesson 1</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-        :root {
-            --blue: #3451B2;
-            --blue-light: #E8EDFF;
-            --blue-mid: #C5D0F6;
-            --green: #1A8F5C;
-            --green-light: #E6F9F0;
-            --orange: #E8790C;
-            --orange-light: #FFF3E5;
-            --red: #DC2626;
-            --red-light: #FEE2E2;
-            --purple: #7C3AED;
-            --purple-light: #EDE9FE;
-            --gray-50: #F9FAFB;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-500: #6B7280;
-            --gray-700: #374151;
-            --gray-900: #111827;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--gray-900);
-            line-height: 1.7;
-            background: #fff;
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 32px;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 80px 0 60px;
-        }
-        .header h1 {
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--blue);
-            letter-spacing: -1px;
-        }
-        .header .subtitle {
-            font-size: 20px;
-            color: var(--gray-500);
-            margin-top: 8px;
-            font-weight: 400;
-        }
-        .header .lesson-badge {
-            display: inline-block;
-            background: var(--blue-light);
-            color: var(--blue);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        /* Goals box */
-        .goals-box {
-            background: var(--blue-light);
-            border-left: 4px solid var(--blue);
-            border-radius: 0 12px 12px 0;
-            padding: 28px 32px;
-            margin: 40px 0;
-        }
-        .goals-box h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--blue);
-            margin-bottom: 16px;
-        }
-        .goals-box ul { list-style: none; }
-        .goals-box li {
-            padding: 6px 0;
-            padding-left: 24px;
-            position: relative;
-            color: var(--gray-700);
-        }
-        .goals-box li::before {
-            content: "\2022";
-            color: var(--blue);
-            font-weight: bold;
-            position: absolute;
-            left: 8px;
-        }
-
-        /* Section headers */
-        .part-header {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--blue);
-            margin-top: 64px;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--blue-light);
-        }
-
-        h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-top: 36px;
-            margin-bottom: 12px;
-        }
-
-        h4 {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-top: 28px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--gray-700);
-        }
-
-        /* Code blocks */
-        code {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--gray-100);
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--gray-900);
-        }
-
-        pre {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-            margin: 16px 0;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-            font-size: inherit;
-        }
-        .comment { color: #6B7280; }
-        .keyword { color: #C084FC; }
-        .string { color: #86EFAC; }
-        .function { color: #93C5FD; }
-        .decorator { color: #F9A8D4; }
-        .type { color: #FCD34D; }
-
-        /* Info boxes */
-        .info-box {
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 20px 0;
-        }
-        .info-box p { margin-bottom: 0; }
-        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
-        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
-        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
-        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
-        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
-
-        /* Joke box */
-        .joke-box {
-            background: var(--gray-50);
-            border: 1px dashed var(--gray-300);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 24px 0;
-            font-size: 14px;
-            color: var(--gray-700);
-            line-height: 1.8;
-        }
-        .joke-box .joke-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        /* Story box */
-        .story-box {
-            background: var(--purple-light);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px 0;
-            border-left: 4px solid var(--purple);
-        }
-        .story-box p { color: var(--gray-700); }
-        .story-box .tech-note {
-            font-style: normal;
-            font-size: 13px;
-            color: var(--gray-500);
-            background: white;
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-top: 12px;
-            border: 1px solid var(--gray-200);
-        }
-        .story-box .tech-note code {
-            font-size: 12px;
-        }
-
-        /* Concept cards */
-        .concept-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin: 24px 0;
-        }
-        .concept-card {
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .concept-card .card-icon {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-        .concept-card .card-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-        .concept-card .card-subtitle {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .concept-card .card-desc {
-            font-size: 12px;
-            color: var(--gray-500);
-            text-align: left;
-        }
-
-        /* Comparison table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        th {
-            background: var(--blue);
-            color: white;
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-        }
-        td {
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--gray-200);
-            color: var(--gray-700);
-        }
-        tr:nth-child(even) { background: var(--gray-50); }
-
-        /* Diagram */
-        .diagram {
-            margin: 24px 0;
-        }
-        .diagram svg {
-            width: 100%;
-            height: auto;
-        }
-        .diagram-caption {
-            text-align: center;
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-top: 8px;
-        }
-
-        /* Step cards */
-        .step-card {
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 12px 0;
-        }
-        .step-card .step-number {
-            display: inline-block;
-            background: var(--blue);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 28px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-right: 12px;
-        }
-        .step-card .step-title {
-            font-weight: 600;
-            font-size: 15px;
-            display: inline;
-        }
-        .step-card .step-desc {
-            margin-top: 8px;
-            font-size: 14px;
-            color: var(--gray-500);
-        }
-
-        /* Layer visualization */
-        .layer-stack {
-            margin: 24px 0;
-        }
-        .layer-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 20px;
-            border-radius: 10px;
-            margin: 6px 0;
-            transition: transform 0.2s;
-        }
-        .layer-item:hover {
-            transform: translateX(4px);
-        }
-        .layer-item .layer-icon {
-            font-size: 24px;
-            margin-right: 16px;
-            width: 36px;
-            text-align: center;
-        }
-        .layer-item .layer-name {
-            font-weight: 600;
-            font-size: 15px;
-            min-width: 160px;
-        }
-        .layer-item .layer-desc {
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-left: auto;
-        }
-
-        /* Homework section */
-        .homework {
-            background: var(--blue-light);
-            border: 2px solid var(--blue-mid);
-            border-radius: 16px;
-            padding: 36px;
-            margin: 48px 0;
-        }
-        .homework h2 {
-            color: var(--blue);
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        /* Recall box */
-        .recall-box {
-            background: #FFFBEB;
-            border: 2px solid #FCD34D;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 28px 0;
-        }
-        .recall-box .recall-title {
-            font-weight: 700;
-            font-size: 15px;
-            color: #D97706;
-            margin-bottom: 10px;
-        }
-        .recall-box .recall-question {
-            font-size: 15px;
-            color: var(--gray-700);
-            margin-bottom: 12px;
-            line-height: 1.7;
-        }
-        .recall-box .recall-hint {
-            font-size: 13px;
-            color: var(--gray-500);
-            font-style: italic;
-        }
-
-        /* File tree */
-        .file-tree {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 2;
-            margin: 16px 0;
-            white-space: pre;
-            overflow-x: auto;
-        }
-        .file-tree .dir { color: #93C5FD; }
-        .file-tree .file { color: #E5E7EB; }
-        .file-tree .comment { color: #6B7280; }
-        .file-tree .highlight { color: #86EFAC; }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .concept-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -426,7 +14,6 @@
 <figure class="lesson-hero" style="margin:0 0 32px 0;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.06);">
 <img src="/lessons/images/mikroorm/lesson-1-hero.webp" alt="Editorial illustration for MikroORM Lesson 1 (library-themed)" width="1600" height="900" loading="eager" decoding="async" style="display:block;width:100%;height:auto;">
 </figure>
-
 
     <!-- HEADER -->
     <div class="header">
@@ -509,7 +96,6 @@
         <div class="recall-question">If MikroORM's <code>Book</code> class has no <code>save()</code> method, no <code>delete()</code>, no database awareness at all &mdash; how does the ORM know that <code>book.title = 'New Title'</code> needs to become an <code>UPDATE</code> statement? Take ten seconds and write your guess.</div>
         <div class="recall-hint">There's no wrong answer. Most people guess &ldquo;proxies&rdquo; or &ldquo;getters/setters&rdquo;. The real answer is simpler &mdash; and you'll see it in Part 2.</div>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 2: THE THREE PATTERNS -->
@@ -610,7 +196,6 @@ order.customer.tier = <span class="string">'gold'</span>;
         <em>The first time the penny drops on Unit of Work, you stop writing five-statement transactions forever.</em>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 3: THE RECORDS LIBRARY ANALOGY -->
     <!-- ============================================ -->
@@ -707,7 +292,6 @@ order.customer.tier = <span class="string">'gold'</span>;
         <div class="recall-question">Without scrolling up, match these three: <strong>(a)</strong> guarantees one JS object per database row, <strong>(b)</strong> collects changes during a request and applies them all on flush, <strong>(c)</strong> the orchestrator that you actually call methods on. Which is the Identity Map, which is the Unit of Work, which is the EntityManager?</div>
         <div class="recall-hint">3/3: ready for hands-on. 1-2/3: re-read the table once. The first time you build something, it'll feel arbitrary; by Lesson 4 it'll feel obvious.</div>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 4: YOUR FIRST MIKROORM PROJECT -->
@@ -899,7 +483,6 @@ title: War and Peace</code></pre>
 
     <div data-widget="step-player" data-config='{"prompt":"Walk through what em.flush() does &mdash; the head librarian&#39;s end-of-shift routine.","steps":[{"title":"1. Snapshot diff","body":"The Unit of Work compares each tracked entity to the snapshot it stored when the entity was loaded or persisted. Anything that changed lands in the change-set: new inserts, updated rows, scheduled deletes."},{"title":"2. Order by dependency","body":"Inserts and deletes are reordered so parent rows exist before children reference them, and children are removed before parents. You never write this ordering yourself."},{"title":"3. BEGIN transaction","body":"The driver opens an implicit transaction. Every SQL statement from this flush will commit together or roll back together &mdash; the master register never sees a half-done shift."},{"title":"4. Run batched SQL","body":"Multiple inserts of the same entity become one multi-row INSERT. Updates touch only the changed columns. The Identity Map ensures duplicate findOne calls hit cache, not the database."},{"title":"5. COMMIT and re-snapshot","body":"On success the driver commits, the Unit of Work clears its change-set, and each surviving entity gets a fresh snapshot so the next flush has a clean baseline."}]}'></div>
 
-
     <!-- ============================================ -->
     <!-- PART 5: WHAT HAPPENS UNDER THE HOOD -->
     <!-- ============================================ -->
@@ -998,7 +581,6 @@ app.<span class="function">use</span>((req, res, next) <span class="keyword">=&g
         <div class="recall-hint">4/4: ready for Lesson 2. 2-3/4: re-read Parts 2 and 3. 0-1/4: take a break, come back tomorrow, and start from Part 2 &mdash; this is the conceptual core of the entire course and there's no shame in needing two passes.</div>
     </div>
 
-
     <!-- ============================================ -->
     <!-- SUMMARY -->
     <!-- ============================================ -->
@@ -1034,49 +616,9 @@ app.<span class="function">use</span>((req, res, next) <span class="keyword">=&g
         <p><strong>Coming up in Lesson 2:</strong> We go deep on entities. <code>defineEntity</code> versus decorators, every property type and modifier you'll use, primary keys (bigint vs UUID), the difference between <code>nullable</code> and optional, custom types, naming strategy. By the end of Lesson 2, you'll be able to model any real-world table without looking it up.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- HOMEWORK -->
     <!-- ============================================ -->
-
-    <div class="homework">
-        <h2>Homework</h2>
-
-        <h3>Required (for everyone)</h3>
-        <ol>
-            <li>
-                <strong>Scaffold archive-api and prove the Identity Map</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Set up a local Postgres database named <code>archive</code>. Install <code>@mikro-orm/core</code>, <code>@mikro-orm/postgresql</code>, and <code>@mikro-orm/reflection</code>. Create <code>mikro-orm.config.ts</code>. Define a <code>Book</code> entity with <code>id</code> (bigint PK), <code>title</code> (string, max 200), and <code>createdAt</code> (datetime). Write <code>main.ts</code> that: (1) calls <code>MikroORM.init()</code>, (2) persists two Book instances in one flush, (3) fetches one by id, and (4) <code>console.log('same instance?', book === fetched)</code>. Run <code>npm start</code> and submit a screenshot of the terminal showing the INSERT log, the SELECT log, and <code>same instance? true</code>.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The terminal must show: (1) a BEGIN followed by batched INSERTs for both books in one transaction, then COMMIT; (2) a single SELECT WHERE id = &lt;n&gt; for the findOne call; (3) "same instance? true" &mdash; confirming the Identity Map returned the already-managed object. If you see two SELECTs, the entity was not registered before the second findOne &mdash; check that you called em.persist() before em.flush(), not em.insert().</p>
-                </details>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Explain the Unit of Work in your own words</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">In 4&ndash;6 sentences answer: what does the Unit of Work pattern do, and why does MikroORM flush all changes in a single transaction rather than one-by-one? Use at least one concrete example tied to the Records Library analogy (the librarian, the catalogue card, the reading room). Submit as text.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A good answer covers three things: (1) the Unit of Work collects every change made to managed entities during the request without touching the database yet; (2) on flush(), MikroORM orders those changes by foreign-key dependency and wraps them in a single transaction; (3) library analogy: the librarian takes notes on every change at the reading-room desk, then at closing time walks to the storeroom once and commits everything in the right order. Watch for: answers that conflate the Identity Map with the Unit of Work &mdash; the Identity Map is about instance uniqueness; the UoW is about deferred write batching.</p>
-                </details>
-            </li>
-        </ol>
-
-        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
-        <ol>
-            <li>
-                <strong>Why is the Identity Map per-request, not global?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Draft a 3&ndash;5 sentence answer explaining why a shared, global Identity Map would be catastrophic in a multi-request web server. Then test your answer: paste your draft into ChatGPT and ask it to improve it. Identify one thing ChatGPT added or changed that you agree with, and one thing it missed or got wrong. Submit: your original draft, the ChatGPT output, and your one-line verdict on each. (Hint: think about concurrent requests mutating the same in-memory Book instance, and what "stale data" means when 50 HTTP handlers share one map.)</p>
-                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What was hard to articulate? What would an AI summary of this lesson probably miss about why per-request isolation matters?</em></p>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Why does MikroORM choose Data Mapper over Active Record?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Why does keeping persistence logic out of the entity class make the domain model easier to test, and why doesn't that benefit show up on small projects? Answer in 4&ndash;6 sentences. Consider: what does an Active Record entity need to import to call <code>.save()</code>, and what does that import do to your unit tests?</p>
-            </li>
-        </ol>
-    </div>
-
 
     <!-- FOOTER -->
     <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">

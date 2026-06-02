@@ -77,10 +77,35 @@
   {
     "id": "mikroorm-task-1-3",
     "title": "Why is the Identity Map per-request, not global? (AI-resilient)",
-    "description": "Draft a 3-5 sentence answer explaining why a shared, global Identity Map would be catastrophic in a multi-request web server. Then test your answer: paste your draft into ChatGPT and ask it to improve it. Identify one thing ChatGPT added or changed that you agree with, and one thing it missed or got wrong. Submit: your original draft, the ChatGPT output, and your one-line verdict on each. (Hint: think about concurrent requests mutating the same in-memory Book instance, and what 'stale data' means when 50 HTTP handlers share one map.)\n\nMetacognitive memo: What was hard to articulate? What would an AI summary of this lesson probably miss about why per-request isolation matters?",
+    "description": "Pick the single most important reason MikroORM forks a fresh, per-request Identity Map instead of sharing one global map, then justify your pick in at least 25 words. Name the concrete failure mode and why per-request isolation prevents it.",
     "category": "advanced",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 3,
+    "widgetId": "mcq-justify",
+    "widgetConfig": {
+      "question": "Why does MikroORM give each request its own forked Identity Map rather than one shared, global map?",
+      "options": [
+        {
+          "id": "memory",
+          "label": "A global map would use slightly more RAM than many small per-request maps."
+        },
+        {
+          "id": "corruption",
+          "label": "With a global map, two concurrent requests load the same id into the same JS object; one request's mutation gets flushed under the other's transaction — silent cross-request data corruption."
+        },
+        {
+          "id": "speed",
+          "label": "Per-request maps make individual SELECT queries run measurably faster at the SQL level."
+        },
+        {
+          "id": "api",
+          "label": "A global Identity Map is impossible to implement in JavaScript because of the single-threaded event loop."
+        }
+      ],
+      "correctOptionId": "corruption",
+      "minJustificationWords": 25,
+      "rubric": "Strong answers explain that a shared map means two concurrent HTTP handlers reference the same in-memory entity instance. Request A mutates it; a flush from Request B then writes A's dirty data — a correctness bug, not just a memory leak. A global map also never clears, so entities go stale and leak memory. Per-request fork() gives each handler a private reading-room while the master catalogue stays the source of truth."
+    },
     "modelAnswer": "Key reasoning the answer must include:\n1. Two concurrent requests could load the same entity id into the same JS object. Request A mutates it; flush from Request B now writes Request A's dirty data to the database under Request B's transaction — silent data corruption.\n2. A global map never gets cleared: entities loaded six hours ago stay 'managed', occupying memory and presenting stale state to any handler that asks for them.\n3. Per-request fork() gives each handler its own reading-room; the head librarian's master catalogue is the source of truth, but each patron's desk is private.\nAI limitation: ChatGPT typically gives a technically correct but surface-level answer. It often misses the flush-ordering issue under concurrent mutations — that it is not just a memory leak but a correctness bug.",
     "estimatedMinutes": 25
   }

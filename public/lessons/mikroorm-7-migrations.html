@@ -4,419 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MikroORM Course - Lesson 7</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-        :root {
-            --blue: #3451B2;
-            --blue-light: #E8EDFF;
-            --blue-mid: #C5D0F6;
-            --green: #1A8F5C;
-            --green-light: #E6F9F0;
-            --orange: #E8790C;
-            --orange-light: #FFF3E5;
-            --red: #DC2626;
-            --red-light: #FEE2E2;
-            --purple: #7C3AED;
-            --purple-light: #EDE9FE;
-            --gray-50: #F9FAFB;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-500: #6B7280;
-            --gray-700: #374151;
-            --gray-900: #111827;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--gray-900);
-            line-height: 1.7;
-            background: #fff;
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 32px;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 80px 0 60px;
-        }
-        .header h1 {
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--blue);
-            letter-spacing: -1px;
-        }
-        .header .subtitle {
-            font-size: 20px;
-            color: var(--gray-500);
-            margin-top: 8px;
-            font-weight: 400;
-        }
-        .header .lesson-badge {
-            display: inline-block;
-            background: var(--blue-light);
-            color: var(--blue);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        /* Goals box */
-        .goals-box {
-            background: var(--blue-light);
-            border-left: 4px solid var(--blue);
-            border-radius: 0 12px 12px 0;
-            padding: 28px 32px;
-            margin: 40px 0;
-        }
-        .goals-box h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--blue);
-            margin-bottom: 16px;
-        }
-        .goals-box ul { list-style: none; }
-        .goals-box li {
-            padding: 6px 0;
-            padding-left: 24px;
-            position: relative;
-            color: var(--gray-700);
-        }
-        .goals-box li::before {
-            content: "\2022";
-            color: var(--blue);
-            font-weight: bold;
-            position: absolute;
-            left: 8px;
-        }
-
-        /* Section headers */
-        .part-header {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--blue);
-            margin-top: 64px;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--blue-light);
-        }
-
-        h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-top: 36px;
-            margin-bottom: 12px;
-        }
-
-        h4 {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-top: 28px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--gray-700);
-        }
-
-        /* Code blocks */
-        code {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--gray-100);
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--gray-900);
-        }
-
-        pre {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-            margin: 16px 0;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-            font-size: inherit;
-        }
-        .comment { color: #6B7280; }
-        .keyword { color: #C084FC; }
-        .string { color: #86EFAC; }
-        .function { color: #93C5FD; }
-        .decorator { color: #F9A8D4; }
-        .type { color: #FCD34D; }
-
-        /* Info boxes */
-        .info-box {
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 20px 0;
-        }
-        .info-box p { margin-bottom: 0; }
-        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
-        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
-        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
-        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
-        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
-
-        /* Joke box */
-        .joke-box {
-            background: var(--gray-50);
-            border: 1px dashed var(--gray-300);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 24px 0;
-            font-size: 14px;
-            color: var(--gray-700);
-            line-height: 1.8;
-        }
-        .joke-box .joke-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        /* Story box */
-        .story-box {
-            background: var(--purple-light);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px 0;
-            border-left: 4px solid var(--purple);
-        }
-        .story-box p { color: var(--gray-700); }
-        .story-box .tech-note {
-            font-style: normal;
-            font-size: 13px;
-            color: var(--gray-500);
-            background: white;
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-top: 12px;
-            border: 1px solid var(--gray-200);
-        }
-        .story-box .tech-note code {
-            font-size: 12px;
-        }
-
-        /* Concept cards */
-        .concept-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin: 24px 0;
-        }
-        .concept-card {
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .concept-card .card-icon {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-        .concept-card .card-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-        .concept-card .card-subtitle {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .concept-card .card-desc {
-            font-size: 12px;
-            color: var(--gray-500);
-            text-align: left;
-        }
-
-        /* Comparison table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        th {
-            background: var(--blue);
-            color: white;
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-        }
-        td {
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--gray-200);
-            color: var(--gray-700);
-        }
-        tr:nth-child(even) { background: var(--gray-50); }
-
-        /* Diagram */
-        .diagram {
-            margin: 24px 0;
-        }
-        .diagram svg {
-            width: 100%;
-            height: auto;
-        }
-        .diagram-caption {
-            text-align: center;
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-top: 8px;
-        }
-
-        /* Step cards */
-        .step-card {
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 12px 0;
-        }
-        .step-card .step-number {
-            display: inline-block;
-            background: var(--blue);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 28px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-right: 12px;
-        }
-        .step-card .step-title {
-            font-weight: 600;
-            font-size: 15px;
-            display: inline;
-        }
-        .step-card .step-desc {
-            margin-top: 8px;
-            font-size: 14px;
-            color: var(--gray-500);
-        }
-
-        /* Layer visualization */
-        .layer-stack {
-            margin: 24px 0;
-        }
-        .layer-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 20px;
-            border-radius: 10px;
-            margin: 6px 0;
-            transition: transform 0.2s;
-        }
-        .layer-item:hover {
-            transform: translateX(4px);
-        }
-        .layer-item .layer-icon {
-            font-size: 24px;
-            margin-right: 16px;
-            width: 36px;
-            text-align: center;
-        }
-        .layer-item .layer-name {
-            font-weight: 600;
-            font-size: 15px;
-            min-width: 160px;
-        }
-        .layer-item .layer-desc {
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-left: auto;
-        }
-
-        /* Homework section */
-        .homework {
-            background: var(--blue-light);
-            border: 2px solid var(--blue-mid);
-            border-radius: 16px;
-            padding: 36px;
-            margin: 48px 0;
-        }
-        .homework h2 {
-            color: var(--blue);
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        /* Recall box */
-        .recall-box {
-            background: #FFFBEB;
-            border: 2px solid #FCD34D;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 28px 0;
-        }
-        .recall-box .recall-title {
-            font-weight: 700;
-            font-size: 15px;
-            color: #D97706;
-            margin-bottom: 10px;
-        }
-        .recall-box .recall-question {
-            font-size: 15px;
-            color: var(--gray-700);
-            margin-bottom: 12px;
-            line-height: 1.7;
-        }
-        .recall-box .recall-hint {
-            font-size: 13px;
-            color: var(--gray-500);
-            font-style: italic;
-        }
-
-        /* File tree */
-        .file-tree {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 2;
-            margin: 16px 0;
-            white-space: pre;
-            overflow-x: auto;
-        }
-        .file-tree .dir { color: #93C5FD; }
-        .file-tree .file { color: #E5E7EB; }
-        .file-tree .comment { color: #6B7280; }
-        .file-tree .highlight { color: #86EFAC; }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .concept-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -426,7 +14,6 @@
 <figure class="lesson-hero" style="margin:0 0 32px 0;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.06);">
 <img src="/lessons/images/mikroorm/lesson-7-hero.webp" alt="Editorial illustration for MikroORM Lesson 7 (library-themed)" width="1600" height="900" loading="eager" decoding="async" style="display:block;width:100%;height:auto;">
 </figure>
-
 
     <!-- HEADER -->
     <div class="header">
@@ -489,7 +76,6 @@
         </div>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 1: SCHEMA GENERATION VS MIGRATIONS -->
     <!-- ============================================ -->
@@ -542,7 +128,6 @@
     <div class="info-box red">
         <p><strong>Hard rule, write it on the wall:</strong> <code>schema:update --run</code> never touches a database that has real users. It's a dev-loop tool. If you find yourself reaching for it on staging or prod, stop &mdash; you want <code>migration:create</code> followed by <code>migration:up</code>.</p>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 2: SETTING UP THE MIGRATIONS MODULE -->
@@ -642,7 +227,6 @@
         <p><strong>Configurable name.</strong> Change <code>migrations.tableName</code> in the config if you want it called something else (some teams prefix with <code>_</code> to hide it from app queries). The default is fine for most projects.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 3: ANATOMY OF A MIGRATION FILE -->
     <!-- ============================================ -->
@@ -736,7 +320,6 @@
         <p><strong>Don't use entity classes inside migration files.</strong> Migration <code>20240301</code> imports the <code>User</code> entity from your codebase. Six months later, the <code>User</code> entity has new fields. The old migration file now references a definition that no longer matches the schema at the time it was written. Your CI tries to re-run it on a fresh DB and explodes. Always use raw SQL via <code>this.addSql</code> &mdash; the SQL is locked at write time, the entity is not.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 4: SNAPSHOT DIFFING -->
     <!-- ============================================ -->
@@ -788,7 +371,6 @@
     <div class="info-box blue">
         <p><strong>The PR convention that makes this work:</strong> when you change an entity, your PR contains three files: (1) the entity change, (2) the new <code>MigrationXXXX.ts</code> file, (3) the updated <code>.snapshot-*.json</code> file. Reviewers check all three. CI verifies <code>migration:check</code> passes. If only (1) is in the PR, CI fails.</p>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 5: SEEDERS -->
@@ -918,7 +500,6 @@
         <p><strong>Use the same machinery in tests.</strong> Inside Vitest/Jest, call <code>orm.seeder.seed(DatabaseSeeder)</code> after <code>orm.schema.refresh()</code> in a <code>beforeAll</code> hook. Every test starts with a known dataset, no fixtures by hand.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 6: HANDS-ON FLOW -->
     <!-- ============================================ -->
@@ -1023,7 +604,6 @@ psql archive -c <span class="string">'\d book'</span>
         <p><strong>You now have the full prod-shaped loop.</strong> Entity change &rarr; <code>migration:create</code> &rarr; review the generated SQL &rarr; hand-edit if data implications need it &rarr; commit migration + snapshot + entity change in one PR &rarr; CI runs <code>migration:check</code> &rarr; staging runs <code>migration:up</code> &rarr; prod runs <code>migration:up</code>. Same files, same SQL, deterministic.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 7: SVG DIAGRAM -->
     <!-- ============================================ -->
@@ -1091,7 +671,6 @@ psql archive -c <span class="string">'\d book'</span>
         <div class="diagram-caption">Six steps. One PR. Same SQL on every database. The bookkeeping table is the source of truth for &ldquo;has this run?&rdquo;</div>
     </div>
 
-
     <!-- ============================================ -->
     <!-- SELF-TEST -->
     <!-- ============================================ -->
@@ -1105,7 +684,6 @@ psql archive -c <span class="string">'\d book'</span>
         4. You add a non-null column to a table with 5 million rows. The auto-generated migration is one line: <code>add column &hellip; not null</code>. What's wrong, and what do you change?</div>
         <div class="recall-hint">4/4: ready for the capstone lessons. 2-3/4: re-skim Parts 3 and 4. 0-1/4: do the hands-on first &mdash; the concepts click much faster after running <code>migration:up</code> and <code>migration:down</code> once.</div>
     </div>
-
 
     <!-- ============================================ -->
     <!-- SUMMARY -->
@@ -1145,49 +723,9 @@ psql archive -c <span class="string">'\d book'</span>
         <p><strong>Coming up in Lesson 8:</strong> Hooks, subscribers, and event-driven side effects. The &ldquo;standing procedures&rdquo; from the Library analogy &mdash; rules that fire automatically before/after entity lifecycle moments. Audit logs, denormalized counters, search-index updates, the works.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- HOMEWORK -->
     <!-- ============================================ -->
-
-    <div class="homework">
-        <h2>Homework</h2>
-
-        <h3>Required (for everyone)</h3>
-        <ol>
-            <li>
-                <strong>Generate the initial migration and capture the up() method</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Install <code>@mikro-orm/migrations</code>. Register the Migrator extension in your config. Create a <code>migrations/</code> directory. Run <code>npx mikro-orm migration:create --initial</code>. Open the generated file and submit a screenshot of its <code>up()</code> method &mdash; CREATE TABLE statements for book, article, author, tag, and both pivot tables must be visible. Then add <code>slug: p.string().unique()</code> to Book, run <code>npx mikro-orm migration:create --name=add_slug_to_book</code>, and submit a second screenshot of that migration's <code>up()</code> showing the ALTER TABLE line. Two screenshots as one submission.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Screenshot 1 must show createTable calls (or raw SQL) for: book, article, author, tag, book_tags, article_tags &mdash; all within up(). Screenshot 2 must show: ALTER TABLE book ADD COLUMN slug varchar(255) NOT NULL and a UNIQUE constraint. If screenshot 2 is empty: the snapshot may predate your Book change. Delete the snapshot file and re-run migration:create.</p>
-                </details>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Snapshot file purpose + L5/L6 filter callback</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (L7): In 5&ndash;7 sentences explain why MikroORM keeps a .snapshot-*.json file rather than diffing against the live database. Reference team workflows and CI determinism. Part B (L5&ndash;L6 callback): Your initial migration ran fine on staging. A teammate runs it on their local machine and gets "relation already exists". Explain why and what the correct fix is &mdash; without touching the migration file. Submit both parts as text.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: The snapshot records the entity model as of the last migration. migration:create diffs current entities against the snapshot, not the live DB &mdash; so two developers on separate branches get the same diff regardless of their local DB state. CI can generate and verify migrations without a running database. Library analogy: the snapshot is the last signed-off catalogue edition. Part B: The teammate's local DB already has those tables from a previous schema:update run. Fix: drop the local database (or run migration:fresh) so the migration runs on a clean schema. The migration file is correct.</p>
-                </details>
-            </li>
-        </ol>
-
-        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
-        <ol>
-            <li>
-                <strong>Faker-powered ArticleSeeder with relations &mdash; plan, build, verify</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Build an ArticleSeeder that uses @faker-js/faker to create 50 articles, each with 1 random author and 1&ndash;3 random tags from a pool of 10. Use DatabaseSeeder as root, run via <code>npx mikro-orm seeder:run</code>. Three stages: (1) plan the seed order &mdash; which entities must be created first and why; what happens if you create an Article with a tag not yet flushed? (2) Implement and run, verify with SELECT COUNT(*) FROM article. (3) Critique: what breaks if two developers run the seeder simultaneously? How would you make it idempotent?</p>
-                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What does building a seeder reveal about flush ordering that reading the lesson alone does not?</em></p>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Why does MikroORM diff against the snapshot and not the live DB?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Why would diffing migration:create against the live database be unreliable in a team of three developers each on a different feature branch? Describe exactly one failure mode that would produce a wrong or conflicting migration if the live DB were the source of truth. Then explain why the snapshot approach prevents that failure mode. Answer in 5&ndash;7 sentences.</p>
-            </li>
-        </ol>
-    </div>
-
 
     <!-- FOOTER -->
     <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">

@@ -4,419 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MikroORM Course - Lesson 8</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-        :root {
-            --blue: #3451B2;
-            --blue-light: #E8EDFF;
-            --blue-mid: #C5D0F6;
-            --green: #1A8F5C;
-            --green-light: #E6F9F0;
-            --orange: #E8790C;
-            --orange-light: #FFF3E5;
-            --red: #DC2626;
-            --red-light: #FEE2E2;
-            --purple: #7C3AED;
-            --purple-light: #EDE9FE;
-            --gray-50: #F9FAFB;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-500: #6B7280;
-            --gray-700: #374151;
-            --gray-900: #111827;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--gray-900);
-            line-height: 1.7;
-            background: #fff;
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 32px;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 80px 0 60px;
-        }
-        .header h1 {
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--blue);
-            letter-spacing: -1px;
-        }
-        .header .subtitle {
-            font-size: 20px;
-            color: var(--gray-500);
-            margin-top: 8px;
-            font-weight: 400;
-        }
-        .header .lesson-badge {
-            display: inline-block;
-            background: var(--blue-light);
-            color: var(--blue);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        /* Goals box */
-        .goals-box {
-            background: var(--blue-light);
-            border-left: 4px solid var(--blue);
-            border-radius: 0 12px 12px 0;
-            padding: 28px 32px;
-            margin: 40px 0;
-        }
-        .goals-box h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--blue);
-            margin-bottom: 16px;
-        }
-        .goals-box ul { list-style: none; }
-        .goals-box li {
-            padding: 6px 0;
-            padding-left: 24px;
-            position: relative;
-            color: var(--gray-700);
-        }
-        .goals-box li::before {
-            content: "\2022";
-            color: var(--blue);
-            font-weight: bold;
-            position: absolute;
-            left: 8px;
-        }
-
-        /* Section headers */
-        .part-header {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--blue);
-            margin-top: 64px;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--blue-light);
-        }
-
-        h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-top: 36px;
-            margin-bottom: 12px;
-        }
-
-        h4 {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-top: 28px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--gray-700);
-        }
-
-        /* Code blocks */
-        code {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--gray-100);
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--gray-900);
-        }
-
-        pre {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-            margin: 16px 0;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-            font-size: inherit;
-        }
-        .comment { color: #6B7280; }
-        .keyword { color: #C084FC; }
-        .string { color: #86EFAC; }
-        .function { color: #93C5FD; }
-        .decorator { color: #F9A8D4; }
-        .type { color: #FCD34D; }
-
-        /* Info boxes */
-        .info-box {
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 20px 0;
-        }
-        .info-box p { margin-bottom: 0; }
-        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
-        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
-        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
-        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
-        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
-
-        /* Joke box */
-        .joke-box {
-            background: var(--gray-50);
-            border: 1px dashed var(--gray-300);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 24px 0;
-            font-size: 14px;
-            color: var(--gray-700);
-            line-height: 1.8;
-        }
-        .joke-box .joke-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        /* Story box */
-        .story-box {
-            background: var(--purple-light);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px 0;
-            border-left: 4px solid var(--purple);
-        }
-        .story-box p { color: var(--gray-700); }
-        .story-box .tech-note {
-            font-style: normal;
-            font-size: 13px;
-            color: var(--gray-500);
-            background: white;
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-top: 12px;
-            border: 1px solid var(--gray-200);
-        }
-        .story-box .tech-note code {
-            font-size: 12px;
-        }
-
-        /* Concept cards */
-        .concept-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin: 24px 0;
-        }
-        .concept-card {
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .concept-card .card-icon {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-        .concept-card .card-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-        .concept-card .card-subtitle {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .concept-card .card-desc {
-            font-size: 12px;
-            color: var(--gray-500);
-            text-align: left;
-        }
-
-        /* Comparison table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        th {
-            background: var(--blue);
-            color: white;
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-        }
-        td {
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--gray-200);
-            color: var(--gray-700);
-        }
-        tr:nth-child(even) { background: var(--gray-50); }
-
-        /* Diagram */
-        .diagram {
-            margin: 24px 0;
-        }
-        .diagram svg {
-            width: 100%;
-            height: auto;
-        }
-        .diagram-caption {
-            text-align: center;
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-top: 8px;
-        }
-
-        /* Step cards */
-        .step-card {
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 12px 0;
-        }
-        .step-card .step-number {
-            display: inline-block;
-            background: var(--blue);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 28px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-right: 12px;
-        }
-        .step-card .step-title {
-            font-weight: 600;
-            font-size: 15px;
-            display: inline;
-        }
-        .step-card .step-desc {
-            margin-top: 8px;
-            font-size: 14px;
-            color: var(--gray-500);
-        }
-
-        /* Layer visualization */
-        .layer-stack {
-            margin: 24px 0;
-        }
-        .layer-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 20px;
-            border-radius: 10px;
-            margin: 6px 0;
-            transition: transform 0.2s;
-        }
-        .layer-item:hover {
-            transform: translateX(4px);
-        }
-        .layer-item .layer-icon {
-            font-size: 24px;
-            margin-right: 16px;
-            width: 36px;
-            text-align: center;
-        }
-        .layer-item .layer-name {
-            font-weight: 600;
-            font-size: 15px;
-            min-width: 160px;
-        }
-        .layer-item .layer-desc {
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-left: auto;
-        }
-
-        /* Homework section */
-        .homework {
-            background: var(--blue-light);
-            border: 2px solid var(--blue-mid);
-            border-radius: 16px;
-            padding: 36px;
-            margin: 48px 0;
-        }
-        .homework h2 {
-            color: var(--blue);
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        /* Recall box */
-        .recall-box {
-            background: #FFFBEB;
-            border: 2px solid #FCD34D;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 28px 0;
-        }
-        .recall-box .recall-title {
-            font-weight: 700;
-            font-size: 15px;
-            color: #D97706;
-            margin-bottom: 10px;
-        }
-        .recall-box .recall-question {
-            font-size: 15px;
-            color: var(--gray-700);
-            margin-bottom: 12px;
-            line-height: 1.7;
-        }
-        .recall-box .recall-hint {
-            font-size: 13px;
-            color: var(--gray-500);
-            font-style: italic;
-        }
-
-        /* File tree */
-        .file-tree {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 2;
-            margin: 16px 0;
-            white-space: pre;
-            overflow-x: auto;
-        }
-        .file-tree .dir { color: #93C5FD; }
-        .file-tree .file { color: #E5E7EB; }
-        .file-tree .comment { color: #6B7280; }
-        .file-tree .highlight { color: #86EFAC; }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .concept-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -426,7 +14,6 @@
 <figure class="lesson-hero" style="margin:0 0 32px 0;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.06);">
 <img src="/lessons/images/mikroorm/lesson-8-hero.webp" alt="Editorial illustration for MikroORM Lesson 8 (library-themed)" width="1600" height="900" loading="eager" decoding="async" style="display:block;width:100%;height:auto;">
 </figure>
-
 
     <!-- HEADER -->
     <div class="header">
@@ -463,7 +50,6 @@
             <li>Add an <code>Address</code> embeddable, a typed <code>metadata</code> JSONB column, and a slugify hook to <code>archive-api</code></li>
         </ul>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 1: EMBEDDABLES -->
@@ -569,7 +155,6 @@
     </div>
 
     <div data-widget="concept-match" data-config='{"pairs":[{"id":"inline","term":"Inline embeddable","definition":"Each property of the value object becomes its own column on the parent table. Indexable per field, queryable with plain WHERE, smallest disk footprint &mdash; pick when the shape is stable and you query individual fields."},{"id":"json","term":"JSON-mode embeddable","definition":"The whole value object is stored in one JSONB column. No per-field index by default, schemaless &mdash; pick when you read the embeddable as a whole or expect to evolve the shape without migrations."},{"id":"array","term":"Array embeddable","definition":"A list of value objects, always stored as JSON regardless of .object() &mdash; there is no relational way to flatten N rows of structs into columns."},{"id":"jsonprop","term":"Typed p.json&lt;T&gt;()","definition":"A schemaless bag with a TS-side shape annotation. Stored in JSONB. Use for settings blobs and per-row variable metadata that has no fixed schema."},{"id":"sti","term":"STI discriminator","definition":"A column on the shared table that tells the ORM which subclass to hydrate. The cost: every subtype-specific column must be nullable."}]}'></div>
-
 
     <!-- ============================================ -->
     <!-- PART 2: INHERITANCE -->
@@ -692,7 +277,6 @@
 
     <p>If you don't actually need polymorphic queries &mdash; if <code>Book</code>, <code>Journal</code>, and <code>Manuscript</code> are independent entities that just happen to share <code>title</code> and <code>publishedYear</code> &mdash; mark the base as <code>abstract: true</code> without a discriminator. Each subclass gets its own table with the inherited fields inlined. There is no <code>document</code> table at all. Useful for shared timestamp/audit fields (<code>createdAt</code>, <code>updatedAt</code>, <code>tenantId</code>) across unrelated entities.</p>
 
-
     <!-- ============================================ -->
     <!-- PART 3: JSON PROPERTIES -->
     <!-- ============================================ -->
@@ -761,7 +345,6 @@ indexes: [{ properties: <span class="string">'metadata.featured'</span> }],</cod
 
     <p>The same warning applies to any field where the new value depends on the old value &mdash; toggles, accumulators, last-seen timestamps that must monotonically increase. JSONB is for shape-flexible reference data, not for hot counters.</p>
 
-
     <!-- ============================================ -->
     <!-- PART 4: VIRTUAL & VIEW ENTITIES -->
     <!-- ============================================ -->
@@ -825,7 +408,6 @@ indexes: [{ properties: <span class="string">'metadata.featured'</span> }],</cod
     <div class="info-box blue">
         <p><strong>Both are read-only.</strong> Modifying a property and calling <code>flush()</code> is a silent no-op. If you want write-through behavior, you need a real entity backed by a real table.</p>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 5: LIFECYCLE HOOKS & SUBSCRIBERS -->
@@ -910,7 +492,6 @@ Article.<span class="function">addHook</span>(<span class="string">'beforeCreate
         <p><strong>Hooks fire inside the flush. Don't call <code>em.flush()</code> from inside a hook.</strong> It throws. Don't call <code>em.persist()</code> either &mdash; you can cause undefined behavior because the change-set has already been computed. If you need to create new entities reactively, use the subscriber-level <code>beforeFlush</code> event, which fires <em>before</em> change-set computation.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 6: CUSTOM TYPES -->
     <!-- ============================================ -->
@@ -959,7 +540,6 @@ Article.<span class="function">addHook</span>(<span class="string">'beforeCreate
 
     <div data-widget="mcq-justify" data-config='{"question":"Your team stores price as an integer column of cents in code, but every controller does (price / 100).toFixed(2) to render it. Two places forgot the divide and shipped &lsquo;199900 USD&rsquo; to the UI. Which abstraction fixes this once at the boundary?","options":[{"id":"a","label":"Add a price formatter helper and code-review every controller for usage."},{"id":"b","label":"Define a Money class and a MoneyType custom type. The property becomes p.type(MoneyType); article.price is always a Money instance with a format() method, never a raw integer."},{"id":"c","label":"Store price as a string column with the formatted value pre-computed."},{"id":"d","label":"Move every controller into a single base controller and centralise rendering there."}],"correctOptionId":"b","minJustificationWords":15,"rubric":"Custom types convert at the ORM boundary &mdash; once, symmetrically &mdash; so the in-memory shape (Money) and the on-disk shape (varchar / integer) can diverge safely. Helpers and base classes can be forgotten; a type cannot."}'></div>
 
-
     <!-- ============================================ -->
     <!-- PART 7: HANDS-ON -->
     <!-- ============================================ -->
@@ -998,7 +578,6 @@ Article.<span class="function">addHook</span>(<span class="string">'beforeCreate
     <pre><code><span class="function">npx</span> mikro-orm schema:update --dump</code></pre>
 
     <p>You should see one <code>document</code> table with <code>type</code>, <code>isbn</code>, <code>volume</code>, <code>issue</code> all in it; an <code>author</code> table with <code>address_street</code>, <code>address_postal_code</code>, <code>address_city</code>, <code>address_country</code> inlined; an <code>article</code> table with a <code>metadata jsonb</code> column. No <code>book</code> or <code>journal</code> table &mdash; STI puts everything in <code>document</code>. No <code>address</code> table &mdash; embeddable inlined.</p>
-
 
     <!-- ============================================ -->
     <!-- DIAGRAM: STORAGE STRATEGIES -->
@@ -1079,7 +658,6 @@ Article.<span class="function">addHook</span>(<span class="string">'beforeCreate
         <div class="diagram-caption">Same Records Library data, four physical layouts. Pick by query shape and write frequency, not by aesthetics.</div>
     </div>
 
-
     <!-- ============================================ -->
     <!-- RECALL & SUMMARY -->
     <!-- ============================================ -->
@@ -1133,49 +711,9 @@ Article.<span class="function">addHook</span>(<span class="string">'beforeCreate
         <p><strong>Coming up in Lesson 9:</strong> we plug the Records Library into the airport. <code>@mikro-orm/nestjs</code>, <code>MikroOrmModule.forRoot</code> / <code>forFeature</code>, request-scoped EntityManager, <code>@CreateRequestContext</code> for queue handlers and cron jobs, and the <code>@Transactional</code> decorator. By the end of L9, your <code>archive-api</code> is a NestJS service.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- HOMEWORK -->
     <!-- ============================================ -->
-
-    <div class="homework">
-        <h2>Homework</h2>
-
-        <h3>Required (for everyone)</h3>
-        <ol>
-            <li>
-                <strong>Add Address embeddable and capture the flattened DDL</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Define an Address embeddable (street, city, country &mdash; all strings) and embed it on Author in inline mode. Add a typed <code>metadata: p.json&lt;ArticleMetadata&gt;()</code> column to Article. Add a <code>beforeCreate</code> hook on Article that auto-generates slug from title (lowercase, replace spaces with hyphens). Run <code>npx mikro-orm schema:update --dump</code> and submit a screenshot of the <code>create table author</code> portion showing <code>address_street</code>, <code>address_city</code>, <code>address_country</code> inlined directly into the author table &mdash; proof the embeddable was flattened.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot must show author table columns including address_street varchar not null, address_city varchar not null, address_country varchar not null &mdash; all directly in the author table, not in a separate address table. If you see CREATE TABLE address: you used @Entity() instead of @Embeddable(). If address columns are missing entirely: the embedded property is not present in the entity's defineEntity block.</p>
-                </details>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>JSONB concurrent counter danger + L6/L7 callback</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (L8): In 4&ndash;6 sentences explain why storing an integer counter inside a JSONB column is dangerous under concurrent writes while a plain int column is safe. Reference how Postgres updates JSONB internally (whole-field rewrite) and why that causes lost-update under read-modify-write. Part B (L6&ndash;L7 callback): Write the migration <code>up()</code> in pseudocode or real TypeScript that: (1) adds a view_count int column with default 0, (2) backfills it from the JSONB field, (3) removes the JSONB key. Which filter from L6 would need re-testing after this migration? Submit both parts as text.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A: Postgres stores JSONB as a binary blob. Updating a single key requires rewriting the entire column value. Two concurrent transactions each read the current blob, modify the counter in memory, and write back &mdash; the second write overwrites the first. A plain int column supports UPDATE SET view_count = view_count + 1 as an atomic in-place operation with row-level locking. Part B: up() should: addColumn('article', { name: 'view_count', type: 'int', default: 0 }), then addSql("UPDATE article SET view_count = (metadata->>'viewCount')::int WHERE ..."), then addSql("UPDATE article SET metadata = metadata - 'viewCount'"). Re-test the softDelete filter from L6 to confirm it still applies after the column changes.</p>
-                </details>
-            </li>
-        </ol>
-
-        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
-        <ol>
-            <li>
-                <strong>Implement MoneyType custom type &mdash; plan, build, critique</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Implement a MoneyType that stores a <code>Money &#123; amount: number, currency: string &#125;</code> value object as <code>'amount:currency'</code> string in Postgres. Three stages: (1) plan &mdash; identify the four methods a custom Type must implement and write them as stubs with one-line comments; (2) implement, apply to Book.price, run schema:update --dump, confirm varchar column, create a Book, reload it, verify the JS value is a Money object; (3) paste your MoneyType into ChatGPT and ask "What edge cases does this miss?" Write 3 sentences on what it got right and what it missed about the MikroORM Type contract.</p>
-                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: What does building a custom Type clarify about MikroORM's mapping layer that reading the docs alone does not?</em></p>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Why is storing a counter in JSONB a concurrency trap, not just a style choice?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Two concurrent HTTP requests each want to increment <code>article.metadata.viewCount</code> by 1. Walk through the exact sequence of operations &mdash; read, modify, write &mdash; for both requests under optimistic (no row lock) conditions and explain why the final count is 1 instead of 2. Then explain why the same two requests incrementing a plain int column with <code>UPDATE article SET view_count = view_count + 1 WHERE id = $1</code> produce a final count of 2. Reference Postgres row-level locking. Answer in 5&ndash;7 sentences.</p>
-            </li>
-        </ol>
-    </div>
-
 
     <!-- FOOTER -->
     <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">

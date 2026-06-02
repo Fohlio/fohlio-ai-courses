@@ -4,9 +4,10 @@ import { LessonWidgets } from "./LessonWidgets";
 
 interface LessonContentProps {
   lesson: Lesson;
+  cssBundle?: string;
 }
 
-export async function LessonContent({ lesson }: LessonContentProps) {
+export async function LessonContent({ lesson, cssBundle }: LessonContentProps) {
   if (lesson.contentType === "pdf" && lesson.pdfUrl) {
     return (
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white">
@@ -27,7 +28,7 @@ export async function LessonContent({ lesson }: LessonContentProps) {
     );
   }
 
-  const content = prepareLessonHtml(lesson.contentHtml, lesson.assets);
+  const content = prepareLessonHtml(lesson.contentHtml, lesson.assets, cssBundle);
 
   return (
     <>
