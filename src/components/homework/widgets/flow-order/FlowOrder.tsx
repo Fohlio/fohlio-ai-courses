@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type FlowStep = { id: string; label: string; detail?: string };
@@ -106,7 +107,7 @@ export const FlowOrder: HomeworkWidget<FlowOrderState> = (
 
   if (!cfg) {
     return (
-      <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-md border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: flow-order requires <code>prompt</code> and{" "}
         <code>steps[]</code>.
       </div>
@@ -180,8 +181,8 @@ export const FlowOrder: HomeworkWidget<FlowOrderState> = (
           const correctHere = correctOrder[index] === id;
           const cardBorder = showResult
             ? correctHere
-              ? "border-green-400 bg-green-50"
-              : "border-red-400 bg-red-50"
+              ? "border-success bg-success-light"
+              : "border-danger bg-danger-light"
             : "border-gray-200 bg-white";
           const isExpanded = !!expanded[id];
           return (
@@ -267,19 +268,18 @@ export const FlowOrder: HomeworkWidget<FlowOrderState> = (
       </ol>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
+        <Button
           type="button"
           onClick={() => setState((prev) => ({ ...prev, checked: true }))}
           disabled={disabled}
-          className="rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Check order
-        </button>
+        </Button>
         {state.checked && (
           <span
             className={
               "text-sm " +
-              (isOrderCorrect ? "text-green-700" : "text-red-700")
+              (isOrderCorrect ? "text-success" : "text-danger")
             }
           >
             {isOrderCorrect

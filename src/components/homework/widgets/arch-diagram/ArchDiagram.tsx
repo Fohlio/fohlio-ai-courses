@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type ArchSlot = { id: string; label: string; correctNodeId: string };
@@ -92,7 +93,7 @@ export const ArchDiagram: HomeworkWidget<ArchDiagramState> = (
 
   if (!cfg) {
     return (
-      <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-md border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: arch-diagram requires <code>prompt</code>,{" "}
         <code>slots[]</code>, and <code>nodes[]</code>.
       </div>
@@ -192,8 +193,8 @@ export const ArchDiagram: HomeworkWidget<ArchDiagramState> = (
             const showResult = state.checked;
             const borderClass = showResult
               ? isCorrect
-                ? "border-green-400 bg-green-50"
-                : "border-red-400 bg-red-50"
+                ? "border-success bg-success-light"
+                : "border-danger bg-danger-light"
               : "border-dashed border-gray-300 bg-gray-50";
             return (
               <div
@@ -296,19 +297,18 @@ export const ArchDiagram: HomeworkWidget<ArchDiagramState> = (
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
+        <Button
           type="button"
           onClick={() => setState((prev) => ({ ...prev, checked: true }))}
           disabled={disabled}
-          className="rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Check diagram
-        </button>
+        </Button>
         {state.checked && (
           <span
             className={
               "text-sm " +
-              (allCorrect ? "text-green-700" : "text-red-700")
+              (allCorrect ? "text-success" : "text-danger")
             }
           >
             {correctCount} / {cfg.slots.length} correct

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type QuestionOption = { id: string; label: string };
@@ -72,7 +73,7 @@ export function QuizExplain(props: HomeworkWidgetProps<QuizExplainState>) {
   const cfg = useMemo(() => normalize(props.config), [props.config]);
   if (!cfg) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: quiz-explain widget is missing required fields.
       </div>
     );
@@ -161,8 +162,8 @@ function QuizExplainInner({
               key={q.id}
               className={cn(
                 "overflow-hidden rounded-lg border bg-white",
-                rowCorrect && "border-green-300",
-                rowWrong && "border-red-300",
+                rowCorrect && "border-success/40",
+                rowWrong && "border-danger/40",
                 !state.submitted && "border-gray-200",
               )}
             >
@@ -178,7 +179,7 @@ function QuizExplainInner({
                   <span
                     className={cn(
                       "font-mono",
-                      rowCorrect ? "text-green-700" : "text-red-700",
+                      rowCorrect ? "text-success" : "text-danger",
                     )}
                     aria-label={rowCorrect ? "correct" : "wrong"}
                   >
@@ -202,9 +203,9 @@ function QuizExplainInner({
                       const highlight =
                         state.submitted &&
                         (isCorrectOpt
-                          ? "border-green-400 bg-green-50"
+                          ? "border-success bg-success-light"
                           : checked && !isCorrectOpt
-                            ? "border-red-400 bg-red-50"
+                            ? "border-danger bg-danger-light"
                             : "border-gray-200");
                       return (
                         <label
@@ -251,7 +252,7 @@ function QuizExplainInner({
                     <div
                       className={cn(
                         "mt-1 text-xs",
-                        wordsOk ? "text-green-700" : "text-gray-500",
+                        wordsOk ? "text-success" : "text-gray-500",
                       )}
                     >
                       {words}/{cfg.minExplanationWords} words
@@ -259,7 +260,7 @@ function QuizExplainInner({
                   </div>
 
                   {state.submitted && !rowCorrect && q.rubric && (
-                    <div className="mt-3 rounded-md border border-amber-200 bg-amber-50 p-2 text-xs text-amber-900">
+                    <div className="mt-3 rounded-md border border-warning/30 bg-warning-light p-2 text-xs text-warning">
                       <span className="font-semibold">Rubric:</span> {q.rubric}
                     </div>
                   )}
@@ -271,24 +272,21 @@ function QuizExplainInner({
       </ul>
 
       <div className="flex flex-wrap items-center gap-2">
-        <button
+        <Button
           type="button"
+          size="sm"
           onClick={submit}
           disabled={disabled || !allFilled}
-          className={cn(
-            "min-h-8 rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white",
-            "hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50",
-          )}
         >
           Submit quiz
-        </button>
+        </Button>
         {state.submitted &&
           (allCorrect ? (
-            <span className="text-sm font-medium text-green-700">
+            <span className="text-sm font-medium text-success">
               ✓ {correctCount}/{cfg.questions.length} — all correct.
             </span>
           ) : (
-            <span className="text-sm font-medium text-red-700">
+            <span className="text-sm font-medium text-danger">
               {correctCount}/{cfg.questions.length} correct — review rubrics and resubmit.
             </span>
           ))}

@@ -1,18 +1,23 @@
 @import "tailwindcss";
 
 :root {
+  /* Brand: FOHLIO GREEN. Source of truth = ui-kit/tokyo Fohlio-green palette.
+     Iconic Fohlio green (identity/logo): #84b54f; darkest text/link: #006908;
+     scale: green-500 #5a8629, green-400 #a7d871, green-300 #cde0b0, dim-100 #eaf7dd, green-50 #f5fbee.
+     --blue is the brand var kept by name for @theme mapping; tuned to #4f7a23 so white
+     text passes WCAG-AA (5.07:1; #5a8629 tested at 4.31:1 and was rejected). */
   --background: #ffffff;
   --foreground: #111827;
-  --blue: #3451B2;
-  --blue-light: #E8EDFF;
-  --blue-mid: #C5D0F6;
+  --blue: #4f7a23;
+  --blue-light: #eaf7dd;
+  --blue-mid: #a7d871;
   --green: #1A8F5C;
   --green-light: #E6F9F0;
   --orange: #E8790C;
   --orange-light: #FFF3E5;
   --red: #DC2626;
   --red-light: #FEE2E2;
-  --purple: #7C3AED;
+  --purple: #84b54f;
   --purple-light: #EDE9FE;
   --gray-50: #F9FAFB;
   --gray-100: #F3F4F6;

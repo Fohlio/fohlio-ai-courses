@@ -1,8 +1,12 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { Prisma, type PrismaClient } from "../generated/prisma/client";
+import { type PrismaClient } from "../generated/prisma/client";
 import { ADMIN_GITHUB_NICKNAME, LESSONS } from "./constants";
 import { prepareLessonHtml } from "./lessonHtml";
+import {
+  upsertLessonHomework,
+  type TaskSpec,
+} from "../../scripts/lib/upsertLessonHomework";
 
 const LEGACY_COURSE_ID = "course-fohlio-tech-course";
 const LEGACY_COURSE_SLUG = "fohlio-tech-course";
@@ -47,22 +51,25 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
         videoUrl: lesson.videoUrl,
         isPublished: lesson.isPublished,
         unresolvedMediaSources,
+        // Build TaskSpec[] for the stable upsert helper. category + order are
+        // taken verbatim from the source (no renumbering), so existing
+        // HomeworkTask.id (and thus every TaskSubmission) stays attached.
         tasks: lesson.homework.flatMap((section) =>
-          section.tasks.map((task) => ({
-            id: task.id,
-            title: task.title,
-            description: task.description,
-            category: task.category,
-            submissionType: task.submissionType,
-            order: task.order,
-            quizQuestions: task.quizQuestions ?? Prisma.JsonNull,
-            checklistItems: task.checklistItems ?? Prisma.JsonNull,
-            widgetId: task.widgetId ?? null,
-            widgetConfig:
-              (task.widgetConfig ?? Prisma.JsonNull) as Prisma.InputJsonValue,
-            modelAnswer: task.modelAnswer ?? null,
-            estimatedMinutes: task.estimatedMinutes ?? null,
-          })),
+          section.tasks.map(
+            (task): TaskSpec => ({
+              title: task.title,
+              description: task.description,
+              category: task.category,
+              order: task.order,
+              submissionType: task.submissionType,
+              quizQuestions: task.quizQuestions ?? null,
+              checklistItems: task.checklistItems ?? null,
+              widgetId: task.widgetId ?? null,
+              widgetConfig: task.widgetConfig ?? null,
+              modelAnswer: task.modelAnswer ?? null,
+              estimatedMinutes: task.estimatedMinutes ?? null,
+            }),
+          ),
         ),
       };
     }),
@@ -129,26 +136,9 @@ export async function backfillLegacyCourse(prisma: PrismaClient): Promise<void> 
         },
       });
 
-      await tx.homeworkTask.deleteMany({ where: { lessonId: lesson.id } });
-      for (const task of lesson.tasks) {
-        await tx.homeworkTask.create({
-          data: {
-            id: task.id,
-            lessonId: lesson.id,
-            title: task.title,
-            description: task.description,
-            category: task.category,
-            submissionType: task.submissionType,
-            order: task.order,
-            quizQuestions: task.quizQuestions,
-            checklistItems: task.checklistItems,
-            widgetId: task.widgetId,
-            widgetConfig: task.widgetConfig,
-            modelAnswer: task.modelAnswer ?? null,
-            estimatedMinutes: task.estimatedMinutes ?? null,
-          },
-        });
-      }
+      // Stable upsert by the (lessonId, category, order) natural key — preserves
+      // each task's existing HomeworkTask.id so TaskSubmission rows never orphan.
+      await upsertLessonHomework(tx, lesson.id, lesson.tasks);
     }
 
     await tx.taskSubmission.updateMany({

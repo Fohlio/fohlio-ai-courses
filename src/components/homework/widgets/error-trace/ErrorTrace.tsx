@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type ErrorTraceConfig = {
@@ -70,7 +71,7 @@ export const ErrorTrace: HomeworkWidget<ErrorTraceState> = (
 
   if (!cfg) {
     return (
-      <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-md border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: error-trace requires <code>code[]</code>,{" "}
         <code>errorMessage</code>, and <code>rootCauseLine</code>.
       </div>
@@ -124,16 +125,16 @@ export const ErrorTrace: HomeworkWidget<ErrorTraceState> = (
                 (selected
                   ? showResult
                     ? isRootCause
-                      ? "bg-green-900/40"
-                      : "bg-red-900/40"
-                    : "bg-yellow-500/10"
+                      ? "bg-success/25"
+                      : "bg-danger/25"
+                    : "bg-warning/15"
                   : "hover:bg-gray-800/60") +
                 (selected
                   ? showResult
                     ? isRootCause
-                      ? " underline decoration-green-400 decoration-2 underline-offset-4"
-                      : " underline decoration-red-400 decoration-2 underline-offset-4"
-                    : " underline decoration-yellow-400 decoration-2 underline-offset-4"
+                      ? " underline decoration-success decoration-2 underline-offset-4"
+                      : " underline decoration-danger decoration-2 underline-offset-4"
+                    : " underline decoration-warning decoration-2 underline-offset-4"
                   : "")
               }
             >
@@ -148,11 +149,11 @@ export const ErrorTrace: HomeworkWidget<ErrorTraceState> = (
         })}
       </div>
 
-      <div className="rounded-md border border-red-300 bg-red-50 p-3">
-        <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-red-700">
+      <div className="rounded-md border border-danger/30 bg-danger-light p-3">
+        <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-danger">
           stderr
         </div>
-        <pre className="whitespace-pre-wrap break-words font-mono text-xs text-red-900">
+        <pre className="whitespace-pre-wrap break-words font-mono text-xs text-danger">
           {cfg.errorMessage}
         </pre>
       </div>
@@ -172,25 +173,24 @@ export const ErrorTrace: HomeworkWidget<ErrorTraceState> = (
       </label>
 
       {!state.submitted && (
-        <button
+        <Button
           type="button"
           onClick={handleSubmit}
           disabled={disabled || !canSubmit}
-          className="rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Submit
-        </button>
+        </Button>
       )}
 
       {state.submitted && state.lastResult === "ok" && (
-        <div className="rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-800">
+        <div className="rounded-md border border-success/40 bg-success-light p-3 text-sm text-success">
           <span className="font-semibold">✓ Correct.</span> You pinpointed the
           right line and named the root cause.
         </div>
       )}
 
       {state.submitted && state.lastResult === "wrong" && (
-        <div className="space-y-2 rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+        <div className="space-y-2 rounded-md border border-danger/40 bg-danger-light p-3 text-sm text-danger">
           <div>
             <span className="font-semibold">✗ Not quite.</span>{" "}
             {state.selectedLine !== cfg.rootCauseLine ? (
@@ -205,14 +205,9 @@ export const ErrorTrace: HomeworkWidget<ErrorTraceState> = (
               </>
             )}
           </div>
-          <button
-            type="button"
-            onClick={handleRetry}
-            disabled={disabled}
-            className="rounded-md border border-red-300 bg-white px-2 py-1 text-xs font-medium text-red-800 hover:bg-red-100"
-          >
+          <Button type="button" variant="danger" size="sm" onClick={handleRetry} disabled={disabled}>
             Try again
-          </button>
+          </Button>
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type ConceptPair = {
@@ -79,7 +80,7 @@ export const ConceptMatch: HomeworkWidget<ConceptMatchState> = ({
 
   if (!normalized) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: this concept-match task is missing valid{" "}
         <code>pairs</code>.
       </div>
@@ -183,8 +184,8 @@ export const ConceptMatch: HomeworkWidget<ConceptMatchState> = ({
                     isActive && "border-brand bg-brand/10",
                     !isActive && !checked && linked && "border-gray-300 bg-gray-50",
                     !isActive && !checked && !linked && "border-gray-200 hover:bg-gray-50",
-                    correct && "border-green-500 bg-green-50",
-                    wrong && "border-red-500 bg-red-50",
+                    correct && "border-success bg-success-light",
+                    wrong && "border-danger bg-danger-light",
                   )}
                   aria-pressed={isActive}
                 >
@@ -219,8 +220,8 @@ export const ConceptMatch: HomeworkWidget<ConceptMatchState> = ({
                     !checked && linked && "border-gray-300 bg-gray-50",
                     !checked && !linked && selectable && "border-brand/40 hover:bg-brand/5",
                     !checked && !linked && !selectable && "border-gray-200",
-                    correct && "border-green-500 bg-green-50",
-                    wrong && "border-red-500 bg-red-50",
+                    correct && "border-success bg-success-light",
+                    wrong && "border-danger bg-danger-light",
                   )}
                 >
                   <span className="flex-1 text-gray-800">{def.definition}</span>
@@ -247,8 +248,8 @@ export const ConceptMatch: HomeworkWidget<ConceptMatchState> = ({
               key={pair.id}
               className={cn(
                 "rounded-lg border p-2",
-                correct && "border-green-500 bg-green-50",
-                wrong && "border-red-500 bg-red-50",
+                correct && "border-success bg-success-light",
+                wrong && "border-danger bg-danger-light",
                 !checked && "border-gray-200",
               )}
             >
@@ -273,19 +274,14 @@ export const ConceptMatch: HomeworkWidget<ConceptMatchState> = ({
       </ul>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={handleCheck}
-          disabled={disabled}
-          className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
+        <Button type="button" size="sm" onClick={handleCheck} disabled={disabled}>
           Check matches
-        </button>
+        </Button>
         {checked && (
           <span
             className={cn(
               "text-sm font-medium",
-              allCorrect ? "text-green-700" : "text-red-700",
+              allCorrect ? "text-success" : "text-danger",
             )}
             role="status"
           >

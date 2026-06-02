@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type Outcome = {
@@ -90,7 +91,7 @@ export function DecisionTree(props: HomeworkWidgetProps<DecisionTreeState>) {
   const cfg = useMemo(() => normalize(props.config), [props.config]);
   if (!cfg) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: decision-tree widget is missing required fields.
       </div>
     );
@@ -214,11 +215,11 @@ function DecisionTreeInner({
           className={cn(
             "rounded-lg border p-3 text-sm",
             terminalOutcome.kind === "correct" &&
-              "border-green-300 bg-green-50 text-green-900",
+              "border-success/40 bg-success-light text-success",
             terminalOutcome.kind === "wrong" &&
-              "border-red-300 bg-red-50 text-red-900",
+              "border-danger/40 bg-danger-light text-danger",
             terminalOutcome.kind === "suboptimal" &&
-              "border-amber-300 bg-amber-50 text-amber-900",
+              "border-warning/40 bg-warning-light text-warning",
           )}
           role="status"
         >
@@ -234,19 +235,17 @@ function DecisionTreeInner({
       )}
 
       <div className="flex flex-wrap items-center gap-2">
-        <button
+        <Button
           type="button"
+          variant="secondary"
+          size="sm"
           onClick={startOver}
           disabled={disabled || state.path.length === 0}
-          className={cn(
-            "min-h-8 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700",
-            "hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50",
-          )}
         >
           Start over
-        </button>
+        </Button>
         {state.outcome === "correct" && (
-          <span className="text-sm font-medium text-green-700">
+          <span className="text-sm font-medium text-success">
             ✓ Path complete.
           </span>
         )}

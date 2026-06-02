@@ -4,6 +4,7 @@ import { join } from "path";
 import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { ADMIN_GITHUB_NICKNAME } from "../src/lib/constants";
+import { upsertLessonHomework, type TaskSpec } from "./lib/upsertLessonHomework";
 
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL! });
 const prisma = new PrismaClient({ adapter });
@@ -2285,12 +2286,12 @@ async function main() {
         },
       });
 
-      // Full reset: remove every existing lesson for this course (homework cascades via
-      // onDelete: Cascade). Lesson ids are deterministic and re-created below; the rewrite
-      // changed which slug sits at which position, so a clean wipe avoids id/slug collisions.
-      // TaskSubmission rows are not FK-linked to lessons/tasks, so they are unaffected.
-      await tx.lesson.deleteMany({ where: { courseId: COURSE_ID } });
-
+      // NO blanket lesson wipe here. A `lesson.deleteMany({ courseId })` would
+      // cascade-delete every HomeworkTask (onDelete: Cascade), and because each
+      // re-created task minted a fresh cuid(), every existing TaskSubmission
+      // (taskId is a plain String with no FK) would orphan on every deploy.
+      // Instead we upsert each lesson by its (courseId, slug) natural key below
+      // (preserving Lesson.id), then prune only orphan lessons after the loop.
       for (const lesson of LESSONS) {
         const contentHtml = await readFile(
           join(process.cwd(), "public", "lessons", lesson.contentFile),
@@ -2324,29 +2325,30 @@ async function main() {
           },
         });
 
-        await tx.homeworkTask.deleteMany({
-          where: { lessonId: upsertedLesson.id },
-        });
-        for (const task of lesson.homework) {
-          await tx.homeworkTask.create({
-            data: {
-              id: task.id,
-              lessonId: upsertedLesson.id,
-              title: task.title,
-              description: task.description,
-              category: task.category,
-              submissionType: task.submissionType,
-              order: task.order,
-              widgetId: task.widgetId ?? null,
-              widgetConfig: task.widgetConfig
-                ? (JSON.parse(JSON.stringify(task.widgetConfig)) as object)
-                : undefined,
-              modelAnswer: task.modelAnswer ?? null,
-              estimatedMinutes: task.estimatedMinutes ?? null,
-            },
-          });
-        }
+        // Stable upsert by the (lessonId, category, order) natural key — preserves
+        // each task's existing HomeworkTask.id so TaskSubmission rows never orphan.
+        // category + order are taken verbatim from the seed (no renumbering).
+        const specs: TaskSpec[] = lesson.homework.map((task) => ({
+          title: task.title,
+          description: task.description,
+          category: task.category,
+          order: task.order,
+          submissionType: task.submissionType,
+          widgetId: task.widgetId ?? null,
+          widgetConfig: task.widgetConfig ?? null,
+          modelAnswer: task.modelAnswer ?? null,
+          estimatedMinutes: task.estimatedMinutes ?? null,
+        }));
+        await upsertLessonHomework(tx, upsertedLesson.id, specs);
       }
+
+      // Prune orphan lessons (and their cascading homework) AFTER upserting all
+      // intended lessons — never before. Only lessons whose slug is no longer in
+      // the seed are removed; every current lesson keeps its stable Lesson.id.
+      const validSlugs = LESSONS.map((l) => l.slug);
+      await tx.lesson.deleteMany({
+        where: { courseId: COURSE_ID, slug: { notIn: validSlugs } },
+      });
     },
     { timeout: 60_000, maxWait: 10_000 },
   );

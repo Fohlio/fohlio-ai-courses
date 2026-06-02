@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3026",
     "build": "prisma generate && next build",
-    "build:vercel": "prisma generate && prisma db push && tsx scripts/backfill-legacy-course.ts && tsx scripts/create-fohlio-domain-course.ts && tsx scripts/seed-series.ts && next build",
+    "build:vercel": "prisma generate && prisma db push && tsx scripts/backfill-legacy-course.ts && tsx scripts/create-fohlio-domain-course.ts && tsx scripts/seed-series.ts && tsx scripts/repair-orphaned-submissions.ts --apply && next build",
     "start": "next start -p 3026",
     "lint": "eslint",
     "e2e": "playwright test",
@@ -22,7 +22,8 @@
     "db:fohlio-domain": "tsx scripts/create-fohlio-domain-course.ts",
     "db:series": "tsx scripts/seed-series.ts",
     "db:snapshot-submissions": "tsx scripts/snapshot-submissions.ts",
-    "db:remap-submissions": "tsx scripts/remap-submissions.ts"
+    "db:remap-submissions": "tsx scripts/remap-submissions.ts",
+    "db:repair-submissions": "tsx scripts/repair-orphaned-submissions.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.3.0",

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type McqJustifyOption = { id: string; label: string };
@@ -74,7 +75,7 @@ export const McqJustify: HomeworkWidget<McqJustifyState> = ({
 
   if (!normalized) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: this mcq-justify task is missing{" "}
         <code>question</code>, <code>options</code>, or{" "}
         <code>correctOptionId</code>.
@@ -135,8 +136,8 @@ export const McqJustify: HomeworkWidget<McqJustifyState> = ({
                   "flex min-h-[44px] cursor-pointer items-start gap-2 rounded-lg border p-2 transition-colors",
                   chosen && !submitted && "border-brand bg-brand/5",
                   !chosen && !submitted && "border-gray-200 hover:bg-gray-50",
-                  showRight && "border-green-500 bg-green-50",
-                  showWrong && "border-red-500 bg-red-50",
+                  showRight && "border-success bg-success-light",
+                  showWrong && "border-danger bg-danger-light",
                   submitted && !chosen && !isCorrect && "border-gray-200",
                   disabled && "cursor-not-allowed",
                 )}
@@ -151,12 +152,12 @@ export const McqJustify: HomeworkWidget<McqJustifyState> = ({
                 />
                 <span className="flex-1 text-sm text-gray-800">{opt.label}</span>
                 {showRight && (
-                  <span className="text-sm font-medium text-green-700" aria-hidden>
+                  <span className="text-sm font-medium text-success" aria-hidden>
                     ✓
                   </span>
                 )}
                 {showWrong && (
-                  <span className="text-sm font-medium text-red-700" aria-hidden>
+                  <span className="text-sm font-medium text-danger" aria-hidden>
                     ✗
                   </span>
                 )}
@@ -181,7 +182,7 @@ export const McqJustify: HomeworkWidget<McqJustifyState> = ({
         <p
           className={cn(
             "text-xs",
-            enoughWords ? "text-green-700" : "text-gray-500",
+            enoughWords ? "text-success" : "text-gray-500",
           )}
         >
           {words} / {normalized.minJustificationWords} words
@@ -189,19 +190,19 @@ export const McqJustify: HomeworkWidget<McqJustifyState> = ({
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
+        <Button
           type="button"
+          size="sm"
           onClick={handleSubmit}
           disabled={!canSubmit}
-          className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Submit
-        </button>
+        </Button>
         {submitted && (
           <span
             className={cn(
               "text-sm font-medium",
-              isCorrectChoice ? "text-green-700" : "text-red-700",
+              isCorrectChoice ? "text-success" : "text-danger",
             )}
             role="status"
           >

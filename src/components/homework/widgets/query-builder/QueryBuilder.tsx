@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type Dialect = "sql" | "prisma" | "mongo";
@@ -79,7 +80,7 @@ export function QueryBuilder(props: HomeworkWidgetProps<QueryBuilderState>) {
 
   if (!cfg) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: query-builder widget is missing required fields.
       </div>
     );
@@ -181,8 +182,8 @@ function QueryBuilderInner({
                   className={cn(
                     "min-h-8 rounded-md border bg-white px-2 py-1 font-mono text-sm",
                     "focus:outline-none focus:ring-2 focus:ring-brand/40",
-                    wrong && "border-red-400 bg-red-50",
-                    right && "border-green-500 bg-green-50",
+                    wrong && "border-danger bg-danger-light",
+                    right && "border-success bg-success-light",
                     !state.submitted && "border-gray-300",
                   )}
                 >
@@ -211,24 +212,21 @@ function QueryBuilderInner({
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
-        <button
+        <Button
           type="button"
+          size="sm"
           onClick={runCheck}
           disabled={disabled || !allChosen}
-          className={cn(
-            "min-h-8 rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white",
-            "hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50",
-          )}
         >
           Run check
-        </button>
+        </Button>
         {state.submitted &&
           (allCorrect ? (
-            <span className="text-sm font-medium text-green-700">
+            <span className="text-sm font-medium text-success">
               ✓ All slots correct.
             </span>
           ) : (
-            <span className="text-sm font-medium text-red-700">
+            <span className="text-sm font-medium text-danger">
               {correctCount}/{cfg.slots.length} correct — fix the highlighted slots.
             </span>
           ))}

@@ -298,11 +298,11 @@ export function SubmissionScreenshot({
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              className={`flex flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed px-4 py-8 text-center transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 ${
+              className={`flex flex-col items-center justify-center gap-1 rounded-lg border-2 border-dashed px-4 py-8 text-center transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-1 ${
                 disabled || uploading
                   ? "cursor-not-allowed border-gray-200 bg-gray-50"
                   : isDragging
-                    ? "cursor-copy border-blue-500 bg-blue-50"
+                    ? "cursor-copy border-brand bg-brand-light"
                     : "cursor-pointer border-gray-300 bg-white hover:border-gray-400 hover:bg-gray-50"
               }`}
             >
@@ -314,7 +314,7 @@ export function SubmissionScreenshot({
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className={`h-7 w-7 ${isDragging ? "text-blue-500" : "text-gray-400"}`}
+                className={`h-7 w-7 ${isDragging ? "text-brand" : "text-gray-400"}`}
                 aria-hidden="true"
               >
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -373,7 +373,7 @@ export function SubmissionScreenshot({
       )}
 
       {uploadError && (
-        <p className="text-xs text-red-600">{uploadError}</p>
+        <p className="text-xs text-danger">{uploadError}</p>
       )}
     </div>
   );
