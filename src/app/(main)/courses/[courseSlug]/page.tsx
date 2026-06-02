@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlugOrId } from "@/lib/courseQueries";
+import { getCourseProgress } from "@/lib/progressTracking";
 import { CourseLessonList } from "@/components/course/CourseLessonList";
+import { CourseProgressHeader } from "@/components/course/CourseProgressHeader";
 import { Badge } from "@/components/ui/Badge";
 
 export const dynamic = "force-dynamic";
@@ -27,6 +29,11 @@ export default async function CoursePage({
     notFound();
   }
 
+  // Two-metric progress + per-lesson status for this course (authed user only).
+  // getCourseProgress returns a Map-backed metrics object with a lessonStatusMap
+  // keyed by lessonId; both feed the quiet header and the per-lesson icons.
+  const progress = await getCourseProgress(user.id, course.id);
+
   return (
     <div className="space-y-8">
       <header className="space-y-4 rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
@@ -47,6 +54,9 @@ export default async function CoursePage({
         </p>
       </header>
 
+      {/* Quiet two-metric progress header — authed users only (caller-guarded). */}
+      <CourseProgressHeader progress={progress} courseTitle={course.title} />
+
       <section className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
@@ -60,7 +70,10 @@ export default async function CoursePage({
           </p>
         </div>
 
-        <CourseLessonList course={course} />
+        <CourseLessonList
+          course={course}
+          lessonStatusMap={progress.lessonStatusMap}
+        />
       </section>
     </div>
   );

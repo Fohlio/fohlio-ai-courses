@@ -2,6 +2,7 @@
 
 import { useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type CodeOrderConfig = {
@@ -79,7 +80,7 @@ export const CodeOrder: HomeworkWidget<CodeOrderState> = ({
 
   if (!normalized) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: this code-order task is missing <code>prompt</code>{" "}
         or <code>lines</code>.
       </div>
@@ -161,8 +162,8 @@ export const CodeOrder: HomeworkWidget<CodeOrderState> = ({
               className={cn(
                 "flex items-center gap-2 rounded-lg border bg-white p-2",
                 "cursor-grab active:cursor-grabbing",
-                wrong && "border-red-400 bg-red-50",
-                right && "border-green-400 bg-green-50",
+                wrong && "border-danger bg-danger-light",
+                right && "border-success bg-success-light",
                 !checked && "border-gray-200",
               )}
             >
@@ -202,19 +203,14 @@ export const CodeOrder: HomeworkWidget<CodeOrderState> = ({
       </ol>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={handleCheck}
-          disabled={disabled}
-          className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
+        <Button type="button" size="sm" onClick={handleCheck} disabled={disabled}>
           Check order
-        </button>
+        </Button>
         {checked && (
           <span
             className={cn(
               "text-sm font-medium",
-              isCorrect ? "text-green-700" : "text-red-700",
+              isCorrect ? "text-success" : "text-danger",
             )}
             role="status"
           >

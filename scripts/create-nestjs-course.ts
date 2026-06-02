@@ -5,6 +5,7 @@ import { PrismaClient } from "../src/generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { ADMIN_GITHUB_NICKNAME } from "../src/lib/constants";
 import { seedCourseSkills, seedBadges } from "../src/lib/skillSeeder";
+import { upsertLessonHomework, type TaskSpec } from "./lib/upsertLessonHomework";
 import {
   NESTJS_SKILLS,
   NESTJS_LESSON_SKILLS,
@@ -1836,28 +1837,21 @@ async function main() {
         },
       });
 
-      await tx.homeworkTask.deleteMany({
-        where: { lessonId: upsertedLesson.id },
-      });
-      for (const task of lesson.homework) {
-        await tx.homeworkTask.create({
-          data: {
-            id: task.id,
-            lessonId: upsertedLesson.id,
-            title: task.title,
-            description: task.description,
-            category: task.category,
-            submissionType: task.submissionType,
-            order: task.order,
-            widgetId: task.widgetId ?? null,
-            widgetConfig: task.widgetConfig
-              ? (JSON.parse(JSON.stringify(task.widgetConfig)) as object)
-              : undefined,
-            modelAnswer: task.modelAnswer ?? null,
-            estimatedMinutes: task.estimatedMinutes ?? null,
-          },
-        });
-      }
+      // Stable upsert by the (lessonId, category, order) natural key — preserves
+      // each task's existing HomeworkTask.id so TaskSubmission rows never orphan.
+      // category + order are taken verbatim from the seed (no renumbering).
+      const specs: TaskSpec[] = lesson.homework.map((task) => ({
+        title: task.title,
+        description: task.description,
+        category: task.category,
+        order: task.order,
+        submissionType: task.submissionType,
+        widgetId: task.widgetId ?? null,
+        widgetConfig: task.widgetConfig ?? null,
+        modelAnswer: task.modelAnswer ?? null,
+        estimatedMinutes: task.estimatedMinutes ?? null,
+      }));
+      await upsertLessonHomework(tx, upsertedLesson.id, specs);
     }
   }, { timeout: 60_000, maxWait: 10_000 });
 

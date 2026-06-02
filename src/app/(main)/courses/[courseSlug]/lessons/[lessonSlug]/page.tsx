@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getCourseBySlugOrId } from "@/lib/courseQueries";
 import { cssBaseForCourse } from "@/lib/lessonCss";
 import { LessonContent } from "@/components/lesson/LessonContent";
+import { LessonReadTracker } from "@/components/lesson/LessonReadTracker";
 import { LessonGoals } from "@/components/lesson/LessonGoals";
 import { LessonHeader } from "@/components/lesson/LessonHeader";
 import { LessonNav } from "@/components/lesson/LessonNav";
@@ -42,6 +43,12 @@ export default async function CourseLessonPage({
 
   const hasTasks = lesson.homework.some((section) => section.tasks.length > 0);
 
+  // Scroll-to-end read tracking: only for authed users (this page early-returns
+  // null for anon) reading an HTML lesson with actual content. PDF and empty
+  // lessons do NOT mount the tracker.
+  const trackRead =
+    lesson.contentType === "html" && lesson.contentHtml.trim() !== "";
+
   return (
     <div className="space-y-8">
       <Link href={`/courses/${course.slug}`} className="text-sm font-medium text-brand hover:underline">
@@ -52,6 +59,8 @@ export default async function CourseLessonPage({
       <LessonGoals goals={lesson.learningGoals} />
       <VideoPlayer videoUrl={lesson.videoUrl} />
       <LessonContent lesson={lesson} cssBundle={cssBaseForCourse(course.slug)} />
+
+      {trackRead && <LessonReadTracker lessonId={lesson.id} />}
 
       {hasTasks && (
         <div className="flex justify-center">

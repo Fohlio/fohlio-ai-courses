@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 /**
@@ -143,7 +144,7 @@ export const Categorize: HomeworkWidget<CategorizeState> = ({
 
   if (!cfg) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: categorize requires <code>prompt</code>,{" "}
         <code>categories[]</code> (≥2), and <code>items[]</code> (≥2) with valid{" "}
         <code>correctCategoryId</code>.
@@ -325,8 +326,8 @@ export const Categorize: HomeworkWidget<CategorizeState> = ({
                       <div
                         className={cn(
                           "flex items-center justify-between gap-2 rounded-md border px-2 py-1.5 text-sm",
-                          correct && "border-green-500 bg-green-50",
-                          wrong && "border-red-500 bg-red-50",
+                          correct && "border-success bg-success-light",
+                          wrong && "border-danger bg-danger-light",
                           !state.checked && "border-gray-200 bg-gray-50",
                         )}
                       >
@@ -335,7 +336,7 @@ export const Categorize: HomeworkWidget<CategorizeState> = ({
                         </span>
                         {correct && (
                           <span
-                            className="text-xs font-medium text-green-700"
+                            className="text-xs font-medium text-success"
                             aria-hidden
                           >
                             ✓
@@ -343,7 +344,7 @@ export const Categorize: HomeworkWidget<CategorizeState> = ({
                         )}
                         {wrong && (
                           <span
-                            className="text-xs font-medium text-red-700"
+                            className="text-xs font-medium text-danger"
                             aria-hidden
                           >
                             ✗
@@ -357,7 +358,7 @@ export const Categorize: HomeworkWidget<CategorizeState> = ({
                           }}
                           disabled={disabled}
                           aria-label={`Remove ${it.label} from ${cat.label}`}
-                          className="shrink-0 rounded px-1 text-xs text-gray-400 hover:text-red-600"
+                          className="shrink-0 rounded px-1 text-xs text-gray-400 hover:text-danger"
                         >
                           ✕
                         </button>
@@ -372,14 +373,13 @@ export const Categorize: HomeworkWidget<CategorizeState> = ({
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
+        <Button
           type="button"
           onClick={handleCheck}
           disabled={disabled || !allPlaced}
-          className="rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Check categories
-        </button>
+        </Button>
         {!allPlaced && (
           <span className="text-xs text-gray-500" role="status">
             Place every item to check.
@@ -389,7 +389,7 @@ export const Categorize: HomeworkWidget<CategorizeState> = ({
           <span
             className={cn(
               "text-sm font-medium",
-              allCorrect ? "text-green-700" : "text-red-700",
+              allCorrect ? "text-success" : "text-danger",
             )}
             role="status"
           >

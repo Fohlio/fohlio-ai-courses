@@ -53,7 +53,7 @@ export function SubmissionWidget({
 
   if (!widgetId) {
     return (
-      <div className="rounded-lg border border-dashed border-amber-300 bg-amber-50 p-3 text-sm text-amber-700">
+      <div className="rounded-lg border border-dashed border-warning/40 bg-warning-light p-3 text-sm text-warning">
         This widget task is missing its widget id. Ask the course owner to
         repair the task definition.
       </div>
@@ -62,7 +62,7 @@ export function SubmissionWidget({
 
   if (!Widget) {
     return (
-      <div className="rounded-lg border border-dashed border-red-300 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-dashed border-danger/40 bg-danger-light p-3 text-sm text-danger">
         Unknown widget <code className="font-mono">{widgetId}</code>. Was it
         renamed or removed from the registry?
       </div>

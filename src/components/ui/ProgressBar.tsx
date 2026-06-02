@@ -9,6 +9,8 @@ interface ProgressBarProps {
   size?: ProgressBarSize;
   color?: ProgressBarColor;
   className?: string;
+  /** Accessible name for the progress bar, e.g. the course title + percent. */
+  "aria-label"?: string;
 }
 
 const sizeStyles: Record<ProgressBarSize, string> = {
@@ -27,6 +29,7 @@ function ProgressBar({
   size = "md",
   color = "brand",
   className,
+  "aria-label": ariaLabel,
 }: ProgressBarProps) {
   const clampedValue = Math.max(0, Math.min(100, value));
 
@@ -37,6 +40,7 @@ function ProgressBar({
       aria-valuenow={clampedValue}
       aria-valuemin={0}
       aria-valuemax={100}
+      aria-label={ariaLabel}
       className={cn(
         "w-full overflow-hidden rounded-full bg-gray-100",
         sizeStyles[size],

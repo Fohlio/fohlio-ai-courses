@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type TerminalTraceConfig = {
@@ -64,7 +65,7 @@ export const TerminalTrace: HomeworkWidget<TerminalTraceState> = (
 
   if (!cfg) {
     return (
-      <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-md border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: terminal-trace requires <code>prompt</code>,{" "}
         <code>command</code>, and <code>expectedOutput[]</code>.
       </div>
@@ -90,7 +91,7 @@ export const TerminalTrace: HomeworkWidget<TerminalTraceState> = (
 
       <div className="rounded-md bg-gray-900 p-3 font-mono text-sm text-gray-100">
         <div className="flex gap-2 break-all">
-          <span className="select-none text-green-400">$</span>
+          <span className="select-none text-success">$</span>
           <span className="whitespace-pre-wrap">{cfg.command}</span>
         </div>
       </div>
@@ -110,14 +111,13 @@ export const TerminalTrace: HomeworkWidget<TerminalTraceState> = (
       </label>
 
       {!state.revealed && (
-        <button
+        <Button
           type="button"
-          className="rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
           disabled={disabled || state.prediction.trim().length === 0}
           onClick={() => update({ revealed: true })}
         >
           Reveal &amp; compare
-        </button>
+        </Button>
       )}
 
       {state.revealed && (
@@ -147,8 +147,8 @@ export const TerminalTrace: HomeworkWidget<TerminalTraceState> = (
                         key={i}
                         className={
                           ok
-                            ? "bg-green-50 text-green-900"
-                            : "bg-red-50 text-red-900"
+                            ? "bg-success-light text-success"
+                            : "bg-danger-light text-danger"
                         }
                       >
                         <td className="pr-2 align-top text-gray-500">

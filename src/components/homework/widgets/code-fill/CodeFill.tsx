@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 type CodeFillBlank = {
@@ -109,7 +110,7 @@ export const CodeFill: HomeworkWidget<CodeFillState> = ({
 
   if (!normalized) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: this code-fill task is missing <code>code</code> or{" "}
         <code>blanks</code>.
       </div>
@@ -151,7 +152,7 @@ export const CodeFill: HomeworkWidget<CodeFillState> = ({
           const blank = normalized.blanks.find((b) => b.id === seg.id);
           if (!blank) {
             return (
-              <span key={idx} className="text-red-400">
+              <span key={idx} className="text-danger">
                 {`{{${seg.id}}}`}
               </span>
             );
@@ -182,8 +183,8 @@ export const CodeFill: HomeworkWidget<CodeFillState> = ({
                   "mx-0.5 inline-block rounded border-b-2 bg-gray-800 px-1.5 py-0.5 font-mono text-sm text-gray-100 outline-none focus:border-brand",
                   showFeedback
                     ? correct
-                      ? "border-green-400"
-                      : "border-red-400"
+                      ? "border-success"
+                      : "border-danger"
                     : "border-gray-500",
                 )}
               />
@@ -191,7 +192,7 @@ export const CodeFill: HomeworkWidget<CodeFillState> = ({
                 <span
                   className={cn(
                     "ml-1 text-xs",
-                    correct ? "text-green-400" : "text-red-400",
+                    correct ? "text-success" : "text-danger",
                   )}
                   aria-hidden
                 >
@@ -204,19 +205,14 @@ export const CodeFill: HomeworkWidget<CodeFillState> = ({
       </pre>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={handleCheck}
-          disabled={disabled}
-          className="rounded-md bg-brand px-3 py-1.5 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
+        <Button type="button" size="sm" onClick={handleCheck} disabled={disabled}>
           Check
-        </button>
+        </Button>
         {checked && (
           <span
             className={cn(
               "text-sm font-medium",
-              allCorrect ? "text-green-700" : "text-red-700",
+              allCorrect ? "text-success" : "text-danger",
             )}
             role="status"
           >

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/Button";
 import type { HomeworkWidget, HomeworkWidgetProps } from "../types";
 
 /**
@@ -175,7 +176,7 @@ export const RankOrder: HomeworkWidget<RankOrderState> = ({
 
   if (!cfg) {
     return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+      <div className="rounded-lg border border-danger/30 bg-danger-light p-3 text-sm text-danger">
         Configuration error: rank-order requires <code>prompt</code>,{" "}
         <code>criterion</code>, <code>items[]</code> (≥2), and a matching{" "}
         <code>correctOrder[]</code>.
@@ -293,8 +294,8 @@ export const RankOrder: HomeworkWidget<RankOrderState> = ({
               className={cn(
                 "flex items-start gap-2 rounded-lg border p-2.5 transition-colors",
                 !disabled && "cursor-grab active:cursor-grabbing",
-                correctHere && "border-green-400 bg-green-50",
-                wrongHere && "border-red-400 bg-red-50",
+                correctHere && "border-success bg-success-light",
+                wrongHere && "border-danger bg-danger-light",
                 !state.checked &&
                   (isTopPick
                     ? "border-brand bg-brand/5"
@@ -390,7 +391,7 @@ export const RankOrder: HomeworkWidget<RankOrderState> = ({
         <p
           className={cn(
             "text-xs",
-            enoughWords ? "text-green-700" : "text-gray-500",
+            enoughWords ? "text-success" : "text-gray-500",
           )}
         >
           {words} / {cfg.minJustificationWords} words
@@ -398,14 +399,9 @@ export const RankOrder: HomeworkWidget<RankOrderState> = ({
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={handleCheck}
-          disabled={!canCheck}
-          className="rounded-md bg-brand px-3 py-2 text-sm font-medium text-white hover:bg-brand/90 disabled:cursor-not-allowed disabled:opacity-50"
-        >
+        <Button type="button" onClick={handleCheck} disabled={!canCheck}>
           Check ranking
-        </button>
+        </Button>
         {!hasTopPick && (
           <span className="text-xs text-gray-500" role="status">
             Mark your most-important item.
@@ -415,7 +411,7 @@ export const RankOrder: HomeworkWidget<RankOrderState> = ({
           <span
             className={cn(
               "text-sm font-medium",
-              allCorrect ? "text-green-700" : "text-red-700",
+              allCorrect ? "text-success" : "text-danger",
             )}
             role="status"
           >
