@@ -4,419 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MikroORM Course - Lesson 10</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
-        :root {
-            --blue: #3451B2;
-            --blue-light: #E8EDFF;
-            --blue-mid: #C5D0F6;
-            --green: #1A8F5C;
-            --green-light: #E6F9F0;
-            --orange: #E8790C;
-            --orange-light: #FFF3E5;
-            --red: #DC2626;
-            --red-light: #FEE2E2;
-            --purple: #7C3AED;
-            --purple-light: #EDE9FE;
-            --gray-50: #F9FAFB;
-            --gray-100: #F3F4F6;
-            --gray-200: #E5E7EB;
-            --gray-300: #D1D5DB;
-            --gray-500: #6B7280;
-            --gray-700: #374151;
-            --gray-900: #111827;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            color: var(--gray-900);
-            line-height: 1.7;
-            background: #fff;
-            font-size: 16px;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 32px;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            padding: 80px 0 60px;
-        }
-        .header h1 {
-            font-size: 42px;
-            font-weight: 800;
-            color: var(--blue);
-            letter-spacing: -1px;
-        }
-        .header .subtitle {
-            font-size: 20px;
-            color: var(--gray-500);
-            margin-top: 8px;
-            font-weight: 400;
-        }
-        .header .lesson-badge {
-            display: inline-block;
-            background: var(--blue-light);
-            color: var(--blue);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        /* Goals box */
-        .goals-box {
-            background: var(--blue-light);
-            border-left: 4px solid var(--blue);
-            border-radius: 0 12px 12px 0;
-            padding: 28px 32px;
-            margin: 40px 0;
-        }
-        .goals-box h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--blue);
-            margin-bottom: 16px;
-        }
-        .goals-box ul { list-style: none; }
-        .goals-box li {
-            padding: 6px 0;
-            padding-left: 24px;
-            position: relative;
-            color: var(--gray-700);
-        }
-        .goals-box li::before {
-            content: "\2022";
-            color: var(--blue);
-            font-weight: bold;
-            position: absolute;
-            left: 8px;
-        }
-
-        /* Section headers */
-        .part-header {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--blue);
-            margin-top: 64px;
-            margin-bottom: 24px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid var(--blue-light);
-        }
-
-        h3 {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--gray-900);
-            margin-top: 36px;
-            margin-bottom: 12px;
-        }
-
-        h4 {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--gray-700);
-            margin-top: 28px;
-            margin-bottom: 8px;
-        }
-
-        p {
-            margin-bottom: 16px;
-            color: var(--gray-700);
-        }
-
-        /* Code blocks */
-        code {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--gray-100);
-            padding: 2px 7px;
-            border-radius: 4px;
-            font-size: 14px;
-            color: var(--gray-900);
-        }
-
-        pre {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-            margin: 16px 0;
-        }
-        pre code {
-            background: none;
-            padding: 0;
-            color: inherit;
-            font-size: inherit;
-        }
-        .comment { color: #6B7280; }
-        .keyword { color: #C084FC; }
-        .string { color: #86EFAC; }
-        .function { color: #93C5FD; }
-        .decorator { color: #F9A8D4; }
-        .type { color: #FCD34D; }
-
-        /* Info boxes */
-        .info-box {
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 20px 0;
-        }
-        .info-box p { margin-bottom: 0; }
-        .info-box.blue { background: var(--blue-light); border-left: 4px solid var(--blue); }
-        .info-box.green { background: var(--green-light); border-left: 4px solid var(--green); }
-        .info-box.orange { background: var(--orange-light); border-left: 4px solid var(--orange); }
-        .info-box.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
-        .info-box.red { background: var(--red-light); border-left: 4px solid var(--red); }
-
-        /* Joke box */
-        .joke-box {
-            background: var(--gray-50);
-            border: 1px dashed var(--gray-300);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 24px 0;
-            font-size: 14px;
-            color: var(--gray-700);
-            line-height: 1.8;
-        }
-        .joke-box .joke-icon {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        /* Story box */
-        .story-box {
-            background: var(--purple-light);
-            border-radius: 12px;
-            padding: 24px;
-            margin: 20px 0;
-            border-left: 4px solid var(--purple);
-        }
-        .story-box p { color: var(--gray-700); }
-        .story-box .tech-note {
-            font-style: normal;
-            font-size: 13px;
-            color: var(--gray-500);
-            background: white;
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin-top: 12px;
-            border: 1px solid var(--gray-200);
-        }
-        .story-box .tech-note code {
-            font-size: 12px;
-        }
-
-        /* Concept cards */
-        .concept-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin: 24px 0;
-        }
-        .concept-card {
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .concept-card .card-icon {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-        .concept-card .card-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 4px;
-        }
-        .concept-card .card-subtitle {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .concept-card .card-desc {
-            font-size: 12px;
-            color: var(--gray-500);
-            text-align: left;
-        }
-
-        /* Comparison table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        th {
-            background: var(--blue);
-            color: white;
-            padding: 12px 16px;
-            text-align: left;
-            font-weight: 600;
-        }
-        td {
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--gray-200);
-            color: var(--gray-700);
-        }
-        tr:nth-child(even) { background: var(--gray-50); }
-
-        /* Diagram */
-        .diagram {
-            margin: 24px 0;
-        }
-        .diagram svg {
-            width: 100%;
-            height: auto;
-        }
-        .diagram-caption {
-            text-align: center;
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-top: 8px;
-        }
-
-        /* Step cards */
-        .step-card {
-            background: white;
-            border: 1px solid var(--gray-200);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 12px 0;
-        }
-        .step-card .step-number {
-            display: inline-block;
-            background: var(--blue);
-            color: white;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 28px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-right: 12px;
-        }
-        .step-card .step-title {
-            font-weight: 600;
-            font-size: 15px;
-            display: inline;
-        }
-        .step-card .step-desc {
-            margin-top: 8px;
-            font-size: 14px;
-            color: var(--gray-500);
-        }
-
-        /* Layer visualization */
-        .layer-stack {
-            margin: 24px 0;
-        }
-        .layer-item {
-            display: flex;
-            align-items: center;
-            padding: 14px 20px;
-            border-radius: 10px;
-            margin: 6px 0;
-            transition: transform 0.2s;
-        }
-        .layer-item:hover {
-            transform: translateX(4px);
-        }
-        .layer-item .layer-icon {
-            font-size: 24px;
-            margin-right: 16px;
-            width: 36px;
-            text-align: center;
-        }
-        .layer-item .layer-name {
-            font-weight: 600;
-            font-size: 15px;
-            min-width: 160px;
-        }
-        .layer-item .layer-desc {
-            font-size: 13px;
-            color: var(--gray-500);
-            margin-left: auto;
-        }
-
-        /* Homework section */
-        .homework {
-            background: var(--blue-light);
-            border: 2px solid var(--blue-mid);
-            border-radius: 16px;
-            padding: 36px;
-            margin: 48px 0;
-        }
-        .homework h2 {
-            color: var(--blue);
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        /* Recall box */
-        .recall-box {
-            background: #FFFBEB;
-            border: 2px solid #FCD34D;
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 28px 0;
-        }
-        .recall-box .recall-title {
-            font-weight: 700;
-            font-size: 15px;
-            color: #D97706;
-            margin-bottom: 10px;
-        }
-        .recall-box .recall-question {
-            font-size: 15px;
-            color: var(--gray-700);
-            margin-bottom: 12px;
-            line-height: 1.7;
-        }
-        .recall-box .recall-hint {
-            font-size: 13px;
-            color: var(--gray-500);
-            font-style: italic;
-        }
-
-        /* File tree */
-        .file-tree {
-            background: var(--gray-900);
-            color: #E5E7EB;
-            padding: 20px 24px;
-            border-radius: 12px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-            line-height: 2;
-            margin: 16px 0;
-            white-space: pre;
-            overflow-x: auto;
-        }
-        .file-tree .dir { color: #93C5FD; }
-        .file-tree .file { color: #E5E7EB; }
-        .file-tree .comment { color: #6B7280; }
-        .file-tree .highlight { color: #86EFAC; }
-
-        /* Responsive */
-        @media (max-width: 600px) {
-            .concept-grid { grid-template-columns: 1fr; }
-        }
-    </style>
+    
 </head>
 <body>
 
@@ -426,7 +14,6 @@
 <figure class="lesson-hero" style="margin:0 0 32px 0;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.06);">
 <img src="/lessons/images/mikroorm/lesson-10-hero.webp" alt="Editorial illustration for MikroORM Lesson 10 (library-themed)" width="1600" height="900" loading="eager" decoding="async" style="display:block;width:100%;height:auto;">
 </figure>
-
 
     <!-- HEADER -->
     <div class="header">
@@ -517,7 +104,6 @@
         </div>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 1: THE SYNTHESIS -->
     <!-- ============================================ -->
@@ -549,7 +135,6 @@
     </div>
 
     <p>That's the model. The next four parts add a thin operational skin around it: how do we make this run cleanly under real production load, where dev-mode logging would melt our log bill, where boot time matters, where one Postgres primary can't hold all the read traffic, and where multiple Fohlio tenants need data isolation. Nothing you didn't already learn &mdash; just the production-grade dial settings.</p>
-
 
     <!-- ============================================ -->
     <!-- PART 2: PRODUCTION LOGGING -->
@@ -639,7 +224,6 @@
         <em>The full L1&rarr;L10 arc, in two debug flags.</em>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 3: METADATA CACHE -->
     <!-- ============================================ -->
@@ -678,7 +262,6 @@
     <div class="info-box blue">
         <p><strong>Two checks before you cache:</strong> (1) Regenerate <code>metadata.json</code> on every CI build, never commit it &mdash; it's a build artifact, not source. (2) If your entity definitions and the cached metadata drift, you'll get loud, mysterious errors at boot. CI should fail the build if <code>cache:generate</code> exits non-zero.</p>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 4: READ REPLICAS -->
@@ -733,7 +316,6 @@
     </div>
 
     <div data-widget="live-quiz" data-config='{"question":"A handler does em.persistAndFlush(article), then immediately em.findOne(Article, article.id). preferReadReplicas: true is set. Intermittently the second call returns the old version of the row. What is the cleanest fix?","options":[{"id":"a","label":"Set preferReadReplicas: false everywhere &mdash; the replicas are not worth the trouble."},{"id":"b","label":"Wrap the handler in @Transactional() (or em.transactional(...)). All reads inside the transaction route to primary, so the second findOne sees the write."},{"id":"c","label":"Call em.clear() between the flush and the findOne."},{"id":"d","label":"Manually pass { populate: [&#39;*&#39;] } to the second findOne."}],"correctOptionId":"b","explanation":"The framework already does the right thing once you put the code in the right shape. MikroORM routes every query inside a transactional scope to the write connection &mdash; reads after the flush will hit primary. Per-query override with connectionType: &#39;write&#39; is also valid, but @Transactional is the discipline that scales beyond one handler."}'></div>
-
 
     <!-- ============================================ -->
     <!-- PART 5: MULTIPLE SCHEMAS -->
@@ -804,7 +386,6 @@
     </table>
 
     <p>Default to <strong>filter</strong> for SaaS with many small tenants (the typical Fohlio case). Reach for <strong>schema</strong> when you have a small number of large tenants who pay for hard isolation, or when ops needs to back up one tenant without affecting the others. Don't pick schema-per-tenant for hundreds of tenants &mdash; the migration story stops being fun fast.</p>
-
 
     <!-- ============================================ -->
     <!-- PART 6: CAPSTONE PROJECT -->
@@ -896,7 +477,6 @@ archive-api/
 
     <div data-widget="inline-reflect" data-config='{"storageKey":"mikroorm-l10-capstone-plan","prompt":"Pick four of the eight capstone criteria (a&ndash;h) you intend to ship in your PR. For each, write one sentence on why that criterion fits your project &mdash; or what real-world pain it would relieve. The exercise is to commit to a shape before you start writing code, not to enumerate everything you could theoretically build.","placeholder":"(c) softDelete filter &mdash; because our admin tools need to restore accidentally-deleted articles\n(d) STI on Document &mdash; because Books and Journals share most of their columns and...","exampleReflection":"(b) Custom MoneyType &mdash; our invoices have shipped &lsquo;199900 USD&rsquo; to clients twice; the type fixes the boundary once. (c) softDelete filter on Article &mdash; legal won&#39;t let us hard-delete drafts. (e) @Transactional publishArticle + outbox event &mdash; we already have a Slack notifier that drifts from the article table. (g) Cron worker with @CreateRequestContext &mdash; the existing setInterval based one randomly throws on global-context errors after the v7 upgrade.","minWords":30}'></div>
 
-
     <!-- ============================================ -->
     <!-- INTERLEAVED RECALL -->
     <!-- ============================================ -->
@@ -911,7 +491,6 @@ archive-api/
         <strong>5.</strong> An entity is loaded, modified, and you call <code>em.remove(entity)</code> followed by <code>em.flush()</code>. What state was the entity in before <code>remove</code>, and what state after? Was the modification flushed? <span style="color: var(--gray-500); font-size: 13px;">(L3)</span></div>
         <div class="recall-hint"><strong>5/5:</strong> capstone material, you're ready. <strong>3-4/5:</strong> identify which lesson the misses came from, re-skim that one before submitting the capstone PR. <strong>0-2/5:</strong> this is the highest-leverage time you'll spend &mdash; pick the two weakest lessons and re-read the recall-boxes in each.</div>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PRODUCTION ARCHITECTURE DIAGRAM -->
@@ -1012,7 +591,6 @@ archive-api/
         <div class="diagram-caption">Three Postgres-cluster boxes, two app boxes, one worker, one logger sink. Every label maps to a lesson.</div>
     </div>
 
-
     <!-- ============================================ -->
     <!-- SELF-TEST -->
     <!-- ============================================ -->
@@ -1034,7 +612,6 @@ archive-api/
         <strong>(h)</strong> Read replicas + metadata cache &rarr; ?</div>
         <div class="recall-hint">Answers: (a) L4+L5, (b) L6, (c) L6, (d) L7, (e) L8, (f) L9, (g) L9, (h) L10. <strong>8/8:</strong> ship the capstone with confidence. <strong>5-7/8:</strong> note which ones you missed and re-read those lessons' summaries before you start coding. <strong>&lt;5/8:</strong> this is exactly the gap the capstone is meant to expose &mdash; spend an evening on the missed lessons before the PR; the synthesis only locks in once you can place each idea on the map.</div>
     </div>
-
 
     <!-- ============================================ -->
     <!-- SUMMARY -->
@@ -1076,49 +653,9 @@ archive-api/
         <p><strong>You finished.</strong> Push the capstone PR. Mark the course complete on the platform. Use this repo as the reference whenever you bring MikroORM into a new Fohlio service &mdash; the patterns are the same whether you're shipping <code>archive-api</code> or anything else. If you ever stall on &ldquo;which lesson covered this&rdquo;, the recap-grid at the top of L10 is the index.</p>
     </div>
 
-
     <!-- ============================================ -->
     <!-- HOMEWORK -->
     <!-- ============================================ -->
-
-    <div class="homework">
-        <h2>Capstone Homework</h2>
-
-        <h3>Required (for everyone)</h3>
-        <ol>
-            <li>
-                <strong>Wire production config and capture slow-query + metadata-cache evidence</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Create <code>mikro-orm.config.prod.ts</code> with: structured JSON logging, a slow-query threshold of 100ms, and metadata cache enabled (GeneratedCacheAdapter pointing to a <code>.cache/</code> directory). Start the app. Trigger a deliberately slow query by running <code>em.execute('SELECT pg_sleep(0.15)')</code>. Submit a screenshot showing TWO things on screen: (a) the structured JSON log line for the slow query (must include the SQL text and time taken), and (b) a boot log line indicating metadata was loaded from cache (run the app twice &mdash; the second run loads the cache).</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">The screenshot must show: (1) a JSON log object containing at least &#123; sql: 'select pg_sleep(...)', took: &lt;n&gt;ms &#125; &mdash; the slow-query path fires at warn level when a query exceeds slowQueryThreshold; (2) a log line from a prior boot showing "Loaded metadata from cache" or similar from GeneratedCacheAdapter. If no slow-query log: confirm slowQueryThreshold is set on the config object, not the driver. If no cache line: run the app twice &mdash; first run generates the file, second loads it.</p>
-                </details>
-            </li>
-
-            <li style="margin-top: 16px;">
-                <strong>Course synthesis &mdash; two concepts you will use at Fohlio + prior-lesson callbacks</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Part A (~200 words): Name the two concepts from this course you expect to use most often at Fohlio. For each: name a concrete Fohlio service or feature, state what specific problem it solves there, and say which earlier lesson's homework task made it click. Generic answers ("it scales") don't count. Part B (L3/L6/L9 callbacks): Describe a hypothetical production incident involving all three of: a stale Identity Map (L3), a soft-delete filter accidentally disabled (L6), and a missing @CreateRequestContext() on a queue worker (L9). What data corruption results? What is the minimal fix for each cause? Submit both parts as text.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">Part A rubric: full marks require a named Fohlio service (not "the backend"), a specific problem statement (not "performance"), and a reference to a specific lesson or homework task. Part B: Stale Identity Map (L3) &mdash; a queue worker reuses a long-lived EM; its stale Article overwrites an HTTP change on flush. Fix: @CreateRequestContext() on the worker (also fixes cause 3). Soft-delete filter disabled (L6) &mdash; a report query accidentally surfaces deleted articles to a client. Fix: scope filter disable to a forked EM, never the global EM. Missing @CreateRequestContext() (L9) &mdash; multiple concurrent jobs mutate the same Identity Map, causing race conditions on flush. Fix: decorate the handler method.</p>
-                </details>
-            </li>
-        </ol>
-
-        <h3 style="margin-top: 28px;">Advanced (optional)</h3>
-        <ol>
-            <li>
-                <strong>MikroORM vs Prisma at Fohlio &mdash; structured comparison with personal stakes</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 40 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">Compare MikroORM and Prisma across four dimensions: Unit of Work vs per-operation approach, relation loading, migration tooling, NestJS integration. For each dimension state which tool wins under what conditions and name a concrete Fohlio service where that dimension would tip the decision. Then paste your comparison into ChatGPT and ask it to summarize the winner. Write 3 sentences on what the AI summary missed &mdash; specifically about your own experience running both tools across this course and the NestJS course.</p>
-                <p style="margin: 6px 0 0; font-size: 13px; color: var(--gray-500);"><em>Metacognitive memo: Looking back at all 10 lessons, which homework task changed your mental model the most, and why?</em></p>
-            </li>
-            <li style="margin-top: 16px;">
-                <strong>Why does the metadata cache eliminate cold-start tax, and when does it backfire?</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 15 min</span>
-                <p style="margin: 8px 0 4px; font-size: 14px; color: var(--gray-700);">MikroORM discovers entity metadata at boot by inspecting TypeScript reflection and decorator metadata &mdash; a process that touches every entity file and builds an in-memory schema graph. The GeneratedCacheAdapter serializes this graph to disk so the next boot skips discovery. Why does this matter in a serverless or container-autoscaling environment where cold starts are frequent? Name one scenario where the cache becomes incorrect and causes a runtime error, and describe the minimal invalidation step. Answer in 5&ndash;7 sentences.</p>
-            </li>
-        </ol>
-    </div>
-
 
     <!-- FOOTER -->
     <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">

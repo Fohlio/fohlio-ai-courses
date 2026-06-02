@@ -477,7 +477,6 @@
 <img src="/lessons/images/fohlio-tech-course/lesson-3-hero.webp" alt="Editorial illustration for Fohlio Tech Course Lesson 3" width="1600" height="900" loading="eager" decoding="async" style="display:block;width:100%;height:auto;">
 </figure>
 
-
     <!-- HEADER -->
     <div class="header">
         <div class="lesson-badge">Lesson 3 of 10</div>
@@ -497,7 +496,6 @@
             <li>Make your first code change via Cursor and create a Pull Request</li>
         </ul>
     </div>
-
 
     <!-- ============================================ -->
     <!-- RECAP OF PREVIOUS LESSONS -->
@@ -532,7 +530,6 @@
     <div class="info-box blue">
         <p><strong>Today's lesson</strong> zooms into the <strong>Frontend</strong> &mdash; the dining room. We'll see what's inside, learn how to set it up on your machine, and make your first change.</p>
     </div>
-
 
     <!-- ============================================ -->
     <!-- BEFORE WE BEGIN: KEY CONCEPTS -->
@@ -645,7 +642,6 @@
         Heavier than a black hole. Heavier than your ex's emotional baggage.<br>
         <em>And yet we delete it and reinstall it every other week.</em>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 1: STORY OF FOHLIO-FRONTEND -->
@@ -921,7 +917,6 @@
         <em>Both cost money, but at least GraphQL is faster.</em>
     </div>
 
-
     <!-- FSD Architecture -->
     <h3>The Room Layout: Feature-Sliced Design (FSD)</h3>
 
@@ -1030,7 +1025,6 @@
         <em>src/__fsd__/ is free parking with a view.</em>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 2: ENVIRONMENT VARIABLES -->
     <!-- ============================================ -->
@@ -1137,7 +1131,6 @@
     <div class="info-box purple">
         <p><strong>How to get env variables:</strong> After you clone the repository, <code>make setup</code> creates <code>.env.local</code> from the sample file. This gives you all the basic variables. If you need any secrets or special keys (Sentry, Stripe, etc.), ask Ivan in DMs &mdash; he'll send them to you.</p>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 3: CLONING & PERMISSIONS -->
@@ -1448,7 +1441,6 @@ make s</pre>
         </ul>
     </div>
 
-
     <!-- ============================================ -->
     <!-- SUMMARY -->
     <!-- ============================================ -->
@@ -1498,48 +1490,9 @@ make s</pre>
         </div>
     </div>
 
-
     <!-- ============================================ -->
     <!-- HOMEWORK -->
     <!-- ============================================ -->
-
-    <div class="homework">
-        <h2>Homework</h2>
-
-        <h3>Required (for everyone)</h3>
-        <ol>
-            <li>
-                <strong>Clone fohlio-frontend and run it locally</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
-                <p style="margin-top:6px;">Install <code>nvm</code> and Node.js v20.12.2. Set up the GitHub CLI token: run <code>gh auth refresh -s read:packages</code> then set the yarn npm token (command from Part 3). Clone <code>fohlio-frontend</code>, run <code>make setup</code>, <code>make use-test01</code>, <code>make s</code>. Send a screenshot of the browser showing the running Fohlio app. If you get stuck, include the terminal error in your screenshot.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A correct screenshot shows the Fohlio app running in the browser at a localhost URL, not an error screen. Key checks: (1) browser shows the login page or dashboard; (2) no red terminal errors; (3) you are on Node 20.12.2 &mdash; run <code>node --version</code> if unsure. Common failures: wrong Node version (nvm not activated in shell), missing GitHub token (yarn install fails with 401), missing .env.local (blank white page &mdash; message Ivan in Slack).</p>
-                </details>
-            </li>
-            <li style="margin-top:20px;">
-                <strong>Describe what one FSD layer does &mdash; in your own words</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
-                <p style="margin-top:6px;">Pick any one layer from the FSD structure (<code>1-app</code>, <code>2-pages</code>, <code>3-widgets</code>, <code>4-features</code>, <code>5-entities</code>, or <code>6-shared</code>). In 3&ndash;5 sentences: (a) what kind of code belongs in that layer, (b) what kind of code must NOT go there and why, and (c) give one concrete example of something you found in that layer when you browsed the actual <code>fohlio-frontend</code> codebase. Do not quote the lesson definition &mdash; use your own words and a real example from the code.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A strong answer names a specific layer and gives a real codebase example, e.g.: "In <code>5-entities</code> I found a User entity that defines the shape of a user object and its API query &mdash; this belongs here because entities are reusable data models. Business logic like redirecting after login does NOT belong here because that is a feature, not a data model." Answers that just repeat layer names without a real codebase example score lower &mdash; the goal is to prove you opened the folder and looked.</p>
-                </details>
-            </li>
-        </ol>
-
-        <h3 style="margin-top:28px;">Advanced (optional)</h3>
-        <ol>
-            <li>
-                <strong>Challenge Cursor AI and catch its mistake</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
-                <p style="margin-top:6px;">Open fohlio-frontend in Cursor. Ask Cursor chat (<code>Cmd+L</code>) to explain the FSD layer structure of this specific project. Then navigate the actual <code>src/__fsd__/</code> folder yourself and find at least one place where Cursor's explanation was wrong, incomplete, or too generic. Write: (a) what Cursor said, (b) what you actually found that contradicts or refines it, (c) why you think Cursor got it wrong. Metacognitive memo: what does this tell you about when to trust AI explanations of a codebase vs when to verify yourself?</p>
-                <p style="font-size:13px;color:var(--gray-500);margin-top:4px;">Note: harder than the lesson on purpose &mdash; the discrepancy is the point.</p>
-            </li>
-            <li style="margin-top:20px;">
-                <strong>Why environment variables &mdash; elaborative interrogation</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
-                <p style="margin-top:6px;">Answer in your own words: (1) Why are API keys and database URLs stored in <code>.env.local</code> files instead of directly in the code? What specifically would go wrong if a developer committed an API key to the git repository? (2) Why does the same codebase need different <code>.env</code> files for development, staging, and production? What breaks if you use the production database URL in development?</p>
-            </li>
-        </ol>
-    </div>
-
 
     <!-- FOOTER -->
     <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">

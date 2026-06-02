@@ -169,13 +169,13 @@ export const LESSONS: LegacyLesson[] = [
             lessonId: "lesson-1",
             title: "Install Cursor + make your first commit",
             description:
-              "Install Cursor from cursor.com. Open the integrated terminal (Cmd+` / Ctrl+`). Clone the fohlio-ai-courses repo, create a branch YOUR-NAME-hello, add a hello.txt file with one sentence about why you joined this course, then 'git add .', 'git commit -m \"Hello from YOUR-NAME\"', 'git log --oneline'. Send a screenshot of the terminal showing the git log output with your commit on your branch.",
+              "Install Cursor from cursor.com. Open the integrated terminal (Cmd+` / Ctrl+`). Clone the fohlio-ai-courses repo, create a branch YOUR-NAME-hello, add a hello.txt file with one sentence about why you joined this course, then 'git add .', 'git commit -m \"Hello from YOUR-NAME\"', and push the branch. Open a Pull Request on GitHub and submit the PR link here (or, if you cannot open a PR, the link to your commit on GitHub).",
             category: "advanced",
-            submissionType: "screenshot",
+            submissionType: "pr_link",
             order: 1,
             estimatedMinutes: 30,
             modelAnswer:
-              "A correct screenshot shows Cursor's integrated terminal with git log --oneline output that includes your commit hash and message. Verify: (1) 'git branch' shows your branch with the asterisk (not main), (2) the commit message is meaningful, (3) hello.txt is in the working tree, (4) 'git status' says 'nothing to commit, working tree clean'. Common miss: forgetting 'git add .' — 'git status' will show the file as untracked if so.",
+              "A valid PR/commit link points to a real commit authored on your own branch (not main) with hello.txt added and a meaningful message. Verify in the PR's Files changed tab that hello.txt is present and the branch name is YOUR-NAME-hello. Common miss: forgetting 'git add .' — the file never gets committed and the PR shows no changes.",
           },
         ],
       },
@@ -366,15 +366,64 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-2-3",
             lessonId: "lesson-2",
-            title: "Run fohlio-frontend locally + explore the codebase",
+            title: "Run fohlio-frontend locally + sort what you found",
             description:
-              "Clone fohlio-frontend, run 'make setup', 'make use-test01', 'make s', and open the printed localhost URL. Then open Cursor and find three things in the code: the login page file, where GraphQL queries are defined, and what 'make s' actually runs (open the Makefile). Submit one screenshot — the browser showing the Fohlio login page — and 3-4 sentences naming the file paths you found and one thing that surprised you about the structure.",
+              "Clone fohlio-frontend, run 'make setup', 'make use-test01', 'make s', and open the printed localhost URL. Then explore in Cursor: open the Makefile, browse src/__fsd__/, and find where pages, reusable UI, and data models live. Now sort each thing you encountered into the right bucket — this checks that you actually mapped the codebase, not just ran it.",
             category: "advanced",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 1,
             estimatedMinutes: 35,
+            widgetId: "categorize",
+            widgetConfig: {
+              prompt:
+                "You ran fohlio-frontend locally and explored the tree. Sort each thing you found into where it belongs: an FSD layer, or the local tooling that got the app running.",
+              categories: [
+                {
+                  id: "fsd",
+                  label: "FSD layer (lives under src/__fsd__/)",
+                  hint: "Numbered slices — pages, features, entities, shared, etc.",
+                },
+                {
+                  id: "tooling",
+                  label: "Local tooling / setup",
+                  hint: "Commands and config that build, configure, or run the app — not application code.",
+                },
+              ],
+              items: [
+                {
+                  id: "page",
+                  label: "The login page (a route the user actually navigates to)",
+                  correctCategoryId: "fsd",
+                },
+                {
+                  id: "button",
+                  label: "A generic reusable Button used across many screens",
+                  correctCategoryId: "fsd",
+                },
+                {
+                  id: "entity",
+                  label: "A data model + its GraphQL query, reused by several features",
+                  correctCategoryId: "fsd",
+                },
+                {
+                  id: "makes",
+                  label: "'make s' — the command that boots the dev server",
+                  correctCategoryId: "tooling",
+                },
+                {
+                  id: "usetest01",
+                  label: "'make use-test01' — points your local app at the test01 backend",
+                  correctCategoryId: "tooling",
+                },
+                {
+                  id: "envlocal",
+                  label: ".env.local — the file holding your local environment variables",
+                  correctCategoryId: "tooling",
+                },
+              ],
+            },
             modelAnswer:
-              "A correct screenshot shows the Fohlio login page at a localhost URL. The reflection should name real file paths (not just folder names) for the login page and a GraphQL query, plus what 'make s' wraps. Surprises are usually about the FSD layer numbering, the Makefile abstraction, or how thin individual files are. If 'make s' errors: likely wrong Node version, missing yarn deps, or missing .env.local — message Ivan.",
+              "FSD layer: the login page (a route in pages), the reusable Button (a shared primitive), and the data model + query (an entity) — all live under src/__fsd__/. Local tooling: 'make s', 'make use-test01', and .env.local are how you build, configure, and run the app, not application code. The lesson's point: the Makefile abstracts the run commands, and everything the user sees is organized by FSD layer.",
           },
         ],
       },
@@ -525,13 +574,44 @@ export const LESSONS: LegacyLesson[] = [
             lessonId: "lesson-3",
             title: "Challenge Cursor AI on the FSD structure",
             description:
-              "Open fohlio-frontend in Cursor. Ask Cursor chat (Cmd+L) to explain the FSD layer structure of this specific project. Then navigate src/__fsd__/ yourself and find at least one place where Cursor's explanation was wrong, incomplete, or too generic. Write up: (a) what Cursor said, (b) what you actually found that contradicts or refines it, (c) why you think Cursor got it wrong (training data, hallucination, over-generalization?). Metacognitive memo: when do you trust AI explanations of a codebase, and when do you verify?",
+              "Open fohlio-frontend in Cursor. Ask Cursor chat (Cmd+L) to explain the FSD layer structure of this specific project. Then navigate src/__fsd__/ yourself to check what it said. Pick the single best statement about when to trust Cursor's explanation, and justify it (30+ words) with the one concrete discrepancy you actually found between what Cursor claimed and what is really in the tree.",
             category: "advanced",
-            submissionType: "text",
+            submissionType: "widget",
             order: 1,
             estimatedMinutes: 30,
+            widgetId: "mcq-justify",
+            widgetConfig: {
+              question:
+                "You asked Cursor to explain this project's FSD layers, then checked the real src/__fsd__/ tree. What is the right way to treat Cursor's explanation?",
+              options: [
+                {
+                  id: "a",
+                  label:
+                    "Trust it fully — Cursor read the codebase, so its explanation of this project's layers is authoritative.",
+                },
+                {
+                  id: "b",
+                  label:
+                    "Use it for orientation, but verify every project-specific claim (exact layer names, numbering, file paths) against the actual tree before repeating it.",
+                },
+                {
+                  id: "c",
+                  label:
+                    "Ignore it entirely — AI explanations of code are always hallucinated and never useful.",
+                },
+                {
+                  id: "d",
+                  label:
+                    "Trust it only if the answer is long and detailed; length means it looked harder.",
+                },
+              ],
+              correctOptionId: "b",
+              minJustificationWords: 30,
+              rubric:
+                "Strong justification names one real discrepancy you found — e.g. Cursor gave a textbook FSD explanation that missed Fohlio's specific numbered layer convention, or invented/renamed a layer that isn't in src/__fsd__/. The lesson: AI is great for orientation, but project-specific facts must be checked against the tree.",
+            },
             modelAnswer:
-              "A strong response names a real discrepancy — e.g. Cursor gives a textbook FSD explanation that misses Fohlio's specific 1- through 6- numbering convention, or invents a layer that doesn't exist. The metacognitive memo should land on a concrete rule like 'AI is good for orientation but for any project-specific claim — file paths, naming conventions, internal patterns — I verify against the actual tree before quoting it.'",
+              "B is correct. Cursor's strength is fast orientation; its weakness is that it over-generalizes from textbook FSD and can miss or invent project-specific details. A strong justification cites one concrete discrepancy from the real src/__fsd__/ tree — wrong layer name, missed numbering convention, or a layer that doesn't exist — and concludes: verify any project-specific claim (paths, names, conventions) before quoting it.",
           },
         ],
       },
@@ -571,56 +651,70 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-4-1",
             lessonId: "lesson-4",
-            title: "Match the AI building blocks",
+            title: "Chatbot or agent — sort the scenarios",
             description:
-              "Match each term from Lesson 4 to its plain-English definition. These five words — LLM, context window, agent, MCP, skill — are the vocabulary you will use for the rest of the course.",
+              "Lesson 4 draws a sharp line between a chatbot (single-turn responder, no tools) and an agent (plans, calls tools, loops Think → Act → Observe). Drop each real scenario into the right bucket. The point is to recognize the distinction in the wild, not just recite the definitions.",
             category: "required",
             submissionType: "widget",
             order: 1,
             estimatedMinutes: 10,
-            widgetId: "concept-match",
+            widgetId: "categorize",
             widgetConfig: {
-              pairs: [
-                {
-                  id: "llm",
-                  term: "LLM (Large Language Model)",
-                  definition:
-                    "A model trained to predict the next token of text — the underlying engine behind Claude, ChatGPT, Gemini.",
-                },
-                {
-                  id: "context",
-                  term: "Context window",
-                  definition:
-                    "The total amount of text (in tokens) the model can see in one conversation — older messages fall out or lose weight when it fills up.",
-                },
+              prompt:
+                "Sort each scenario into Chatbot or Agent, based on the Lesson 4 distinction (tools + autonomous multi-step loop = agent).",
+              categories: [
                 {
                   id: "chatbot",
-                  term: "Chatbot",
-                  definition:
-                    "Single-turn responder — answers from what it already knows; no tools, no autonomous multi-step actions.",
+                  label: "Chatbot",
+                  hint: "One question → one text answer. No tools, no autonomous steps.",
                 },
                 {
                   id: "agent",
-                  term: "Agent",
-                  definition:
-                    "An LLM that can call tools, run multiple steps autonomously, observe results, and adapt — does work, not just answers.",
+                  label: "Agent",
+                  hint: "Takes a goal, calls tools, loops Think → Act → Observe until done.",
+                },
+              ],
+              items: [
+                {
+                  id: "i1",
+                  label:
+                    "You ask ChatGPT in the browser 'what wine goes with salmon?' and it replies with a paragraph.",
+                  correctCategoryId: "chatbot",
                 },
                 {
-                  id: "mcp",
-                  term: "MCP (Model Context Protocol)",
-                  definition:
-                    "An open standard that lets an AI client discover and invoke external tools (Notion, Jira, GitHub) without bespoke per-tool code.",
+                  id: "i2",
+                  label:
+                    "Cursor in Agent mode (Cmd+I) reads your files, edits the code, then runs your tests and reports back.",
+                  correctCategoryId: "agent",
                 },
                 {
-                  id: "skill",
-                  term: "Skill",
-                  definition:
-                    "A packaged, reusable workflow with a trigger description — teaches the agent HOW you want a recurring task done.",
+                  id: "i3",
+                  label:
+                    "Claude Code opens a terminal, greps the repo, writes a fix, commits it, and pushes a branch.",
+                  correctCategoryId: "agent",
+                },
+                {
+                  id: "i4",
+                  label:
+                    "You paste an error message into Claude's web chat and it explains the likely cause.",
+                  correctCategoryId: "chatbot",
+                },
+                {
+                  id: "i5",
+                  label:
+                    "A tool reads your 8 open Jira tickets, opens each linked Notion spec, and drafts a status update.",
+                  correctCategoryId: "agent",
+                },
+                {
+                  id: "i6",
+                  label:
+                    "You ask Claude in the browser to summarize a spec you pasted into the message.",
+                  correctCategoryId: "chatbot",
                 },
               ],
             },
             modelAnswer:
-              "LLM = next-token model under the hood; context window = how much text it can hold at once; chatbot = single-turn answers; agent = multi-step tool user; MCP = standard plug for tools; skill = packaged workflow with a trigger. The canonical mental model from the lesson: MCP = Hands, Skills = Brain, Subagents = Workers.",
+              "Chatbot = single-turn text in, text out, no tools (wine question, error explanation, summarizing a pasted spec). Agent = takes a goal and loops Think → Act → Observe using tools (Cursor Agent mode editing + running tests, Claude Code committing a fix, the cross-tool Jira/Notion status draft). The model size is irrelevant — both can run the same LLM. What makes it an agent is the tool loop.",
           },
           {
             id: "task-4-2",
@@ -677,13 +771,44 @@ export const LESSONS: LegacyLesson[] = [
             lessonId: "lesson-4",
             title: "Find the edge of the agent — real task on real data",
             description:
-              "Install Claude Desktop, connect Notion and Jira via Settings → Connectors. Give Claude a real multi-step task from your work this week — something that requires looking at 2+ sources and producing a useful output. Run it. Then write: (a) the task and a summary of Claude's output, (b) one specific thing Claude got wrong or couldn't do (real, not hypothetical), (c) your theory of why it failed (context window? missing connector? bad reasoning?). Metacognitive memo: which kinds of tasks are safe to delegate to an agent, and which still need human judgment?",
+              "Install Claude Desktop, connect Notion and Jira via Settings → Connectors. Give Claude a real multi-step task from your work this week (looks at 2+ sources, produces a useful output) and run it. Then pick the statement that best captures where an agent's edge is, and justify it (30+ words) with the one specific thing Claude actually got wrong or couldn't do in your run — and your theory of why.",
             category: "advanced",
-            submissionType: "text",
+            submissionType: "widget",
             order: 1,
             estimatedMinutes: 35,
+            widgetId: "mcq-justify",
+            widgetConfig: {
+              question:
+                "After running a real multi-source task through Claude Desktop with your Notion + Jira connectors, which kind of work is safe to delegate to the agent?",
+              options: [
+                {
+                  id: "a",
+                  label:
+                    "Anything — once connectors are attached, the agent can be trusted to act on its output without review.",
+                },
+                {
+                  id: "b",
+                  label:
+                    "Verifiable look-up and aggregation tasks (gather, cross-reference, summarize) are safe; calls that hinge on business judgment still need a human checkpoint.",
+                },
+                {
+                  id: "c",
+                  label:
+                    "Nothing — agents hallucinate, so every multi-source task is too risky to delegate at all.",
+                },
+                {
+                  id: "d",
+                  label:
+                    "Only single-source tasks; the moment a second connector is involved the agent breaks.",
+                },
+              ],
+              correctOptionId: "b",
+              minJustificationWords: 30,
+              rubric:
+                "Strong justification names the real task you ran, the specific failure you saw (hallucinated ticket number, missed a page in a separate workspace, dropped a constraint mid-task), and a plausible cause (context window filled up, connector scope too narrow, ambiguous prompt). Land on the rule: aggregation is safe, judgment needs a human.",
+            },
             modelAnswer:
-              "A strong response names a real task ('summarize my 8 open Jira tickets and cross-reference the linked Notion specs'), a specific failure (hallucinated ticket number, missed a page in a separate workspace, lost a constraint partway through), and a plausible cause (context filled up, connector scope was too narrow, ambiguous prompt). The memo should land on a concrete rule like 'verifiable look-up tasks are safe; tasks requiring judgment on business impact still need a human checkpoint.'",
+              "B is correct. Agents excel at verifiable gather-and-summarize work; they slip on tasks requiring judgment about business impact. A strong justification names a concrete run ('summarize my 8 open Jira tickets and cross-reference the linked Notion specs'), a specific failure (hallucinated ticket number, missed a page in another workspace, lost a constraint partway), and a cause (context filled, connector scope too narrow, ambiguous prompt).",
           },
         ],
       },
@@ -906,15 +1031,47 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-5-3",
             lessonId: "lesson-5",
-            title: "Run a real cross-tool workflow + reflect",
+            title: "Run a real cross-tool workflow + order the steps",
             description:
-              "Connect at least 3 MCP tools in Claude Desktop (Notion, Atlassian/Jira, plus one more — HubSpot, GitHub, Linear, anything from the lesson's catalog). Then pick one real question from your work this week that requires 2+ sources. Run it. Send a screenshot of Claude's answer. Then write 4-6 sentences answering all three: (a) the question and the result, (b) how long the manual version would take, (c) what specifically broke or surprised you — context window? Permission scope? Wrong tool picked by Claude?",
+              "Connect at least 3 MCP tools in Claude Desktop (Notion, Atlassian/Jira, plus one more — HubSpot, GitHub, Linear, anything from the lesson's catalog). Pick one real question from your work that needs 2+ sources and run it. Then reconstruct the correct order of setting up and running a cross-tool workflow — the sequence you just lived through. Add a short reflection on what specifically broke or surprised you (context window? permission scope? wrong tool picked?).",
             category: "advanced",
-            submissionType: "screenshot",
+            submissionType: "widget",
             order: 1,
             estimatedMinutes: 35,
+            widgetId: "flow-order",
+            widgetConfig: {
+              prompt:
+                "Put the steps of setting up and running a real cross-tool MCP workflow in the correct order — from connecting tools to trusting the result.",
+              steps: [
+                {
+                  id: "connect",
+                  label: "Add the MCP connectors (Notion, Jira, +1) in Settings → Connectors",
+                  detail: "Paste each MCP URL and complete the OAuth flow.",
+                },
+                {
+                  id: "verify",
+                  label: "Verify each connector shows a green 'Connected' badge",
+                  detail: "Connected is necessary but not yet proof the data is readable.",
+                },
+                {
+                  id: "test",
+                  label: "In a fresh chat, run a tiny read to confirm Claude can actually reach each tool",
+                  detail: "A real query proves the tool surface is exposed, not just linked.",
+                },
+                {
+                  id: "ask",
+                  label: "Ask your real cross-source question that requires 2+ tools",
+                  detail: "e.g. cross-reference open Jira tickets with their linked Notion specs.",
+                },
+                {
+                  id: "check",
+                  label: "Spot-check the answer against the sources before you trust or act on it",
+                  detail: "Confirm ticket IDs and page titles are real, not hallucinated.",
+                },
+              ],
+            },
             modelAnswer:
-              "A correct screenshot shows Claude answering a genuine cross-tool work question — visible Jira ticket IDs cross-referenced with Notion page titles, or PRs linked to issues. Strong reflections are specific: 'Took 40 seconds; manually 15 minutes of tab-switching. Surprise: Claude picked the wrong workspace in Notion at first because two workspaces have similar names — I had to clarify which one.' Vague reflections ('it was fast') score lower.",
+              "Correct order: connect the MCP tools, confirm each shows Connected, run a small test read to prove the tool actually works, ask the real cross-source question, then spot-check the answer against the sources before trusting it. The non-obvious steps are the test read (a green badge does not guarantee readable data) and the final spot-check (agents can hallucinate ticket numbers or pull the wrong workspace).",
           },
         ],
       },
@@ -1019,46 +1176,75 @@ export const LESSONS: LegacyLesson[] = [
           {
             id: "task-6-1",
             lessonId: "lesson-6",
-            title: "Skill vs prompt vs MCP — which is which?",
+            title: "MCP, Skill, or Subagent — sort the responsibilities",
             description:
-              "Pick the answer that captures the canonical mental model from this lesson: MCP = Hands, Skills = Brain, Subagents = Workers. Then justify your choice in at least 30 words, using a concrete example from your role (sales, marketing, CS, RevOps, or PMM).",
+              "The whole lesson hinges on one mental model: MCP = the Hands, Skills = the Brain, Subagents = the Workers. They compose, they do not replace each other. Drop each statement into the primitive it actually describes — straight from the comparison table in Part 3.",
             category: "required",
             submissionType: "widget",
             order: 1,
             estimatedMinutes: 12,
-            widgetId: "mcq-justify",
+            widgetId: "categorize",
             widgetConfig: {
-              question:
-                "A teammate asks: 'I already have MCP connectors set up. Why would I also need a Skill? Isn't that the same thing?' What's the right answer?",
-              options: [
+              prompt:
+                "Sort each statement into the primitive it describes: MCP (the Hands), Skill (the Brain), or Subagent (the Workers).",
+              categories: [
                 {
-                  id: "a",
-                  label:
-                    "Skills and MCP are the same thing — Skills are just a rebrand of MCP servers.",
+                  id: "mcp",
+                  label: "MCP — the Hands",
+                  hint: "A connector to a live tool or data source (CRM, Slack, Notion, GitHub).",
                 },
                 {
-                  id: "b",
-                  label:
-                    "MCP gives the agent HANDS (the ability to call external tools like Jira or HubSpot); a Skill is the BRAIN — a packaged, reusable workflow that tells the agent HOW you want a specific recurring task done. You need both.",
+                  id: "skill",
+                  label: "Skill — the Brain",
+                  hint: "A reusable recipe / playbook for a workflow you repeat.",
                 },
                 {
-                  id: "c",
-                  label:
-                    "Skills replace MCP — once you have a Skill you can uninstall your MCP servers.",
-                },
-                {
-                  id: "d",
-                  label:
-                    "MCP is for engineers; Skills are for non-engineers — they cannot be used together.",
+                  id: "subagent",
+                  label: "Subagent — the Workers",
+                  hint: "A specialist Claude with its own separate context.",
                 },
               ],
-              correctOptionId: "b",
-              minJustificationWords: 30,
-              rubric:
-                "Strong justification names a concrete workflow from your role where the Skill (the procedure) AND the MCP tools (Jira, Notion, HubSpot) work together — e.g. 'my account-brief Skill reads Jira tickets via MCP, then formats the brief in the Fohlio voice from my Project knowledge files.'",
+              items: [
+                {
+                  id: "i1",
+                  label:
+                    "Lets the agent pull live deals from HubSpot or read a Notion page.",
+                  correctCategoryId: "mcp",
+                },
+                {
+                  id: "i2",
+                  label:
+                    "A Markdown playbook anyone can write that tells the agent HOW to run a recurring task.",
+                  correctCategoryId: "skill",
+                },
+                {
+                  id: "i3",
+                  label:
+                    "A specialist with its own isolated context that handles a heavy task and returns just the result.",
+                  correctCategoryId: "subagent",
+                },
+                {
+                  id: "i4",
+                  label:
+                    "Loads lazily — its body is only read when the user's request matches its trigger description.",
+                  correctCategoryId: "skill",
+                },
+                {
+                  id: "i5",
+                  label:
+                    "Loads eagerly at startup so the agent knows which tools are available.",
+                  correctCategoryId: "mcp",
+                },
+                {
+                  id: "i6",
+                  label:
+                    "Use it when a task is heavy and would otherwise clutter the main chat's context.",
+                  correctCategoryId: "subagent",
+                },
+              ],
             },
             modelAnswer:
-              "B is correct. MCP = Hands (the connectors that let the agent reach into Notion, Jira, HubSpot). Skill = Brain (the packaged know-how — when to do something, what steps, in what format). A renewal-brief Skill calls the HubSpot MCP for account data and the Notion MCP for the spec, then assembles the brief in your team's voice. Take away MCP and the Skill has nothing to reach for; take away the Skill and you re-explain the workflow every time.",
+              "MCP = the Hands: live connectors (HubSpot deals, Notion pages) that load eagerly at startup. Skill = the Brain: a Markdown playbook anyone can write, loaded lazily only when its trigger matches. Subagent = the Workers: a specialist with isolated context for heavy tasks, used to keep the main chat uncluttered. They compose — a Skill can call MCP tools, and a Subagent can load a Skill — so none of them replaces another.",
           },
           {
             id: "task-6-2",
@@ -1150,13 +1336,13 @@ export const LESSONS: LegacyLesson[] = [
             lessonId: "lesson-6",
             title: "Build a Skill in Manus + compare with/without a Project",
             description:
-              "Part A: In Manus, run one repeated weekly workflow end-to-end, then type 'Package this workflow into a Skill.' Open the Skill Library, rename to kebab-case, trigger it with /your-skill-name in a fresh chat. Part B: Create a Manus Project ('Fohlio Sales', 'Fohlio CS' — your role). Write a Master Instruction with your role, ICP, 3-5 brand voice principles. Upload 2-3 knowledge files. Run your skill inside the Project, then outside it. Send one screenshot of the slash-command result and one paragraph (4-6 sentences) comparing the in-Project vs out-of-Project outputs — what specifically changed, and what does that tell you about how persistent context shapes Skill output?",
+              "Part A: In Manus, run one repeated weekly workflow end-to-end, then type 'Package this workflow into a Skill.' Open the Skill Library, rename to kebab-case, trigger it with /your-skill-name in a fresh chat. Part B: Create a Manus Project ('Fohlio Sales', 'Fohlio CS' — your role). Write a Master Instruction with your role, ICP, 3-5 brand voice principles. Upload 2-3 knowledge files. Run your skill inside the Project, then outside it. Write 4-6 sentences comparing the in-Project vs out-of-Project outputs — name your skill, what specifically changed between the two runs, and what that tells you about how persistent context shapes Skill output.",
             category: "advanced",
-            submissionType: "screenshot",
+            submissionType: "text",
             order: 1,
             estimatedMinutes: 45,
             modelAnswer:
-              "A correct screenshot shows /your-skill-name triggered in a fresh Manus chat with recognizable structured output (not a generic AI reply). The paragraph should name concrete differences — inside the Project the output uses Fohlio terminology, references the ICP doc, follows the brand voice; outside it falls back to generic B2B SaaS templates. The takeaway: structured persistent context (Master Instruction + knowledge files) is qualitatively different from dumping the same text into one long prompt. The Skill is the procedure; the Project is the memory the procedure draws from.",
+              "A strong write-up names a real /your-skill-name and describes recognizable structured output (not a generic AI reply). It calls out concrete differences — inside the Project the output uses Fohlio terminology, references the ICP doc, follows the brand voice; outside it falls back to generic B2B SaaS templates. The takeaway: structured persistent context (Master Instruction + knowledge files) is qualitatively different from dumping the same text into one long prompt. The Skill is the procedure; the Project is the memory the procedure draws from.",
           },
         ],
       },

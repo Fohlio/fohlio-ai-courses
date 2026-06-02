@@ -377,7 +377,6 @@
 <img src="/lessons/images/fohlio-tech-course/lesson-1-hero.webp" alt="Editorial illustration for Fohlio Tech Course Lesson 1" width="1600" height="900" loading="eager" decoding="async" style="display:block;width:100%;height:auto;">
 </figure>
 
-
     <!-- HEADER -->
     <div class="header">
         <div class="lesson-badge">Lesson 1 of 10</div>
@@ -396,7 +395,6 @@
             <li>Be ready to complete your first homework assignment</li>
         </ul>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 1: INSTALLING YOUR TOOLS -->
@@ -456,7 +454,6 @@
         "Let me just install a few tools..."<br>
         <em>*3 hours later*</em> "...almost done with the first one."
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 2: WHAT IS GIT -->
@@ -957,7 +954,6 @@ button color: blue
         "...well, at least the tests pass now."
     </div>
 
-
     <!-- ============================================ -->
     <!-- SUMMARY -->
     <!-- ============================================ -->
@@ -1001,48 +997,9 @@ button color: blue
         </div>
     </div>
 
-
     <!-- ============================================ -->
     <!-- HOMEWORK -->
     <!-- ============================================ -->
-
-    <div class="homework">
-        <h2>Homework</h2>
-
-        <h3>Required (for everyone)</h3>
-        <ol>
-            <li>
-                <strong>Install Cursor and verify Git</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
-                <p style="margin-top:6px;">Install Cursor from <code>cursor.com</code>. Then open its built-in terminal (<code>Ctrl+`</code> or <code>Cmd+`</code> on Mac) and run: <code>git --version</code>. Send a screenshot showing both Cursor open and the terminal output with a version number like <code>git version 2.x.x</code>.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A correct screenshot shows the Cursor editor window open with the integrated terminal visible at the bottom. The terminal must display a line starting with "git version" followed by a version number (any 2.x or higher is fine). If you see "command not found", Git is not installed &mdash; re-read Part 1 and follow the installation steps for your OS.</p>
-                </details>
-            </li>
-            <li style="margin-top:20px;">
-                <strong>Make your first local commit</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
-                <p style="margin-top:6px;">Clone the <code>fohlio-ai-courses</code> repo to your computer. Then: create a new branch called <code>YOUR-NAME-hello</code>, create a file called <code>hello.txt</code> with one sentence about why you joined this course, stage it (<code>git add .</code>), commit it (<code>git commit -m "Hello from YOUR-NAME"</code>), and run <code>git log --oneline</code> to confirm the commit is there. Send a screenshot of the terminal showing the git log output with your commit.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A correct screenshot shows <code>git log --oneline</code> output that includes your commit hash and message. Check four things: (1) you are on your own branch &mdash; run <code>git branch</code> and verify it shows your branch with an asterisk; (2) the commit message is meaningful, not just "test"; (3) the file <code>hello.txt</code> exists in the folder; (4) <code>git status</code> shows "nothing to commit, working tree clean". Common mistake: forgetting <code>git add .</code> before committing &mdash; git status will show the file as "untracked" if this happened.</p>
-                </details>
-            </li>
-        </ol>
-
-        <h3 style="margin-top:28px;">Advanced (optional)</h3>
-        <ol>
-            <li>
-                <strong>Reflect on your first commit &mdash; staged process</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 25 min</span>
-                <p style="margin-top:6px;">Complete in three stages. <strong>Stage 1 &mdash; Plan:</strong> before touching the terminal, write 3&ndash;5 sentences describing what you expect to happen when you run <code>git add . &amp;&amp; git commit -m ...</code> on a new file. <strong>Stage 2 &mdash; Execute:</strong> run the commit from task #2. Did anything surprise you? <strong>Stage 3 &mdash; Revision note:</strong> in 2&ndash;3 sentences, describe one thing that differed from your prediction, or one thing you had to look up. Submit all three stages as a single text reply. Metacognitive memo: what would an AI summary of this lesson miss that you learned by doing?</p>
-                <p style="font-size:13px;color:var(--gray-500);margin-top:4px;">Note: this task is intentionally harder than the lesson &mdash; that gap is the learning.</p>
-            </li>
-            <li style="margin-top:20px;">
-                <strong>Why branches &mdash; elaborative interrogation</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
-                <p style="margin-top:6px;">Answer in your own words, without quoting the lesson: (1) Why does Git use branches instead of letting everyone commit directly to main? What specific problem would arise without branches? (2) Why doesn't Git automatically resolve merge conflicts by picking the most recent change? What would go wrong if it did?</p>
-            </li>
-        </ol>
-    </div>
-
 
     <!-- FOOTER -->
     <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">

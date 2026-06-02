@@ -344,8 +344,10 @@ function scopeCss(css: string): string {
 export function prepareLessonHtml(
   source: string,
   assets: LessonAsset[] = [],
+  sharedCss?: string,
 ): PreparedLessonHtml {
   const { body, css } = extractHtmlBody(source);
+  const combinedCss = sharedCss ? `${sharedCss}\n${css}` : css;
   const sanitizedBody = sanitizeHtml(body, {
     allowedTags: ALLOWED_TAGS,
     allowedAttributes: ALLOWED_ATTRIBUTES,
@@ -366,7 +368,7 @@ export function prepareLessonHtml(
   });
 
   const rewritten = rewriteMediaReferences(sanitizedBody, assets);
-  const scopedCss = css ? `<style>${scopeCss(css)}</style>` : "";
+  const scopedCss = combinedCss ? `<style>${scopeCss(combinedCss)}</style>` : "";
 
   return {
     html: `${scopedCss}${rewritten.html}`.trim(),

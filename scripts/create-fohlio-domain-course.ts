@@ -60,44 +60,149 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-1-1",
         title: "Sort a real room into the four segments",
         description:
-          "Picture a hotel guest room. List 10-12 things in it and sort each into FF&E / OS&E / Finishes / Architectural. Mark which the hotel replaces most often (OS&E) and which are long-lead and expensive (FF&E). Pick one item and place it on the per-room cost ladder for a luxury vs economy property. From memory (AI-free), spend 60 seconds explaining the FF&E vs OS&E difference and why it matters to a hotel's accounting.",
+          "Picture a hotel guest room. Sort each item into the segment it belongs to: FF&E, OS&E, Finishes, or Architectural. Use the 'shake the building' test — what falls out is FF&E, what's bolted in is Architectural, what's consumable is OS&E, what's a surface is Finishes. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt: "Sort each item from a hotel guest room into the correct segment.",
+          categories: [
+            { id: "ffe", label: "FF&E", hint: "Movable, durable, capitalized — falls out if you shake the building" },
+            { id: "ose", label: "OS&E", hint: "Consumable / replaced often — an operating expense" },
+            { id: "finishes", label: "Finishes", hint: "Applied surfaces — paint, tile, flooring" },
+            { id: "arch", label: "Architectural", hint: "Part of the building structure / bolted in" },
+          ],
+          items: [
+            { id: "i1", label: "Upholstered lounge chair", correctCategoryId: "ffe" },
+            { id: "i2", label: "Writing desk", correctCategoryId: "ffe" },
+            { id: "i3", label: "Bedside table lamp", correctCategoryId: "ffe" },
+            { id: "i4", label: "Bath towels", correctCategoryId: "ose" },
+            { id: "i5", label: "Drinking glasses", correctCategoryId: "ose" },
+            { id: "i6", label: "Guest toiletries", correctCategoryId: "ose" },
+            { id: "i7", label: "Carpet / flooring", correctCategoryId: "finishes" },
+            { id: "i8", label: "Wall paint", correctCategoryId: "finishes" },
+            { id: "i9", label: "Built-in closet millwork", correctCategoryId: "arch" },
+            { id: "i10", label: "HVAC ducting", correctCategoryId: "arch" },
+          ],
+        },
         modelAnswer:
-          "Sorted sensibly: bed/desk/lounge chair/lamp/TV -> FF&E; towels/sheets/glassware/toiletries -> OS&E; flooring/paint/wall tile -> Finishes; door/window/built-in closet -> Architectural. The replaced-often items are OS&E (consumable, operating expense); the long-lead expensive ones are FF&E (capital asset, depreciated). The from-memory point: FF&E is durable and capitalized, OS&E is consumable, expensed, and has vastly more SKUs.",
-        estimatedMinutes: 20,
+          "FF&E = movable durable goods (lounge chair, desk, lamp). OS&E = consumables replaced often (towels, glasses, toiletries) — an operating expense, not a capital asset. Finishes = applied surfaces (carpet, paint). Architectural = part of the building (built-in closet, HVAC). FF&E is durable and capitalized; OS&E is consumable, expensed, and has vastly more SKUs.",
+        estimatedMinutes: 8,
       },
       {
         id: "fd-task-1-2",
         title: "Self-check on this chapter",
         description:
-          "Without scrolling back: (a) state the 'shake the building' test and give two things that are FF&E and two that are not; (b) give the three money anchors (market size, FF&E share of a hotel build, the rough per-room range); (c) name the moment the $40k error arose and the moment it surfaced.",
+          "Recall the money anchors and the timeline of the $40k mistake, then explain in your own words. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 10,
+          questions: [
+            {
+              id: "q-share",
+              prompt:
+                "Roughly what share of a hotel's total development cost is FF&E, and what is the approximate global hotel FF&E market size?",
+              options: [
+                { id: "a", label: "8-15% of development cost; ~$60B hotel FF&E market" },
+                { id: "b", label: "30-40% of development cost; ~$5B market" },
+                { id: "c", label: "1-3% of development cost; ~$500B market" },
+                { id: "d", label: "50%+ of development cost; ~$60M market" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "FF&E is roughly 8-15% of total hotel development cost; the hotel FF&E market is on the order of $60B. The shell and core dominate the budget; FF&E is a meaningful minority, not the majority.",
+            },
+            {
+              id: "q-timeline",
+              prompt:
+                "When did the $40k mistake arise, and when did it surface?",
+              options: [
+                { id: "a", label: "Arose at design; surfaced at design review" },
+                { id: "b", label: "Arose in the gap between spec and shipment (silent substitution); surfaced at receiving/install" },
+                { id: "c", label: "Arose at receiving; surfaced at closeout" },
+                { id: "d", label: "Arose at the moodboard; surfaced at the RFQ" },
+              ],
+              correctOptionId: "b",
+              rubric:
+                "The finish was discontinued and silently substituted in the gap between specification and shipment, then surfaced at receiving/install — the most expensive moment to catch it.",
+            },
+          ],
+        },
         modelAnswer:
-          "(a) Shake the building — what falls out is FF&E. Is: a lounge chair, a table lamp. Isn't: a wall, the HVAC ducting. (b) ~$60B hotel FF&E market; 8-15% of total hotel development cost; ~$3k-$8k per room economy up to $35k-$58k+ luxury. (c) Arose in the gap between specification and shipment (the finish was discontinued and silently substituted); surfaced at receiving/install, when it was expensive to fix.",
-        estimatedMinutes: 8,
+          "FF&E is ~8-15% of total hotel development cost; the hotel FF&E market is roughly $60B. The $40k error arose in the gap between specification and shipment (a discontinued finish, silently substituted) and surfaced at receiving/install, when it was expensive to fix.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-1-3",
-        title: "Argue with an AI",
+        title: "Rebut the 'it's just shopping' framing",
         description:
-          "Ask any chatbot: 'Why would a hotel need special software to buy its furniture — isn't that just shopping?' Dissect the answer: what does it miss about scale (thousands of items, dozens of suppliers), the time gap (a finish going stale over months), and the stakes (a fixed opening date)? Write 3-4 sentences on what it left out.",
+          "A skeptic says: 'Why would a hotel need special software to buy its furniture — isn't that just shopping?' Pick the single strongest reason that framing is wrong, then justify it in your own words drawing on scale, the time gap, and the fixed opening date. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 4,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "'Buying hotel FF&E is just shopping.' Which is the strongest single reason that framing is wrong?",
+          options: [
+            { id: "a", label: "It combines scale (thousands of items, dozens of suppliers), a months-long time gap where specs go stale, and a fixed opening date with hard money at stake — so it is coordination under deadline, not a checkout." },
+            { id: "b", label: "Hotel furniture is simply more expensive than consumer furniture." },
+            { id: "c", label: "Hotels prefer to use software because it looks more professional to investors." },
+            { id: "d", label: "There are no online stores that sell contract-grade furniture." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "The right answer captures all three forces at once: scale (thousands of SKUs across many suppliers), the time gap (a finish chosen on a moodboard can go stale or be discontinued over a months-long project), and the fixed opening date where a late or wrong item costs real money (~$15k/day). 'Shopping' is a single transaction; FF&E is keeping a living spec true across time, people, and suppliers.",
+        },
         estimatedMinutes: 12,
       },
       {
         id: "fd-task-1-4",
         title: "Why it's built this way",
         description:
-          "Why does the industry separate the designer who specifies from the agent who buys, instead of having one person do both? And why does a hotel keep an FF&E reserve (2-5% of revenue/year) rather than paying for renovations when they happen? Explain why 'one person, pay as you go' breaks at hotel scale.",
+          "Answer two reasoning questions about the industry's structure — the specifier/buyer split and the FF&E reserve — then explain each choice in your own words. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 12,
+          questions: [
+            {
+              id: "q-split",
+              prompt:
+                "Why does the industry separate the designer who specifies from the agent who buys, instead of having one person do both?",
+              options: [
+                { id: "a", label: "The split avoids a conflict of interest and matches different skills — design judgment vs sourcing/logistics/fiduciary buying — at a scale one person can't cover." },
+                { id: "b", label: "It is a legal requirement in every US state." },
+                { id: "c", label: "Designers refuse to touch money for ethical reasons unrelated to the client." },
+                { id: "d", label: "Manufacturers only sell to licensed buyers, never to designers." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Specifying (design intent, aesthetics, performance) and buying (sourcing, negotiation, logistics, fiduciary duty to the owner) are different skills, and joining them creates a conflict of interest when a markup tempts the specifier. At hotel scale neither role is part-time work.",
+            },
+            {
+              id: "q-reserve",
+              prompt:
+                "Why does a hotel keep an FF&E reserve (2-5% of revenue/year) rather than paying for renovations only when they happen?",
+              options: [
+                { id: "a", label: "FF&E wears out and brand standards force recurring refresh, so the reserve smooths a predictable, recurring cost instead of taking a large unbudgeted hit at renovation time." },
+                { id: "b", label: "Tax law forbids paying for renovations out of operating cash." },
+                { id: "c", label: "Reserves earn interest that fully funds the renovation by itself." },
+                { id: "d", label: "Brands require the cash be held so they can seize it." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "FF&E is durable but not permanent; it wears and brands mandate periodic refresh (PIPs). 'Pay as you go' breaks because the bills arrive in large lumps on the brand's schedule, not the owner's cash flow — the reserve turns a lumpy, predictable expense into a steady set-aside.",
+            },
+          ],
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -122,27 +227,58 @@ const LESSONS: LessonSeed[] = [
     homework: [
       {
         id: "fd-task-2-1",
-        title: "Map a real hotel's ownership chain",
+        title: "Sort the demand side outsiders collapse into one",
         description:
-          "Pick any branded hotel. Research who operates it, who owns the real estate, and which brand standard applies. Write 3-5 sentences on what you found and why the owner/brand/operator distinction matters for FF&E decisions.",
+          "Outsiders treat 'the hotel' as a single buyer. It isn't. Sort each statement under the demand-side entity it describes: owner/REIT, brand/flag, management company, or franchisee. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt: "Sort each statement under the demand-side entity it describes.",
+          categories: [
+            { id: "owner", label: "Owner / REIT", hint: "Owns the real estate and the FF&E budget" },
+            { id: "brand", label: "Brand / flag", hint: "Franchises or manages; dictates standards; earns fees" },
+            { id: "mgmt", label: "Management company", hint: "Runs the hotel day-to-day" },
+            { id: "franchisee", label: "Franchisee", hint: "Licenses the flag for a specific property and funds the work" },
+          ],
+          items: [
+            { id: "i1", label: "Holds the FF&E budget and signs off on capital spend", correctCategoryId: "owner" },
+            { id: "i2", label: "A REIT that owns the building but never touches operations", correctCategoryId: "owner" },
+            { id: "i3", label: "Writes the brand standards and issues the PIP", correctCategoryId: "brand" },
+            { id: "i4", label: "Earns franchise / management fees, not FF&E margin", correctCategoryId: "brand" },
+            { id: "i5", label: "Runs the front desk, housekeeping and day-to-day P&L", correctCategoryId: "mgmt" },
+            { id: "i6", label: "Lives with the furniture every day and feels the wear first", correctCategoryId: "mgmt" },
+            { id: "i7", label: "Licenses the flag for one property and pays for the renovation", correctCategoryId: "franchisee" },
+            { id: "i8", label: "Must hit the brand's PIP deadline or risk losing the flag", correctCategoryId: "franchisee" },
+          ],
+        },
         modelAnswer:
-          "A strong answer separates three roles: the owner/REIT (owns the building and the FF&E budget), the brand/flag (Marriott/Hilton — franchises or manages, dictates standards, earns fees), and the management company (runs the hotel day-to-day). The distinction matters because the brand says what 'done right' means, but the owner funds and approves the FF&E, and the operator lives with it.",
-        estimatedMinutes: 16,
+          "Owner/REIT owns the building and the FF&E budget and approves capital spend. The brand/flag writes standards, issues PIPs, and earns fees (not FF&E margin). The management company runs operations and lives with the furniture. The franchisee licenses the flag for a specific property and funds the work under the brand's deadlines. The distinction matters because the brand defines 'done right,' the owner funds and approves, and the operator lives with it.",
+        estimatedMinutes: 7,
       },
       {
         id: "fd-task-2-2",
         title: "Draw the chain for Dana's project",
         description:
-          "Sketch every actor from owner to installer with labeled arrows showing what flows (money, instructions, goods). Then identify which of Dana's three client types most resembles the project's structure and why.",
+          "Match each actor in the FF&E value chain to what flows through them or what they actually do. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "concept-match",
+        widgetConfig: {
+          pairs: [
+            { id: "p1", term: "Owner / developer / REIT", definition: "Owns the building and the FF&E budget; money flows from here; approves and pays" },
+            { id: "p2", term: "Brand / flag (Marriott, Hilton)", definition: "Franchises or manages; dictates the standard; earns fees" },
+            { id: "p3", term: "Management company", definition: "Runs the hotel day-to-day and lives with the result" },
+            { id: "p4", term: "Interior designer", definition: "Specifies every item, finish and dimension — does not buy" },
+            { id: "p5", term: "Purchasing agent", definition: "Buys what the designer specified; paid a fiduciary fee or a markup" },
+            { id: "p6", term: "Manufacturer's rep", definition: "Commission-only; paid by the maker, free to the buyer" },
+          ],
+        },
         modelAnswer:
-          "Chain: owner/developer -> (owner's rep/PM) -> designer (specifies) + purchasing agent (buys) -> manufacturers/vendors via reps/dealers -> freight/warehouse/install -> back to owner at handover. Money flows from the owner; reps are paid by the manufacturer; the agent is paid a fiduciary fee or a markup. The three client types: luxury flag (Linda — consistency), institutional owner (Brother Andersen — budget/replication), independent boutique (Grace — solo, speed).",
-        estimatedMinutes: 14,
+          "Money flows from the owner, who holds the FF&E budget; the brand dictates the standard and earns fees; the management company operates the property; the designer specifies (not buys); the purchasing agent buys for a fee or markup; the rep is paid by the manufacturer, free to the buyer. The three client types: luxury flag (consistency), institutional owner (budget/replication), independent boutique (solo, speed).",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-2-3",
@@ -158,10 +294,25 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-2-4",
         title: "Why separate specifying from buying?",
         description:
-          "Elaborative interrogation: what would break if the designer also owned purchasing, and vice versa? Why does the fiduciary model exist versus markup? How does Grace live with both problems at once, solo?",
+          "Pick the best account of what breaks when one party both specifies and buys, then justify it — and note how Grace, working solo, carries both roles' tension at once. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "What primarily breaks if the designer who specifies also owns purchasing (and keeps the markup)?",
+          options: [
+            { id: "a", label: "The spec stops being neutral: the specifier is now tempted to pick products that pay the best margin rather than what serves the owner — the fiduciary, markup-free model exists precisely to remove that temptation." },
+            { id: "b", label: "Nothing breaks; combining the roles is simply more efficient and always cheaper for the owner." },
+            { id: "c", label: "The designer would no longer be allowed to attend site visits." },
+            { id: "d", label: "Manufacturers would refuse to ship because only buyers can place orders." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "When the specifier profits from the purchase, the spec quietly bends toward margin instead of the owner's interest. The fiduciary model (disclosed fee, trade discounts passed through) restores trust by removing the hidden incentive. Grace, working solo, feels both pulls at once — she must specify honestly and still get paid for the buying work — which is the same tension the two-party split resolves structurally.",
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -188,44 +339,134 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-3-1",
         title: "Phase map a real project",
         description:
-          "Walk a building renovation or hotel opening you know through the phases: which you can see from outside, which are invisible, and where the parallel-track challenge was most painful for that specific project. 4-6 sentences.",
+          "Put the real FF&E project phases into the right order, from design intent to a furnished room. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "flow-order",
+        widgetConfig: {
+          prompt: "Order the phases of an FF&E project in the sequence the industry actually runs them (AIA vocabulary).",
+          steps: [
+            { id: "s1", label: "Programming", detail: "Define needs, room types, budget anchors" },
+            { id: "s2", label: "Schematic Design (SD)", detail: "Look and feel; moodboards; rough direction" },
+            { id: "s3", label: "Design Development (DD)", detail: "Specific products start getting selected" },
+            { id: "s4", label: "Specification / CDs", detail: "Buyable spec sheets — model, finish, dimensions" },
+            { id: "s5", label: "Budgeting / value engineering", detail: "Price the spec; trim to hit the number" },
+            { id: "s6", label: "Bidding / RFQ", detail: "Get vendor pricing on the defined spec" },
+            { id: "s7", label: "Purchase orders", detail: "Binding commitment; deposit; the clock starts" },
+            { id: "s8", label: "Expediting", detail: "Actively chase the factory; catch substitutions" },
+            { id: "s9", label: "Manufacturing & freight", detail: "Production, then ocean/inland transit and customs" },
+            { id: "s10", label: "Receiving & inspection", detail: "Check qty/condition/finish vs the approved sample" },
+            { id: "s11", label: "Delivery & install", detail: "Room-by-room white-glove installation" },
+            { id: "s12", label: "Punch list & closeout", detail: "Resolve defects; hand over warranties and records" },
+          ],
+          lockFirst: true,
+          lockLast: true,
+        },
         modelAnswer:
-          "A good answer names the real phases in order (programming -> SD -> DD -> spec/CD -> budget/VE -> bidding/RFQ -> PO -> expediting -> manufacturing -> freight -> receiving -> delivery/install -> punch list -> closeout -> OS&E), and identifies that the visible phases are install/punch while spec, expediting and receiving are invisible. The parallel-track pain is that long lead times force ordering before construction is finished.",
-        estimatedMinutes: 16,
+          "Programming -> SD -> DD -> spec/CDs -> budget/VE -> bidding/RFQ -> PO -> expediting -> manufacturing & freight -> receiving & inspection -> install -> punch list & closeout. The visible phases are install/punch; spec, expediting and receiving are invisible from outside. Parallel-track pain: long lead times force POs before construction is finished.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-3-2",
         title: "Cumulative self-check (L1 + L2 + L3)",
         description:
-          "Closed-book recall: (a) the four segments + which is an operating expense; (b) two actors at trade shows and what each does there; (c) three lead-time ranges and why overseas forces parallel-track POs; (d) where the $40k mistake arose and surfaced in the phases.",
+          "Closed-book recall across the first three lessons: lead-time ranges and why they force parallel tracks, plus the four segments. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 10,
+          questions: [
+            {
+              id: "q-lead",
+              prompt:
+                "Which set of FF&E lead-time ranges is right, and why does overseas sourcing force parallel-track POs?",
+              options: [
+                { id: "a", label: "Domestic 6-10 wk, overseas 18-24 wk, custom 6-12 mo" },
+                { id: "b", label: "Domestic 1-2 wk, overseas 4-6 wk, custom 8-10 wk" },
+                { id: "c", label: "Domestic 6 mo, overseas 1 wk, custom 2 wk" },
+                { id: "d", label: "All categories ship in under 30 days" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Domestic 6-10 weeks, overseas 18-24 weeks, custom 6-12 months. Overseas lead times are longer than the construction time remaining, so POs must be placed in parallel with the build rather than after it.",
+            },
+            {
+              id: "q-segments",
+              prompt:
+                "Which segment is the recurring operating expense (not a capitalized asset)?",
+              options: [
+                { id: "a", label: "FF&E" },
+                { id: "b", label: "OS&E" },
+                { id: "c", label: "Finishes" },
+                { id: "d", label: "Architectural" },
+              ],
+              correctOptionId: "b",
+              rubric:
+                "OS&E (Operating Supplies & Equipment) is consumable and replaced often, so it is expensed as an operating cost — unlike FF&E, which is capitalized and depreciated.",
+            },
+          ],
+        },
         modelAnswer:
-          "(a) FF&E / OS&E / Finishes / Architectural; OS&E is the operating expense. (b) Manufacturer's reps (get product specified) and designers (discover product); dealers/manufacturers also exhibit. (c) Domestic 6-10 wk, overseas 18-24 wk, custom 6-12 mo; overseas lead times are longer than the remaining construction time, so POs must go out in parallel. (d) Arose during expediting (finish discontinued, silently substituted); surfaced at receiving.",
-        estimatedMinutes: 10,
+          "Lead times: domestic 6-10 wk, overseas 18-24 wk, custom 6-12 mo; overseas lead times exceed the remaining construction time, so POs run parallel to the build. OS&E is the operating expense; FF&E/Finishes/Architectural are capital. The $40k mistake arose during expediting (silent substitution) and surfaced at receiving.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-3-3",
         title: "The expediting gap",
         description:
-          "Find a real purchasing firm's website and look at how they describe expediting. What do they track between PO and shipment? Compare to the expediting phase in this lesson. Requires live browsing.",
+          "Expediting is the active follow-up between PO and shipment. Sort each activity into what expediting actually covers versus what belongs to a different phase. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 4,
-        estimatedMinutes: 18,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt:
+            "Sort each activity into 'Part of expediting (PO → shipment)' or 'Belongs to a different phase'.",
+          categories: [
+            { id: "exp", label: "Part of expediting", hint: "Active tracking between a placed PO and goods leaving the factory" },
+            { id: "other", label: "Different phase", hint: "Specifying, approving, receiving, or installing — not the PO→shipment chase" },
+          ],
+          items: [
+            { id: "i1", label: "Confirming the factory's production start date against the PO", correctCategoryId: "exp" },
+            { id: "i2", label: "Chasing weekly status updates on a custom order in production", correctCategoryId: "exp" },
+            { id: "i3", label: "Verifying the deposit cleared and the order is truly in queue", correctCategoryId: "exp" },
+            { id: "i4", label: "Flagging a slipping ship date early enough to act", correctCategoryId: "exp" },
+            { id: "i5", label: "Writing the original product specification", correctCategoryId: "other" },
+            { id: "i6", label: "Approving the vendor's submittal / CFA", correctCategoryId: "other" },
+            { id: "i7", label: "Inspecting goods on the receiving dock", correctCategoryId: "other" },
+            { id: "i8", label: "Installing the furniture in the guest room", correctCategoryId: "other" },
+          ],
+        },
+        modelAnswer:
+          "Expediting is the active chase between a placed PO and the goods shipping: confirming production start, weekly status, deposit-cleared-so-it's-really-queued, and catching a slipping date early. Specifying, submittal approval, receiving inspection, and install are separate phases. The whole point is to replace 'no news is good news' with early warning while there is still time to act.",
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-3-4",
         title: "Why does lead time force parallel tracks?",
         description:
-          "Elaborative interrogation: (a) if domestic lead time were 2 weeks, would parallel tracks still be needed? (b) what happens when a project mixes items on three different lead-time clocks? (c) why does Grace, with 40 chairs, still face a version of the same problem?",
+          "Pick the best explanation for why FF&E work runs as parallel tracks rather than one sequence, then justify it — covering mixed lead-time clocks and why even Grace's small project feels it. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "Why does long lead time force FF&E to run as parallel tracks instead of one strict sequence?",
+          options: [
+            { id: "a", label: "Items sit on different lead-time clocks (long-lead custom, mid-lead, quick domestic), so long-lead pieces must be specified and ordered early — in parallel with everything else — or they miss a fixed opening date." },
+            { id: "b", label: "Parallel tracks are simply a project-management fashion with no real time driver." },
+            { id: "c", label: "Manufacturers refuse to accept sequential orders." },
+            { id: "d", label: "It lets the designer avoid making any decisions until the end." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "The driver is that lead times differ wildly. A 24-week custom item can't wait until short-lead items are settled; it has to be locked early and run concurrently. With three clocks running, sequencing them end-to-end would blow the opening date. Even Grace's 40 chairs face a small version: the long-lead item sets the critical path, so she must start it before the quick items. If domestic lead were 2 weeks for everything, the pressure to parallelize would mostly vanish.",
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -252,44 +493,127 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-4-1",
         title: "Diagnose a moodboard",
         description:
-          "Find a hospitality moodboard online. Pick three items; for each, list which of the five required spec fields you can determine from the image alone, and which are missing. Explain in 2-3 sentences why the missing fields are the purchasing agent's problem.",
+          "A moodboard shows a single hero image of a lounge chair. Sort each attribute by whether you can reasonably read it from the image alone, or whether it is missing and must be pinned down before anything can be bought. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt: "For a chair shown only as a moodboard image, sort each attribute: readable from the image, or missing (a buyable-spec field the agent still needs)?",
+          categories: [
+            { id: "have", label: "Readable from the image", hint: "You can reasonably infer it just by looking" },
+            { id: "missing", label: "Missing — needed to buy", hint: "Cannot be bid, ordered or scheduled without it" },
+          ],
+          items: [
+            { id: "i1", label: "General style / look", correctCategoryId: "have" },
+            { id: "i2", label: "Rough product type (it's a lounge chair)", correctCategoryId: "have" },
+            { id: "i3", label: "Approximate color family", correctCategoryId: "have" },
+            { id: "i4", label: "Exact model number / SKU", correctCategoryId: "missing" },
+            { id: "i5", label: "Finish / fabric code", correctCategoryId: "missing" },
+            { id: "i6", label: "Exact dimensions", correctCategoryId: "missing" },
+            { id: "i7", label: "Supplier / source", correctCategoryId: "missing" },
+            { id: "i8", label: "Unit price", correctCategoryId: "missing" },
+            { id: "i9", label: "Lead time", correctCategoryId: "missing" },
+          ],
+        },
         modelAnswer:
-          "From an image you can usually guess style, rough type, and maybe a color family. You cannot know the exact model/SKU, finish code, dimensions, supplier/source, unit price, or lead time. Those missing fields are the agent's problem because nothing can be bid, ordered, or scheduled until each one is pinned down.",
-        estimatedMinutes: 18,
+          "From an image you can read style, rough type, and a color family. You cannot know the exact model/SKU, finish code, dimensions, supplier/source, unit price, or lead time. Those missing fields are the purchasing agent's problem: nothing can be bid, ordered, or scheduled until each one is pinned down.",
+        estimatedMinutes: 8,
       },
       {
         id: "fd-task-4-2",
         title: "Distinguish the documents",
         description:
-          "Without looking back, write one sentence defining each of: tear sheet, cut sheet, spec sheet, FF&E schedule, finish schedule, spec book. Then: if Marco just received the spec book for a 150-room hotel, what would he do with it in the next two weeks?",
+          "Match each FF&E document to what it actually is. These get confused constantly — get the distinctions right. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "concept-match",
+        widgetConfig: {
+          pairs: [
+            { id: "p1", term: "Tear sheet", definition: "One-page product summary for client presentation" },
+            { id: "p2", term: "Cut sheet", definition: "Detailed dimensions/materials/install detail, often for custom items" },
+            { id: "p3", term: "Spec sheet", definition: "Everything about one product: model, finish, price, warranties" },
+            { id: "p4", term: "FF&E schedule", definition: "Project-wide tracker: vendor, qty, cost, lead time, status" },
+            { id: "p5", term: "Finish schedule", definition: "Hard finishes (paint, flooring, tile) listed by room" },
+            { id: "p6", term: "Spec book", definition: "All spec sheets compiled into one bound reference" },
+          ],
+        },
         modelAnswer:
-          "Tear sheet = a one-page product summary for presentation; cut sheet = detailed dimensions/materials/install, often for custom items; spec sheet = everything about one product (model, finish, price, warranties); FF&E schedule = the project-wide tracker (vendor, qty, cost, lead time, status); finish schedule = hard finishes by room; spec book = all spec sheets compiled. Marco would build budgets and a bid package from the schedule and start sourcing/RFQs against the long-lead items.",
-        estimatedMinutes: 12,
+          "Tear sheet = presentation summary; cut sheet = detailed dimensions/materials/install for custom items; spec sheet = one product end to end; FF&E schedule = the project-wide tracker; finish schedule = hard finishes by room; spec book = all spec sheets compiled. From the spec book Marco builds budgets and a bid package and starts RFQs on the long-lead items.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-4-3",
-        title: "AI as a vendor",
+        title: "Describing a product vs specifying one",
         description:
-          "Ask a chatbot to write a spec sheet for 'a contract-grade cognac leather lounge chair for a 200-room upscale hotel.' Audit the result against the five required spec fields: how many does it actually provide vs approximate vs fabricate? 3-4 sentences on the difference between describing a product and specifying one.",
+          "A generic AI 'spec sheet' for a cognac leather lounge chair sounds complete but isn't buyable. Sort each attribute by whether a generic description can supply it credibly, or whether it must come from a real specified product. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 4,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt:
+            "Sort each spec attribute: can a generic AI/marketing description supply it credibly, or must it come from a real, specified, buyable product?",
+          categories: [
+            { id: "describe", label: "Describable in general", hint: "Adjectives / intent an AI can plausibly generate" },
+            { id: "specify", label: "Requires a real specified product", hint: "Verifiable, sourceable, contract-binding facts" },
+          ],
+          items: [
+            { id: "i1", label: "'Cognac-toned, mid-century-inspired lounge chair'", correctCategoryId: "describe" },
+            { id: "i2", label: "'Comfortable, durable, hospitality-appropriate look'", correctCategoryId: "describe" },
+            { id: "i3", label: "Exact manufacturer + model/SKU number", correctCategoryId: "specify" },
+            { id: "i4", label: "Specific COM/leather grade, finish, and flammability rating (e.g. CAL 117)", correctCategoryId: "specify" },
+            { id: "i5", label: "Real dimensions, weight, and warranty terms", correctCategoryId: "specify" },
+            { id: "i6", label: "Actual lead time, MOQ, and trade price from the maker", correctCategoryId: "specify" },
+          ],
+        },
+        modelAnswer:
+          "An AI can generate the describable layer — colour mood, style adjectives, vague 'durable/comfortable' claims — but a real spec needs the verifiable layer: manufacturer + model/SKU, COM/leather grade and flammability rating, true dimensions and warranty, and real lead time/MOQ/trade price. Describing a product is adjectives; specifying one is committing to a sourceable, contract-binding item a vendor can actually quote and ship.",
         estimatedMinutes: 14,
       },
       {
         id: "fd-task-4-4",
         title: "Why phases exist",
         description:
-          "Elaborative interrogation: why does the industry separate Programming, SD, and DD into sequential phases rather than selecting specific products at the very start? Identify at least two problems that starting with specific products would create, and how the phase structure prevents each.",
+          "Answer two reasoning questions about why design runs Programming → SD → DD instead of picking products on day one, then explain each in your own words. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 12,
+          questions: [
+            {
+              id: "q-early",
+              prompt:
+                "What is the main problem with selecting specific products at the very start, before Programming and SD?",
+              options: [
+                { id: "a", label: "Locking specific SKUs before requirements and intent are settled means rework: products get chosen against unknowns, then discontinued, repriced, or proven wrong as the design firms up." },
+                { id: "b", label: "It is impossible to find products before construction begins." },
+                { id: "c", label: "Manufacturers won't quote until a hotel is fully built." },
+                { id: "d", label: "Early selection is illegal under franchise rules." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Phases move from abstract to concrete on purpose: Programming sets requirements, SD sets look/intent, DD pins exact products. Picking SKUs first forces expensive rework when intent shifts, and ties money to items that may be discontinued or repriced before they're ever ordered.",
+            },
+            {
+              id: "q-prevent",
+              prompt:
+                "How does the sequential phase structure prevent that problem?",
+              options: [
+                { id: "a", label: "It defers irreversible, money-committing choices until enough is known — cheap-to-change decisions happen early, expensive-to-change product locks happen only after intent is fixed." },
+                { id: "b", label: "It removes the designer from the project after Programming." },
+                { id: "c", label: "It guarantees the lowest possible price on every item." },
+                { id: "d", label: "It lets the owner skip approvals entirely." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "The structure sequences decisions by reversibility: shape the cheap-to-change intent first (moodboards, requirements), then commit to specific, hard-to-undo products only once that intent is stable — minimizing rework and protecting committed budget.",
+            },
+          ],
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -314,27 +638,75 @@ const LESSONS: LessonSeed[] = [
     homework: [
       {
         id: "fd-task-5-1",
-        title: "Build a mini-takeoff",
+        title: "Order the takeoff steps",
         description:
-          "90-room hotel, two room types (Standard King: 60 rooms with 1 desk + 1 lounge chair + 2 nightstands; Standard Double: 30 rooms with 1 desk + 0 lounge chairs + 2 nightstands). Calculate building totals, apply 5% overage (round up), then calculate cases for nightstands (4 per case). Explain in one sentence why overage matters on a fixed opening date.",
+          "A takeoff turns a room count into an order quantity. Put the steps in the order a purchasing agent actually performs them — from per-room-type counts to cases ready to order. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "flow-order",
+        widgetConfig: {
+          prompt:
+            "Order the takeoff for a 90-room hotel (Standard King x60, Standard Double x30) — from counting per room type to a case-level order quantity.",
+          steps: [
+            { id: "s1", label: "Count the items in each room type", detail: "King: 1 desk + 1 lounge chair + 2 nightstands; Double: 1 desk + 0 chairs + 2 nightstands" },
+            { id: "s2", label: "Multiply each by the number of rooms of that type", detail: "60 Kings and 30 Doubles" },
+            { id: "s3", label: "Sum across room types into building totals", detail: "Desks 90, lounge chairs 60, nightstands 180" },
+            { id: "s4", label: "Apply the overage buffer and round up", detail: "+5%: desks 95, chairs 63, nightstands 189" },
+            { id: "s5", label: "Convert to case/pack quantities to order", detail: "Nightstands at 4/case → ceil(189/4) = 48 cases" },
+          ],
+          lockFirst: true,
+          lockLast: true,
+        },
         modelAnswer:
-          "Desks 90, lounge chairs 60, nightstands 180. With 5% overage rounded up: desks 95, lounge chairs 63, nightstands 189. Nightstands in cases of 4 -> ceil(189/4) = 48 cases (192 units). Overage matters because a damaged or short item discovered near a fixed opening date can't be reordered in time, so a small buffer protects the schedule.",
-        estimatedMinutes: 18,
+          "Count per room type → multiply by room counts → sum to building totals (desks 90, chairs 60, nightstands 180) → apply 5% overage rounded up (95 / 63 / 189) → convert to cases (nightstands 4/case → 48 cases). Overage matters because a damaged or short item found near a fixed opening date can't be reordered in time, so the buffer protects the schedule.",
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-5-2",
         title: "Cumulative self-check (L1-L5)",
         description:
-          "Without referring back: (a) the shake-the-building test + one FF&E and one OS&E example; (b) why the purchasing agent must place orders before construction is complete; (c) name three of the five spec-line fields a moodboard lacks; (d) explain why a product library compounds in value over time.",
+          "Closed-book recall spanning the first five lessons: why orders go out before construction ends, and why a product library compounds. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 10,
+          questions: [
+            {
+              id: "q-parallel",
+              prompt:
+                "Why must the purchasing agent place orders before construction is complete?",
+              options: [
+                { id: "a", label: "Lead times are longer than the remaining build time, so orders must run parallel to construction" },
+                { id: "b", label: "Vendors only accept orders before a building exists" },
+                { id: "c", label: "It is cheaper to order early; price never changes" },
+                { id: "d", label: "Brand standards forbid ordering after construction starts" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Long lead times (overseas 18-24 wk, custom 6-12 mo) often exceed the construction time remaining, so POs must be placed in parallel with the build to hit a fixed opening date.",
+            },
+            {
+              id: "q-library",
+              prompt:
+                "Why does a structured product library compound in value over time?",
+              options: [
+                { id: "a", label: "It stores nothing reusable; each project starts blank" },
+                { id: "b", label: "Each project adds vetted records, so the next project starts from real data instead of a blank sheet" },
+                { id: "c", label: "It automatically lowers vendor prices" },
+                { id: "d", label: "It replaces the need for takeoffs entirely" },
+              ],
+              correctOptionId: "b",
+              rubric:
+                "Each completed project leaves behind vetted product records (real specs, finishes, vendors, lead times). The next project reuses them, so the library's value accumulates instead of being re-created from scratch.",
+            },
+          ],
+        },
         modelAnswer:
-          "(a) Shake the building — what falls out is FF&E (lounge chair); OS&E is consumable (towels). (b) Lead times are longer than the remaining build time, so orders run parallel to construction. (c) Any three of: model/SKU, finish code, dimensions, supplier/source, unit price, lead time. (d) Each project adds vetted records; the next project starts from real data instead of a blank sheet, so the library compounds.",
-        estimatedMinutes: 10,
+          "Orders run parallel to construction because lead times exceed the remaining build time. The library compounds because every project adds vetted records the next project reuses. (Shake-the-building: FF&E like a lounge chair falls out, OS&E like towels is consumable; a moodboard lacks model/SKU, finish, dimensions, source, price, lead time.)",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-5-recall",
@@ -363,20 +735,54 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-5-3",
         title: "The knowledge-in-people's-heads problem",
         description:
-          "Talk to someone in your company who has been there at least three years. Ask what key knowledge only they have that would be hard to reconstruct if they left. Compare to the FF&E library problem: what is the same, what is different? 3-4 sentences.",
+          "Undocumented knowledge living in one person's head is fragile. Pick the best statement of why the FF&E library problem is the same risk, then justify it in your own words. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 4,
-        estimatedMinutes: 16,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "Why is an FF&E library that lives only in a senior designer's head the same risk as any undocumented institutional knowledge?",
+          options: [
+            { id: "a", label: "Vendor contacts, tested products, pricing history and 'what failed last time' are unwritten, so if that person leaves the firm loses sourcing speed and repeats old mistakes — the value can't be reconstructed quickly." },
+            { id: "b", label: "Designers are simply unwilling to share information." },
+            { id: "c", label: "Software can already capture everything, so there is no real risk." },
+            { id: "d", label: "The library is only paper samples and has no informational value." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "A library is more than samples: it's vetted vendors, who delivers on time, real trade prices, and hard-won 'don't use this fabric in a lobby' lessons. When that lives only in someone's head, departure erases it — the same single-point-of-failure as any tribal knowledge. The difference: an FF&E library is unusually high-value and slow to rebuild because it's accumulated across many projects and suppliers.",
+        },
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-5-4",
         title: "Why two tracks, not one?",
         description:
-          "Elaborative interrogation: a hotel runs FF&E and OS&E procurement as two separate tracks. Identify at least three reasons (lead-time cadence, vendor types, budget classification, the never-ends nature of OS&E) and explain why collapsing them into one process would create more problems than it solves.",
+          "A hotel runs FF&E and OS&E procurement as two separate tracks. Sort each trait into the track it characterizes — that contrast is exactly why collapsing them into one process backfires. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt:
+            "Sort each trait into the procurement track it characterizes: FF&E or OS&E.",
+          categories: [
+            { id: "ffe", label: "FF&E track", hint: "Durable, capitalized goods bought to open the building" },
+            { id: "ose", label: "OS&E track", hint: "Consumables and operating supplies, replenished forever" },
+          ],
+          items: [
+            { id: "i1", label: "Long, custom lead times (often 12-24 weeks)", correctCategoryId: "ffe" },
+            { id: "i2", label: "One-time purchase tied to the opening, then capitalized", correctCategoryId: "ffe" },
+            { id: "i3", label: "Bought through reps/dealers with submittals and approvals", correctCategoryId: "ffe" },
+            { id: "i4", label: "Recurring reorders that never end while the hotel operates", correctCategoryId: "ose" },
+            { id: "i5", label: "Treated as an operating expense, not a capital asset", correctCategoryId: "ose" },
+            { id: "i6", label: "Sourced from distributors/foodservice/linen suppliers off the shelf", correctCategoryId: "ose" },
+          ],
+        },
+        modelAnswer:
+          "FF&E: long custom lead times, a one-time capitalized purchase to open the building, bought via reps with submittals/approvals. OS&E: never-ending reorders, expensed not capitalized, sourced off-the-shelf from distributors. The cadence, vendor types, budget classification, and the open-ended nature of OS&E are all different, so one process would either over-engineer the towels or under-manage the custom millwork — two tracks fit two problems.",
         estimatedMinutes: 12,
       },
     ],
@@ -403,25 +809,69 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-6-1",
         title: "Map PIP triggers to a real property",
         description:
-          "Find a real hotel PIP article or franchise disclosure. Identify the trigger, cost range, and deadline. Write two sentences on why the supply-chain lead-time constraints make the deadline structurally difficult.",
+          "Match each PIP concept to the real-world fact that illustrates it — the trigger, the cost band, the deadline, and why lead time makes that deadline hard. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "concept-match",
+        widgetConfig: {
+          pairs: [
+            { id: "p1", term: "Common PIP trigger", definition: "Franchise renewal, change of ownership, conversion/rebrand, or low audit / guest-satisfaction scores" },
+            { id: "p2", term: "Soft-goods PIP cost band", definition: "Roughly $50k-$150k for carpet, drapery, and case-good refresh" },
+            { id: "p3", term: "Major PIP cost band", definition: "$500k+ when bathrooms, lobby, and full FF&E are in scope" },
+            { id: "p4", term: "Typical PIP deadline", definition: "About 12-18 months from the brand's notice to completion" },
+            { id: "p5", term: "Why the deadline is structurally hard", definition: "Custom FF&E lead times of 6-12 months eat most of the window, leaving little margin if anything slips" },
+          ],
+        },
         modelAnswer:
-          "Common triggers: franchise renewal, change of ownership, conversion/rebrand, or low audit/guest-satisfaction scores. Costs run $50k-$150k for soft goods up to $500k+ for a major PIP, with 12-18 month deadlines. The deadline is hard because custom FF&E lead times (often 6-12 months) eat most of the window, leaving little margin if anything slips.",
-        estimatedMinutes: 16,
+          "Triggers: renewal, ownership change, conversion, or weak scores. Soft-goods PIPs run ~$50k-$150k; major PIPs $500k+. Deadlines are ~12-18 months, and they're hard because custom FF&E lead times (6-12 months) consume most of the window — a single slip in approvals or production can blow it.",
+        estimatedMinutes: 12,
       },
       {
         id: "fd-task-6-2",
         title: "Self-check on PIP mechanics",
         description:
-          "Without scrolling: state the PIP triggers; define a golden sample; name the two-step consequence of a missed deadline.",
+          "Recall the golden-sample mechanism and the consequence of a missed PIP deadline, then explain. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 10,
+          questions: [
+            {
+              id: "q-golden",
+              prompt:
+                "What is a golden sample (first-article), and what problem does it solve?",
+              options: [
+                { id: "a", label: "An approved physical reference all production must match, ensuring consistency across many rooms and properties" },
+                { id: "b", label: "A discounted demo unit the vendor keeps for marketing" },
+                { id: "c", label: "The cheapest available substitute for an approved item" },
+                { id: "d", label: "A digital rendering used in place of a real sample" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "A golden sample / first-article is a physically approved reference unit; every production unit must match it, which holds consistency across hundreds of rooms and multiple properties.",
+            },
+            {
+              id: "q-deadline",
+              prompt:
+                "What is the two-step consequence of missing a PIP deadline?",
+              options: [
+                { id: "a", label: "An added penalty franchise fee (~1-3%) during the PIP period, escalating to loss of the flag" },
+                { id: "b", label: "An automatic deadline extension at no cost" },
+                { id: "c", label: "The brand pays for the renovation itself" },
+                { id: "d", label: "Nothing — PIP deadlines are advisory" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "A missed PIP deadline first triggers an added penalty franchise fee (roughly 1-3%) during the non-compliance period, then escalates to losing the flag entirely — the existential risk.",
+            },
+          ],
+        },
         modelAnswer:
-          "Triggers: renewal, sale/change of ownership, conversion, low scores. A golden sample (first-article) is an approved physical reference that all production must match, so consistency holds across many rooms and properties. Missed-deadline consequence: an added penalty franchise fee (≈1-3%) during the PIP period, escalating to loss of the flag.",
-        estimatedMinutes: 8,
+          "A golden sample is an approved physical reference unit that all production must match, holding consistency across rooms and properties. A missed PIP deadline first adds a penalty franchise fee (~1-3%) during the PIP period, then escalates to flag loss. (Triggers: renewal, sale, conversion, low scores.)",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-6-recall",
@@ -464,10 +914,25 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-6-4",
         title: "Flagged vs independent",
         description:
-          "Elaborative interrogation: why do brand standards create structurally higher demand for FF&E tracking than independent properties, despite the constraint burden? What does relaxing a brand standard do to brand value? Explain the tension in 'consistency without rigidity'.",
+          "Pick the best explanation for why flagged (branded) properties generate more FF&E tracking demand than independents, then justify it — and address what relaxing a standard does to brand value. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "Why do brand standards create structurally higher demand for FF&E tracking than independent properties?",
+          options: [
+            { id: "a", label: "A flag mandates specific approved products, recurring PIPs, and auditable proof of compliance — so every property must document and prove what it bought, repeatedly, in a way an independent never has to." },
+            { id: "b", label: "Flagged hotels simply buy more expensive furniture." },
+            { id: "c", label: "Independent hotels are legally barred from tracking software." },
+            { id: "d", label: "Brands forbid any use of spreadsheets, forcing software." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "The flag turns 'what did we buy' into a compliance obligation: approved suppliers, mandated refresh cycles, and audits that demand proof. That recurring, documented burden is the demand driver. Relaxing a standard erodes the guest-consistency that the brand sells — so the tension is 'consistency without rigidity': enough conformity to protect brand value, enough flexibility to handle real properties.",
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -492,27 +957,59 @@ const LESSONS: LessonSeed[] = [
     homework: [
       {
         id: "fd-task-7-1",
-        title: "Trace the money through a worked example",
+        title: "Trace the money: cost-plus vs fiduciary",
         description:
-          "Calculate the client price, the agent's earnings, and the rep commission for a cost-plus scenario; then rerun the same package as a fiduciary model and compare who ends up ahead.",
+          "The same furniture package earns money in two different ways. Sort each statement into the pricing model it describes — cost-plus (markup) or fiduciary (disclosed fee). Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt:
+            "Sort each statement into the pricing model it belongs to: cost-plus (markup) or fiduciary (disclosed fee).",
+          categories: [
+            { id: "costplus", label: "Cost-plus (markup)", hint: "Firm earns on the spread between trade and client price" },
+            { id: "fiduciary", label: "Fiduciary (disclosed fee)", hint: "Trade discounts pass through; firm earns a stated fee" },
+          ],
+          items: [
+            { id: "i1", label: "Firm buys at trade (e.g. 40% off list) and adds a markup (e.g. 30%)", correctCategoryId: "costplus" },
+            { id: "i2", label: "The firm keeps the spread between its cost and the client price", correctCategoryId: "costplus" },
+            { id: "i3", label: "The exact discount the firm received is not shown to the owner", correctCategoryId: "costplus" },
+            { id: "i4", label: "All trade discounts are passed straight through to the owner", correctCategoryId: "fiduciary" },
+            { id: "i5", label: "The agent earns a disclosed fee (3-6% of FF&E value)", correctCategoryId: "fiduciary" },
+            { id: "i6", label: "On large packages the owner usually pays less overall", correctCategoryId: "fiduciary" },
+          ],
+        },
         modelAnswer:
-          "In cost-plus the firm buys at trade (say 40% off list) and adds a markup (say 30%): client price = trade x 1.30, and the firm keeps the markup spread. The rep earns a commission (5-15%) from the manufacturer, invisible to the buyer. In the fiduciary model all trade discounts pass to the owner and the agent earns only a disclosed fee (3-6% of FF&E value). The owner usually pays less under fiduciary on large packages; the firm earns transparently rather than on the spread.",
-        estimatedMinutes: 18,
+          "Cost-plus: buy at trade, add a markup, keep the spread, and the real discount stays hidden — the rep commission (5-15% from the maker) is also invisible to the buyer. Fiduciary: pass all trade discounts to the owner and charge a disclosed 3-6% fee. On large packages the owner usually comes out ahead under fiduciary, and the firm earns transparently rather than on the spread.",
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-7-2",
         title: "Cumulative interleave — connect L6 and L7",
         description:
-          "Explain how a brand's approved-supplier list (L6) eliminates competitive bidding, and why that makes the fiduciary model more, not less, important for the owner (L7).",
+          "Reason across two lessons: when a brand mandates an approved supplier (L6), which pricing model best protects the owner (L7), and why? Pick the answer and justify it. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "A brand standard mandates a single approved supplier for the guestroom casegoods — there is no competitive bid. Which arrangement best protects the owner on price, and why does removing the bid change the answer?",
+          options: [
+            { id: "opt-a", label: "Cost-plus markup — the agent buys at trade and adds a markup the owner doesn't see" },
+            { id: "opt-b", label: "Fiduciary / disclosed-fee — all discounts pass to the owner; the agent earns only a disclosed fee" },
+            { id: "opt-c", label: "It doesn't matter — a mandated supplier already guarantees a fair price" },
+            { id: "opt-d", label: "Keystone markup — double the trade price, since there's no competition anyway" },
+          ],
+          correctOptionId: "opt-b",
+          minJustificationWords: 15,
+          rubric:
+            "When the brand mandates the supplier, there is no competitive bid to discipline price, so the market can no longer keep the agent honest. The fiduciary/disclosed-fee model passes all discounts to the owner and pays the agent only a transparent fee, removing the incentive to inflate product price — exactly the protection lost when bidding is off the table. A and D let the agent capture hidden spread; C is wrong because a mandated supplier sets the list, not a fair net to the owner.",
+        },
         modelAnswer:
-          "When the brand mandates an approved supplier, there is no competitive bid to discipline price, so the owner can't rely on the market to keep the agent honest. A fiduciary agent passes all discounts through and earns only a disclosed fee, removing the incentive to inflate product price — exactly the protection the owner loses when bidding is off the table.",
-        estimatedMinutes: 12,
+          "A mandated supplier eliminates the competitive bid, so the owner can't rely on the market to discipline price. The fiduciary model passes all discounts through and pays only a disclosed fee, removing the incentive to inflate product cost — making it more important, not less, exactly when bidding is off the table.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-7-recall",
@@ -574,10 +1071,25 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-7-4",
         title: "The transparency gap",
         description:
-          "Elaborative interrogation: why have many designers historically not disclosed trade prices, and why has hospitality procurement evolved toward full transparency? Explain the structural market difference that drives the divergence.",
+          "Pick the best account of why residential designers historically kept trade prices private while hospitality procurement moved to full transparency, then justify it. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "What structural market difference best explains why hospitality procurement is transparent while residential design often is not?",
+          options: [
+            { id: "a", label: "Hospitality buyers are sophisticated owners/brands spending large sums who demand audited, fiduciary buying — so disclosure is a competitive requirement; residential clients are smaller and the markup model is accepted, so trade prices stayed private." },
+            { id: "b", label: "Hospitality furniture has no trade discounts to disclose." },
+            { id: "c", label: "Residential designers are legally required to hide all prices." },
+            { id: "d", label: "Hotels do not care about cost, only residential clients do." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "The buyer drives the norm. Hotel owners and brands deploy large capital, hire purchasing professionals, and expect fiduciary, auditable buying — transparency wins business there. Residential clients spend less and historically accepted the designer's markup as how the service is paid for, so non-disclosure persisted. Same products, different buyer sophistication and deal size, different transparency norm.",
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -602,27 +1114,57 @@ const LESSONS: LessonSeed[] = [
     homework: [
       {
         id: "fd-task-8-1",
-        title: "Build a landed-cost estimate",
+        title: "Stack the landed-cost layers",
         description:
-          "90-unit Vietnam-sourced lounge chair at $620 FOB. Apply the rough landed-cost layers from the lesson (freight, tariff, brokerage, warehousing, install). Compare the landed total to the bare product total. Then double the tariff rate and recalculate. From memory, explain the landed-cost concept.",
+          "Landed cost is FOB plus a stack of layers that accrue as goods move from factory to installed. Put the layers in the order they are added for a Vietnam-sourced chair. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "flow-order",
+        widgetConfig: {
+          prompt:
+            "Order the landed-cost layers for a $620-FOB Vietnam lounge chair, from the factory price up to the chair standing in the room.",
+          steps: [
+            { id: "s1", label: "FOB factory price", detail: "$620 — the bare unit price on the quote, free on board at origin port" },
+            { id: "s2", label: "Ocean freight & insurance", detail: "Moving the container from origin port to US port" },
+            { id: "s3", label: "Import tariff / duty", detail: "~20% on Vietnam furniture, charged on the customs value" },
+            { id: "s4", label: "Customs brokerage & clearance", detail: "Fees to clear the goods through US customs" },
+            { id: "s5", label: "Warehousing / receiving / consolidation", detail: "Holding and staging before delivery" },
+            { id: "s6", label: "Delivery & installation", detail: "Last-mile to site and placing the chair in the room" },
+          ],
+          lockFirst: true,
+          lockLast: true,
+        },
         modelAnswer:
-          "Apply the stack on top of $620 FOB: freight, ~20% Vietnam tariff, brokerage, warehousing, delivery/install — roughly +40-55%, landing each chair near $870-$960. Across 90 units the landed total runs well above 90 x $620. Doubling the tariff adds another ~20% of FOB per unit. The concept: the bare (FOB) price always understates true cost by at least 15-35%, and tariffs make it worse.",
-        estimatedMinutes: 20,
+          "FOB $620 → ocean freight & insurance → ~20% tariff → brokerage/clearance → warehousing/receiving → delivery & install. The stack adds roughly +40-55%, landing each chair near $870-$960, so the 90-unit landed total runs well above 90 x $620. Doubling the tariff adds ~20% of FOB more per unit. The concept: the bare FOB price always understates true cost, and tariffs widen the gap.",
+        estimatedMinutes: 16,
       },
       {
         id: "fd-task-8-2",
         title: "Cross-lesson budget scenario (L1 + L3 + L5 + L8)",
         description:
-          "A 60-room midscale hotel; the contractor quotes $600k furniture-only. (a) Is the number plausible vs per-key benchmarks? (b) what real total should the owner's rep anticipate after soft costs? (c) is value engineering still feasible and what is the correct timing? (d) what does $600k imply for total development cost using the 8-15% FF&E share?",
+          "A 60-room midscale hotel; the contractor quotes $600k furniture-only. Reason across lessons about whether that number is plausible and what it implies, pick the best read, and justify it. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "A 60-room midscale hotel has a $600k furniture-only quote. Which reading is most correct across per-key benchmarks, soft costs, and the FF&E share of development cost?",
+          options: [
+            { id: "opt-a", label: "$10k/key — plausible for midscale; expect +20-35% after soft costs; implies ~$4M-$7.5M total development at an 8-15% FF&E share" },
+            { id: "opt-b", label: "$10k/key — implausibly low; midscale runs $40k+/key" },
+            { id: "opt-c", label: "$600k is the fully loaded landed number; no soft costs remain to add" },
+            { id: "opt-d", label: "$600k implies ~$600k total development cost; FF&E is ~100% of the build" },
+          ],
+          correctOptionId: "opt-a",
+          minJustificationWords: 15,
+          rubric:
+            "$600k / 60 = $10k/key, plausible for midscale. The quote is furniture-only, so soft costs (freight, taxes, install, PM, contingency) add roughly 20-35% on top — it is not the loaded number (rules out C). At an 8-15% FF&E share, $600k implies roughly $4M-$7.5M total development (rules out D). B is wrong because $40k+/key is a luxury, not midscale, figure. Value engineering is still feasible only if done during design, not at purchase.",
+        },
         modelAnswer:
-          "(a) $600k / 60 rooms = $10k/key — plausible for midscale. (b) After soft costs (freight, taxes, install, PM, contingency) the loaded number is meaningfully higher, often +20-35%. (c) VE is feasible only if done during design; doing it at purchase blows the schedule. (d) If FF&E is ~8-15% of total dev cost, $600k implies roughly $4M-$7.5M total development.",
-        estimatedMinutes: 14,
+          "$10k/key is plausible for midscale. Furniture-only means soft costs add ~20-35% to reach the loaded number. At an 8-15% FF&E share, $600k implies ~$4M-$7.5M total development. Value engineering is feasible only during design — doing it at purchase blows the schedule.",
+        estimatedMinutes: 7,
       },
       {
         id: "fd-task-8-recall",
@@ -672,22 +1214,68 @@ const LESSONS: LessonSeed[] = [
       },
       {
         id: "fd-task-8-3",
-        title: "Real-tariff drill",
+        title: "How a tariff rate is actually built",
         description:
-          "Go to ustr.gov or hts.usitc.gov and find the current tariff for a specific furniture HTS code (Chapter 94 upholstered wooden seats). Report the HTS code, MFN base duty, any Section 301/232 additions for China-origin goods, and the effective stacked rate. (Rates change; this is why AI can't answer it.)",
+          "An effective furniture tariff is a stack, not a single number. Match each tariff concept to what it means when you look up a Chapter 94 furniture HTS code. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 4,
-        estimatedMinutes: 18,
+        widgetId: "concept-match",
+        widgetConfig: {
+          pairs: [
+            { id: "p1", term: "HTS code", definition: "The Harmonized Tariff Schedule classification number that determines a product's duty (e.g. Chapter 94 for furniture / seats)" },
+            { id: "p2", term: "MFN / base duty", definition: "The standard 'most-favored-nation' rate applied to imports from normal-trading-status countries" },
+            { id: "p3", term: "Section 301 add-on", definition: "An extra punitive duty layered on top for specific origins (notably China-origin goods)" },
+            { id: "p4", term: "Effective stacked rate", definition: "Base duty + any Section 301/232 additions = the real rate actually paid at the border" },
+            { id: "p5", term: "Why a static answer goes stale", definition: "Rates change with trade policy, so the authoritative figure must be looked up live at hts.usitc.gov / ustr.gov" },
+          ],
+        },
+        modelAnswer:
+          "The HTS code classifies the product and sets which duty applies. The MFN base duty is the standard rate; Section 301 (and 232) add-ons stack on top for origins like China; the effective stacked rate is base + add-ons — the number actually paid. Because policy shifts, the real figure must be pulled live from hts.usitc.gov / ustr.gov, which is exactly why a memorized or AI-generated rate can be wrong.",
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-8-4",
         title: "Why is contingency structured this way?",
         description:
-          "Elaborative interrogation: name three structural differences (not just 'hotels are bigger') that justify a higher hospitality contingency vs residential. Explain why a contingency reserve is not poor planning, and why removing it to hit a headline number makes things worse.",
+          "Answer two reasoning questions about FF&E contingency — why hospitality runs higher than residential, and why cutting it to hit a headline number backfires — then explain each in your own words. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 12,
+          questions: [
+            {
+              id: "q-higher",
+              prompt:
+                "Why does hospitality FF&E carry a higher contingency than residential — beyond just 'hotels are bigger'?",
+              options: [
+                { id: "a", label: "More uncontrolled variables: long overseas lead times, currency/tariff swings, custom-fabrication risk, and a fixed opening date that turns any slip into real cost — each adds variance a reserve must absorb." },
+                { id: "b", label: "Hotels are required by law to hold a 15% reserve." },
+                { id: "c", label: "Residential projects never have any surprises." },
+                { id: "d", label: "Designers add contingency to inflate their fee." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Hospitality has more sources of variance — global supply chains, tariffs/currency, custom manufacturing, and a hard opening date — so the expected size of surprises is larger and the cost of being short is higher. Contingency sizes to risk, not to project size alone.",
+            },
+            {
+              id: "q-cut",
+              prompt:
+                "Why does removing contingency to hit a lower headline budget make things worse, not better?",
+              options: [
+                { id: "a", label: "The risks don't disappear; when one lands there's no funded buffer, forcing emergency cuts, value-engineering, or a schedule slip that costs more than the contingency would have." },
+                { id: "b", label: "It is fine to remove it because surprises are rare." },
+                { id: "c", label: "Lenders reward projects with zero contingency." },
+                { id: "d", label: "Removing it automatically lowers tariffs." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Cutting the reserve only hides risk on paper. The underlying variance is unchanged, so when a tariff jump or delay hits there's no money to absorb it — the project pays more in rushed substitutions, value engineering, or a missed opening than the contingency ever cost.",
+            },
+          ],
+        },
         estimatedMinutes: 14,
       },
     ],
@@ -714,25 +1302,58 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-9-1",
         title: "Map the supply chain for a real product",
         description:
-          "Visit a real manufacturer's site (Kimball Hospitality, Bernhardt Contract, OFS, or KI). Find a guestroom product; describe their channel model (rep/dealer/direct); note whether lead time or MOQ is shown publicly; identify which channel type fits. From memory, define what a manufacturer's rep is.",
+          "Order the path a guestroom product takes from the contract manufacturer to a placed order — the channel model real makers like Kimball, Bernhardt Contract, OFS, or KI actually use. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "flow-order",
+        widgetConfig: {
+          prompt:
+            "Order how a contract guestroom product reaches a placed order through the rep/dealer channel.",
+          steps: [
+            { id: "s1", label: "Manufacturer makes the product and sets trade pricing", detail: "e.g. Kimball Hospitality, Bernhardt Contract, OFS, KI" },
+            { id: "s2", label: "Independent rep carries the line in a territory", detail: "Commission-only, multiple non-competing lines" },
+            { id: "s3", label: "Rep gets the product specified into the designer's drawings", detail: "The rep's core job — winning the spec" },
+            { id: "s4", label: "Designer specifies it; purchasing agent issues the RFQ", detail: "MOQ and lead time, rarely posted publicly, are quoted here" },
+            { id: "s5", label: "Order placed through the rep or a contracted dealer", detail: "Not direct-to-consumer; the channel handles the PO" },
+          ],
+          lockFirst: true,
+          lockLast: true,
+        },
         modelAnswer:
-          "Most contract manufacturers sell through independent reps and contracted dealers rather than direct; many publish 'find a rep' pages and rarely post MOQ/lead time publicly. A manufacturer's rep is an independent, commission-only salesperson who carries multiple non-competing lines in a territory and whose core job is getting products specified into designers' drawings — paid by the maker, free to the buyer.",
-        estimatedMinutes: 16,
+          "Manufacturer → independent rep carrying the line → rep gets it specified into the designer's drawings → designer specifies, agent RFQs (MOQ/lead time quoted, rarely public) → order placed via rep or dealer, not direct. A manufacturer's rep is an independent, commission-only salesperson who carries multiple non-competing lines in a territory and whose core job is getting products specified — paid by the maker, free to the buyer.",
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-9-2",
         title: "Cross-lesson sourcing analysis (L2 + L6 + L8 + L9)",
         description:
-          "150-room upper-upscale hotel. Option A: Vietnam $1,100 FOB, MOQ 50, 21-week total lead. Option B: US $1,480, MOQ 24, 12-week lead. (a) landed cost comparison; (b) schedule buffer and risk; (c) Marriott brand-standard impact on A vs B; (d) how Marco frames the decision for the owner's rep as the client's advocate.",
+          "150-room upper-upscale hotel with a fixed opening date. Rank the factors Marco should weigh most heavily when choosing between an overseas option (low FOB, MOQ 50, 21-week lead) and a domestic option (higher price, 12-week lead), then commit to the single most decisive factor and justify it as the owner's advocate. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "rank-order",
+        widgetConfig: {
+          prompt:
+            "A 150-room upper-upscale hotel has a fixed opening date. Option A: Vietnam $1,100 FOB, MOQ 50, 21-week lead. Option B: US $1,480, MOQ 24, 12-week lead. Rank these decision factors from most to least decisive for the owner.",
+          criterion: "how decisive it is for protecting the owner on a fixed-date project",
+          topLabel: "Most decisive",
+          bottomLabel: "Least decisive",
+          items: [
+            { id: "f1", label: "Schedule risk vs the fixed opening date", detail: "21 weeks leaves little buffer; a slip means an opening missed at ~$15k/day." },
+            { id: "f2", label: "Brand-standard / approved-supplier compliance", detail: "If the flag names an approved supplier, an option may be off the table outright." },
+            { id: "f3", label: "True landed cost (not FOB)", detail: "The $1,100 FOB grows ~40-55% with tariff + freight + stack, narrowing the gap to $1,480." },
+            { id: "f4", label: "Headline FOB unit price", detail: "The number on the quote before any of the real cost or risk is added." },
+          ],
+          correctOrder: ["f2", "f1", "f3", "f4"],
+          topPickId: "f2",
+          minJustificationWords: 12,
+          explanation:
+            "Compliance ranks first because a non-approved supplier can disqualify an option entirely regardless of price — there's no decision to optimize if the brand won't allow it. Schedule risk is next: on a fixed opening date, a 21-week lead with no buffer threatens revenue at roughly $15k/day. True landed cost comes third — once compliant and on schedule, the $1,100 FOB grows 40-55% landed and may erase its advantage over $1,480. The bare FOB price ranks last: it is the most visible number but the least reliable basis for the decision.",
+        },
         modelAnswer:
-          "(a) Option A's $1,100 FOB grows ~40-55% landed (tariff + freight + stack), narrowing or erasing the gap with US $1,480. (b) 21 weeks leaves less buffer against a fixed opening; 12 weeks is safer. (c) If the brand standard names an approved supplier, A may be off the table unless pre-approved. (d) Marco frames it as landed cost + schedule risk + compliance, not just unit price — certainty of delivery often beats marginal savings.",
-        estimatedMinutes: 16,
+          "Compliance first (a non-approved supplier disqualifies an option outright), then schedule risk against the fixed opening date, then true landed cost (FOB + 40-55%), and bare FOB price last. Marco frames it for the owner's rep as compliance + delivery certainty + landed cost — not headline unit price.",
+        estimatedMinutes: 7,
       },
       {
         id: "fd-task-9-recall",
@@ -771,10 +1392,25 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-9-4",
         title: "Why does the rep model persist?",
         description:
-          "Elaborative interrogation: name three structural reasons the rep model creates value a digital catalog or direct-to-manufacturer platform cannot replicate. What would have to change for the model to become less necessary, and do those conditions exist today?",
+          "Pick the strongest reason the manufacturer's-rep model survives despite digital catalogs and direct platforms, then justify it. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "What value does the rep model create that a digital catalog or direct-to-manufacturer platform cannot easily replicate?",
+          options: [
+            { id: "a", label: "Reps live in the specification relationship — they get products into designers' drawings, give local territory service, and steer complex custom/contract decisions; a catalog lists products but doesn't win the spec or hold the relationship." },
+            { id: "b", label: "Reps are simply cheaper than running a website." },
+            { id: "c", label: "Manufacturers are legally prohibited from selling online." },
+            { id: "d", label: "Designers cannot read product specifications without a rep present." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "The rep's value is relational and consultative: getting specified, knowing the territory and the designers, and guiding custom/contract decisions that a static catalog can't. The model would weaken only if specification became fully self-serve and custom complexity disappeared — conditions that don't broadly hold today, which is why the commission-only rep persists.",
+        },
         estimatedMinutes: 14,
       },
     ],
@@ -801,44 +1437,126 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-10-1",
         title: "Sort these situations",
         description:
-          "Five scenarios; assign the correct document (RFQ, RFP, submittal, RFI, or CFA sample) to each, and explain in one sentence why.",
+          "Each situation calls for one specific document. Sort each scenario under the right one: RFQ, RFP, submittal, RFI, or CFA sample. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt: "Sort each project situation under the document it calls for.",
+          categories: [
+            { id: "rfq", label: "RFQ", hint: "Price on an already-defined spec" },
+            { id: "rfp", label: "RFP", hint: "Fuller proposal when the approach is open" },
+            { id: "submittal", label: "Submittal", hint: "Vendor proves a product conforms before fabrication" },
+            { id: "rfi", label: "RFI", hint: "Question to resolve an ambiguous / conflicting spec" },
+            { id: "cfa", label: "CFA sample", hint: "Cutting from the actual production run, approved before delivery" },
+          ],
+          items: [
+            { id: "i1", label: "You have a fully defined chair spec and want three vendors to quote a price", correctCategoryId: "rfq" },
+            { id: "i2", label: "You need a turnkey lobby concept but haven't decided the approach yet", correctCategoryId: "rfp" },
+            { id: "i3", label: "The vendor sends product data and shop drawings to prove conformance before building", correctCategoryId: "submittal" },
+            { id: "i4", label: "The finish schedule and the spec sheet name two different fabrics — which governs?", correctCategoryId: "rfi" },
+            { id: "i5", label: "A swatch is cut from the actual dye lot and approved so delivered goods can't differ", correctCategoryId: "cfa" },
+          ],
+        },
         modelAnswer:
-          "RFQ = price on an already-defined spec; RFP = fuller proposal when the approach is open; submittal = the vendor proving a product conforms before fabrication; RFI = a question to resolve an ambiguous or conflicting spec; CFA sample = a swatch cut from the actual production run, approved to prevent dye-lot disputes at delivery.",
-        estimatedMinutes: 16,
+          "RFQ = price on a defined spec; RFP = fuller proposal when the approach is open; submittal = vendor proving conformance before fabrication; RFI = a question resolving an ambiguous/conflicting spec; CFA sample = a cutting from the actual production run, approved to prevent dye-lot disputes at delivery.",
+        estimatedMinutes: 7,
       },
       {
         id: "fd-task-10-2",
-        title: "Explain the two loops to a new colleague",
+        title: "Which loop catches this failure?",
         description:
-          "Write 3-4 sentences explaining Loop A (designer/owner) and Loop B (designer-or-GC/vendor) to someone new, including what each catches and one example of a failure if either is skipped.",
+          "Loop A is design sign-off (designer to owner/brand); Loop B is conformance (vendor proves the product matches the spec). Read the failure, pick which loop would have caught it, and justify it. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "120 lounge chairs arrive built exactly to the approved spec — correct model, finish and dimensions — but the owner says the silhouette is wrong and they never wanted this chair. Which approval loop was the one that failed here?",
+          options: [
+            { id: "opt-a", label: "Loop A (design sign-off) — the owner never approved this selection" },
+            { id: "opt-b", label: "Loop B (submittal/conformance) — the vendor built the wrong product" },
+            { id: "opt-c", label: "Neither — this is a freight problem" },
+            { id: "opt-d", label: "Both failed equally" },
+          ],
+          correctOptionId: "opt-a",
+          minJustificationWords: 15,
+          rubric:
+            "Loop A failed. The chairs conform perfectly to the spec, so Loop B (conformance) did its job — the vendor built exactly what was specified. The breakdown is that the design itself was never properly signed off by the owner, which is Loop A's purpose: it catches 'the owner didn't want this.' Skipping Loop A means you correctly build the wrong design. C and D miss that conformance was met; the defect is upstream in design approval.",
+        },
         modelAnswer:
-          "Loop A is design sign-off: the designer presents selections to the owner (and brand, on flagged hotels) for approval, phase by phase — it catches 'the owner didn't want this.' Loop B is conformance: the vendor provides product data, shop drawings, and CFA samples to prove the item matches the spec — it catches 'the product isn't what we specified.' Skip Loop A and you build the wrong design; skip Loop B and the wrong product ships.",
-        estimatedMinutes: 12,
+          "Loop A (design sign-off) failed: the chairs conform exactly to the spec, so Loop B worked — the vendor built what was specified. The owner simply never approved the design. Skip Loop A and you build the wrong design correctly; skip Loop B and the wrong product ships.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-10-3",
         title: "The approval gap",
         description:
-          "Recall a personal purchase experience (custom furniture, a renovation, a big online order). Map it to the FF&E submittal process: identify the equivalent of the CFA and the designer/vendor roles, and explain what the absence of a formal approval step costs at hotel scale.",
+          "A formal approval step (the CFA / submittal sign-off) exists for a reason. Pick the best statement of what its absence costs at hotel scale, then justify it. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 4,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "What does the absence of a formal submittal/CFA approval step cost at hotel scale?",
+          options: [
+            { id: "a", label: "Errors are discovered after production or delivery instead of before — a wrong finish across hundreds of units becomes a reorder, a schedule slip, and a dispute with no record of who approved what." },
+            { id: "b", label: "Nothing; vendors always send exactly what was specified." },
+            { id: "c", label: "It only slows the project down with paperwork and adds no protection." },
+            { id: "d", label: "It just means the designer gets paid later." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "The CFA is the last cheap moment to catch a mismatch — before the factory makes hundreds of units. Without it, a wrong finish or dimension surfaces at receiving or install, when fixing it means a reorder against a fixed opening date and an argument no one can win because nothing was signed. At one-off scale a return is annoying; at hotel scale it's a project event.",
+        },
         estimatedMinutes: 14,
       },
       {
         id: "fd-task-10-4",
         title: "Why four outcomes, not two?",
         description:
-          "Elaborative interrogation: why must 'Approved as Noted' exist as a separate category? What would collapsing to two options break? Why does 'Rejected' differ from 'Revise and Resubmit'?",
+          "Answer two reasoning questions about the four submittal outcomes — why 'Approved as Noted' must exist, and how 'Rejected' differs from 'Revise and Resubmit' — then explain each in your own words. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 12,
+          questions: [
+            {
+              id: "q-asnoted",
+              prompt:
+                "Why must 'Approved as Noted' exist as a separate outcome instead of collapsing to just Approved / Rejected?",
+              options: [
+                { id: "a", label: "It lets production proceed with a small binding correction, avoiding a full resubmit cycle for a minor fix — saving weeks while still recording the exact change as the vendor's obligation." },
+                { id: "b", label: "It is a polite way of saying Rejected." },
+                { id: "c", label: "It exists only for legal boilerplate and is never used." },
+                { id: "d", label: "It lets the vendor ignore the comments and ship anyway." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Without it, every minor correction would force a full re-review, burning lead time. 'Approved as Noted' keeps the schedule moving while making the noted change binding and on record — proceed, but you must incorporate this.",
+            },
+            {
+              id: "q-reject",
+              prompt:
+                "How does 'Rejected' differ from 'Revise and Resubmit'?",
+              options: [
+                { id: "a", label: "Revise and Resubmit means fix and send it back for another review; Rejected means this submission is dead — wrong product/non-conforming — and a fundamentally different one is required." },
+                { id: "b", label: "They are identical; the words are interchangeable." },
+                { id: "c", label: "Rejected means approved with conditions." },
+                { id: "d", label: "Revise and Resubmit means the owner cancels the project." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Revise and Resubmit keeps the same product in play pending corrections; Rejected ends that path — the item is non-conforming or wrong and must be re-specified. Collapsing them would blur 'fix this' with 'start over,' losing the signal a vendor needs.",
+            },
+          ],
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -865,25 +1583,53 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-11-1",
         title: "Map the failure modes",
         description:
-          "Three scenarios (a COM fabric tracking gap / a partial receiving inspection / no project debrief). For each, identify the phase, the discipline that would catch it, and the schedule or cost consequence if it goes uncaught until install.",
+          "Each failure is caught (or missed) at a specific phase of the post-PO pipeline. Sort each scenario under the phase whose discipline should catch it. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt: "Sort each failure mode under the phase whose discipline is responsible for catching it.",
+          categories: [
+            { id: "expedite", label: "Expediting", hint: "Active factory-chasing between PO and shipment" },
+            { id: "receiving", label: "Receiving inspection", hint: "Check qty/condition/finish vs the approved CFA" },
+            { id: "closeout", label: "Closeout / debrief", hint: "Capture lessons; feed data back to the library" },
+          ],
+          items: [
+            { id: "i1", label: "COM fabric isn't tracked to the factory and the frame can't be built on time", correctCategoryId: "expedite" },
+            { id: "i2", label: "A discontinued finish is silently substituted by the factory mid-production", correctCategoryId: "expedite" },
+            { id: "i3", label: "Crates arrive water-damaged but nobody checks until install day", correctCategoryId: "receiving" },
+            { id: "i4", label: "The delivered finish doesn't match the approved CFA sample", correctCategoryId: "receiving" },
+            { id: "i5", label: "Real sourcing data from a closed project never makes it back into the library", correctCategoryId: "closeout" },
+            { id: "i6", label: "The next project re-learns the same vendor lessons from scratch", correctCategoryId: "closeout" },
+          ],
+        },
         modelAnswer:
-          "COM gap: caught during expediting (the fabric must reach the factory on time) — if missed, the frame waits and the lead time slips. Partial receiving inspection: caught at receiving — if skipped, damage surfaces on install day with no time to reorder. No debrief: caught at closeout — if skipped, the next project re-learns the same lessons and the library doesn't compound.",
-        estimatedMinutes: 16,
+          "Expediting catches the COM gap and silent substitution (active factory-chasing before shipment). Receiving inspection catches transit damage and CFA mismatch (check before it reaches install day, when there's no time to reorder). Closeout/debrief catches lost sourcing data and un-captured lessons, so the library compounds instead of resetting each project.",
+        estimatedMinutes: 7,
       },
       {
         id: "fd-task-11-2",
         title: "The cumulative picture (L3 + L8 + L10 + L11)",
         description:
-          "Trace 120 custom lounge chairs at $850 FOB from Vietnam: the deposit amount, the lead-time range, two landed-cost additions (with % impact), what the receiving report contains, and the Lesson 10 step that must precede the wire.",
+          "Trace 120 custom lounge chairs at $850 FOB from Vietnam by matching each step in the chain to its real value or content. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "concept-match",
+        widgetConfig: {
+          pairs: [
+            { id: "p1", term: "Deposit on the PO", definition: "About 50% of the order value, paid up front to start production" },
+            { id: "p2", term: "Lead-time range (overseas)", definition: "Production 30-90 days + ~3-5 weeks ocean transit, often 18-24 weeks total" },
+            { id: "p3", term: "Tariff layer", definition: "~20% Vietnam furniture duty added to the FOB price" },
+            { id: "p4", term: "Freight layer", definition: "~12% ocean freight, on top of brokerage/warehousing/install (~40-55% landed over $850)" },
+            { id: "p5", term: "Receiving report contents", definition: "Quantity, condition, and finish checked against the approved CFA" },
+            { id: "p6", term: "Step that must precede the wire/PO", definition: "Submittal + CFA approval from Lesson 10" },
+          ],
+        },
         modelAnswer:
-          "Deposit ≈ 50% of the order on PO. Lead time: production 30-90 days + ~3-5 weeks ocean transit (overseas total often 18-24 weeks). Landed additions: ~20% Vietnam tariff and ~12% freight, plus brokerage/warehousing/install — landing each chair ~40-55% over $850. The receiving report records quantity, condition, and finish vs the approved CFA. The step that must precede the wire/PO: submittal + CFA approval (Lesson 10).",
-        estimatedMinutes: 16,
+          "Deposit ~50% on PO. Lead time: production 30-90 days + 3-5 weeks ocean (18-24 weeks total). Landed additions: ~20% tariff and ~12% freight plus brokerage/warehousing/install — ~40-55% over $850. The receiving report records quantity, condition, and finish vs the approved CFA. The step that must precede the wire: submittal + CFA approval.",
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-11-recall",
@@ -918,20 +1664,69 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-11-3",
         title: "The expediting problem",
         description:
-          "Recall a personal waiting experience (a delayed order, a contractor, a custom build). Map it to expediting (no-news-is-good-news vs active follow-up). Quantify the cost of finding out late vs early in that situation, and explain why AI can't reconstruct your answer.",
+          "Expediting trades 'no news is good news' for active follow-up. Pick the best statement of why finding out late is so much more expensive than finding out early, then justify it. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 4,
-        estimatedMinutes: 16,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "Why is learning about a delay late so much more costly than learning about it early?",
+          options: [
+            { id: "a", label: "Early warning preserves options — expedite, air-freight, re-sequence, or swap a backup; once the opening date is near those options are gone and the only choices left are expensive or damaging." },
+            { id: "b", label: "Late news is cheaper because the factory absorbs all costs." },
+            { id: "c", label: "There is no difference; a delay is a delay." },
+            { id: "d", label: "Early news forces the owner to cancel the project." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "Time is the asset expediting protects. Found early, a slip can be managed with cheap-ish fixes (push production, air-freight a subset, re-sequence install). Found late, near a fixed opening date, those levers are gone and the project eats premium freight, a partial opening, or lost revenue. 'No news is good news' is the trap; active follow-up buys back the options.",
+        },
+        estimatedMinutes: 14,
       },
       {
         id: "fd-task-11-4",
         title: "Why does the model room exist as a separate step?",
         description:
-          "Elaborative interrogation: if both approval loops from Lesson 10 closed cleanly, why is the model room still necessary? What specific failure does it prevent? If it reveals a lighting/finish conflict, who bears the cost and why?",
+          "Answer two reasoning questions about the model room — why it's needed even after clean approvals, and who bears the cost of a conflict it reveals — then explain each in your own words. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 12,
+          questions: [
+            {
+              id: "q-why",
+              prompt:
+                "If both approval loops from Lesson 10 closed cleanly, why is a physical model room still necessary?",
+              options: [
+                { id: "a", label: "Each item was approved in isolation; the model room is the first time everything is assembled together, revealing interaction problems — scale, color, lighting, and fit — that no paper submittal can show." },
+                { id: "b", label: "It exists only to photograph the room for marketing." },
+                { id: "c", label: "It replaces the need for any submittals." },
+                { id: "d", label: "Brands require it purely as a formality with no function." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Submittals approve products one at a time; they can't show how the carpet, drapery, lighting, and case goods look and fit together in a real room. The model room catches whole-room conflicts before they're replicated across hundreds of rooms — the last full-scale test before commitment.",
+            },
+            {
+              id: "q-cost",
+              prompt:
+                "If the model room reveals a lighting/finish conflict, who typically bears the cost, and why?",
+              options: [
+                { id: "a", label: "Usually the owner, because each item conformed to its approved submittal — the conflict is a design-coordination issue, not a vendor defect, so it's a change the owner decides and funds." },
+                { id: "b", label: "Always the vendor, because anything wrong is the vendor's fault." },
+                { id: "c", label: "No one; conflicts in the model room are free to fix." },
+                { id: "d", label: "The freight forwarder, since it shipped the goods." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "If every item matched its approved CFA, no vendor breached anything — the clash is in how the approved pieces combine, which is the owner/design side's call. The owner generally funds the change because it's a coordination decision, not a defect; the timestamped approvals show the vendors performed.",
+            },
+          ],
+        },
         estimatedMinutes: 14,
       },
     ],
@@ -1087,13 +1882,30 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-12-2",
         title: "Map a dispute to the paper trail",
         description:
-          "Pick one dispute scenario (a price changed after approval, a dye-lot mismatch, an item the owner says they never approved). Explain which document resolves it, what it must contain, and who bears the cost depending on what the record shows.",
+          "Each dispute is settled by a specific record. Sort each dispute under the document that resolves it. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "categorize",
+        widgetConfig: {
+          prompt: "Sort each dispute under the record that resolves it and decides who pays.",
+          categories: [
+            { id: "cfa", label: "Approved CFA record", hint: "The cutting from the production run that was signed off" },
+            { id: "signoff", label: "Timestamped sign-off / history log", hint: "Who approved what, and when" },
+            { id: "quote", label: "Approved quote vs invoice", hint: "The price that was agreed vs the price billed" },
+          ],
+          items: [
+            { id: "i1", label: "Delivered fabric is a different dye lot than what was approved", correctCategoryId: "cfa" },
+            { id: "i2", label: "The wood finish on arrival doesn't match the approved sample", correctCategoryId: "cfa" },
+            { id: "i3", label: "The owner says they never approved this chair selection", correctCategoryId: "signoff" },
+            { id: "i4", label: "A vendor claims a change was verbally agreed but it isn't in the record", correctCategoryId: "signoff" },
+            { id: "i5", label: "The invoice is higher than the price the owner approved", correctCategoryId: "quote" },
+            { id: "i6", label: "A quote expired and the vendor billed a new higher price", correctCategoryId: "quote" },
+          ],
+        },
         modelAnswer:
-          "A dye-lot mismatch is resolved by the CFA approval record (the cut from the production run that was signed off); if delivered goods differ from the approved CFA, the vendor bears it. 'I never approved that' is resolved by the timestamped sign-off / history log. A price change after approval is resolved by the approved quote vs the invoice. In each case the record with a timestamp and author decides who pays.",
-        estimatedMinutes: 12,
+          "Dye-lot and finish mismatches are settled by the approved CFA record — if delivered goods differ, the vendor bears it. 'I never approved that' and disputed verbal changes are settled by the timestamped sign-off / history log. Price disputes are settled by the approved quote vs the invoice. In each case the record with a timestamp and author decides who pays.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-12-3",
@@ -1109,10 +1921,25 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-12-4",
         title: "Why are the two loops separate by design?",
         description:
-          "Elaborative interrogation: why aren't the two loops combined into one process? What would go wrong if owners signed off before vendor submittals were reviewed, or if submittals went straight to the owner? What is each loop actually checking, and why does each need different expertise?",
+          "Pick the best explanation for why the owner-approval loop and the vendor-submittal loop are kept separate, then justify it — covering what each loop checks and why each needs different expertise. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "Why are the owner-approval loop and the vendor-submittal loop kept as two separate loops?",
+          options: [
+            { id: "a", label: "They check different things with different expertise: the owner loop confirms design intent and money/scope decisions; the submittal loop verifies technical conformance of what the vendor will actually make — collapsing them would let unreviewed product reach the owner or unfunded changes reach the factory." },
+            { id: "b", label: "It is just tradition with no functional reason." },
+            { id: "c", label: "Owners are not allowed to talk to vendors ever." },
+            { id: "d", label: "Two loops exist only to create more billable hours." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "The owner loop is about intent and authority — does this match the vision, and will the owner fund it. The submittal loop is technical — does the vendor's product conform to the spec. Different questions, different reviewers. If owners signed off before submittals were checked, they'd approve products that may not conform; if submittals went straight to the owner, non-experts would judge technical conformance. Separation puts the right check with the right expert.",
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -1139,25 +1966,70 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-13-1",
         title: "Map a pain point to a real tool category",
         description:
-          "Pick one of the six pain points. Explain: (a) exactly how it manifests in a real project; (b) which tool category addresses it and why; (c) why Excel+email+PDF fails to catch it.",
+          "Match each recurring FF&E pain point to the tool category that actually addresses it. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "concept-match",
+        widgetConfig: {
+          pairs: [
+            { id: "p1", term: "Discontinued finish substituted mid-order", definition: "FF&E spec/procurement tool — links the spec line to a live vendor record and flags the change before the PO ships" },
+            { id: "p2", term: "Version chaos across many editors", definition: "A single shared database of record — one source of truth instead of emailed spreadsheet copies" },
+            { id: "p3", term: "Construction RFIs, submittals and schedule", definition: "Construction PM platform (Procore) — runs the building track, not the FF&E spec track" },
+            { id: "p4", term: "Recurring OS&E spend across properties", definition: "GPO / group purchasing — aggregates operational volume for discounts" },
+            { id: "p5", term: "Designer billing, time and trade pricing", definition: "Design business / accounting tool (Studio Designer, Design Manager)" },
+            { id: "p6", term: "Tariff & freight volatility on landed cost", definition: "Live landed-cost tracking in the procurement tool, re-verified against current rates" },
+          ],
+        },
         modelAnswer:
-          "Example — discontinued finish: it manifests when a supplier drops a fabric mid-order and substitutes a near-match; an FF&E spec/procurement tool that links the spec line to the live vendor record can flag the change before the PO ships; Excel+email+PDF fails because the spreadsheet has no live connection to the vendor and the change lives in an inbox nobody re-reads.",
-        estimatedMinutes: 16,
+          "A discontinued finish is caught by an FF&E spec/procurement tool linking spec to a live vendor record; version chaos is solved by a single shared database; construction RFIs/submittals belong to a construction PM platform (Procore), a different track from FF&E; recurring OS&E spend fits a GPO; designer billing fits a design-business tool; tariff/freight volatility needs live landed-cost tracking. Excel+email+PDF fails because the spreadsheet has no live connection and changes hide in an inbox.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-13-2",
         title: "Cumulative check (L1 + L8 + L9 + L12 + L13)",
         description:
-          "From memory: (a) when did the $40k mistake arise vs surface? (b) the two structural budget leaks from L8; (c) what a vendor scorecard tracks; (d) the difference between 'Approved' and 'Approved as Noted'; (e) the practical Excel switch point.",
+          "Closed-book recall across five lessons: the submittal action distinction and the practical point where Excel breaks. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 10,
+          questions: [
+            {
+              id: "q-approved",
+              prompt:
+                "What is the difference between 'Approved' and 'Approved as Noted' on a submittal?",
+              options: [
+                { id: "a", label: "'Approved' = proceed as submitted; 'Approved as Noted' = proceed only after a binding correction" },
+                { id: "b", label: "They are identical; both mean rejected" },
+                { id: "c", label: "'Approved' means re-bid; 'Approved as Noted' means stop work" },
+                { id: "d", label: "Both require a brand-new RFQ before any work" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "'Approved' lets the vendor proceed exactly as submitted. 'Approved as Noted' is conditional: the vendor may proceed only after incorporating the stated correction, which is binding and recorded.",
+            },
+            {
+              id: "q-excel",
+              prompt:
+                "At roughly what point does Excel + email + PDF stop being adequate for FF&E?",
+              options: [
+                { id: "a", label: "Past ~100 items, 3+ projects, or multiple simultaneous editors" },
+                { id: "b", label: "Only above 10,000 items" },
+                { id: "c", label: "Never — Excel scales fine to any size" },
+                { id: "d", label: "Immediately, even for a single 5-item project" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Excel breaks in practice past roughly 100 items, 3+ concurrent projects, or multiple editors — version chaos, no live vendor link, and lost change history are where it fails.",
+            },
+          ],
+        },
         modelAnswer:
-          "(a) Arose during expediting (silent substitution), surfaced at receiving. (b) Landed-cost surprises and scope creep. (c) Spend/PO amount, lead time, quality, payment terms — vendor reliability over time. (d) 'Approved' = proceed as submitted; 'Approved as Noted' = proceed only after a binding correction. (e) Excel breaks past ~100 items, 3+ projects, or multiple editors.",
-        estimatedMinutes: 12,
+          "'Approved' = proceed as submitted; 'Approved as Noted' = proceed only after a binding, recorded correction. Excel breaks past ~100 items, 3+ projects, or multiple editors. (The $40k mistake arose during expediting via silent substitution and surfaced at receiving; the two budget leaks are landed-cost surprises and scope creep.)",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-13-3",
@@ -1173,10 +2045,25 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-13-4",
         title: "Why the categories are where they are",
         description:
-          "Elaborative interrogation: pick two adjacent tool categories. Explain why they are separate rather than combined, what each category's user cares about that the other does not, and why combining them would make both worse.",
+          "Pick the best reason two adjacent FF&E tool categories stay separate rather than merging into one product, then justify it — naming what each category's user cares about that the other doesn't. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "mcq-justify",
+        widgetConfig: {
+          question:
+            "Why do FF&E specification/library tools and procurement/expediting tools stay separate rather than merging into one product?",
+          options: [
+            { id: "a", label: "They serve different users and jobs — specification cares about design intent, libraries, and accurate specs; procurement cares about POs, money, lead times, and delivery — so one merged tool would be shallow at both instead of strong at either." },
+            { id: "b", label: "It is impossible technically to combine them." },
+            { id: "c", label: "Vendors refuse to let their data appear in two categories." },
+            { id: "d", label: "Buyers prefer paying for more separate tools." },
+          ],
+          correctOptionId: "a",
+          minJustificationWords: 12,
+          rubric:
+            "Adjacent categories split along the user and the job-to-be-done. The designer's specification/library world optimizes for intent, accuracy, and reuse; the agent's procurement/expediting world optimizes for orders, cost, and on-time delivery. Forcing both into one product usually means each side gets a compromised feature set — which is why the categories persist even though the data flows between them.",
+        },
         estimatedMinutes: 12,
       },
     ],
@@ -1201,27 +2088,82 @@ const LESSONS: LessonSeed[] = [
     homework: [
       {
         id: "fd-task-14-1",
-        title: "Trace a different chair through the full chain",
+        title: "Trace a chair through the full chain",
         description:
-          "Pick a real hotel and one piece of furniture in it. Write a 12-15 step trace through the full FF&E process from budget decision to punch list, naming the actor at each step. Mark two steps where a real mistake would most likely happen and why.",
+          "Capstone: put the full FF&E process in order — from the budget decision to closeout — the way a single chair actually travels through every actor. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 1,
+        widgetId: "flow-order",
+        widgetConfig: {
+          prompt:
+            "Order the full FF&E journey of one chair, from the owner's budget decision to project closeout, naming the actor at each step.",
+          steps: [
+            { id: "s1", label: "Owner / brand set scope and standard", detail: "Budget per key and the brand-standard requirements" },
+            { id: "s2", label: "Designer specifies the chair", detail: "Design intent → exact product (DD)" },
+            { id: "s3", label: "Library + takeoff produce quantities", detail: "Per-room counts rolled up with overage" },
+            { id: "s4", label: "Budget is built and approved", detail: "Landed cost + contingency" },
+            { id: "s5", label: "RFQ to the vendor via the rep", detail: "Purchasing agent sources and quotes" },
+            { id: "s6", label: "Submittal + CFA approval", detail: "Vendor sample/data signed off before production" },
+            { id: "s7", label: "PO issued + deposit paid", detail: "~50% on the order" },
+            { id: "s8", label: "Expediting during manufacturing", detail: "Active follow-up between PO and shipment" },
+            { id: "s9", label: "Freight + customs clearance", detail: "Ocean transit, tariff, brokerage" },
+            { id: "s10", label: "Receiving inspection on the dock", detail: "Quantity, condition, finish vs CFA" },
+            { id: "s11", label: "Model room sign-off", detail: "Whole-room check before mass install" },
+            { id: "s12", label: "Install + punch list + closeout", detail: "Place, fix defects, document, hand over" },
+          ],
+          lockFirst: true,
+          lockLast: true,
+        },
         modelAnswer:
-          "A strong trace names the actor at each step: owner/brand set scope and standard -> designer specifies -> library/takeoff -> budget -> RFQ to vendor via rep -> submittal + CFA -> PO + deposit -> expediting -> manufacturing -> freight/customs -> receiving inspection -> model room sign-off -> install -> punch list -> closeout. The two highest-risk steps are usually the spec-to-shipment gap (silent substitution) and receiving (skipped inspection).",
-        estimatedMinutes: 22,
+          "Owner/brand scope → designer specifies → library/takeoff → budget → RFQ via rep → submittal + CFA → PO + deposit → expediting → freight/customs → receiving inspection → model room sign-off → install/punch list/closeout. The two highest-risk steps are the spec-to-shipment gap (silent substitution) and receiving (a skipped inspection lets a non-conforming item through).",
+        estimatedMinutes: 18,
       },
       {
         id: "fd-task-14-2",
         title: "Self-check: the three property types",
         description:
-          "Without referring back: describe how a Four Seasons, a Courtyard by Marriott, and an independent boutique differ on (a) who does the buying; (b) how brand-standard approval works; (c) the nature of PIP risk.",
+          "Recall how the three property types differ on who buys and on PIP risk, then explain. Auto-checked — retry until correct.",
         category: "required",
-        submissionType: "text",
+        submissionType: "widget",
         order: 2,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 10,
+          questions: [
+            {
+              id: "q-buyer",
+              prompt:
+                "Who typically does the buying across a Four Seasons (luxury flag), a Courtyard by Marriott (brand rollout), and an independent boutique?",
+              options: [
+                { id: "a", label: "Flag and rollout use a dedicated purchasing agent; the independent owner often buys solo" },
+                { id: "b", label: "All three always use the same in-house brand buyer" },
+                { id: "c", label: "The independent uses a big agency; the flags buy solo" },
+                { id: "d", label: "None of them use purchasing agents" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "The luxury flag and the brand rollout typically run through a dedicated FF&E purchasing agent; the independent boutique owner often buys solo, juggling design and procurement together.",
+            },
+            {
+              id: "q-pip",
+              prompt:
+                "How does PIP risk differ across the three property types?",
+              options: [
+                { id: "a", label: "High for flagged properties (audits, deadlines, flag loss); essentially absent for the independent" },
+                { id: "b", label: "Highest for the independent; flags have none" },
+                { id: "c", label: "Identical for all three" },
+                { id: "d", label: "Only the boutique faces PIP deadlines" },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "PIP risk is high for flagged properties — brand audits, hard deadlines, penalty fees, and ultimately flag loss. The independent has no brand to satisfy, so its risk is budget and dropped threads, not a PIP.",
+            },
+          ],
+        },
         modelAnswer:
-          "(a) Luxury flag and brand rollout typically use a dedicated purchasing agent; the independent boutique owner often buys solo. (b) The flag and the rollout run brand approval against a strict standard (model rooms, golden samples); the independent has no brand to satisfy. (c) PIP risk is high for the flagged properties (audits, deadlines, flag loss) and essentially absent for the independent — its risk is budget and dropped threads.",
-        estimatedMinutes: 12,
+          "Flag and rollout use a dedicated purchasing agent; the independent owner often buys solo. Brand approval runs against a strict standard (model rooms, golden samples) for the flag and rollout; the independent has no brand to satisfy. PIP risk is high for flagged properties and essentially absent for the independent.",
+        estimatedMinutes: 6,
       },
       {
         id: "fd-task-14-recall",
@@ -1260,10 +2202,44 @@ const LESSONS: LessonSeed[] = [
         id: "fd-task-14-4",
         title: "Why is this industry built this way?",
         description:
-          "Elaborative interrogation: explain why the specifier/buyer split, parallel procurement, and FF&E reserves are rational structural choices, not inefficiencies, and what breaks if you remove each. Apply it to your own knowledge of your customer base.",
+          "Capstone synthesis: answer two reasoning questions tying the course together — why the specifier/buyer split and parallel procurement are rational structure, not waste — then explain each in your own words. Auto-checked — retry until correct.",
         category: "advanced",
-        submissionType: "text",
+        submissionType: "widget",
         order: 5,
+        widgetId: "quiz-explain",
+        widgetConfig: {
+          minExplanationWords: 12,
+          questions: [
+            {
+              id: "q-split",
+              prompt:
+                "Why is the specifier/buyer split a rational structural choice rather than an inefficiency?",
+              options: [
+                { id: "a", label: "It separates design judgment from money and removes the conflict of interest where a markup would bend the spec — protecting the owner and keeping the spec neutral, which one combined role cannot guarantee." },
+                { id: "b", label: "It exists only because the industry resists change." },
+                { id: "c", label: "It is cheaper to pay two firms than one." },
+                { id: "d", label: "Regulators randomly imposed it decades ago." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "The split aligns incentives: the specifier serves the design, the buyer serves the budget and logistics, and neither profits from steering the other. Remove it and the spec quietly follows margin. It's structure that buys trust and skill coverage, not red tape.",
+            },
+            {
+              id: "q-parallel",
+              prompt:
+                "Why is parallel procurement (plus FF&E reserves) rational rather than wasteful?",
+              options: [
+                { id: "a", label: "Long, varied lead times against a fixed opening date force long-lead items to start early and run concurrently, and reserves fund predictable, recurring refresh — both absorb time-and-money risk the project would otherwise eat in full." },
+                { id: "b", label: "Parallel work just keeps more people busy." },
+                { id: "c", label: "Reserves are idle cash that should always be spent down." },
+                { id: "d", label: "It is required only for overseas projects." },
+              ],
+              correctOptionId: "a",
+              rubric:
+                "Parallel tracks exist because the critical path is set by the longest-lead item against a hard date — sequencing everything would miss the opening. FF&E reserves smooth the lumpy, brand-driven refresh cost. Remove parallelism and you blow the date; remove the reserve and a predictable bill becomes an emergency. Both are risk structure, not waste.",
+            },
+          ],
+        },
         estimatedMinutes: 16,
       },
     ],

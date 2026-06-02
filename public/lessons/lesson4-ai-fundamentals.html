@@ -433,7 +433,6 @@
 <img src="/lessons/images/fohlio-tech-course/lesson-4-hero.webp" alt="Editorial illustration for Fohlio Tech Course Lesson 4" width="1600" height="900" loading="eager" decoding="async" style="display:block;width:100%;height:auto;">
 </figure>
 
-
     <!-- HEADER -->
     <div class="header">
         <div class="lesson-badge">Lesson 4 of 10</div>
@@ -453,7 +452,6 @@
             <li>Understand skills and subagents as building blocks for AI workflows</li>
         </ul>
     </div>
-
 
     <!-- ============================================ -->
     <!-- RECAP OF PREVIOUS LESSONS -->
@@ -483,7 +481,6 @@
     </div>
 
     <p>In the previous three lessons, you've learned to work with Git, understand the codebase architecture, and make your first code changes using Cursor's AI. Now it's time to understand <strong>what AI actually is</strong>, how it works under the hood, and how we use it as a powerful tool in our workflow.</p>
-
 
     <!-- ============================================ -->
     <!-- PART 1: WHAT IS AN LLM? -->
@@ -569,7 +566,6 @@
         LLM: "I said I <em>can</em> read, not that I have infinite memory."<br>
         <em>Context windows are big, but not that big. Yet.</em>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 2: THE CONTEXT WINDOW -->
@@ -818,7 +814,6 @@
         <em>Same question, very different energy.</em>
     </div>
 
-
     <!-- ============================================ -->
     <!-- PART 4: MCP -->
     <!-- ============================================ -->
@@ -942,7 +937,6 @@
     <div class="info-box blue">
         <p><strong>In practice:</strong> When you use Claude Code or Cursor's agent mode, MCP tools work behind the scenes. You just say what you want &mdash; "create a GitHub issue for this bug" &mdash; and the agent uses the right MCP tool automatically. You don't need to know the technical details of MCP to benefit from it.</p>
     </div>
-
 
     <!-- ============================================ -->
     <!-- PART 5: SKILLS & SUBAGENTS -->
@@ -1274,7 +1268,6 @@
         <em>Same AI brain, but now it can reach the data itself.</em>
     </div>
 
-
     <!-- ============================================ -->
     <!-- SUMMARY -->
     <!-- ============================================ -->
@@ -1331,52 +1324,9 @@
 
     </div><!-- end lesson-content -->
 
-
     <!-- ============================================ -->
     <!-- HOMEWORK -->
     <!-- ============================================ -->
-
-    <div class="homework">
-        <h2>Homework</h2>
-
-        <div class="info-box blue" style="margin-bottom:16px;">
-            <p><strong>Note:</strong> MCP connectors in Claude Desktop require a Pro, Max, Team, or Enterprise plan. If you don't have one, ask Ivan in Slack &mdash; we'll sort it out.</p>
-        </div>
-
-        <h3>Required (for everyone)</h3>
-        <ol>
-            <li>
-                <strong>Install Claude Desktop and connect Notion + Jira</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 30 min</span>
-                <p style="margin-top:6px;">Download Claude Desktop from <code>claude.ai/download</code>. Go to Settings &rarr; Connectors and connect two tools: (1) <strong>Notion</strong> &mdash; click Add Connector, enter <code>https://mcp.notion.com/mcp</code>, complete OAuth; (2) <strong>Atlassian</strong> &mdash; add the Atlassian connector and connect to our Jira; ask "What are my open tickets?" or "Summarize ticket FOH-XXXX". Send one screenshot showing Claude answering a question that required live data from one of these tools.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A correct screenshot shows Claude's response to a question that required live data &mdash; look for Claude mentioning specific page names, ticket numbers, or content that only exists in your actual Notion or Jira. A screenshot of the Connectors settings page showing tools listed is helpful but not sufficient on its own &mdash; we need to see Claude using the data. If a connector fails, include the error and what you tried.</p>
-                </details>
-            </li>
-            <li style="margin-top:20px;">
-                <strong>Explain chatbot vs agent &mdash; in your own words</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
-                <p style="margin-top:6px;">Write 3&ndash;5 sentences explaining the difference. Requirements: (1) use a concrete example that is NOT from this lesson (not the travel-booking example); (2) explain what specifically the agent does that the chatbot cannot; (3) mention why this difference matters for your daily GTM work. Do not quote the lesson &mdash; use your own analogy.</p>
-                <details style="margin-top:8px;border:1px solid var(--gray-200);border-radius:8px;padding:10px 14px;background:#F9FAFB;">
-                    <summary style="cursor:pointer;font-weight:600;font-size:14px;color:var(--gray-700);">Model answer / self-check</summary>
-                    <p style="margin-top:8px;font-size:14px;color:var(--gray-600);">A strong answer has all three parts working together. The key check: does your answer describe a multi-step autonomous action (agent) vs a single-turn response (chatbot)? Example: "A chatbot is like asking a colleague a question &mdash; they answer from memory. An agent is like giving that colleague a task and a set of tools: they look things up, take actions, check results, and report back. For me as a CS rep, this means I can ask Claude to find all open tickets for a customer, check their Notion account plan, and draft a renewal brief &mdash; instead of doing each step myself." Answers that just say "chatbots respond, agents act" without a multi-step GTM example score lower.</p>
-                </details>
-            </li>
-        </ol>
-
-        <h3 style="margin-top:28px;">Advanced (optional)</h3>
-        <ol>
-            <li>
-                <strong>Find the edge of the agent &mdash; process-visible task</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 35 min</span>
-                <p style="margin-top:6px;">Give Claude Desktop (with at least Notion and Jira connected) a real multi-step task from your actual work this week &mdash; something requiring 2+ sources and a useful output. Run it. Then: (a) describe the task and summarize Claude's output; (b) identify one specific thing Claude got wrong or couldn't do &mdash; not a hypothetical, something that actually happened; (c) explain why it failed there. Metacognitive memo: what does this tell you about which tasks are safe to delegate to an agent vs which need human judgment?</p>
-                <p style="font-size:13px;color:var(--gray-500);margin-top:4px;">Note: harder than the lesson on purpose &mdash; finding the failure mode is the goal.</p>
-            </li>
-            <li style="margin-top:20px;">
-                <strong>Why the context window matters &mdash; elaborative interrogation</strong> <span style="color:var(--gray-500);font-size:13px;">&approx; 20 min</span>
-                <p style="margin-top:6px;">Answer in your own words: (1) Why does the context window cause problems in long conversations, even if the total text fits within the limit? What specifically happens to response quality as context fills up? (2) Why can't AI companies just make the context window unlimited? What are the real constraints?</p>
-            </li>
-        </ol>
-    </div>
-
 
     <!-- FOOTER -->
     <div style="text-align: center; margin-top: 48px; padding: 32px 0; border-top: 1px solid var(--gray-200); color: var(--gray-500); font-size: 13px;">

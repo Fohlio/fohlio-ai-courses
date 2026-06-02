@@ -128,12 +128,60 @@
   },
   {
     "id": "mikroorm-task-2-3",
-    "title": "Why does nullable (DB) not imply optional (TypeScript)?",
-    "description": "Why does MikroORM require you to mark a property both .nullable() (for the database column) AND with '?' or '| null' in TypeScript (for the type system) separately — instead of inferring one from the other? What bad thing would happen if MikroORM auto-applied '| null' to every .nullable() column? Answer in 4-5 sentences.",
+    "title": "Sort each statement: DB nullability or TypeScript optionality?",
+    "description": "The lesson stresses that .nullable() (the database column flag) and '?' / '| null' (the TypeScript type flag) are two independent axes. Drop each statement into the axis it actually describes.",
     "category": "advanced",
-    "submissionType": "text",
+    "submissionType": "widget",
     "order": 3,
-    "modelAnswer": "MikroORM separates the two so you can have a column that is NULL in storage but always present in the in-memory entity (because a service always fills it on load), or vice versa. Auto-applying `| null` would force every consumer of the entity to handle null even when business logic guarantees presence — flooding the codebase with non-null assertions or guards. The two flags answer two different questions: 'can the row be missing this value?' and 'can application code see undefined here?' Conflating them removes a useful expressive axis.",
-    "estimatedMinutes": 15
+    "widgetId": "categorize",
+    "widgetConfig": {
+      "prompt": "Each statement is true of exactly one axis. Sort them. Remember: .nullable() controls whether the COLUMN can store NULL; '?' / '| null' controls whether application CODE must handle a missing value.",
+      "categories": [
+        {
+          "id": "db",
+          "label": "DB nullability — .nullable()",
+          "hint": "About the column in Postgres"
+        },
+        {
+          "id": "ts",
+          "label": "TypeScript optionality — '?' / '| null'",
+          "hint": "About the in-memory type the compiler sees"
+        }
+      ],
+      "items": [
+        {
+          "id": "i-col-null",
+          "label": "Decides whether the generated DDL emits NOT NULL on the column.",
+          "correctCategoryId": "db"
+        },
+        {
+          "id": "i-insert-omit",
+          "label": "Lets an INSERT omit the value and store NULL in that row.",
+          "correctCategoryId": "db"
+        },
+        {
+          "id": "i-compiler-guard",
+          "label": "Forces every consumer to narrow the value before using it, or face a compile error.",
+          "correctCategoryId": "ts"
+        },
+        {
+          "id": "i-undefined-handle",
+          "label": "Tells the type system the property may be undefined / null in application code.",
+          "correctCategoryId": "ts"
+        },
+        {
+          "id": "i-always-filled",
+          "label": "A column that is NULL in storage but a service always fills on load, so code never sees null — this axis can still mark it required.",
+          "correctCategoryId": "ts"
+        },
+        {
+          "id": "i-migration-effect",
+          "label": "Changing this flag produces a schema migration that alters the column constraint.",
+          "correctCategoryId": "db"
+        }
+      ]
+    },
+    "modelAnswer": "MikroORM keeps the two axes separate so you can have a column that is NULL in storage but always present in memory (a service fills it on load), or the reverse. .nullable() drives the column constraint and shows up in migrations; '?' / '| null' drives the compiler's narrowing requirement in application code. Auto-deriving one from the other would force every consumer to handle null even when business logic guarantees presence — flooding the codebase with non-null assertions. They answer two different questions: 'can the row be missing this value?' versus 'can application code see undefined here?'",
+    "estimatedMinutes": 12
   }
 ]
